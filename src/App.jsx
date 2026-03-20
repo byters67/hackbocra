@@ -49,6 +49,11 @@ import SpeechesPage from './pages/public/SpeechesPage';
 import BroadcastingPage from './pages/public/BroadcastingPage';
 import InternetPage from './pages/public/InternetPage';
 import DataProtectionPage from './pages/public/DataProtectionPage';
+import LegislationPage from './pages/public/LegislationPage';
+import TelecommunicationsPage from './pages/public/TelecommunicationsPage';
+import PostalPage from './pages/public/PostalPage';
+import LicensingFrameworkPage from './pages/public/LicensingFrameworkPage';
+import InfrastructureSharingPage from './pages/public/InfrastructureSharingPage';
 import DataRequestPage from './pages/public/DataRequestPage';
 
 export default function App() {
@@ -92,12 +97,12 @@ export default function App() {
                   <Route path="/about/board" element={<BoardOfDirectorsPage />} />
                   <Route path="/about/executive-management" element={<ExecutiveManagementPage />} />
                   <Route path="/about/careers" element={<ContentPage />} />
-                  <Route path="/mandate/legislation" element={<ContentPage />} />
-                  <Route path="/mandate/telecommunications" element={<ContentPage />} />
+                  <Route path="/mandate/legislation" element={<LegislationPage />} />
+                  <Route path="/mandate/telecommunications" element={<TelecommunicationsPage />} />
                   <Route path="/mandate/broadcasting" element={<BroadcastingPage />} />
-                  <Route path="/mandate/postal" element={<ContentPage />} />
+                  <Route path="/mandate/postal" element={<PostalPage />} />
                   <Route path="/mandate/internet" element={<InternetPage />} />
-                  <Route path="/mandate/licensing" element={<ContentPage />} />
+                  <Route path="/mandate/licensing" element={<LicensingFrameworkPage />} />
                   <Route path="/licensing" element={<LicensingHubPage />} />
                   <Route path="/licensing/:slug" element={<LicensingHubPage />} />
                   <Route path="/services/file-complaint" element={<FileComplaintPage />} />
@@ -122,14 +127,14 @@ export default function App() {
                   <Route path="/portal/data-request" element={<DataRequestPage />} />
                   <Route path="/search" element={<SearchPage />} />
                   <Route path="/projects" element={<ContentPage />} />
-                  <Route path="/projects/bw-cctld" element={<ContentPage />} />
+                  <Route path="/projects/bw-cctld" element={<InternetPage />} />
                   <Route path="/projects/bw-cirt" element={<ContentPage />} />
                   <Route path="/cybersecurity" element={<CybersecurityHubPage />} />
                   <Route path="/data-protection" element={<DataProtectionPage />} />
                   <Route path="/projects/electronic-evidence" element={<ContentPage />} />
                   <Route path="/projects/electronic-communications-transactions" element={<ContentPage />} />
                   <Route path="/projects/digital-switchover" element={<ContentPage />} />
-                  <Route path="/projects/infrastructure-sharing" element={<ContentPage />} />
+                  <Route path="/projects/infrastructure-sharing" element={<InfrastructureSharingPage />} />
                   <Route path="/complaints" element={<ContentPage />} />
                   <Route path="/complaints/consumer-education" element={<ContentPage />} />
                   <Route path="/complaints/registering-complaints" element={<ContentPage />} />
