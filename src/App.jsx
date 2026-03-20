@@ -56,6 +56,7 @@ import LicensingFrameworkPage from './pages/public/LicensingFrameworkPage';
 import InfrastructureSharingPage from './pages/public/InfrastructureSharingPage';
 import ConsumerEducationPage from './pages/public/ConsumerEducationPage';
 import TendersPage from './pages/public/TendersPage';
+import ChiefExecutivePage from './pages/public/ChiefExecutivePage';
 import DataRequestPage from './pages/public/DataRequestPage';
 
 export default function App() {
@@ -93,7 +94,7 @@ export default function App() {
                 <Route element={<Layout />}>
                   <Route path="/" element={<HomePage />} />
                   <Route path="/about/profile" element={<AboutProfilePage />} />
-                  <Route path="/about/chief-executive" element={<ContentPage />} />
+                  <Route path="/about/chief-executive" element={<ChiefExecutivePage />} />
                   <Route path="/about/history" element={<HistoryPage />} />
                   <Route path="/about/organogram" element={<ContentPage />} />
                   <Route path="/about/board" element={<BoardOfDirectorsPage />} />
