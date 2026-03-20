@@ -86,7 +86,7 @@ export default function Header() {
   const [userMenu, setUserMenu] = useState(false);
   const location = useLocation();
   const tmr = useRef(null);
-  const { t, lang } = useLanguage();
+  const { t, lang, toggleLang } = useLanguage();
   const { user, signOut } = useAuth();
 
   const NAV_ITEMS = useMemo(() => getNavItems(t, lang), [t, lang]);
@@ -169,6 +169,13 @@ export default function Header() {
 
           {/* Right buttons */}
           <div className="hidden lg:flex items-center gap-2">
+            {/* Language toggle */}
+            <button onClick={toggleLang} className="px-2.5 py-1.5 text-[11px] font-bold border border-gray-200 rounded-md hover:border-[#00458B] hover:bg-[#00458B]/5 transition-all flex items-center gap-1.5" title={lang === 'en' ? 'Switch to Setswana' : 'Fetolela go English'}>
+              <Globe size={12} className="text-[#00458B]" />
+              <span className={lang === 'en' ? 'text-[#00458B]' : 'text-gray-400'}>EN</span>
+              <span className="text-gray-300">|</span>
+              <span className={lang === 'tn' ? 'text-[#00458B]' : 'text-gray-400'}>TN</span>
+            </button>
             <Link to="/services/asms-webcp" className="px-3 py-1.5 text-[11px] font-bold bg-bocra-green/10 text-bocra-green rounded-md hover:bg-bocra-green hover:text-white transition-all">{t('header.asms')}</Link>
             <Link to="/services/register-bw" className="px-3 py-1.5 text-[11px] font-bold bg-bocra-cyan/10 text-bocra-cyan rounded-md hover:bg-bocra-cyan hover:text-white transition-all">{t('header.registerBW')}</Link>
             <NotificationBell />
@@ -225,7 +232,12 @@ export default function Header() {
               : <MobileDropdown key={item.label} item={item} active={active} setActive={setActive} />
             )}
             <div className="pt-4 space-y-3">
-              <Link to="/services/file-complaint" className="btn-primary w-full justify-center">File a Complaint</Link>
+              {/* Language toggle — mobile */}
+              <button onClick={toggleLang} className="w-full flex items-center justify-center gap-2 px-4 py-3 border border-gray-200 rounded-xl text-sm font-medium text-bocra-slate hover:bg-gray-50 transition-all">
+                <Globe size={16} className="text-[#00458B]" />
+                {lang === 'en' ? 'Fetolela go Setswana (TN)' : 'Switch to English (EN)'}
+              </button>
+              <Link to="/services/file-complaint" className="btn-primary w-full justify-center">{lang === 'tn' ? 'Tlhagisa Ngongorego' : 'File a Complaint'}</Link>
               <Link to="/admin" className="btn-secondary w-full justify-center">
                 BOCRA Portal
               </Link>
