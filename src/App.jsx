@@ -55,6 +55,7 @@ import PostalPage from './pages/public/PostalPage';
 import LicensingFrameworkPage from './pages/public/LicensingFrameworkPage';
 import InfrastructureSharingPage from './pages/public/InfrastructureSharingPage';
 import ConsumerEducationPage from './pages/public/ConsumerEducationPage';
+import TendersPage from './pages/public/TendersPage';
 import DataRequestPage from './pages/public/DataRequestPage';
 
 export default function App() {
@@ -121,7 +122,7 @@ export default function App() {
                   <Route path="/media/news-events" element={<NewsEventsPage />} />
                   <Route path="/media/speeches" element={<SpeechesPage />} />
                   <Route path="/media/center" element={<ContentPage />} />
-                  <Route path="/tenders" element={<ContentPage />} />
+                  <Route path="/tenders" element={<TendersPage />} />
                   <Route path="/contact" element={<ContactPage />} />
                   <Route path="/telecom-statistics" element={<TelecomStatisticsPage />} />
                   <Route path="/privacy-notice" element={<ContentPage />} />
