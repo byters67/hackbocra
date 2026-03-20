@@ -125,7 +125,7 @@ export default function AdminConsultationsPage() {
             Review and moderate public consultation responses — remove offensive content
           </p>
         </div>
-        <a href="/hackathonteamproject/consultations" target="_blank"
+        <a href="/hackbocra/consultations" target="_blank"
           className="flex items-center gap-2 px-3 py-2 border border-gray-200 rounded-xl text-xs font-medium text-gray-600 hover:bg-gray-50">
           <ExternalLink size={14} /> View Public Page
         </a>
