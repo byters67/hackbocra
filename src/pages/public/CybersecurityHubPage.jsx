@@ -198,6 +198,7 @@ function QuizCard({ tip, index }) {
 
 export default function CybersecurityHubPage() {
   const { lang } = useLanguage();
+  const tn = lang === 'tn';
   const heroRef = useScrollReveal();
   const statsRef = useStaggerReveal({ stagger: 0.1 });
 
@@ -229,7 +230,7 @@ export default function CybersecurityHubPage() {
           <nav className="text-sm text-bocra-slate/50 flex items-center gap-2">
             <Link to="/" className="hover:text-bocra-blue transition-colors">Home</Link>
             <ChevronRight size={14} />
-            <span className="text-bocra-slate">Cybersecurity Hub</span>
+            <span className="text-bocra-slate">{tn ? 'Lefelo la Tshireletso ya Saebo' : 'Cybersecurity Hub'}</span>
           </nav>
         </div>
       </div>
@@ -431,7 +432,7 @@ export default function CybersecurityHubPage() {
                 <Activity size={22} className="text-[#EA580C]" />
               </div>
               <div>
-                <h2 className="text-xl sm:text-2xl font-bold text-bocra-slate">Live Security Alerts</h2>
+                <h2 className="text-xl sm:text-2xl font-bold text-bocra-slate">{tn ? 'Ditlhagiso tsa Tshireletso tsa Nako ya Jaanong' : 'Live Security Alerts'}</h2>
                 <p className="text-sm text-bocra-slate/50">Real vulnerabilities from the NIST National Vulnerability Database{lastRefresh && <span className="text-bocra-slate/30"> · Updated {lastRefresh.toLocaleTimeString()}</span>}</p>
               </div>
             </div>

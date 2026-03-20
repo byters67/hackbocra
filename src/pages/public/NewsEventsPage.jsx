@@ -122,6 +122,7 @@ const DOCUMENTS = [
 
 export default function NewsEventsPage() {
   const { lang } = useLanguage();
+  const tn = lang === 'tn';
   const [activeCategory, setActiveCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [sortOrder, setSortOrder] = useState('newest');

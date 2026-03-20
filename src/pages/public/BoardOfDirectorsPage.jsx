@@ -454,6 +454,7 @@ function MemberCard({ member, index, onClick }) {
  * ══════════════════════════════════════════════════════════════════ */
 export default function BoardOfDirectorsPage() {
   const { lang } = useLanguage();
+  const tn = lang === 'tn';
   const [selected, setSelected] = useState(null);
   const heroRef = useRef(null);
 
@@ -497,7 +498,7 @@ export default function BoardOfDirectorsPage() {
           <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: `${C.cyan}15` }}>
             <Award className="w-4 h-4" style={{ color: C.cyan }} />
           </div>
-          <h2 className="text-lg sm:text-xl font-bold text-[#001A3A]">Leadership</h2>
+          <h2 className="text-lg sm:text-xl font-bold text-[#001A3A]">{tn ? 'Botsamaisi' : 'Leadership'}</h2>
           <div className="h-px flex-1 bg-gray-100" />
         </div>
 
@@ -514,7 +515,7 @@ export default function BoardOfDirectorsPage() {
           <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: `${C.magenta}15` }}>
             <Briefcase className="w-4 h-4" style={{ color: C.magenta }} />
           </div>
-          <h2 className="text-lg sm:text-xl font-bold text-[#001A3A]">Board Members</h2>
+          <h2 className="text-lg sm:text-xl font-bold text-[#001A3A]">{tn ? 'Maloko a Lekgotla' : 'Board Members'}</h2>
           <div className="h-px flex-1 bg-gray-100" />
         </div>
 

@@ -186,7 +186,7 @@ export default function TypeApprovalPage() {
 
               {/* Ensuring Quality & Safety */}
               <div className="mt-8">
-                <h3 className="text-lg font-bold text-bocra-slate mb-3">{lang === 'tn' ? 'Go Netefatsa Boleng le Pabalesego' : 'Ensuring Quality and Safety'}</h3>
+                <h3 className="text-lg font-bold text-bocra-slate mb-3">Ensuring Quality and Safety</h3>
                 <p className="text-sm text-bocra-slate/70 leading-relaxed mb-4">
                   Through Type Approval of Radio Telecommunications Terminal Equipment (RTTE) and Telecommunications Terminal Equipment (TTE), BOCRA ensures the integrity and reliability of the nation's communication infrastructure. All such devices must adhere to:
                 </p>
@@ -209,7 +209,7 @@ export default function TypeApprovalPage() {
 
               {/* Combating Counterfeit */}
               <div className="mt-8">
-                <h3 className="text-lg font-bold text-bocra-slate mb-3">{lang === 'tn' ? 'Go Lwantsha Didirisiwa tsa Maka' : 'Combating Counterfeit Devices'}</h3>
+                <h3 className="text-lg font-bold text-bocra-slate mb-3">Combating Counterfeit Devices</h3>
                 <p className="text-sm text-bocra-slate/70 leading-relaxed">
                   BOCRA has implemented a Device Verification Module (DVM) for SIM-enabled devices to combat the proliferation of counterfeit devices, which pose significant risks to network integrity and user safety. The DVM allows users to verify the authenticity of their devices by checking their International Mobile Equipment Identity (IMEI) numbers against a central database of approved devices.
                 </p>
@@ -240,7 +240,7 @@ export default function TypeApprovalPage() {
                         <p className="text-sm font-semibold text-bocra-slate group-hover:text-[#6BBE4E]">
                           Enter Type Approval Portal
                         </p>
-                        <p className="text-[10px] text-gray-400">lang === 'tn' ? 'O tsene ka' : 'Signed in as' {user.email}</p>
+                        <p className="text-[10px] text-gray-400">Signed in as {user.email}</p>
                       </div>
                     </button>
                   ) : (
@@ -254,7 +254,7 @@ export default function TypeApprovalPage() {
                           <p className="text-sm font-semibold text-bocra-slate group-hover:text-[#00458B]">
                             Sign In
                           </p>
-                          <p className="text-[10px] text-gray-400">{lang === 'tn' ? 'Fitlhelela akhaonto ya gago' : 'Access your account'}</p>
+                          <p className="text-[10px] text-gray-400">Access your account</p>
                         </div>
                       </button>
                       <Link to="/services/asms-webcp"
@@ -266,7 +266,7 @@ export default function TypeApprovalPage() {
                           <p className="text-sm font-semibold text-bocra-slate group-hover:text-[#6BBE4E]">
                             Create Account
                           </p>
-                          <p className="text-[10px] text-gray-400">{lang === 'tn' ? 'Kwadisa ka ASMS-WebCP' : 'Register via ASMS-WebCP Portal'}</p>
+                          <p className="text-[10px] text-gray-400">Register via ASMS-WebCP Portal</p>
                         </div>
                       </Link>
                     </>
@@ -291,7 +291,7 @@ export default function TypeApprovalPage() {
 
               {/* Application Process */}
               <div className="bg-white rounded-2xl border border-gray-200 p-5">
-                <h3 className="text-sm font-bold text-bocra-slate mb-3">{lang === 'tn' ? 'Thulaganyo ya Kopo' : 'Application Process'}</h3>
+                <h3 className="text-sm font-bold text-bocra-slate mb-3">Application Process</h3>
                 <div className="space-y-3">
                   {[
                     { step: '1', text: 'Submit documentation including test reports from ILAC-accredited laboratory' },
@@ -337,25 +337,25 @@ export default function TypeApprovalPage() {
       {/* Key Regulations */}
       <section className="py-8 bg-bocra-off-white">
         <div className="section-wrapper max-w-6xl">
-          <h2 className="text-lg font-bold text-bocra-slate mb-4">{lang === 'tn' ? 'Melao ya Botlhokwa' : 'Key Regulations'}</h2>
+          <h2 className="text-lg font-bold text-bocra-slate mb-4">Key Regulations</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="bg-white rounded-xl p-5 border border-gray-100">
               <div className="flex items-center gap-3 mb-2">
                 <div className="w-8 h-8 rounded-lg bg-[#00458B]/10 flex items-center justify-center">
                   <FileText size={16} className="text-[#00458B]" />
                 </div>
-                <h3 className="text-sm font-bold text-bocra-slate">{lang === 'tn' ? 'Molao wa CRA 2012' : 'CRA Act 2012'}</h3>
+                <h3 className="text-sm font-bold text-bocra-slate">CRA Act 2012</h3>
               </div>
-              <p className="text-xs text-bocra-slate/60">{lang === 'tn' ? 'E neela BOCRA tiragatso ya go laola didirisiwa tsa dikgolagano ka fa tlase ga Dikarolo 84 le 85.' : 'Provides the mandate for BOCRA to regulate communication equipment under Sections 84 and 85.'}</p>
+              <p className="text-xs text-bocra-slate/60">Provides the mandate for BOCRA to regulate communication equipment under Sections 84 and 85.</p>
             </div>
             <div className="bg-white rounded-xl p-5 border border-gray-100">
               <div className="flex items-center gap-3 mb-2">
                 <div className="w-8 h-8 rounded-lg bg-[#00A6CE]/10 flex items-center justify-center">
                   <Smartphone size={16} className="text-[#00A6CE]" />
                 </div>
-                <h3 className="text-sm font-bold text-bocra-slate">{lang === 'tn' ? 'Ditaelo tsa Didirisiwa tsa SIM 2020' : 'SIM-Enabled Device Guidelines 2020'}</h3>
+                <h3 className="text-sm font-bold text-bocra-slate">SIM-Enabled Device Guidelines 2020</h3>
               </div>
-              <p className="text-xs text-bocra-slate/60">{lang === 'tn' ? 'Ditaelo tsa Netefatso ya Tumelelo ya Mofuta tsa didirisiwa tse di nang le SIM go akaretsa ditlhokego tsa netefatso ya IMEI.' : 'Type Approval Verification Guidelines for SIM-enabled devices including IMEI verification requirements.'}</p>
+              <p className="text-xs text-bocra-slate/60">Type Approval Verification Guidelines for SIM-enabled devices including IMEI verification requirements.</p>
             </div>
           </div>
         </div>
@@ -441,8 +441,8 @@ function TypeApprovalSearch({ setView, lang }) {
           <div className="absolute top-0 right-0 w-48 sm:w-64 h-48 sm:h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2" />
           <div className="absolute bottom-0 left-0 w-36 sm:w-48 h-36 sm:h-48 bg-white/10 rounded-full translate-y-1/2 -translate-x-1/2" />
           <div className="relative max-w-2xl mx-auto text-center">
-            <h1 className="text-2xl sm:text-3xl font-bold text-white">{lang === 'tn' ? 'Patlo ya Tumelelo ya Mofuta' : 'Type Approval Search'}</h1>
-            <p className="text-white/50 mt-2 text-sm">{lang === 'tn' ? 'Batla didirisiwa tse di amogeletsweng ka leina la sedirisiwa, motšhine, tlhamo, kgotsa nomoro ya setifikeiti.' : 'Search for type approved devices by device name, model, make, or certificate number.'}</p>
+            <h1 className="text-2xl sm:text-3xl font-bold text-white">Type Approval Search</h1>
+            <p className="text-white/50 mt-2 text-sm">Search for type approved devices by device name, model, make, or certificate number.</p>
             <div className="mt-6 relative">
               <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-white/30" />
               <input type="text" value={query} onChange={e => setQuery(e.target.value)}

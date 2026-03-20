@@ -339,6 +339,7 @@ function CECard({ member, onClick }) {
  * ══════════════════════════════════════════════════════════════════ */
 export default function ExecutiveManagementPage() {
   const { lang } = useLanguage();
+  const tn = lang === 'tn';
   const [selected, setSelected] = useState(null);
   const heroRef = useRef(null);
 
@@ -364,7 +365,7 @@ export default function ExecutiveManagementPage() {
             <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18l6-6-6-6"/></svg></span>
             <Link to="/about/profile" className="hover:text-bocra-blue transition-colors">About</Link>
             <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18l6-6-6-6"/></svg></span>
-            <span className="text-bocra-slate font-medium">Executive Management</span>
+            <span className="text-bocra-slate font-medium">{tn ? 'Botsamaisi jwa Setheo' : 'Executive Management'}</span>
           </nav>
         </div>
       </div>

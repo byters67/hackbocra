@@ -37,6 +37,7 @@ const DATA_CATEGORIES = [
 
 export default function DataProtectionPage() {
   const { lang } = useLanguage();
+  const tn = lang === 'tn';
   const heroRef = useScrollReveal();
   const rightsRef = useStaggerReveal({ stagger: 0.08 });
 
@@ -66,7 +67,7 @@ export default function DataProtectionPage() {
         <div className="section-wrapper max-w-5xl">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2">
-              <h2 className="text-xl font-bold text-bocra-slate mb-3">The Data Protection Act, 2024</h2>
+              <h2 className="text-xl font-bold text-bocra-slate mb-3">{tn ? 'Molao wa Tshireletso ya Data, 2024' : 'The Data Protection Act, 2024'}</h2>
               <div className="space-y-3 text-sm text-bocra-slate/70 leading-relaxed">
                 <p>
                   The Botswana Data Protection Act, 2024 establishes a comprehensive framework for the protection of personal data in Botswana. The Act gives individuals (data subjects) rights over their personal information and places obligations on organisations (data controllers and processors) that collect, store, and use personal data.
@@ -109,7 +110,7 @@ export default function DataProtectionPage() {
               <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
                 <div className="bg-gradient-to-br from-[#00458B] to-[#001A3A] p-5">
                   <Shield size={28} className="text-[#00A6CE] mb-2" />
-                  <h3 className="text-white font-bold text-sm">Exercise Your Data Rights</h3>
+                  <h3 className="text-white font-bold text-sm">{tn ? 'Diragatsa Ditshwanelo Tsa Gago tsa Data' : 'Exercise Your Data Rights'}</h3>
                   <p className="text-white/50 text-xs mt-1">Submit a Data Subject Access Request</p>
                 </div>
                 <div className="p-4">
@@ -148,7 +149,7 @@ export default function DataProtectionPage() {
 
               {/* Contact */}
               <div className="bg-bocra-off-white rounded-xl p-4">
-                <p className="text-[10px] text-gray-400 uppercase font-medium mb-2">Data Protection Officer</p>
+                <p className="text-[10px] text-gray-400 uppercase font-medium mb-2">{tn ? 'Motlhankedi wa Tshireletso ya Data' : 'Data Protection Officer'}</p>
                 <p className="text-xs text-bocra-slate/60 leading-relaxed mb-2">
                   For data protection queries or to submit a request offline.
                 </p>
@@ -195,9 +196,9 @@ export default function DataProtectionPage() {
               <table className="w-full text-sm">
                 <thead className="bg-gray-50">
                   <tr>
-                    <th className="px-5 py-3 text-left text-xs font-bold text-gray-500 uppercase">Category</th>
-                    <th className="px-5 py-3 text-left text-xs font-bold text-gray-500 uppercase">Data Collected</th>
-                    <th className="px-5 py-3 text-left text-xs font-bold text-gray-500 uppercase">Purpose</th>
+                    <th className="px-5 py-3 text-left text-xs font-bold text-gray-500 uppercase">{tn ? 'Mofuta' : 'Category'}</th>
+                    <th className="px-5 py-3 text-left text-xs font-bold text-gray-500 uppercase">{tn ? 'Data e e Kgobokanywang' : 'Data Collected'}</th>
+                    <th className="px-5 py-3 text-left text-xs font-bold text-gray-500 uppercase">{tn ? 'Maikemisetso' : 'Purpose'}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100">

@@ -322,6 +322,7 @@ const getYears = () => { const y = [...new Set(DOCUMENTS.map(d => d.year))].sort
 
 export default function DocumentsPage() {
   const { lang } = useLanguage();
+  const tn = lang === 'tn';
   const [category, setCategory] = useState('All');
   const [search, setSearch] = useState('');
   const [year, setYear] = useState('All Years');
@@ -357,7 +358,7 @@ export default function DocumentsPage() {
 
   return (
     <div className="bg-white">
-      <div className="bg-bocra-off-white border-b border-gray-100"><div className="section-wrapper py-4"><nav className="text-sm text-bocra-slate/50 flex items-center gap-2"><Link to="/" className="hover:text-bocra-blue transition-colors">Home</Link><ChevronRight size={14} /><span className="text-bocra-slate">Documents & Legislation</span></nav></div></div>
+      <div className="bg-bocra-off-white border-b border-gray-100"><div className="section-wrapper py-4"><nav className="text-sm text-bocra-slate/50 flex items-center gap-2"><Link to="/" className="hover:text-bocra-blue transition-colors">Home</Link><ChevronRight size={14} /><span className="text-bocra-slate">{tn ? 'Dikwalo le Melao' : 'Documents & Legislation'}</span></nav></div></div>
       {/* Hero */}
       <PageHero category="RESOURCES" categoryTn="DITHULAGANYO" title="Documents & Legislation" titleTn="Dikwalo le Melao" description="Access BOCRA regulatory documents, draft legislation, consultation papers, and published guidelines." descriptionTn="Fitlhelela dikwalo tsa taolo tsa BOCRA, melao e e sa ntseng e dirwa, dipampiri tsa therisano, le ditaelo tse di gatisitsweng." color="yellow" />
 

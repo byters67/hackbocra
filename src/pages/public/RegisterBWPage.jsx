@@ -83,6 +83,7 @@ const PARTNER_LOGOS = [
 
 export default function RegisterBWPage() {
   const { lang } = useLanguage();
+  const tn = lang === 'tn';
   const [domainSearch, setDomainSearch] = useState('');
   const [searchResult, setSearchResult] = useState(null);
   const [searching, setSearching] = useState(false);
@@ -205,7 +206,7 @@ export default function RegisterBWPage() {
                   <>
                     <AlertCircle size={18} className="text-yellow-600 flex-shrink-0" />
                     <div>
-                      <p className="text-sm font-medium text-yellow-800">Could not verify</p>
+                      <p className="text-sm font-medium text-yellow-800">{tn ? 'Ga re a kgona go netefatsa' : 'Could not verify'}</p>
                       <p className="text-xs text-yellow-600">Unable to check <strong>{searchResult.domain}</strong>. The DNS query may have failed — try again or contact a registrar directly.</p>
                     </div>
                   </>
@@ -213,7 +214,7 @@ export default function RegisterBWPage() {
                   <>
                     <CheckCircle size={18} className="text-green-600 flex-shrink-0" />
                     <div>
-                      <p className="text-sm font-medium text-green-800">Available!</p>
+                      <p className="text-sm font-medium text-green-800">{tn ? 'E a Nna Teng!' : 'Available!'}</p>
                       <p className="text-xs text-green-600"><strong>{searchResult.domain}</strong> appears to be available. Contact an accredited registrar below to register it.</p>
                     </div>
                   </>
@@ -221,7 +222,7 @@ export default function RegisterBWPage() {
                   <>
                     <XCircle size={18} className="text-red-600 flex-shrink-0" />
                     <div>
-                      <p className="text-sm font-medium text-red-800">Already Taken</p>
+                      <p className="text-sm font-medium text-red-800">{tn ? 'E Setse e Tserweng' : 'Already Taken'}</p>
                       <p className="text-xs text-red-600"><strong>{searchResult.domain}</strong> is already registered. Try a different name or extension.</p>
                     </div>
                   </>
@@ -259,13 +260,13 @@ export default function RegisterBWPage() {
       {/* ═══ HOW IT WORKS — 3-R Model ═══ */}
       <section className="py-8 bg-bocra-off-white">
         <div className="section-wrapper">
-          <h2 className="text-xl font-bold text-bocra-slate text-center mb-2">How .BW Domains Work</h2>
+          <h2 className="text-xl font-bold text-bocra-slate text-center mb-2">{tn ? 'Mafelo a .BW a Bereka Jang' : 'How .BW Domains Work'}</h2>
           <p className="text-sm text-bocra-slate/40 text-center mb-8">BOCRA follows the international 3-R Model of the DNS Industry</p>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-3xl mx-auto">
             {[
-              { title: 'Registry', sub: 'BOCRA', desc: 'Manages and maintains the database of all .bw domain names and infrastructure.', icon: Server, color: '#00A6CE' },
-              { title: 'Registrar', sub: '70+ Accredited', desc: 'Companies accredited by BOCRA to register domains on behalf of customers.', icon: Building, color: '#C8237B' },
-              { title: 'Registrant', sub: 'You', desc: 'The person or organisation that registers and owns the domain name.', icon: Users, color: '#6BBE4E' },
+              { title: tn ? 'Rejisetara' : 'Registry', sub: 'BOCRA', desc: 'Manages and maintains the database of all .bw domain names and infrastructure.', icon: Server, color: '#00A6CE' },
+              { title: tn ? 'Mokwadisi' : 'Registrar', sub: '70+ Accredited', desc: 'Companies accredited by BOCRA to register domains on behalf of customers.', icon: Building, color: '#C8237B' },
+              { title: tn ? 'Mokwadisiwa' : 'Registrant', sub: 'You', desc: 'The person or organisation that registers and owns the domain name.', icon: Users, color: '#6BBE4E' },
             ].map((r, i) => (
               <div key={i} className="bg-white rounded-xl p-5 border border-gray-100 text-center hover:shadow-md transition-all relative">
                 {i < 2 && <div className="hidden sm:block absolute top-1/2 -right-3 w-6 text-gray-300 text-lg font-bold">→</div>}

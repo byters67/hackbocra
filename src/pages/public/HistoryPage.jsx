@@ -140,6 +140,7 @@ const TIMELINE = [
 
 export default function HistoryPage() {
   const { lang } = useLanguage();
+  const tn = lang === 'tn';
   const heroRef = useScrollReveal();
   const timelineRef = useStaggerReveal({ stagger: 0.08 });
 

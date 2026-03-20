@@ -194,11 +194,12 @@ const DS={c:'#64748B',i:Globe,b:'bg-gray-100'};
 const TN={NFP:'Network Facilities Provider',SAP:'Service & Application Provider',DPO:'Designated Public Postal Operator',CPO:'Commercial Postal Operator',RBL:'Commercial FM Radio Broadcaster',CSP:'Content Service Provider',SBS:'Subscription Satellite Broadcaster',SMS:'Subscription Management Service'};
 export default function LicenceVerificationPage(){
   const { lang } = useLanguage();
+  const tn = lang === 'tn';
   const[q,setQ]=useState('');const[sf,setSf]=useState('');const[sel,setSel]=useState(null);const[sa,setSa]=useState(false);const hr=useScrollReveal();
   const res=useMemo(()=>{if(!q.trim()&&!sf)return[];const w=q.toLowerCase().trim().split(/\s+/).filter(x=>x.length>0);return L.filter(x=>{if(sf&&x.sec!==sf)return false;if(w.length===0)return true;const h=(x.l+' '+x.c+' '+x.sec+' '+x.t+' '+(x.s||'')+' '+x.a).toLowerCase();return w.every(word=>h.includes(word))});},[q,sf]);
   const vis=sa?res:res.slice(0,12);const secs=[...new Set(L.map(x=>x.sec))];const exp=d=>new Date(d)<new Date();
   return(<div className="bg-white">
-    <div className="bg-bocra-off-white border-b border-gray-100"><div className="section-wrapper py-4"><nav className="text-sm text-bocra-slate/50 flex items-center gap-2"><Link to="/" className="hover:text-bocra-blue transition-colors">Home</Link><ChevronRight size={14}/><span className="text-bocra-slate">Licence Verification</span></nav></div></div>
+    <div className="bg-bocra-off-white border-b border-gray-100"><div className="section-wrapper py-4"><nav className="text-sm text-bocra-slate/50 flex items-center gap-2"><Link to="/" className="hover:text-bocra-blue transition-colors">Home</Link><ChevronRight size={14}/><span className="text-bocra-slate">{tn ? 'Netefatso ya Laesense' : 'Licence Verification'}</span></nav></div></div>
     
       {/* Hero */}
       <PageHero category="SERVICES" categoryTn="DITIRELO" title="Licence Verification" titleTn="Netefatso ya Laesense" description="Verify the validity and status of telecommunications, broadcasting, and postal licences issued by BOCRA." descriptionTn="Netefatsa go siama le maemo a dilaesense tsa megala, phasalatso, le poso tse di ntshitsweng ke BOCRA." color="green" />

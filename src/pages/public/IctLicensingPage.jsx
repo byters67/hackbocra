@@ -77,6 +77,7 @@ const ICT_SECTIONS = [
 
 export default function IctLicensingPage() {
   const { lang } = useLanguage();
+  const tn = lang === 'tn';
   const [searchTerm, setSearchTerm] = useState('');
   const heroRef = useScrollReveal();
 
@@ -103,7 +104,7 @@ export default function IctLicensingPage() {
             <ChevronRight size={14} />
             <Link to="/documents/drafts" className="hover:text-bocra-blue transition-colors">Documents</Link>
             <ChevronRight size={14} />
-            <span className="text-bocra-slate">ICT Licensing Framework</span>
+            <span className="text-bocra-slate">{tn ? 'Thulaganyo ya Dilaesense tsa ICT' : 'ICT Licensing Framework'}</span>
           </nav>
         </div>
       </div>

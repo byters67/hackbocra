@@ -545,6 +545,7 @@ function Detail({ licence: l, nav }) {
 /* ── Main Export ── */
 export default function LicensingHubPage() {
   const { lang } = useLanguage();
+  const tn = lang === 'tn';
   const { slug } = useParams();
   const nav = useNavigate();
   const l = slug ? LICENCES.find(x => x.slug === slug) : null;

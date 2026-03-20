@@ -55,6 +55,7 @@ const STATUS_CONFIG = {
 
 export default function DataRequestPage() {
   const { lang } = useLanguage();
+  const tn = lang === 'tn';
   const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const heroRef = useScrollReveal();
@@ -168,7 +169,7 @@ export default function DataRequestPage() {
           <nav className="text-sm text-bocra-slate/50 flex items-center gap-2">
             <Link to="/" className="hover:text-bocra-blue">Home</Link>
             <ChevronRight size={14} />
-            <span className="text-bocra-slate font-medium">My Data Rights</span>
+            <span className="text-bocra-slate font-medium">{tn ? 'Ditshwanelo Tsa Me Tsa Data' : 'My Data Rights'}</span>
           </nav>
         </div>
       </div>
@@ -183,7 +184,7 @@ export default function DataRequestPage() {
             <div className="w-16 h-16 rounded-full bg-[#00458B]/10 flex items-center justify-center mx-auto mb-4">
               <Shield size={28} className="text-[#00458B]" />
             </div>
-            <h2 className="text-xl font-bold text-bocra-slate mb-2">Sign In to Access Data Rights</h2>
+            <h2 className="text-xl font-bold text-bocra-slate mb-2">{tn ? 'Tsena go Fitlhelela Ditshwanelo tsa Data' : 'Sign In to Access Data Rights'}</h2>
             <p className="text-sm text-bocra-slate/60 max-w-md mx-auto mb-6">
               To submit a Data Subject Access Request or view your previous requests, please sign in with your BOCRA account. If you don't have one, you can register through the ASMS-WebCP portal.
             </p>
@@ -237,7 +238,7 @@ export default function DataRequestPage() {
         {/* ─── VIEW: Request List ─── */}
         {view === 'list' && (
           <div className="space-y-4">
-            <h2 className="text-xl font-bold text-bocra-slate">Your Data Requests</h2>
+            <h2 className="text-xl font-bold text-bocra-slate">{tn ? 'Dikopo Tsa Gago tsa Data' : 'Your Data Requests'}</h2>
 
             {fetchError && (
               <div className="flex items-center gap-2 text-red-600 text-sm bg-red-50 border border-red-200 p-3 rounded-lg mb-4">

@@ -19,6 +19,7 @@ const CATEGORIES = [
 
 export default function LicensingFrameworkPage() {
   const { lang } = useLanguage();
+  const tn = lang === 'tn';
   const cardsRef = useStaggerReveal({ stagger: 0.08 });
   return (
     <div className="bg-white min-h-screen">
@@ -87,7 +88,7 @@ export default function LicensingFrameworkPage() {
             {/* Sidebar */}
             <div className="space-y-4">
               <Link to="/licensing" className="flex items-center gap-3 p-5 bg-[#6BBE4E] rounded-xl text-white hover:bg-[#5AAE3E] transition-all group">
-                <Award size={24} /><div><p className="text-sm font-bold">{lang === 'tn' ? 'Ikopela Laesense' : 'Apply for a Licence'}</p><p className="text-[10px] text-white/60">Download forms and submit applications</p></div><ArrowRight size={16} className="ml-auto" />
+                <Award size={24} /><div><p className="text-sm font-bold">{lang === 'tn' ? 'Ikopela Laesense' : 'Apply for a Licence'}</p><p className="text-[10px] text-white/60">{tn ? 'Tsenya diforomo le go romela dikopo' : 'Download forms and submit applications'}</p></div><ArrowRight size={16} className="ml-auto" />
               </Link>
 
               <div className="bg-white rounded-xl border border-gray-200 p-5">
@@ -110,7 +111,7 @@ export default function LicensingFrameworkPage() {
               </div>
 
               <div className="bg-bocra-off-white rounded-xl p-4">
-                <p className="text-[10px] text-gray-400 uppercase font-medium mb-2">Licensing Enquiries</p>
+                <p className="text-[10px] text-gray-400 uppercase font-medium mb-2">{tn ? 'Dipotso tsa Dilaesense' : 'Licensing Enquiries'}</p>
                 <a href="mailto:info@bocra.org.bw" className="text-xs text-[#00458B] hover:underline">info@bocra.org.bw</a>
                 <br />
                 <a href="tel:+2673957755" className="text-xs text-[#00458B] hover:underline">+267 395 7755</a>

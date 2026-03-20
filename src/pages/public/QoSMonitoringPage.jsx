@@ -40,6 +40,7 @@ const KPI_KEYS = Object.keys(KPI_INFO);
 
 export default function QoSMonitoringPage() {
   const { lang } = useLanguage();
+  const tn = lang === 'tn';
   const [op, setOp] = useState('mascom');
   const [kpi, setKpi] = useState('call_success_rate');
   const [tab, setTab] = useState('overview');
@@ -206,7 +207,7 @@ export default function QoSMonitoringPage() {
                     <div className="grid grid-cols-3 gap-2">
                       <div><p className="text-lg font-bold text-bocra-slate">{d.csr}%</p><p className="text-[9px] text-gray-400">Call Success</p></div>
                       <div><p className="text-lg font-bold text-bocra-slate">{d.tp}</p><p className="text-[9px] text-gray-400">Mbps</p></div>
-                      <div><p className="text-lg font-bold text-bocra-slate">{d.up}%</p><p className="text-[9px] text-gray-400">Uptime</p></div>
+                      <div><p className="text-lg font-bold text-bocra-slate">{d.up}%</p><p className="text-[9px] text-gray-400">{tn ? 'Nako ya go Bereka' : 'Uptime'}</p></div>
                     </div>
                   </button>
                 );

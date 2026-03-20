@@ -24,6 +24,7 @@ import PageHero from '../../components/ui/PageHero';
 import { useLanguage } from '../../lib/language';
 export default function ContactPage() {
   const { lang } = useLanguage();
+  const tn = lang === 'tn';
   const [form, setForm] = useState({ name: '', email: '', phone: '', subject: '', message: '' });
   const [consent, setConsent] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -91,7 +92,7 @@ export default function ContactPage() {
             {/* Contact details */}
             <div className="lg:col-span-2 space-y-8">
               <div>
-                <h2 className="text-2xl font-display text-bocra-slate mb-6">Contact Information</h2>
+                <h2 className="text-2xl font-display text-bocra-slate mb-6">{tn ? 'Tshedimosetso ya Kgolagano' : 'Contact Information'}</h2>
                 
                 <div className="space-y-5">
                   <ContactItem
@@ -145,7 +146,7 @@ export default function ContactPage() {
                 </div>
               ) : (
                 <div className="bg-bocra-off-white rounded-2xl p-8 md:p-10">
-                  <h2 className="text-2xl font-display text-bocra-slate mb-6">Send us a Message</h2>
+                  <h2 className="text-2xl font-display text-bocra-slate mb-6">{tn ? 'Re Romelele Molaetsa' : 'Send us a Message'}</h2>
                   <form onSubmit={handleSubmit} className="space-y-5">
                     <div className="grid sm:grid-cols-2 gap-5">
                       <div><FormField label="Full Name" value={form.name} onChange={(v) => u('name', v)} required placeholder="Your full name" />
@@ -160,7 +161,7 @@ export default function ContactPage() {
                       {errors.subject && <p className="text-[10px] text-red-500 mt-0.5">{errors.subject}</p>}</div>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-bocra-slate mb-1.5">Message</label>
+                      <label className="block text-sm font-medium text-bocra-slate mb-1.5">{tn ? 'Molaetsa' : 'Message'}</label>
                       <textarea
                         value={form.message}
                         onChange={(e) => u('message', e.target.value)}

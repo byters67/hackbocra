@@ -128,6 +128,7 @@ function daysLeft(iso) { return Math.ceil((new Date(iso) - Date.now()) / 8640000
 
 export default function ConsultationsPage() {
   const { lang } = useLanguage();
+  const tn = lang === 'tn';
   const [tab, setTab] = useState('open');
   const [sectorFilter, setSectorFilter] = useState('All');
   const [respondTo, setRespondTo] = useState(null);
@@ -156,7 +157,7 @@ export default function ConsultationsPage() {
 
   return (
     <div className="bg-white min-h-screen">
-      <div className="bg-bocra-off-white border-b border-gray-100"><div className="section-wrapper py-4"><nav className="text-sm text-bocra-slate/50 flex items-center gap-2"><Link to="/" className="hover:text-bocra-blue transition-colors">Home</Link><ChevronRight size={14} /><span className="text-bocra-slate font-medium">Public Consultations</span></nav></div></div>
+      <div className="bg-bocra-off-white border-b border-gray-100"><div className="section-wrapper py-4"><nav className="text-sm text-bocra-slate/50 flex items-center gap-2"><Link to="/" className="hover:text-bocra-blue transition-colors">Home</Link><ChevronRight size={14} /><span className="text-bocra-slate font-medium">{tn ? 'Ditherisano tsa Setšhaba' : 'Public Consultations'}</span></nav></div></div>
 
       <section className="px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6 pb-0">
         <div className="relative py-12 sm:py-16 px-5 sm:px-8 lg:px-10 rounded-2xl overflow-hidden bg-gradient-to-br from-[#00458B] to-[#001A3A]">
@@ -176,7 +177,7 @@ export default function ConsultationsPage() {
 
       <section className="py-8"><div className="section-wrapper max-w-4xl">
         <div className="flex border-b border-gray-200 mb-6">
-          {[{ key: 'open', label: 'Open', count: CONSULTATIONS.filter(c => c.status === 'open').length }, { key: 'closed', label: 'Closed', count: closedItems.length }].map(t => (
+          {[{ key: 'open', label: tn ? 'Tse di Butsweng' : 'Open', count: CONSULTATIONS.filter(c => c.status === 'open').length }, { key: 'closed', label: tn ? 'Tse di Tswaletsweng' : 'Closed', count: closedItems.length }].map(t => (
             <button key={t.key} onClick={() => setTab(t.key)} className={`px-5 py-3 text-sm font-medium border-b-2 -mb-px transition-all ${tab === t.key ? 'border-[#00458B] text-[#00458B]' : 'border-transparent text-gray-400 hover:text-gray-600'}`}>
               {t.label}<span className={`ml-1.5 text-[10px] px-1.5 py-0.5 rounded-full font-bold ${t.key === 'open' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'}`}>{t.count}</span>
             </button>
@@ -311,7 +312,7 @@ function ConsultationCard({ item, onRespond }) {
           <div className="mt-4 pt-4 border-t border-gray-100">
             <div className="flex items-center gap-2 mb-3">
               <MessageSquare size={14} className="text-[#00A6CE]" />
-              <h4 className="text-xs font-bold text-bocra-slate">Public Responses</h4>
+              <h4 className="text-xs font-bold text-bocra-slate">{tn ? 'Dikarabo tsa Setšhaba' : 'Public Responses'}</h4>
               <span className="text-[10px] text-gray-400">({publicResponses.length} visible)</span>
             </div>
 

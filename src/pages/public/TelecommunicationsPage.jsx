@@ -24,6 +24,7 @@ const LICENCE_TYPES = [
 
 export default function TelecommunicationsPage() {
   const { lang } = useLanguage();
+  const tn = lang === 'tn';
   const cardsRef = useStaggerReveal({ stagger: 0.1 });
   return (
     <div className="bg-white min-h-screen">
@@ -117,19 +118,19 @@ export default function TelecommunicationsPage() {
               </div>
 
               <Link to="/licensing" className="flex items-center gap-3 p-4 bg-[#00A6CE] rounded-xl text-white hover:bg-[#008DB0] transition-all group">
-                <Award size={20} /><div><p className="text-sm font-bold">{lang === 'tn' ? 'Ikopela Laesense' : 'Apply for a Licence'}</p><p className="text-[10px] text-white/60">View requirements and download forms</p></div><ArrowRight size={16} className="ml-auto" />
+                <Award size={20} /><div><p className="text-sm font-bold">{lang === 'tn' ? 'Ikopela Laesense' : 'Apply for a Licence'}</p><p className="text-[10px] text-white/60">{tn ? 'Bona ditlhokego le go tsenya diforomo' : 'View requirements and download forms'}</p></div><ArrowRight size={16} className="ml-auto" />
               </Link>
 
               <Link to="/services/file-complaint" className="flex items-center gap-3 p-4 bg-white rounded-xl border border-gray-200 hover:shadow-md transition-all group">
-                <Shield size={18} className="text-[#C8237B]" /><div><p className="text-xs font-bold text-bocra-slate">{lang === 'tn' ? 'Tlhagisa Ngongorego' : 'File a Complaint'}</p><p className="text-[10px] text-gray-400">Report service issues with an operator</p></div>
+                <Shield size={18} className="text-[#C8237B]" /><div><p className="text-xs font-bold text-bocra-slate">{lang === 'tn' ? 'Tlhagisa Ngongorego' : 'File a Complaint'}</p><p className="text-[10px] text-gray-400">{tn ? 'Bega mathata a tirelo le molaodi' : 'Report service issues with an operator'}</p></div>
               </Link>
 
               <Link to="/services/qos-monitoring" className="flex items-center gap-3 p-4 bg-white rounded-xl border border-gray-200 hover:shadow-md transition-all group">
-                <BarChart3 size={18} className="text-[#F7B731]" /><div><p className="text-xs font-bold text-bocra-slate">QoS Monitoring</p><p className="text-[10px] text-gray-400">Real-time network performance data</p></div>
+                <BarChart3 size={18} className="text-[#F7B731]" /><div><p className="text-xs font-bold text-bocra-slate">{tn ? 'Tlhokomelo ya Boleng' : 'QoS Monitoring'}</p><p className="text-[10px] text-gray-400">{tn ? 'Data ya tiragatso ya neteweke ya nako ya jaanong' : 'Real-time network performance data'}</p></div>
               </Link>
 
               <Link to="/telecom-statistics" className="flex items-center gap-3 p-4 bg-white rounded-xl border border-gray-200 hover:shadow-md transition-all group">
-                <BarChart3 size={18} className="text-[#6BBE4E]" /><div><p className="text-xs font-bold text-bocra-slate">Telecom Statistics</p><p className="text-[10px] text-gray-400">Market data and performance metrics</p></div>
+                <BarChart3 size={18} className="text-[#6BBE4E]" /><div><p className="text-xs font-bold text-bocra-slate">{tn ? 'Dipalopalo tsa Megala' : 'Telecom Statistics'}</p><p className="text-[10px] text-gray-400">{tn ? 'Data ya mmaraka le dimetse tsa tiragatso' : 'Market data and performance metrics'}</p></div>
               </Link>
             </div>
           </div>

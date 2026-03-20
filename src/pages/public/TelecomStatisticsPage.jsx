@@ -79,6 +79,7 @@ const OPERATOR_COLORS = { Mascom: '#E21836', BTC: '#0066CC', Orange: '#FF6600' }
 
 export default function TelecomStatisticsPage() {
   const { lang } = useLanguage();
+  const tn = lang === 'tn';
   const [activeTab, setActiveTab] = useState('mobile');
   const [isMobile, setIsMobile] = useState(false);
   const heroRef = useScrollReveal();
@@ -103,7 +104,7 @@ export default function TelecomStatisticsPage() {
           <nav className="text-sm text-bocra-slate/50 flex items-center gap-2">
             <Link to="/" className="hover:text-bocra-blue transition-colors">Home</Link>
             <ChevronRight size={14} />
-            <span className="text-bocra-slate">Telecom Statistics</span>
+            <span className="text-bocra-slate">{tn ? 'Dipalopalo tsa Megala' : 'Telecom Statistics'}</span>
           </nav>
         </div>
       </div>
@@ -129,7 +130,7 @@ export default function TelecomStatisticsPage() {
           <div className="flex gap-2 mb-8 overflow-x-auto pb-2 -mx-2 px-2 scrollbar-hide">
             {[
               { key: 'mobile', label: 'Mobile Subscriptions' },
-              { key: 'money', label: 'Mobile Money' },
+              { key: 'money', label: tn ? 'Madi a Mogala' : 'Mobile Money' },
               { key: 'broadband', label: 'Broadband' },
               { key: 'market', label: 'Market Share' },
             ].map((tab) => (

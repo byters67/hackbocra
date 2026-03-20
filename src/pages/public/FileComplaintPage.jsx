@@ -68,6 +68,7 @@ const STEPS = [
 
 export default function FileComplaintPage() {
   const { lang } = useLanguage();
+  const tn = lang === 'tn';
   const [step, setStep] = useState('info'); // 'info' | 'form' | 'success'
   const [form, setForm] = useState({
     name: '', company: '', phone: '', email: '',
@@ -209,7 +210,7 @@ export default function FileComplaintPage() {
           {step === 'success' ? (
             <div className="bg-white rounded-2xl p-12 text-center shadow-sm">
               <CheckCircle size={56} className="text-bocra-green mx-auto mb-4" />
-              <h2 className="text-3xl font-display text-bocra-slate mb-3">Complaint Submitted</h2>
+              <h2 className="text-3xl font-display text-bocra-slate mb-3">{tn ? 'Ngongorego e Rometse' : 'Complaint Submitted'}</h2>
               <p className="text-bocra-slate/60 mb-6">
                 Thank you for submitting your complaint. BOCRA will review it and respond 
                 within 2 business days. You will receive updates via email.
