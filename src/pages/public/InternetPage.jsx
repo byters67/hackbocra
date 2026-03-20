@@ -256,15 +256,16 @@ export default function InternetPage() {
                 <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wide mb-3">Downloads</h3>
                 <div className="space-y-2">
                   {[
-                    { label: 'Certifying Agents Application Form', icon: FileText },
-                    { label: 'Guide for Certifying Agents', icon: FileText },
-                    { label: 'Electronic Evidence Regulations', icon: Scale },
+                    { label: 'Certifying Agents Application Form', file: 'certifying_Agent_Application_Form.pdf', type: 'PDF' },
+                    { label: 'Guide for Certifying Agents', file: 'Guide for Certfiying Agents.pdf', type: 'PDF' },
+                    { label: 'Electronic Evidence Regulations (Draft)', file: 'Draft_Electronic_Records_(Evidence)_Regulations-8May201.docx', type: 'DOCX' },
                   ].map(doc => (
-                    <div key={doc.label}
-                      className="flex items-center gap-2.5 p-2.5 bg-gray-50 rounded-lg">
-                      <doc.icon size={13} className="text-[#F7B731] flex-shrink-0" />
-                      <span className="text-xs text-bocra-slate/70">{doc.label}</span>
-                    </div>
+                    <a key={doc.label} href={`${BASE}documents/internet/${doc.file}`} target="_blank" rel="noopener noreferrer"
+                      className="flex items-center gap-2.5 p-2.5 bg-gray-50 rounded-lg hover:bg-[#F7B731]/5 hover:border-[#F7B731]/20 transition-all group">
+                      <FileText size={13} className="text-[#F7B731] flex-shrink-0" />
+                      <span className="text-xs text-bocra-slate/70 group-hover:text-bocra-slate flex-1">{doc.label}</span>
+                      <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded ${doc.type === 'PDF' ? 'bg-red-50 text-red-500' : 'bg-blue-50 text-blue-500'}`}>{doc.type}</span>
+                    </a>
                   ))}
                 </div>
               </div>
@@ -309,13 +310,22 @@ export default function InternetPage() {
                 <h3 className="text-sm font-bold text-bocra-slate mb-3 flex items-center gap-2">
                   <Award size={15} className="text-[#6BBE4E]" /> Accredited Certificate Authorities
                 </h3>
-                <div className="flex items-center gap-3 p-3 bg-[#6BBE4E]/5 rounded-lg border border-[#6BBE4E]/10">
-                  <div className="w-9 h-9 rounded-lg bg-[#6BBE4E]/10 flex items-center justify-center">
+                <div className="flex items-start gap-3 p-4 bg-[#6BBE4E]/5 rounded-lg border border-[#6BBE4E]/10">
+                  <div className="w-9 h-9 rounded-lg bg-[#6BBE4E]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
                     <CheckCircle size={16} className="text-[#6BBE4E]" />
                   </div>
                   <div>
-                    <p className="text-sm font-bold text-bocra-slate">LawTrust</p>
-                    <p className="text-[10px] text-gray-400">Accredited Secure Electronic Signature Service Provider</p>
+                    <p className="text-sm font-bold text-bocra-slate">LAWtrust</p>
+                    <p className="text-[10px] text-gray-400 mb-2">Accredited Secure Electronic Signature Service Provider</p>
+                    <div className="space-y-1 text-xs text-bocra-slate/60">
+                      <p>85 Regency Drive, Route 21 Corporate Office Park, Centurion, South Africa</p>
+                      <p>Contact: <strong>Shawn Pilusa</strong> (Business Development Manager)</p>
+                      <div className="flex flex-wrap gap-x-3 gap-y-1 mt-1">
+                        <a href="mailto:info@lawtrust.co.za" className="text-[#6BBE4E] hover:underline">info@lawtrust.co.za</a>
+                        <a href="tel:+27126769240" className="text-[#6BBE4E] hover:underline">+27 12 676 9240</a>
+                        <a href="https://www.lawtrust.co.za" target="_blank" rel="noopener noreferrer" className="text-[#6BBE4E] hover:underline">www.lawtrust.co.za</a>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -326,16 +336,17 @@ export default function InternetPage() {
                 <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wide mb-3">Downloads</h3>
                 <div className="space-y-2">
                   {[
-                    { label: 'Accreditation Procedure', icon: FileText },
-                    { label: 'ACS Standards', icon: FileText },
-                    { label: 'ACS Checklist', icon: FileText },
-                    { label: 'Electronic Communications and Transactions Act', icon: Scale },
+                    { label: 'Accreditation Procedure', file: 'Accreditation Procedure - rev 1 (002) (1).pdf', type: 'PDF' },
+                    { label: 'ACS Standards (August 2017)', file: 'ACS Standards - August 2017.pdf', type: 'PDF' },
+                    { label: 'ACS Checklist', file: 'ACS-checklist.pdf', type: 'PDF' },
+                    { label: 'ECT Act Regulations 2016', file: 'Electronic Communications and Transactions Act Regulations 2016.pdf', type: 'PDF' },
                   ].map(doc => (
-                    <div key={doc.label}
-                      className="flex items-center gap-2.5 p-2.5 bg-gray-50 rounded-lg">
-                      <doc.icon size={13} className="text-[#6BBE4E] flex-shrink-0" />
-                      <span className="text-xs text-bocra-slate/70">{doc.label}</span>
-                    </div>
+                    <a key={doc.label} href={`${BASE}documents/internet/${doc.file}`} target="_blank" rel="noopener noreferrer"
+                      className="flex items-center gap-2.5 p-2.5 bg-gray-50 rounded-lg hover:bg-[#6BBE4E]/5 transition-all group">
+                      <FileText size={13} className="text-[#6BBE4E] flex-shrink-0" />
+                      <span className="text-xs text-bocra-slate/70 group-hover:text-bocra-slate flex-1">{doc.label}</span>
+                      <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-red-50 text-red-500">{doc.type}</span>
+                    </a>
                   ))}
                 </div>
               </div>
