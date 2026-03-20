@@ -58,7 +58,7 @@ export default function App() {
           {!ready && <SplashScreen onComplete={() => setReady(true)} />}
 
           {ready && (
-            <BrowserRouter basename="/hackathonteamproject">
+            <BrowserRouter basename="/hackbocra">
               <Routes>
                 <Route path="/auth/login" element={<LoginPage />} />
                 <Route path="/auth/register" element={<LoginPage />} />
