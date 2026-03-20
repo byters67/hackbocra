@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { useScrollReveal, useStaggerReveal } from '../../hooks/useAnimations';
 import PageHero from '../../components/ui/PageHero';
+import { useLanguage } from '../../lib/language';
 
 /* ── Your Rights Under the Act ── */
 const RIGHTS = [
@@ -35,6 +36,7 @@ const DATA_CATEGORIES = [
 ];
 
 export default function DataProtectionPage() {
+  const { lang } = useLanguage();
   const heroRef = useScrollReveal();
   const rightsRef = useStaggerReveal({ stagger: 0.08 });
 
@@ -53,9 +55,9 @@ export default function DataProtectionPage() {
 
       {/* Hero */}
       <PageHero
-        category="DATA PROTECTION"
-        title="Data Protection"
-        description="BOCRA is committed to protecting your personal data. Learn about your rights under the Botswana Data Protection Act and how we handle your information."
+        category="DATA PROTECTION" categoryTn="TSHIRELETSO YA DATA"
+        title="Data Protection" titleTn="Tshireletso ya Data"
+        description="BOCRA is committed to protecting your personal data. Learn about your rights under the Botswana Data Protection Act and how we handle your information." descriptionTn="BOCRA e ikemiseditse go sireletsa data ya gago. Ithute ka ditshwanelo tsa gago ka fa tlase ga Molao wa Tshireletso ya Data wa Botswana."
         color="blue"
       />
 
@@ -79,7 +81,7 @@ export default function DataProtectionPage() {
 
               {/* Key Principles */}
               <div className="mt-6 bg-[#00458B]/5 rounded-xl border border-[#00458B]/10 p-5">
-                <h3 className="text-sm font-bold text-bocra-slate mb-3">Key Principles of Data Protection</h3>
+                <h3 className="text-sm font-bold text-bocra-slate mb-3">{lang === 'tn' ? 'Metheo ya Botlhokwa ya Tshireletso ya Data' : 'Key Principles of Data Protection'}</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {[
                     { title: 'Lawfulness & Fairness', desc: 'Data must be processed lawfully and fairly' },
@@ -123,12 +125,12 @@ export default function DataProtectionPage() {
 
               {/* Quick Facts */}
               <div className="bg-white rounded-xl border border-gray-200 p-5">
-                <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wide mb-3">Quick Facts</h3>
+                <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wide mb-3">{lang === 'tn' ? 'Dintlha tse di Bonako' : 'Quick Facts'}</h3>
                 <div className="space-y-3">
                   {[
                     { label: 'Response Time', value: '30 days', icon: FileText, color: '#00A6CE' },
                     { label: 'Cost to You', value: 'Free', icon: CheckCircle, color: '#6BBE4E' },
-                    { label: 'Your Rights', value: '6 Rights', icon: Shield, color: '#C8237B' },
+                    { label: lang === 'tn' ? 'Ditshwanelo Tsa Gago' : 'Your Rights', value: '6 Rights', icon: Shield, color: '#C8237B' },
                     { label: 'Applicable Law', value: 'DPA 2024', icon: Scale, color: '#F7B731' },
                   ].map(s => (
                     <div key={s.label} className="flex items-center gap-3">
@@ -167,7 +169,7 @@ export default function DataProtectionPage() {
       {/* Your Rights */}
       <section className="py-8 bg-bocra-off-white">
         <div className="section-wrapper max-w-5xl">
-          <h2 className="text-xl font-bold text-bocra-slate text-center mb-2">Your Rights</h2>
+          <h2 className="text-xl font-bold text-bocra-slate text-center mb-2">{lang === 'tn' ? 'Ditshwanelo Tsa Gago' : 'Your Rights'}</h2>
           <p className="text-sm text-bocra-slate/40 text-center mb-8">Under the Data Protection Act, you have the following rights over your personal data</p>
           <div ref={rightsRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {RIGHTS.map(right => (
@@ -186,7 +188,7 @@ export default function DataProtectionPage() {
       {/* What Data BOCRA Collects */}
       <section className="py-8">
         <div className="section-wrapper max-w-5xl">
-          <h2 className="text-xl font-bold text-bocra-slate text-center mb-2">What Data BOCRA Collects</h2>
+          <h2 className="text-xl font-bold text-bocra-slate text-center mb-2">{lang === 'tn' ? 'Data e BOCRA e e Kgobokanyang' : 'What Data BOCRA Collects'}</h2>
           <p className="text-sm text-bocra-slate/40 text-center mb-8">Types of personal data we process and why</p>
           <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
             <div className="overflow-x-auto">
@@ -216,7 +218,7 @@ export default function DataProtectionPage() {
       {/* How to Exercise Your Rights */}
       <section className="py-8 bg-bocra-off-white">
         <div className="section-wrapper max-w-3xl">
-          <h2 className="text-xl font-bold text-bocra-slate text-center mb-2">How to Exercise Your Rights</h2>
+          <h2 className="text-xl font-bold text-bocra-slate text-center mb-2">{lang === 'tn' ? 'Go Diragatsa Ditshwanelo Tsa Gago Jang' : 'How to Exercise Your Rights'}</h2>
           <p className="text-sm text-bocra-slate/40 text-center mb-8">Three simple steps to submit a data request</p>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {[

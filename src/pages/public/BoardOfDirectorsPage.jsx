@@ -13,6 +13,7 @@ import {
   GraduationCap, Globe, X, Play, Pause
 } from 'lucide-react';
 import PageHero from '../../components/ui/PageHero';
+import { useLanguage } from '../../lib/language';
 
 gsap.registerPlugin(ScrollTrigger);
 const B = import.meta.env.BASE_URL || '/';
@@ -452,6 +453,7 @@ function MemberCard({ member, index, onClick }) {
  * MAIN PAGE EXPORT
  * ══════════════════════════════════════════════════════════════════ */
 export default function BoardOfDirectorsPage() {
+  const { lang } = useLanguage();
   const [selected, setSelected] = useState(null);
   const heroRef = useRef(null);
 
@@ -478,13 +480,13 @@ export default function BoardOfDirectorsPage() {
             <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18l6-6-6-6"/></svg></span>
             <Link to="/about/profile" className="hover:text-bocra-blue transition-colors">About</Link>
             <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18l6-6-6-6"/></svg></span>
-            <span className="text-bocra-slate font-medium">Board of Directors</span>
+            <span className="text-bocra-slate font-medium">{lang === 'tn' ? 'Lekgotla la Batlhankedi' : 'Board of Directors'}</span>
           </nav>
         </div>
       </div>
 
       {/* Hero */}
-      <PageHero category="ABOUT" title="Board of Directors" description="The BOCRA Board provides strategic direction in line with Botswana National Digital Economy Roadmap 2025–2030 and the Botswana Economic Transformation Programme." color="blue" />
+      <PageHero category="ABOUT" categoryTn="KA GA RONA" title="Board of Directors" titleTn="Lekgotla la Batlhankedi" description="The BOCRA Board provides strategic direction in line with Botswana National Digital Economy Roadmap 2025–2030 and the Botswana Economic Transformation Programme." descriptionTn="Lekgotla la BOCRA le neela kaelo ya togamaano go ya ka National Digital Economy Roadmap ya Botswana 2025-2030." color="blue" />
 
       {/* ── Auto-Playing Carousel ── */}
       <BoardCarousel members={BOARD_MEMBERS} onSelect={setSelected} />

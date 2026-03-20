@@ -27,6 +27,7 @@ import { ChevronRight, TrendingUp, Phone, Wifi, CreditCard, Radio } from 'lucide
 import { useScrollReveal, useStaggerReveal, useCountUp } from '../../hooks/useAnimations';
 
 import PageHero from '../../components/ui/PageHero';
+import { useLanguage } from '../../lib/language';
 // Mobile subscriptions by operator (thousands)
 const MOBILE_SUBS = [
   { year: '2020', Mascom: 1650, BTC: 1380, Orange: 920 },
@@ -71,12 +72,13 @@ const STAT_CARDS = [
   { icon: Phone, label: 'Mobile Subscriptions', value: 4710000, suffix: '', color: 'bocra-blue' },
   { icon: CreditCard, label: 'Mobile Money Users', value: 2100000, suffix: '', color: 'bocra-cyan' },
   { icon: Wifi, label: 'Broadband Subscribers', value: 922000, suffix: '', color: 'bocra-green' },
-  { icon: Radio, label: 'Licensed Operators', value: 3, suffix: '', color: 'bocra-magenta' },
+  { icon: Radio, label: lang === 'tn' ? 'Balaodi ba ba nang le Dilaesense' : 'Licensed Operators', value: 3, suffix: '', color: 'bocra-magenta' },
 ];
 
 const OPERATOR_COLORS = { Mascom: '#E21836', BTC: '#0066CC', Orange: '#FF6600' };
 
 export default function TelecomStatisticsPage() {
+  const { lang } = useLanguage();
   const [activeTab, setActiveTab] = useState('mobile');
   const [isMobile, setIsMobile] = useState(false);
   const heroRef = useScrollReveal();
@@ -106,7 +108,7 @@ export default function TelecomStatisticsPage() {
         </div>
       </div>
       {/* Hero */}
-      <PageHero category="RESOURCES" title="Telecom Statistics" description="Key telecommunications metrics, market data, and performance indicators for Botswana's communications sector." color="yellow" />
+      <PageHero category="RESOURCES" categoryTn="DITHULAGANYO" title="Telecom Statistics" titleTn="Dipalopalo tsa Megala" description="Key telecommunications metrics, market data, and performance indicators for Botswana's communications sector." descriptionTn="Dimetse tse di botlhokwa tsa megala, data ya mmaraka, le dipalo tsa tiragatso tsa lefapha la dikgolagano la Botswana." color="yellow" />
 
 
       {/* Stat cards */}

@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import { useScrollReveal } from '../../hooks/useAnimations';
 import { supabase } from '../../lib/supabase';
+import { useLanguage } from '../../lib/language';
 
 const BASE = import.meta.env.BASE_URL || '/';
 
@@ -126,6 +127,7 @@ function formatDate(iso) { return new Date(iso).toLocaleDateString('en-GB', { da
 function daysLeft(iso) { return Math.ceil((new Date(iso) - Date.now()) / 86400000); }
 
 export default function ConsultationsPage() {
+  const { lang } = useLanguage();
   const [tab, setTab] = useState('open');
   const [sectorFilter, setSectorFilter] = useState('All');
   const [respondTo, setRespondTo] = useState(null);
@@ -145,7 +147,7 @@ export default function ConsultationsPage() {
   const closedItems = CONSULTATIONS.filter(c => c.status === 'closed');
 
   const stats = [
-    { num: CONSULTATIONS.filter(c => c.status === 'open').length, label: 'Open Consultations', color: '#6BBE4E' },
+    { num: CONSULTATIONS.filter(c => c.status === 'open').length, label: lang === 'tn' ? 'Ditherisano tse di Butsweng' : 'Open Consultations', color: '#6BBE4E' },
     { num: CONSULTATIONS.reduce((a, c) => a + c.documents.length, 0), label: 'Documents Available', color: '#00A6CE' },
     { num: totalSubmissions ?? '—', label: 'Total Submissions', color: '#C8237B' },
   ];
@@ -416,7 +418,7 @@ function SubmitResponsePage({ consultation, onBack }) {
 
   return (
     <div className="bg-white min-h-screen">
-      <div className="bg-bocra-off-white border-b border-gray-100"><div className="section-wrapper py-4"><nav className="text-sm text-bocra-slate/50 flex items-center gap-2"><Link to="/" className="hover:text-bocra-blue">Home</Link><ChevronRight size={14} /><button onClick={onBack} className="hover:text-bocra-blue">Consultations</button><ChevronRight size={14} /><span className="text-bocra-slate font-medium">Submit Response</span></nav></div></div>
+      <div className="bg-bocra-off-white border-b border-gray-100"><div className="section-wrapper py-4"><nav className="text-sm text-bocra-slate/50 flex items-center gap-2"><Link to="/" className="hover:text-bocra-blue">Home</Link><ChevronRight size={14} /><button onClick={onBack} className="hover:text-bocra-blue">Consultations</button><ChevronRight size={14} /><span className="text-bocra-slate font-medium">{lang === 'tn' ? 'Romela Karabo' : 'Submit Response'}</span></nav></div></div>
 
       <section className="px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6 pb-0">
         <div className="relative py-10 px-5 sm:px-8 rounded-2xl overflow-hidden bg-gradient-to-br from-[#00458B] to-[#001A3A]">

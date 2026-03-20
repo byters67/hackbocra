@@ -14,6 +14,7 @@ import { useScrollReveal } from '../../hooks/useAnimations';
 import { useAuth } from '../../lib/auth';
 import { supabase } from '../../lib/supabase';
 import { useRecaptcha } from '../../hooks/useRecaptcha';
+import { useLanguage } from '../../lib/language';
 
 // Reuse licence data for company search
 const KNOWN_COMPANIES = [
@@ -46,6 +47,7 @@ const ID_TYPES = [
 ];
 
 export default function OperatorPortalPage() {
+  const { lang } = useLanguage();
   const [view, setView] = useState('landing'); // landing, register, login, dashboard
   const { user, signIn, signUp, signOut } = useAuth();
   const [operator, setOperator] = useState(null);
@@ -102,13 +104,13 @@ export default function OperatorPortalPage() {
             <>
               <button onClick={() => setView('login')} className="bg-white border-2 border-gray-200 rounded-2xl p-8 hover:border-[#00458B] hover:shadow-lg transition-all text-left group">
                 <div className="w-14 h-14 rounded-xl bg-[#00458B]/10 flex items-center justify-center mb-4"><Lock size={24} className="text-[#00458B]" /></div>
-                <h2 className="text-lg font-bold text-bocra-slate group-hover:text-[#00458B]">Sign In</h2>
+                <h2 className="text-lg font-bold text-bocra-slate group-hover:text-[#00458B]">{lang === 'tn' ? 'Tsena' : 'Sign In'}</h2>
                 <p className="text-sm text-bocra-slate/50 mt-2">Already registered? Sign in to your operator account to manage licences and applications.</p>
                 <span className="text-sm text-[#00A6CE] font-medium flex items-center gap-1 mt-4">Sign In <ArrowRight size={14} /></span>
               </button>
               <button onClick={() => setView('register')} className="bg-white border-2 border-gray-200 rounded-2xl p-8 hover:border-[#6BBE4E] hover:shadow-lg transition-all text-left group">
                 <div className="w-14 h-14 rounded-xl bg-[#6BBE4E]/10 flex items-center justify-center mb-4"><User size={24} className="text-[#6BBE4E]" /></div>
-                <h2 className="text-lg font-bold text-bocra-slate group-hover:text-[#6BBE4E]">Create Account</h2>
+                <h2 className="text-lg font-bold text-bocra-slate group-hover:text-[#6BBE4E]">{lang === 'tn' ? 'Bula Akhaonto' : 'Create Account'}</h2>
                 <p className="text-sm text-bocra-slate/50 mt-2">New to BOCRA? Register your company to apply for radio communications and spectrum licences.</p>
                 <span className="text-sm text-[#6BBE4E] font-medium flex items-center gap-1 mt-4">Register <ArrowRight size={14} /></span>
               </button>
@@ -216,14 +218,6 @@ function RegisterForm({ setView, signUp }) {
         phone: form.phone,
         role: 'operator',
       });
-
-      // Save phone and organization to profiles table so licence forms can prefill
-      if (form.phone || form.company) {
-        await supabase.from('profiles').update({
-          phone: form.phone || null,
-          organization: form.company || null,
-        }).eq('id', authData.user.id);
-      }
     }
 
     setSuccess(true);

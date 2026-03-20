@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { ChevronRight, Wifi, Phone, Globe, Users, Shield, Award, Signal, BarChart3, ArrowRight, CheckCircle, Building } from 'lucide-react';
 import { useScrollReveal, useStaggerReveal } from '../../hooks/useAnimations';
 import PageHero from '../../components/ui/PageHero';
+import { useLanguage } from '../../lib/language';
 
 const OPERATORS = [
   { name: 'Mascom Wireless', type: 'Mobile Network Operator', color: '#E21836', services: 'Mobile voice, data, mobile money (MyZaka), SMS, roaming', coverage: 'Nationwide — urban and rural coverage', market: 'Largest mobile operator by subscribers' },
@@ -22,18 +23,19 @@ const LICENCE_TYPES = [
 ];
 
 export default function TelecommunicationsPage() {
+  const { lang } = useLanguage();
   const cardsRef = useStaggerReveal({ stagger: 0.1 });
   return (
     <div className="bg-white min-h-screen">
       <div className="bg-bocra-off-white border-b border-gray-100"><div className="section-wrapper py-4"><nav className="text-sm text-bocra-slate/50 flex items-center gap-2"><Link to="/" className="hover:text-bocra-blue">Home</Link><ChevronRight size={14} /><span className="text-bocra-slate/50">Mandate</span><ChevronRight size={14} /><span className="text-bocra-slate font-medium">Telecommunications</span></nav></div></div>
-      <PageHero category="MANDATE" title="Telecommunications" description="Regulating mobile, fixed-line, internet, and VoIP services in Botswana — promoting competition, innovation, consumer protection and universal access." color="cyan" />
+      <PageHero category="MANDATE" categoryTn="TIRAGATSO" title="Telecommunications" titleTn="Megala le Tlhaeletsano" description="Regulating mobile, fixed-line, internet, and VoIP services in Botswana — promoting competition, innovation, consumer protection and universal access." descriptionTn="Go laola ditirelo tsa megala, inthanete, le VoIP mo Botswana — go rotloetsa kgaisano, boitlhamedi, tshireletso ya badirisi le phitlhelelo ya botlhe." color="cyan" />
 
       <section className="py-10">
         <div className="section-wrapper max-w-5xl">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2 space-y-6">
               <div>
-                <h2 className="text-xl font-bold text-bocra-slate mb-3">Telecommunications Regulation</h2>
+                <h2 className="text-xl font-bold text-bocra-slate mb-3">{lang === 'tn' ? 'Taolo ya Megala' : 'Telecommunications Regulation'}</h2>
                 <div className="space-y-3 text-sm text-bocra-slate/70 leading-relaxed">
                   <p>The telecommunications sector in Botswana has undergone significant transformation since the 1995 Telecommunications Policy, which opened the market to competition. BOCRA regulates three Primary Telecommunications Operators (PTOs): Botswana Telecommunications Corporation (BTC), Mascom Wireless, and Orange Botswana.</p>
                   <p>Since 1998, BOCRA has implemented progressive market reforms including the introduction of Private Telecommunications Network Licences (PTNL), interconnection guidelines, and tariff regulations to ensure fair competition and affordable services for all Batswana.</p>
@@ -79,7 +81,7 @@ export default function TelecommunicationsPage() {
 
               {/* Market Reforms */}
               <div className="bg-[#00A6CE]/5 rounded-xl border border-[#00A6CE]/10 p-5">
-                <h3 className="text-sm font-bold text-bocra-slate mb-3">Key Market Reforms</h3>
+                <h3 className="text-sm font-bold text-bocra-slate mb-3">{lang === 'tn' ? 'Diphetogo tse di Botlhokwa tsa Mmaraka' : 'Key Market Reforms'}</h3>
                 <div className="space-y-2">
                   {[
                     'Liberalisation of Value Added Network Services (VANS)',
@@ -98,7 +100,7 @@ export default function TelecommunicationsPage() {
             {/* Sidebar */}
             <div className="space-y-4">
               <div className="bg-white rounded-xl border border-gray-200 p-5">
-                <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wide mb-3">Telecom Sector</h3>
+                <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wide mb-3">{lang === 'tn' ? 'Lefapha la Megala' : 'Telecom Sector'}</h3>
                 <div className="space-y-3">
                   {[
                     { label: 'Licensed PTOs', value: '3', color: '#00A6CE' },
@@ -115,11 +117,11 @@ export default function TelecommunicationsPage() {
               </div>
 
               <Link to="/licensing" className="flex items-center gap-3 p-4 bg-[#00A6CE] rounded-xl text-white hover:bg-[#008DB0] transition-all group">
-                <Award size={20} /><div><p className="text-sm font-bold">Apply for a Licence</p><p className="text-[10px] text-white/60">View requirements and download forms</p></div><ArrowRight size={16} className="ml-auto" />
+                <Award size={20} /><div><p className="text-sm font-bold">{lang === 'tn' ? 'Ikopela Laesense' : 'Apply for a Licence'}</p><p className="text-[10px] text-white/60">View requirements and download forms</p></div><ArrowRight size={16} className="ml-auto" />
               </Link>
 
               <Link to="/services/file-complaint" className="flex items-center gap-3 p-4 bg-white rounded-xl border border-gray-200 hover:shadow-md transition-all group">
-                <Shield size={18} className="text-[#C8237B]" /><div><p className="text-xs font-bold text-bocra-slate">File a Complaint</p><p className="text-[10px] text-gray-400">Report service issues with an operator</p></div>
+                <Shield size={18} className="text-[#C8237B]" /><div><p className="text-xs font-bold text-bocra-slate">{lang === 'tn' ? 'Tlhagisa Ngongorego' : 'File a Complaint'}</p><p className="text-[10px] text-gray-400">Report service issues with an operator</p></div>
               </Link>
 
               <Link to="/services/qos-monitoring" className="flex items-center gap-3 p-4 bg-white rounded-xl border border-gray-200 hover:shadow-md transition-all group">

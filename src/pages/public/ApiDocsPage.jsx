@@ -26,7 +26,7 @@ import { useScrollReveal, useStaggerReveal } from '../../hooks/useAnimations';
 
 // ─── API ENDPOINT DEFINITIONS ───────────────────────────────────
 
-const API_BASE = `${import.meta.env.VITE_SUPABASE_URL}/rest/v1`;
+const API_BASE = 'https://cyalwtuladeexxfsbrcs.supabase.co/rest/v1';
 
 const ENDPOINTS = [
   {

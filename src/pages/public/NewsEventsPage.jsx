@@ -160,7 +160,7 @@ export default function NewsEventsPage() {
 
       {/* ── Hero Banner ─────────────────────────────── */}
       {/* Hero */}
-      <PageHero category="MEDIA" title="News & Events" description="Latest news, public notices, tenders, and regulatory updates from BOCRA." color="magenta" />
+      <PageHero category="MEDIA" categoryTn="BOBEGADIKGANG" title="News & Events" titleTn="Dikgang le Ditiragalo" description="Latest news, public notices, tenders, and regulatory updates from BOCRA." descriptionTn="Dikgang tsa bosheng, dikitsiso tsa setšhaba, ditendara, le diphetogo tsa taolo go tswa BOCRA." color="magenta" />
 
 
       {/* ── Search & Sort Bar ──────────────────────── */}

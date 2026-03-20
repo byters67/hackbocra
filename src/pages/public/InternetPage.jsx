@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { useScrollReveal, useStaggerReveal } from '../../hooks/useAnimations';
 import PageHero from '../../components/ui/PageHero';
+import { useLanguage } from '../../lib/language';
 
 const BASE = import.meta.env.BASE_URL || '/';
 
@@ -35,6 +36,7 @@ const SECTIONS = [
 ];
 
 export default function InternetPage() {
+  const { lang } = useLanguage();
   const heroRef = useScrollReveal();
   const cardsRef = useStaggerReveal({ stagger: 0.1 });
 
@@ -55,9 +57,9 @@ export default function InternetPage() {
 
       {/* Hero */}
       <PageHero
-        category="MANDATE"
-        title="Internet & ICT"
-        description="BOCRA's mandate encompasses management of the .BW country-code top-level domain, cybersecurity through BW-CIRT, electronic evidence certification, and regulation of electronic communications and transactions."
+        category="MANDATE" categoryTn="TIRAGATSO"
+        title="Internet & ICT" titleTn="Inthanete le ICT"
+        description="BOCRA's mandate encompasses management of the .BW country-code top-level domain, cybersecurity through BW-CIRT, electronic evidence certification, and regulation of electronic communications and transactions." descriptionTn="Tiragatso ya BOCRA e akaretsa taolo ya .BW, tshireletso ya saebo ka BW-CIRT, netefatso ya bosupi jwa elektroniki, le taolo ya dikgolagano tsa elektroniki."
         color="green"
       />
 
@@ -253,7 +255,7 @@ export default function InternetPage() {
 
             <div className="space-y-4">
               <div className="bg-white rounded-xl border border-gray-200 p-5">
-                <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wide mb-3">Downloads</h3>
+                <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wide mb-3">{lang === 'tn' ? 'Ditsenya' : 'Downloads'}</h3>
                 <div className="space-y-2">
                   {[
                     { label: 'Certifying Agents Application Form', file: 'certifying_Agent_Application_Form.pdf', type: 'PDF' },
@@ -376,7 +378,7 @@ export default function InternetPage() {
       {/* Related Pages */}
       <section className="py-8 bg-bocra-off-white">
         <div className="section-wrapper max-w-5xl">
-          <h3 className="text-sm font-bold text-bocra-slate mb-4">Related Pages</h3>
+          <h3 className="text-sm font-bold text-bocra-slate mb-4">{lang === 'tn' ? 'Ditsebe Tse di Amanang' : 'Related Pages'}</h3>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             {[
               { label: 'Register .BW Domain', path: '/services/register-bw', icon: Globe, color: '#00A6CE' },

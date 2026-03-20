@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { useScrollReveal, useStaggerReveal } from '../../hooks/useAnimations';
 import PageHero from '../../components/ui/PageHero';
+import { useLanguage } from '../../lib/language';
 
 const RIGHTS = [
   { icon: CheckCircle, title: 'Right to Quality Service', desc: 'You are entitled to reliable, uninterrupted telecommunications, broadcasting, and postal services that meet the quality standards set by BOCRA.', color: '#00A6CE' },
@@ -40,6 +41,7 @@ const STEPS = [
 ];
 
 export default function ConsumerEducationPage() {
+  const { lang } = useLanguage();
   const heroRef = useScrollReveal();
   const rightsRef = useStaggerReveal({ stagger: 0.08 });
   const issuesRef = useStaggerReveal({ stagger: 0.08 });
@@ -61,16 +63,16 @@ export default function ConsumerEducationPage() {
 
       {/* Hero */}
       <PageHero
-        category="CONSUMER PROTECTION"
-        title="Know Your Rights"
-        description="As a consumer of telecommunications, broadcasting, postal, and internet services in Botswana, you have rights. BOCRA is here to protect them."
+        category="CONSUMER PROTECTION" categoryTn="TSHIRELETSO YA BADIRISI"
+        title="Know Your Rights" titleTn="Itse Ditshwanelo Tsa Gago"
+        description="As a consumer of telecommunications, broadcasting, postal, and internet services in Botswana, you have rights. BOCRA is here to protect them." descriptionTn="Jaaka modirisi wa ditirelo tsa megala, phasalatso, poso, le inthanete mo Botswana, o na le ditshwanelo. BOCRA e teng go di sireletsa."
         color="magenta"
       />
 
       {/* Your Rights */}
       <section className="py-10">
         <div className="section-wrapper max-w-5xl">
-          <h2 className="text-xl font-bold text-bocra-slate text-center mb-2">Your Consumer Rights</h2>
+          <h2 className="text-xl font-bold text-bocra-slate text-center mb-2">{lang === 'tn' ? 'Ditshwanelo Tsa Gago Tsa Bodirisi' : 'Your Consumer Rights'}</h2>
           <p className="text-sm text-bocra-slate/40 text-center mb-8">Every consumer of communications services in Botswana is entitled to these rights</p>
           <div ref={rightsRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {RIGHTS.map(right => (
@@ -89,7 +91,7 @@ export default function ConsumerEducationPage() {
       {/* Common Issues */}
       <section className="py-8 bg-bocra-off-white">
         <div className="section-wrapper max-w-5xl">
-          <h2 className="text-xl font-bold text-bocra-slate text-center mb-2">Common Consumer Issues</h2>
+          <h2 className="text-xl font-bold text-bocra-slate text-center mb-2">{lang === 'tn' ? 'Mathata a a Tlwaelegileng a Badirisi' : 'Common Consumer Issues'}</h2>
           <p className="text-sm text-bocra-slate/40 text-center mb-8">These are the most frequent complaints BOCRA receives from consumers</p>
           <div ref={issuesRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {COMMON_ISSUES.map(issue => (
@@ -114,7 +116,7 @@ export default function ConsumerEducationPage() {
       {/* How to Complain */}
       <section className="py-10">
         <div className="section-wrapper max-w-4xl">
-          <h2 className="text-xl font-bold text-bocra-slate text-center mb-2">How to File a Complaint</h2>
+          <h2 className="text-xl font-bold text-bocra-slate text-center mb-2">{lang === 'tn' ? 'Go Tlhagisa Ngongorego Jang' : 'How to File a Complaint'}</h2>
           <p className="text-sm text-bocra-slate/40 text-center mb-8">Follow these steps if you have an issue with your service provider</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {STEPS.map((s, i) => (
@@ -200,10 +202,10 @@ export default function ConsumerEducationPage() {
       {/* Quick Links */}
       <section className="py-8">
         <div className="section-wrapper max-w-5xl">
-          <h3 className="text-sm font-bold text-bocra-slate mb-4">Related Pages</h3>
+          <h3 className="text-sm font-bold text-bocra-slate mb-4">{lang === 'tn' ? 'Ditsebe Tse di Amanang' : 'Related Pages'}</h3>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             {[
-              { label: 'File a Complaint', path: '/services/file-complaint', icon: AlertCircle, color: '#C8237B' },
+              { label: lang === 'tn' ? 'Tlhagisa Ngongorego' : 'File a Complaint', path: '/services/file-complaint', icon: AlertCircle, color: '#C8237B' },
               { label: 'FAQs', path: '/faqs', icon: HelpCircle, color: '#F7B731' },
               { label: 'Data Protection', path: '/data-protection', icon: Lock, color: '#00458B' },
               { label: 'Cybersecurity Hub', path: '/cybersecurity', icon: Shield, color: '#00A6CE' },

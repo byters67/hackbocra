@@ -6,20 +6,22 @@ import { Link } from 'react-router-dom';
 import { ChevronRight, Building, Wifi, Signal, Globe, Shield, CheckCircle, ArrowRight, Users, BarChart3 } from 'lucide-react';
 import { useScrollReveal, useStaggerReveal } from '../../hooks/useAnimations';
 import PageHero from '../../components/ui/PageHero';
+import { useLanguage } from '../../lib/language';
 
 export default function InfrastructureSharingPage() {
+  const { lang } = useLanguage();
   const cardsRef = useStaggerReveal({ stagger: 0.1 });
   return (
     <div className="bg-white min-h-screen">
       <div className="bg-bocra-off-white border-b border-gray-100"><div className="section-wrapper py-4"><nav className="text-sm text-bocra-slate/50 flex items-center gap-2"><Link to="/" className="hover:text-bocra-blue">Home</Link><ChevronRight size={14} /><span className="text-bocra-slate/50">Projects</span><ChevronRight size={14} /><span className="text-bocra-slate font-medium">Infrastructure Sharing</span></nav></div></div>
-      <PageHero category="PROJECTS" title="Infrastructure Sharing" description="Promoting efficient use of telecommunications infrastructure through sharing arrangements — reducing duplication, lowering costs, and expanding coverage across Botswana." color="cyan" />
+      <PageHero category="PROJECTS" categoryTn="DITSHWANELO" title="Infrastructure Sharing" titleTn="Karoganyo ya Mafaratlhatlha" description="Promoting efficient use of telecommunications infrastructure through sharing arrangements — reducing duplication, lowering costs, and expanding coverage across Botswana." descriptionTn="Go rotloetsa tiriso e e nonofileng ya mafaratlhatlha a megala ka go arolelana — go fokotsa go boelediwa, go fokotsa ditshenyegelo, le go atolosa khumo ya ditirelo." color="cyan" />
 
       <section className="py-10">
         <div className="section-wrapper max-w-5xl">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2 space-y-6">
               <div>
-                <h2 className="text-xl font-bold text-bocra-slate mb-3">Infrastructure Sharing Framework</h2>
+                <h2 className="text-xl font-bold text-bocra-slate mb-3">{lang === 'tn' ? 'Thulaganyo ya Karoganyo ya Mafaratlhatlha' : 'Infrastructure Sharing Framework'}</h2>
                 <div className="space-y-3 text-sm text-bocra-slate/70 leading-relaxed">
                   <p>BOCRA promotes infrastructure sharing among telecommunications operators to reduce the duplication of network infrastructure, lower the cost of deploying services, and accelerate the expansion of coverage — particularly in underserved rural areas.</p>
                   <p>Infrastructure sharing is a key enabler for achieving universal access to communications services. By sharing towers, fibre, ducts, and other passive infrastructure, operators can deploy services more efficiently while reducing their capital expenditure.</p>
@@ -50,7 +52,7 @@ export default function InfrastructureSharingPage() {
 
               {/* Benefits */}
               <div className="bg-[#00A6CE]/5 rounded-xl border border-[#00A6CE]/10 p-5">
-                <h3 className="text-sm font-bold text-bocra-slate mb-3">Benefits of Infrastructure Sharing</h3>
+                <h3 className="text-sm font-bold text-bocra-slate mb-3">{lang === 'tn' ? 'Mesola ya Karoganyo ya Mafaratlhatlha' : 'Benefits of Infrastructure Sharing'}</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                   {[
                     'Reduced capital expenditure for operators',
@@ -69,7 +71,7 @@ export default function InfrastructureSharingPage() {
             {/* Sidebar */}
             <div className="space-y-4">
               <div className="bg-white rounded-xl border border-gray-200 p-5">
-                <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wide mb-3">Key Stakeholders</h3>
+                <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wide mb-3">{lang === 'tn' ? 'Baamegi ba Botlhokwa' : 'Key Stakeholders'}</h3>
                 <div className="space-y-2">
                   {[
                     { name: 'BoFiNet', role: 'National backbone provider', color: '#00458B' },

@@ -12,6 +12,7 @@ import {
   Building, FileText, ChevronRight
 } from 'lucide-react';
 import { useScrollReveal, useStaggerReveal, useCountUp } from '../../hooks/useAnimations';
+import { useLanguage } from '../../lib/language';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -23,26 +24,26 @@ const IMG_SUNSET = `${BASE}images/tower-sunset.jpg`;
 const IMG_MOBILE = `${BASE}images/mobile-world.jpeg`;
 
 const SECTORS = [
-  { icon: Wifi, title: 'Telecommunications', desc: 'Regulating mobile networks, internet, and VoIP for universal access.', path: '/mandate/telecommunications', img: `${BASE}images/telecommunications.jpg`, color: '#00A6CE' },
-  { icon: Radio, title: 'Broadcasting', desc: 'Overseeing radio, TV, and online broadcasting services.', path: '/mandate/broadcasting', img: `${BASE}images/broadcasting.jpeg`, color: '#C8237B' },
-  { icon: Mail, title: 'Postal', desc: 'Managing universal and commercial postal services.', path: '/mandate/postal', img: `${BASE}images/postal.jpg`, color: '#F7B731' },
-  { icon: Globe, title: 'Internet & ICT', desc: 'Promoting broadband, cybersecurity, and .BW domains.', path: '/mandate/internet', img: `${BASE}images/internet_ict.jpg`, color: '#6BBE4E' },
+  { icon: Wifi, title: lang === 'tn' ? 'Megala le Tlhaeletsano' : 'Telecommunications', desc: lang === 'tn' ? 'Go laola dineteweke tsa megala, inthanete, le VoIP go fitlhelela botlhe.' : 'Regulating mobile networks, internet, and VoIP for universal access.', path: '/mandate/telecommunications', img: `${BASE}images/telecommunications.jpg`, color: '#00A6CE' },
+  { icon: Radio, title: lang === 'tn' ? 'Phasalatso' : 'Broadcasting', desc: lang === 'tn' ? 'Go laola ditirelo tsa radio, TV, le phasalatso ya mo inthaneteng.' : 'Overseeing radio, TV, and online broadcasting services.', path: '/mandate/broadcasting', img: `${BASE}images/broadcasting.jpeg`, color: '#C8237B' },
+  { icon: Mail, title: lang === 'tn' ? 'Ditirelo tsa Poso' : 'Postal', desc: lang === 'tn' ? 'Go laola ditirelo tsa poso tsa botlhe le tsa kgwebo.' : 'Managing universal and commercial postal services.', path: '/mandate/postal', img: `${BASE}images/postal.jpg`, color: '#F7B731' },
+  { icon: Globe, title: lang === 'tn' ? 'Inthanete le ICT' : 'Internet & ICT', desc: lang === 'tn' ? 'Go rotloetsa inthanete e e lebelo, tshireletso ya saebo, le mafelo a .BW.' : 'Promoting broadband, cybersecurity, and .BW domains.', path: '/mandate/internet', img: `${BASE}images/internet_ict.jpg`, color: '#6BBE4E' },
 ];
 
 const SERVICES = [
-  { icon: AlertCircle, title: 'File a Complaint', desc: 'Report issues with your service provider', path: '/services/file-complaint', color: '#C8237B' },
-  { icon: Search, title: 'Verify a Licence', desc: 'Check if an operator is licensed', path: '/services/licence-verification', color: '#00A6CE' },
-  { icon: Shield, title: 'Type Approval', desc: 'Search approved equipment', path: '/services/type-approval', color: '#F7B731' },
-  { icon: Globe, title: 'Register .BW', desc: 'Get your Botswana domain', path: '/services/register-bw', color: '#6BBE4E' },
-  { icon: Signal, title: 'QoS Monitoring', desc: 'Check network quality live', path: '/services/qos-monitoring', color: '#00A6CE' },
-  { icon: BarChart3, title: 'Statistics', desc: 'Telecom sector data', path: '/telecom-statistics', color: '#C8237B' },
+  { icon: AlertCircle, title: lang === 'tn' ? 'Tlhagisa Ngongorego' : 'File a Complaint', desc: 'Report issues with your service provider', path: '/services/file-complaint', color: '#C8237B' },
+  { icon: Search, title: lang === 'tn' ? 'Netefatsa Laesense' : 'Verify a Licence', desc: 'Check if an operator is licensed', path: '/services/licence-verification', color: '#00A6CE' },
+  { icon: Shield, title: lang === 'tn' ? 'Tumelelo ya Mofuta' : 'Type Approval', desc: 'Search approved equipment', path: '/services/type-approval', color: '#F7B731' },
+  { icon: Globe, title: lang === 'tn' ? 'Kwadisa .BW' : 'Register .BW', desc: 'Get your Botswana domain', path: '/services/register-bw', color: '#6BBE4E' },
+  { icon: Signal, title: lang === 'tn' ? 'Tlhokomelo ya Boleng' : 'QoS Monitoring', desc: 'Check network quality live', path: '/services/qos-monitoring', color: '#00A6CE' },
+  { icon: BarChart3, title: lang === 'tn' ? 'Dipalopalo' : 'Statistics', desc: 'Telecom sector data', path: '/telecom-statistics', color: '#C8237B' },
 ];
 
 const STATS = [
-  { value: 4200000, suffix: '+', label: 'Mobile Subscriptions', icon: Phone },
-  { value: 2100000, suffix: '+', label: 'Mobile Money Users', icon: TrendingUp },
-  { value: 850000, suffix: '+', label: 'Broadband Subscribers', icon: Wifi },
-  { value: 3, suffix: '', label: 'Network Operators', icon: Building },
+  { value: 4200000, suffix: '+', label: lang === 'tn' ? 'Disamosetšene tsa Mogala' : 'Mobile Subscriptions', icon: Phone },
+  { value: 2100000, suffix: '+', label: lang === 'tn' ? 'Badirisi ba Madi a Mogala' : 'Mobile Money Users', icon: TrendingUp },
+  { value: 850000, suffix: '+', label: lang === 'tn' ? 'Basamosetšene ba Inthanete' : 'Broadband Subscribers', icon: Wifi },
+  { value: 3, suffix: '', label: lang === 'tn' ? 'Balaodi ba Neteweke' : 'Network Operators', icon: Building },
 ];
 
 const NEWS = [
@@ -97,15 +98,13 @@ export default function HomePage() {
             </div>
 
             <h1 className="hero-kinetic text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-extrabold leading-[1.1] tracking-tight">
-              <span className="h-line kinetic-line text-white">A Connected &</span>
-              <span className="h-line kinetic-line kinetic-cyan text-[#00A6CE]">Digitally Driven</span>
-              <span className="h-line kinetic-line text-white">Society</span>
+              <span className="h-line kinetic-line text-white">{lang === 'tn' ? 'E e Golaganeng &' : 'A Connected &'}</span>
+              <span className="h-line kinetic-line kinetic-cyan text-[#00A6CE]">{lang === 'tn' ? 'E e Etelletsweng ke Dijithale' : 'Digitally Driven'}</span>
+              <span className="h-line kinetic-line text-white">{lang === 'tn' ? 'Setšhaba' : 'Society'}</span>
             </h1>
 
             <p className="h-desc text-base sm:text-lg text-white/60 mt-3 sm:mt-4 leading-relaxed max-w-lg">
-              Regulating telecommunications, broadcasting, postal and internet services
-              in Botswana — promoting competition, innovation, consumer protection and
-              universal access for all.
+              {lang === 'tn' ? 'Go laola megala, phasalatso, poso le ditirelo tsa inthanete mo Botswana — go rotloetsa kgaisano, boitlhamedi, tshireletso ya badirisi le phitlhelelo ya botlhe.' : 'Regulating telecommunications, broadcasting, postal and internet services in Botswana — promoting competition, innovation, consumer protection and universal access for all.'}
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3 mt-4 sm:mt-6">
@@ -123,7 +122,7 @@ export default function HomePage() {
       {/* ═══ SECTORS ═══ */}
       <section className="py-10 sm:py-10 bg-white">
         <div className="section-wrapper">
-          <SectionHead label="What We Regulate" title="Four Sectors, One Vision" />
+          <SectionHead label="{lang === 'tn' ? 'Se Re Se Laolang' : 'What We Regulate'}" title="{lang === 'tn' ? 'Maphata a le Manè, Pono e le Nngwe' : 'Four Sectors, One Vision'}" />
           <div ref={sectorsRef} className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory sm:snap-none sm:pb-0 sm:grid sm:grid-cols-2 lg:grid-cols-4 sm:gap-5 mt-8 -mx-4 px-4 sm:mx-0 sm:px-0" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' }}>
             {SECTORS.map((s) => {
               const Icon = s.icon;

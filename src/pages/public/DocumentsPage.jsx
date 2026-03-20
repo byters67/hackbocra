@@ -14,6 +14,7 @@ import {
 import { useScrollReveal } from '../../hooks/useAnimations';
 
 import PageHero from '../../components/ui/PageHero';
+import { useLanguage } from '../../lib/language';
 const BASE = import.meta.env.BASE_URL;
 
 const CATEGORY_CONFIG = {
@@ -320,6 +321,7 @@ const CATEGORIES = ['All', ...Object.keys(CATEGORY_CONFIG)];
 const getYears = () => { const y = [...new Set(DOCUMENTS.map(d => d.year))].sort((a, b) => b.localeCompare(a)); return ['All Years', ...y]; };
 
 export default function DocumentsPage() {
+  const { lang } = useLanguage();
   const [category, setCategory] = useState('All');
   const [search, setSearch] = useState('');
   const [year, setYear] = useState('All Years');
@@ -357,7 +359,7 @@ export default function DocumentsPage() {
     <div className="bg-white">
       <div className="bg-bocra-off-white border-b border-gray-100"><div className="section-wrapper py-4"><nav className="text-sm text-bocra-slate/50 flex items-center gap-2"><Link to="/" className="hover:text-bocra-blue transition-colors">Home</Link><ChevronRight size={14} /><span className="text-bocra-slate">Documents & Legislation</span></nav></div></div>
       {/* Hero */}
-      <PageHero category="RESOURCES" title="Documents & Legislation" description="Access BOCRA regulatory documents, draft legislation, consultation papers, and published guidelines." color="yellow" />
+      <PageHero category="RESOURCES" categoryTn="DITHULAGANYO" title="Documents & Legislation" titleTn="Dikwalo le Melao" description="Access BOCRA regulatory documents, draft legislation, consultation papers, and published guidelines." descriptionTn="Fitlhelela dikwalo tsa taolo tsa BOCRA, melao e e sa ntseng e dirwa, dipampiri tsa therisano, le ditaelo tse di gatisitsweng." color="yellow" />
 
 
       {/* Sticky search/filter bar — sits OUTSIDE the flex layout so sticky works against page scroll */}

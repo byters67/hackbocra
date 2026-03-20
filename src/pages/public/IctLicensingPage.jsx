@@ -14,6 +14,7 @@ import {
 import { useScrollReveal } from '../../hooks/useAnimations';
 
 import PageHero from '../../components/ui/PageHero';
+import { useLanguage } from '../../lib/language';
 const BASE = import.meta.env.BASE_URL;
 
 const ICT_SECTIONS = [
@@ -75,6 +76,7 @@ const ICT_SECTIONS = [
 ];
 
 export default function IctLicensingPage() {
+  const { lang } = useLanguage();
   const [searchTerm, setSearchTerm] = useState('');
   const heroRef = useScrollReveal();
 
@@ -106,7 +108,7 @@ export default function IctLicensingPage() {
         </div>
       </div>
       {/* Hero */}
-      <PageHero category="LICENSING" title="ICT Licensing Framework" description="Regulatory framework documents, application requirements, and guidelines for ICT service providers in Botswana." color="green" />
+      <PageHero category="LICENSING" categoryTn="DILAESENSE" title="ICT Licensing Framework" titleTn="Thulaganyo ya Dilaesense tsa ICT" description="Regulatory framework documents, application requirements, and guidelines for ICT service providers in Botswana." descriptionTn="Dikwalo tsa thulaganyo ya taolo, ditlhokego tsa dikopo, le ditaelo tsa baneedi ba ditirelo tsa ICT." color="green" />
 
 
       {/* Search */}
@@ -182,7 +184,7 @@ export default function IctLicensingPage() {
       {/* Related links */}
       <section className="py-6 bg-bocra-off-white">
         <div className="section-wrapper max-w-3xl mx-auto text-center">
-          <p className="text-xs text-bocra-slate/30 mb-3">Related Pages</p>
+          <p className="text-xs text-bocra-slate/30 mb-3">{lang === 'tn' ? 'Ditsebe Tse di Amanang' : 'Related Pages'}</p>
           <div className="flex flex-wrap justify-center gap-2">
             <Link to="/licensing" className="px-4 py-2 bg-white border border-gray-200 rounded-lg text-xs font-medium text-bocra-slate/60 hover:text-[#00A6CE] hover:border-[#00A6CE]/30 transition-all">
               Apply for a Licence

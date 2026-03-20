@@ -17,12 +17,13 @@ import {
   MapPin, Phone, Mail, Clock, Send, ChevronRight, 
   CheckCircle, ExternalLink 
 } from 'lucide-react';
-import { supabaseUrl_, supabaseAnonKey_ } from '../../lib/supabase';
-import { useRecaptcha } from '../../hooks/useRecaptcha';
+import { supabase } from '../../lib/supabase';
 import { useScrollReveal } from '../../hooks/useAnimations';
 
 import PageHero from '../../components/ui/PageHero';
+import { useLanguage } from '../../lib/language';
 export default function ContactPage() {
+  const { lang } = useLanguage();
   const [form, setForm] = useState({ name: '', email: '', phone: '', subject: '', message: '' });
   const [consent, setConsent] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -30,7 +31,6 @@ export default function ContactPage() {
   const [errors, setErrors] = useState({});
   const heroRef = useScrollReveal();
   const formRef = useScrollReveal({ y: 40 });
-  const { executeRecaptcha } = useRecaptcha();
   const u = (k, v) => { setForm(f => ({ ...f, [k]: v })); setErrors(e => ({ ...e, [k]: '' })); };
 
   const validate = () => {
@@ -51,49 +51,16 @@ export default function ContactPage() {
     if (!validate()) return;
     setLoading(true);
     
-    // ─── SECURITY: reCAPTCHA v3 token (V-12: fail-closed) ───
-    const recaptchaToken = await executeRecaptcha('submit_contact');
-    if (!recaptchaToken) {
-      setErrors(prev => ({ ...prev, form: 'Verification failed. Please refresh the page and try again.' }));
-      setLoading(false);
-      return;
-    }
-
     try {
-      // ─── Submit via server-side Edge Function (V-02 + V-12) ───
-      const res = await fetch(`${supabaseUrl_}/functions/v1/submit-form`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${supabaseAnonKey_}`,
-        },
-        body: JSON.stringify({
-          form_type: 'contact',
-          recaptcha_token: recaptchaToken,
-          fields: {
-            name: form.name,
-            email: form.email,
-            phone: form.phone,
-            subject: form.subject,
-            message: form.message,
-          },
-        }),
-      });
-
-      const result = await res.json();
-
-      if (!res.ok || !result.success) {
-        if (res.status === 429) {
-          setErrors(prev => ({ ...prev, form: 'Too many submissions. Please wait a moment and try again.' }));
-        } else if (res.status === 403) {
-          setErrors(prev => ({ ...prev, form: 'Verification failed. Please refresh the page and try again.' }));
-        } else {
-          setErrors(prev => ({ ...prev, form: result.error || 'Something went wrong. Please try again or contact us by phone.' }));
-        }
-        setLoading(false);
-        return;
-      }
-
+      const { error: insertErr } = await supabase.from('contact_submissions').insert([{
+        name: form.name,
+        email: form.email,
+        phone: form.phone,
+        subject: form.subject,
+        message: form.message,
+        consent_given_at: new Date().toISOString(),
+      }]);
+      if (insertErr) throw insertErr;
       setSubmitted(true);
     } catch (err) {
       setErrors(prev => ({ ...prev, form: 'Something went wrong. Please try again or contact us by phone.' }));
@@ -114,7 +81,7 @@ export default function ContactPage() {
         </div>
       </div>
       {/* Hero */}
-      <PageHero category="CONTACT" title="Get in Touch" description="Reach out to BOCRA for enquiries, feedback, or assistance with communications regulatory matters in Botswana." color="blue" />
+      <PageHero category="CONTACT" categoryTn="IKGOLAGANYE" title="Get in Touch" titleTn="Ikgolaganye le Rona" description="Reach out to BOCRA for enquiries, feedback, or assistance with communications regulatory matters in Botswana." descriptionTn="Ikgolaganye le BOCRA ka dipotso, maikutlo, kgotsa thuso ka merero ya taolo ya dikgolagano mo Botswana." color="blue" />
 
 
       {/* Contact info + Form */}

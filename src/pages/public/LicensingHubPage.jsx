@@ -13,13 +13,13 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { supabase } from '../../lib/supabase';
 import { useRecaptcha } from '../../hooks/useRecaptcha';
 import { useAuth } from '../../lib/auth';
-import { sanitizeHtml } from '../../lib/sanitizeHtml';
 import {
   FileText, Download, ChevronDown, ChevronRight, ArrowLeft,
   Radio, Wifi, Tv, Globe, Shield, Satellite, Phone,
   AlertCircle, Award, CheckCircle, Send, User, Mail, Building, MapPin, Lock
 } from 'lucide-react';
 import PageHero from '../../components/ui/PageHero';
+import { useLanguage } from '../../lib/language';
 
 gsap.registerPlugin(ScrollTrigger);
 const B = import.meta.env.BASE_URL || '/';
@@ -202,7 +202,7 @@ function Grid({ nav }) {
       </div>
 
       {/* Hero */}
-      <PageHero category="LICENSING" title="Apply For A Licence" description="BOCRA is responsible for planning and managing the radio frequency spectrum in Botswana. Choose a licence type below to view requirements and download application forms." color="green" />
+      <PageHero category="LICENSING" categoryTn="DILAESENSE" title="Apply For A Licence" titleTn="Ikopela Laesense" description="BOCRA is responsible for planning and managing the radio frequency spectrum in Botswana. Choose a licence type below to view requirements and download application forms." descriptionTn="BOCRA e ikarabela ka go rulaganya le go laola sepeketerama sa radio mo Botswana. Tlhopha mofuta wa laesense go bona ditlhokego." color="green" />
 
       {/* Cards */}
       <section className="py-8">
@@ -506,7 +506,7 @@ function Detail({ licence: l, nav }) {
       {/* Two columns — stacks on mobile */}
       <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
         <div ref={ref} className="flex-1 min-w-0">
-          <div className="content-body" dangerouslySetInnerHTML={{ __html: sanitizeHtml(l.content) }} />
+          <div className="content-body" dangerouslySetInnerHTML={{ __html: l.content }} />
 
           {(l.pdf || l.pdf2) && (
             <div className="mt-6 sm:mt-8 p-4 sm:p-6 bg-gray-50 rounded-2xl border border-gray-100 space-y-3">
@@ -544,6 +544,7 @@ function Detail({ licence: l, nav }) {
 
 /* ── Main Export ── */
 export default function LicensingHubPage() {
+  const { lang } = useLanguage();
   const { slug } = useParams();
   const nav = useNavigate();
   const l = slug ? LICENCES.find(x => x.slug === slug) : null;

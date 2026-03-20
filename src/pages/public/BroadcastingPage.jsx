@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { useScrollReveal, useStaggerReveal } from '../../hooks/useAnimations';
 import PageHero from '../../components/ui/PageHero';
+import { useLanguage } from '../../lib/language';
 
 const BASE = import.meta.env.BASE_URL || '/';
 
@@ -59,6 +60,7 @@ const TV_STATIONS = [
 ];
 
 export default function BroadcastingPage() {
+  const { lang } = useLanguage();
   const heroRef = useScrollReveal();
   const cardsRef = useStaggerReveal({ stagger: 0.1 });
 
@@ -79,9 +81,9 @@ export default function BroadcastingPage() {
 
       {/* Hero */}
       <PageHero
-        category="MANDATE"
-        title="Broadcasting"
-        description="The CRA Act mandates BOCRA to regulate all broadcasting, subscription management services and re-broadcasting activities save for the state broadcasting."
+        category="MANDATE" categoryTn="TIRAGATSO"
+        title="Broadcasting" titleTn="Phasalatso"
+        description="The CRA Act mandates BOCRA to regulate all broadcasting, subscription management services and re-broadcasting activities save for the state broadcasting." descriptionTn="Molao wa CRA o laela BOCRA go laola phasalatso yotlhe, ditirelo tsa taolo ya disamosetšene le ditiro tsa go phasalatsa gape kwantle ga phasalatso ya puso."
         color="magenta"
       />
 
@@ -92,7 +94,7 @@ export default function BroadcastingPage() {
             {/* Main content */}
             <div className="lg:col-span-2 space-y-6">
               <div>
-                <h2 className="text-xl font-bold text-bocra-slate mb-3">Broadcasting Regulation in Botswana</h2>
+                <h2 className="text-xl font-bold text-bocra-slate mb-3">{lang === 'tn' ? 'Taolo ya Phasalatso mo Botswana' : 'Broadcasting Regulation in Botswana'}</h2>
                 <p className="text-sm text-bocra-slate/70 leading-relaxed">
                   The Communications Regulatory Authority Act mandates BOCRA to regulate all broadcasting, subscription management services and re-broadcasting activities save for state broadcasting. It is in this light that BOCRA regulates Yarona FM, Duma FM, Gabz FM and eBotswana.
                 </p>
@@ -187,7 +189,7 @@ export default function BroadcastingPage() {
                     <Music size={18} className="text-[#C8237B]" />
                   </div>
                   <div>
-                    <h3 className="text-sm font-bold text-bocra-slate mb-1">Local Content Requirements</h3>
+                    <h3 className="text-sm font-bold text-bocra-slate mb-1">{lang === 'tn' ? 'Ditlhokego tsa Diteng tsa Selegae' : 'Local Content Requirements'}</h3>
                     <p className="text-xs text-bocra-slate/60 leading-relaxed">
                       Broadcasters are required to promote music tracks by local artists. Broadcasters' licences specify a certain percentage of local content to be complied with, promoting Botswana culture, talent, and perspectives in the media landscape.
                     </p>
@@ -202,7 +204,7 @@ export default function BroadcastingPage() {
                     <Globe size={18} className="text-[#00A6CE]" />
                   </div>
                   <div>
-                    <h3 className="text-sm font-bold text-bocra-slate mb-1">Online Broadcasting</h3>
+                    <h3 className="text-sm font-bold text-bocra-slate mb-1">{lang === 'tn' ? 'Phasalatso ya mo Inthaneteng' : 'Online Broadcasting'}</h3>
                     <p className="text-xs text-bocra-slate/60 leading-relaxed">
                       Commercial radio stations have extended access to their services through online broadcasting transmission, making them accessible worldwide. This extends BOCRA's regulatory mandate into digital broadcasting platforms.
                     </p>
@@ -215,7 +217,7 @@ export default function BroadcastingPage() {
             <div className="space-y-4">
               {/* Quick Stats */}
               <div className="bg-white rounded-xl border border-gray-200 p-5">
-                <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wide mb-3">Broadcasting Sector</h3>
+                <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wide mb-3">{lang === 'tn' ? 'Lefapha la Phasalatso' : 'Broadcasting Sector'}</h3>
                 <div className="space-y-3">
                   {[
                     { label: 'Licensed Radio Stations', value: '3', icon: Radio, color: '#C8237B' },
@@ -238,14 +240,14 @@ export default function BroadcastingPage() {
 
               {/* Related Pages */}
               <div className="bg-white rounded-xl border border-gray-200 p-5">
-                <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wide mb-3">Related Pages</h3>
+                <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wide mb-3">{lang === 'tn' ? 'Ditsebe Tse di Amanang' : 'Related Pages'}</h3>
                 <div className="space-y-2">
                   {[
                     { label: 'Telecommunications', path: '/mandate/telecommunications', icon: Wifi, color: '#00A6CE' },
                     { label: 'Postal Services', path: '/mandate/postal', icon: FileText, color: '#F7B731' },
                     { label: 'Internet & ICT', path: '/mandate/internet', icon: Globe, color: '#6BBE4E' },
                     { label: 'Apply for Licence', path: '/licensing', icon: Award, color: '#C8237B' },
-                    { label: 'File a Complaint', path: '/services/file-complaint', icon: Shield, color: '#00458B' },
+                    { label: lang === 'tn' ? 'Tlhagisa Ngongorego' : 'File a Complaint', path: '/services/file-complaint', icon: Shield, color: '#00458B' },
                   ].map(link => (
                     <Link key={link.path} to={link.path}
                       className="flex items-center gap-2.5 p-2 rounded-lg hover:bg-gray-50 transition-all group">

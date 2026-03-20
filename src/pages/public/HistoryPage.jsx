@@ -9,6 +9,7 @@ import { ChevronRight, ChevronDown } from 'lucide-react';
 import { useScrollReveal, useStaggerReveal } from '../../hooks/useAnimations';
 
 import PageHero from '../../components/ui/PageHero';
+import { useLanguage } from '../../lib/language';
 const TIMELINE = [
   {
     year: '1997',
@@ -138,6 +139,7 @@ const TIMELINE = [
 ];
 
 export default function HistoryPage() {
+  const { lang } = useLanguage();
   const heroRef = useScrollReveal();
   const timelineRef = useStaggerReveal({ stagger: 0.08 });
 
@@ -155,7 +157,7 @@ export default function HistoryPage() {
         </div>
       </div>
       {/* Hero */}
-      <PageHero category="ABOUT" title="History of Communication Regulation" description="From the Botswana Telecommunications Authority to BOCRA — tracing the evolution of communications regulation in Botswana." color="cyan" />
+      <PageHero category="ABOUT" categoryTn="KA GA RONA" title="History of Communication Regulation" titleTn="Histori ya Taolo ya Dikgolagano" description="From the Botswana Telecommunications Authority to BOCRA — tracing the evolution of communications regulation in Botswana." descriptionTn="Go tswa BTA go ya BOCRA — go sala morago tlhabololo ya taolo ya dikgolagano mo Botswana." color="cyan" />
 
 
       {/* Interactive Timeline */}

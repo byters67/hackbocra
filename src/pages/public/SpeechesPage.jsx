@@ -14,8 +14,8 @@ import {
   Shield, Users, Wifi
 } from 'lucide-react';
 import { useScrollReveal } from '../../hooks/useAnimations';
+import { useLanguage } from '../../lib/language';
 
-import PageHero from '../../components/ui/PageHero';
 const BASE = import.meta.env.BASE_URL || '/';
 
 /* ─── CATEGORIES ─── */
@@ -79,6 +79,7 @@ const SPEECHES = [
 const YEARS = [...new Set(SPEECHES.map(s => s.year))].sort((a, b) => b - a);
 
 export default function SpeechesPage() {
+  const { lang } = useLanguage();
   const [searchTerm, setSearchTerm] = useState('');
   const [filterCategory, setFilterCategory] = useState('All');
   const [filterYear, setFilterYear] = useState('');
@@ -122,9 +123,24 @@ export default function SpeechesPage() {
           </nav>
         </div>
       </div>
-      {/* Hero */}
-      <PageHero category="MEDIA" title="Speeches Archive" description="Speeches by the BOCRA Chief Executive and senior leadership at regulatory events, conferences, and public engagements." color="magenta" />
 
+      {/* Hero */}
+      <section className="px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6 pb-0">
+        <div className="relative py-12 sm:py-16 px-5 sm:px-8 lg:px-10 rounded-2xl overflow-hidden bg-gradient-to-br from-[#00458B] to-[#001A3A]">
+          <div className="absolute top-0 right-0 w-48 sm:w-64 h-48 sm:h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2" />
+          <div className="absolute bottom-0 left-0 w-36 sm:w-48 h-36 sm:h-48 bg-white/10 rounded-full translate-y-1/2 -translate-x-1/2" />
+          <div ref={heroRef} className="relative max-w-3xl mx-auto text-center">
+            <div className="flex items-center justify-center gap-2 mb-3">
+              <div className="w-1.5 h-6 rounded-full bg-[#C8237B]" />
+              <span className="text-xs text-[#C8237B] uppercase tracking-widest font-medium">MEDIA</span>
+            </div>
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white">{lang === 'tn' ? 'Dipuo tsa Kwa Morago' : 'Speeches Archive'}</h1>
+            <p className="text-white/60 mt-3 text-sm sm:text-base max-w-xl mx-auto">
+              Speeches by the BOCRA Chief Executive and senior leadership at regulatory events, conferences, and public engagements.
+            </p>
+          </div>
+        </div>
+      </section>
 
       {/* Search bar */}
       <section className="px-4 sm:px-6 lg:px-8 -mt-5 relative z-10">
@@ -193,7 +209,7 @@ export default function SpeechesPage() {
 
               {/* Contact */}
               <div className="bg-bocra-off-white rounded-xl p-4">
-                <p className="text-[10px] text-gray-400 uppercase font-medium mb-2">Media Enquiries</p>
+                <p className="text-[10px] text-gray-400 uppercase font-medium mb-2">{lang === 'tn' ? 'Dipotso tsa Bobegadikgang' : 'Media Enquiries'}</p>
                 <p className="text-xs text-bocra-slate/60 leading-relaxed mb-2">
                   For media enquiries or to request speech transcripts, contact the BOCRA Communications Department.
                 </p>

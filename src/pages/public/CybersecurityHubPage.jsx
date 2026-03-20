@@ -21,6 +21,7 @@ import {
 import { useScrollReveal, useStaggerReveal } from '../../hooks/useAnimations';
 
 import PageHero from '../../components/ui/PageHero';
+import { useLanguage } from '../../lib/language';
 /* ── NVD API ── */
 function cvssToSev(s) { return s >= 9 ? 'CRITICAL' : s >= 7 ? 'HIGH' : s >= 4 ? 'MEDIUM' : 'LOW'; }
 function detectSector(d) {
@@ -196,6 +197,7 @@ function QuizCard({ tip, index }) {
 }
 
 export default function CybersecurityHubPage() {
+  const { lang } = useLanguage();
   const heroRef = useScrollReveal();
   const statsRef = useStaggerReveal({ stagger: 0.1 });
 
@@ -234,7 +236,7 @@ export default function CybersecurityHubPage() {
 
       {/* ═══ HERO — bright, accessible, consistent with site ═══ */}
       {/* Hero */}
-      <PageHero category="CYBERSECURITY" title="Cybersecurity Hub" description="Stay safe online. Report cyber threats, learn how to protect yourself, and access the latest security alerts." color="magenta" />
+      <PageHero category="CYBERSECURITY" categoryTn="TSHIRELETSO YA SAEBO" title="Cybersecurity Hub" titleTn="Lefelo la Tshireletso ya Saebo" description="Stay safe online. Report cyber threats, learn how to protect yourself, and access the latest security alerts." descriptionTn="Nna o babalesegile mo inthaneteng. Bega dikotsi tsa saebo, ithute go itshireletsa, le go fitlhelela ditlhagiso tsa tshireletso tsa bosheng." color="magenta" />
 
 
       {/* ═══ STATS — real data ═══ */}

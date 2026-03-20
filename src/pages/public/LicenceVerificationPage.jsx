@@ -1,4 +1,5 @@
-import{useState,useMemo}from'react';import{Link}from'react-router-dom';import{ChevronRight,Search,Shield,CheckCircle,Building,Wifi,Globe,Truck,Tv,FileCheck,AlertCircle,ChevronDown}from'lucide-react';import PageHero from'../../components/ui/PageHero';
+import{useState,useMemo}from'react';import{Link}from'react-router-dom';import{ChevronRight,Search,Shield,CheckCircle,Building,Wifi,Globe,Truck,Tv,FileCheck,AlertCircle,ChevronDown}from'lucide-react';import{useScrollReveal}from'../../hooks/useAnimations';
+import { useLanguage } from '../../lib/language';
 const L=[
 {l:'NFP 01-18/19',c:'Mascom Wireless Botswana (Pty) Ltd',t:'NFP',s:'PTO',sec:'Telecommunications',i:'2018-09-01',e:'2033-08-31',a:'Tsholetsa House, Plot 4705/6, Main Mall, Gaborone'},
 {l:'NFP 02-18/19',c:'Orange Botswana (Pty) Ltd',t:'NFP',s:'PTO',sec:'Telecommunications',i:'2018-09-01',e:'2033-08-31',a:'Plot 166, Queens Road, Main Mall, Gaborone'},
@@ -192,14 +193,15 @@ const SS={Telecommunications:{c:'#00A6CE',i:Wifi,b:'bg-[#00A6CE]/10'},Internet:{
 const DS={c:'#64748B',i:Globe,b:'bg-gray-100'};
 const TN={NFP:'Network Facilities Provider',SAP:'Service & Application Provider',DPO:'Designated Public Postal Operator',CPO:'Commercial Postal Operator',RBL:'Commercial FM Radio Broadcaster',CSP:'Content Service Provider',SBS:'Subscription Satellite Broadcaster',SMS:'Subscription Management Service'};
 export default function LicenceVerificationPage(){
-  const[q,setQ]=useState('');const[sf,setSf]=useState('');const[sel,setSel]=useState(null);const[sa,setSa]=useState(false);
+  const { lang } = useLanguage();
+  const[q,setQ]=useState('');const[sf,setSf]=useState('');const[sel,setSel]=useState(null);const[sa,setSa]=useState(false);const hr=useScrollReveal();
   const res=useMemo(()=>{if(!q.trim()&&!sf)return[];const w=q.toLowerCase().trim().split(/\s+/).filter(x=>x.length>0);return L.filter(x=>{if(sf&&x.sec!==sf)return false;if(w.length===0)return true;const h=(x.l+' '+x.c+' '+x.sec+' '+x.t+' '+(x.s||'')+' '+x.a).toLowerCase();return w.every(word=>h.includes(word))});},[q,sf]);
   const vis=sa?res:res.slice(0,12);const secs=[...new Set(L.map(x=>x.sec))];const exp=d=>new Date(d)<new Date();
   return(<div className="bg-white">
     <div className="bg-bocra-off-white border-b border-gray-100"><div className="section-wrapper py-4"><nav className="text-sm text-bocra-slate/50 flex items-center gap-2"><Link to="/" className="hover:text-bocra-blue transition-colors">Home</Link><ChevronRight size={14}/><span className="text-bocra-slate">Licence Verification</span></nav></div></div>
     
       {/* Hero */}
-      <PageHero category="SERVICES" title="Licence Verification" description="Verify the validity and status of telecommunications, broadcasting, and postal licences issued by BOCRA." color="green" />
+      <PageHero category="SERVICES" categoryTn="DITIRELO" title="Licence Verification" titleTn="Netefatso ya Laesense" description="Verify the validity and status of telecommunications, broadcasting, and postal licences issued by BOCRA." descriptionTn="Netefatsa go siama le maemo a dilaesense tsa megala, phasalatso, le poso tse di ntshitsweng ke BOCRA." color="green" />
 
     <section className="py-6"><div className="section-wrapper max-w-3xl mx-auto"><div className="bg-white rounded-xl border border-gray-200 p-4 space-y-3"><div className="relative"><Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-bocra-slate/30"/><input type="text" value={q} onChange={e=>{setQ(e.target.value);setSel(null);}} autoFocus placeholder="Search by licence number, company name..." className="w-full pl-12 pr-4 py-3 bg-bocra-off-white border border-gray-200 rounded-xl text-sm focus:border-[#6BBE4E] focus:ring-2 focus:ring-[#6BBE4E]/10 outline-none"/></div><div className="flex flex-wrap gap-2"><button onClick={()=>{setSf('');setSel(null);}} className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${!sf?'bg-[#00458B] text-white border-[#00458B]':'bg-white text-gray-600 border-gray-200'}`}>All</button>{secs.map(s=>{const st=SS[s]||DS;return(<button key={s} onClick={()=>{setSf(sf===s?'':s);setSel(null);}} className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${sf===s?'text-white':'bg-white text-gray-600 border-gray-200'}`} style={sf===s?{backgroundColor:st.c,borderColor:st.c}:{}}>{s}</button>);})}</div></div></div></section>
     <section className="pb-8"><div className="section-wrapper max-w-3xl mx-auto">

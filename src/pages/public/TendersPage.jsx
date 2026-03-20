@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import { useScrollReveal, useStaggerReveal } from '../../hooks/useAnimations';
 import PageHero from '../../components/ui/PageHero';
+import { useLanguage } from '../../lib/language';
 
 const BASE = import.meta.env.BASE_URL || '/';
 
@@ -18,7 +19,7 @@ const STATUS_STYLE = {
   open: { bg: 'bg-green-50', text: 'text-green-700', border: 'border-green-200', label: 'Open' },
   closed: { bg: 'bg-gray-100', text: 'text-gray-500', border: 'border-gray-200', label: 'Closed' },
   awarded: { bg: 'bg-blue-50', text: 'text-blue-700', border: 'border-blue-200', label: 'Awarded' },
-  adjudicated: { bg: 'bg-[#F7B731]/10', text: 'text-[#F7B731]', border: 'border-[#F7B731]/20', label: 'Adjudicated' },
+  adjudicated: { bg: 'bg-[#F7B731]/10', text: 'text-[#F7B731]', border: 'border-[#F7B731]/20', label: lang === 'tn' ? 'Tse di Atlholetsweng' : 'Adjudicated' },
 };
 
 const TENDERS = [
@@ -104,6 +105,7 @@ const ITT_SECTIONS = [
 ];
 
 export default function TendersPage() {
+  const { lang } = useLanguage();
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('All');
   const [filterCategory, setFilterCategory] = useState('All');
@@ -132,16 +134,16 @@ export default function TendersPage() {
     <div className="bg-white min-h-screen">
       <div className="bg-bocra-off-white border-b border-gray-100"><div className="section-wrapper py-4"><nav className="text-sm text-bocra-slate/50 flex items-center gap-2"><Link to="/" className="hover:text-bocra-blue">Home</Link><ChevronRight size={14} /><span className="text-bocra-slate font-medium">Tenders</span></nav></div></div>
 
-      <PageHero category="PROCUREMENT" title="Tenders & Procurement" description="BOCRA follows a thorough tendering process to ensure best value-for-money. View current and past tenders, adjudication decisions, and procurement opportunities." color="yellow" />
+      <PageHero category="PROCUREMENT" categoryTn="THEKO" title="Tenders & Procurement" titleTn="Ditendara le Theko" description="BOCRA follows a thorough tendering process to ensure best value-for-money. View current and past tenders, adjudication decisions, and procurement opportunities." descriptionTn="BOCRA e latela thulaganyo e e tseneletseng ya ditendara go netefatsa boleng jo bo gaisang jwa madi. Bona ditendara tsa jaanong le tse di fetileng." color="yellow" />
 
       {/* Stats */}
       <section className="px-4 sm:px-6 lg:px-8 -mt-5 relative z-10">
         <div className="max-w-4xl mx-auto">
           <div className="bg-white rounded-xl shadow-lg border border-gray-100 p-4 grid grid-cols-2 sm:grid-cols-4 gap-4">
             {[
-              { label: 'Total Tenders', value: TENDERS.length, color: '#00458B' },
+              { label: lang === 'tn' ? 'Ditendara Tsotlhe' : 'Total Tenders', value: TENDERS.length, color: '#00458B' },
               { label: 'Open', value: counts.open, color: '#6BBE4E' },
-              { label: 'Adjudicated', value: counts.adjudicated, color: '#F7B731' },
+              { label: lang === 'tn' ? 'Tse di Atlholetsweng' : 'Adjudicated', value: counts.adjudicated, color: '#F7B731' },
               { label: 'Closed', value: counts.closed, color: '#64748B' },
             ].map(s => (
               <div key={s.label} className="text-center">
@@ -167,7 +169,7 @@ export default function TendersPage() {
               className="px-3 py-2.5 border border-gray-200 rounded-lg text-xs bg-white">
               <option value="All">All Status</option>
               <option value="open">Open</option>
-              <option value="adjudicated">Adjudicated</option>
+              <option value="adjudicated">{lang === 'tn' ? 'Tse di Atlholetsweng' : 'Adjudicated'}</option>
               <option value="closed">Closed</option>
             </select>
             <select value={filterCategory} onChange={e => setFilterCategory(e.target.value)}

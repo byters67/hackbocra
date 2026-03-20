@@ -6,20 +6,22 @@ import { Link } from 'react-router-dom';
 import { ChevronRight, Mail, Package, Globe, Shield, Award, Truck, MapPin, CheckCircle, ArrowRight, Users, Building } from 'lucide-react';
 import { useScrollReveal, useStaggerReveal } from '../../hooks/useAnimations';
 import PageHero from '../../components/ui/PageHero';
+import { useLanguage } from '../../lib/language';
 
 export default function PostalPage() {
+  const { lang } = useLanguage();
   const cardsRef = useStaggerReveal({ stagger: 0.1 });
   return (
     <div className="bg-white min-h-screen">
       <div className="bg-bocra-off-white border-b border-gray-100"><div className="section-wrapper py-4"><nav className="text-sm text-bocra-slate/50 flex items-center gap-2"><Link to="/" className="hover:text-bocra-blue">Home</Link><ChevronRight size={14} /><span className="text-bocra-slate/50">Mandate</span><ChevronRight size={14} /><span className="text-bocra-slate font-medium">Postal Services</span></nav></div></div>
-      <PageHero category="MANDATE" title="Postal Services" description="Ensuring safe, reliable, efficient and affordable postal services throughout Botswana — regulating universal and commercial postal operators." color="yellow" />
+      <PageHero category="MANDATE" categoryTn="TIRAGATSO" title="Postal Services" titleTn="Ditirelo tsa Poso" description="Ensuring safe, reliable, efficient and affordable postal services throughout Botswana — regulating universal and commercial postal operators." descriptionTn="Go netefatsa ditirelo tsa poso tse di babalesegileng, tse di ikanyegang, tse di nonofileng le tse di sa tureng mo Botswana yotlhe." color="yellow" />
 
       <section className="py-10">
         <div className="section-wrapper max-w-5xl">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2 space-y-6">
               <div>
-                <h2 className="text-xl font-bold text-bocra-slate mb-3">Postal Services Regulation</h2>
+                <h2 className="text-xl font-bold text-bocra-slate mb-3">{lang === 'tn' ? 'Taolo ya Ditirelo tsa Poso' : 'Postal Services Regulation'}</h2>
                 <div className="space-y-3 text-sm text-bocra-slate/70 leading-relaxed">
                   <p>The CRA Act, 2012 ushered in a new dawn of regulation for the postal sector as BOCRA assumed the mandate of supervising the provision of postal services in Botswana. The CRA Act prohibits any person from providing postal services without a valid licence issued by BOCRA.</p>
                   <p>The Authority is mandated to ensure that there is provision of safe, reliable, efficient and affordable postal services throughout Botswana.</p>
@@ -53,7 +55,7 @@ export default function PostalPage() {
 
               {/* BOCRA's Role */}
               <div className="bg-[#F7B731]/5 rounded-xl border border-[#F7B731]/10 p-5">
-                <h3 className="text-sm font-bold text-bocra-slate mb-3">BOCRA's Postal Mandate</h3>
+                <h3 className="text-sm font-bold text-bocra-slate mb-3">{lang === 'tn' ? 'Tiragatso ya BOCRA ya Poso' : 'BOCRA's Postal Mandate'}</h3>
                 <div className="space-y-2">
                   {[
                     'License and regulate all postal service providers in Botswana',
@@ -84,11 +86,11 @@ export default function PostalPage() {
             {/* Sidebar */}
             <div className="space-y-4">
               <div className="bg-white rounded-xl border border-gray-200 p-5">
-                <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wide mb-3">Postal Sector</h3>
+                <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wide mb-3">{lang === 'tn' ? 'Lefapha la Poso' : 'Postal Sector'}</h3>
                 <div className="space-y-3">
                   {[
                     { label: 'Designated Postal Operator', value: 'Botswana Post', color: '#F7B731' },
-                    { label: 'Market Structure', value: 'Universal + Commercial', color: '#C8237B' },
+                    { label: lang === 'tn' ? 'Popego ya Mmaraka' : 'Market Structure', value: 'Universal + Commercial', color: '#C8237B' },
                     { label: 'Governing Law', value: 'CRA Act 2012', color: '#00458B' },
                     { label: 'International Body', value: 'UPU Member', color: '#00A6CE' },
                   ].map(s => (
@@ -101,11 +103,11 @@ export default function PostalPage() {
               </div>
 
               <Link to="/services/file-complaint" className="flex items-center gap-3 p-4 bg-[#C8237B] rounded-xl text-white hover:bg-[#A01D64] transition-all">
-                <Shield size={20} /><div><p className="text-sm font-bold">File a Postal Complaint</p><p className="text-[10px] text-white/60">Report delivery issues or service problems</p></div><ArrowRight size={16} className="ml-auto" />
+                <Shield size={20} /><div><p className="text-sm font-bold">{lang === 'tn' ? 'Tlhagisa Ngongorego ya Poso' : 'File a Postal Complaint'}</p><p className="text-[10px] text-white/60">Report delivery issues or service problems</p></div><ArrowRight size={16} className="ml-auto" />
               </Link>
 
               <Link to="/licensing" className="flex items-center gap-3 p-4 bg-white rounded-xl border border-gray-200 hover:shadow-md transition-all">
-                <Award size={18} className="text-[#6BBE4E]" /><div><p className="text-xs font-bold text-bocra-slate">Apply for a Licence</p><p className="text-[10px] text-gray-400">Postal operator licensing</p></div>
+                <Award size={18} className="text-[#6BBE4E]" /><div><p className="text-xs font-bold text-bocra-slate">{lang === 'tn' ? 'Ikopela Laesense' : 'Apply for a Licence'}</p><p className="text-[10px] text-gray-400">Postal operator licensing</p></div>
               </Link>
 
               <Link to="/media/speeches" className="flex items-center gap-3 p-4 bg-white rounded-xl border border-gray-200 hover:shadow-md transition-all">

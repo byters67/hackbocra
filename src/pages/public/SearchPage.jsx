@@ -14,6 +14,7 @@ import {
 import { useScrollReveal } from '../../hooks/useAnimations';
 
 import PageHero from '../../components/ui/PageHero';
+import { useLanguage } from '../../lib/language';
 const CATEGORY_STYLE = {
   About:      { color: '#00458B', bg: 'bg-[#00458B]/10', text: 'text-[#00458B]', icon: BookOpen },
   Mandate:    { color: '#00A6CE', bg: 'bg-[#00A6CE]/10', text: 'text-[#00A6CE]', icon: Shield },
@@ -105,7 +106,7 @@ const SEARCH_INDEX = [
 ];
 
 const POPULAR_SEARCHES = [
-  { label: 'File a Complaint', query: 'complaint' },
+  { label: lang === 'tn' ? 'Tlhagisa Ngongorego' : 'File a Complaint', query: 'complaint' },
   { label: 'Mascom', query: 'mascom' },
   { label: 'Cybersecurity', query: 'cybersecurity' },
   { label: 'Licence', query: 'licence' },
@@ -118,6 +119,7 @@ const POPULAR_SEARCHES = [
 const TYPE_ORDER = { Page: 0, Document: 1, Operator: 2 };
 
 export default function SearchPage() {
+  const { lang } = useLanguage();
   const [searchParams] = useSearchParams();
   const [query, setQuery] = useState(searchParams.get('q') || '');
   const heroRef = useScrollReveal();
@@ -168,7 +170,7 @@ export default function SearchPage() {
         </div>
       </div>
       {/* Hero */}
-      <PageHero category="SEARCH" title="Search BOCRA" description="Find pages, documents, services, and information across the BOCRA website." color="blue" />
+      <PageHero category="SEARCH" categoryTn="BATLA" title="Search BOCRA" titleTn="Batla mo BOCRA" description="Find pages, documents, services, and information across the BOCRA website." descriptionTn="Batla ditsebe, dikwalo, ditirelo, le tshedimosetso mo webosaeteng ya BOCRA." color="blue" />
 
       {/* Search bar */}
       <section className="px-4 sm:px-6 lg:px-8 -mt-5 relative z-10">
@@ -202,7 +204,7 @@ export default function SearchPage() {
       {!query && (
         <section className="py-8">
           <div className="section-wrapper max-w-2xl mx-auto text-center">
-            <p className="text-xs text-bocra-slate/30 uppercase tracking-widest font-medium mb-4">Popular Searches</p>
+            <p className="text-xs text-bocra-slate/30 uppercase tracking-widest font-medium mb-4">{lang === 'tn' ? 'Dipatlo tse di Ratwang' : 'Popular Searches'}</p>
             <div className="flex flex-wrap justify-center gap-2">
               {POPULAR_SEARCHES.map(s => (
                 <button key={s.query} onClick={() => setQuery(s.query)}

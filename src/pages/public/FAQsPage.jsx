@@ -21,7 +21,7 @@ const FAQS = [
       {
         q: 'What is BOCRA?',
         a: 'BOCRA is the Botswana Communications Regulatory Authority, established on 1 April 2013 under the Communications Regulatory Authority Act 2012. It regulates telecommunications, broadcasting, internet, and postal services in Botswana to ensure accessible, affordable, and quality communications for all.',
-        links: [{ label: 'About BOCRA', path: '/about/profile' }],
+        links: [{ label: lang === 'tn' ? 'Ka ga BOCRA' : 'About BOCRA', path: '/about/profile' }],
       },
       {
         q: 'Where is BOCRA located?',
@@ -53,7 +53,7 @@ const FAQS = [
       {
         q: 'How do I file a complaint?',
         a: 'You can file a complaint using our online complaint form, by calling +267 395 7755, or by emailing info@bocra.org.bw. We recommend first raising the issue with your service provider directly. If unresolved, BOCRA will investigate and mediate.',
-        links: [{ label: 'File a Complaint', path: '/services/file-complaint' }],
+        links: [{ label: lang === 'tn' ? 'Tlhagisa Ngongorego' : 'File a Complaint', path: '/services/file-complaint' }],
       },
       {
         q: 'What types of complaints does BOCRA handle?',
@@ -221,7 +221,7 @@ export default function FAQsPage() {
   return (
     <div className="bg-white min-h-screen">
       {/* Hero */}
-      <PageHero category="RESOURCES" title="Frequently Asked Questions" description={`Find answers to ${totalCount} common questions about BOCRA services, licensing, complaints, cybersecurity, and more.`} color="yellow" />
+      <PageHero category="RESOURCES" categoryTn="DITHULAGANYO" title="Frequently Asked Questions" titleTn="Dipotso Tse di Botswang Gantsi" description={`Find answers to ${totalCount} common questions about BOCRA services, licensing, complaints, cybersecurity, and more.`} color="yellow" />
 
       {/* Search */}
       <div className="section-wrapper mt-6">

@@ -9,6 +9,7 @@ import {
 } from 'lucide-react';
 import { useScrollReveal } from '../../hooks/useAnimations';
 import PageHero from '../../components/ui/PageHero';
+import { useLanguage } from '../../lib/language';
 
 const BASE = import.meta.env.BASE_URL || '/';
 
@@ -20,6 +21,7 @@ const PRIORITIES = [
 ];
 
 export default function ChiefExecutivePage() {
+  const { lang } = useLanguage();
   const heroRef = useScrollReveal();
 
   return (
@@ -32,13 +34,13 @@ export default function ChiefExecutivePage() {
             <ChevronRight size={14} />
             <Link to="/about/profile" className="hover:text-bocra-blue">About</Link>
             <ChevronRight size={14} />
-            <span className="text-bocra-slate font-medium">Chief Executive</span>
+            <span className="text-bocra-slate font-medium">{lang === 'tn' ? 'Mokaedi Mogolo' : 'Chief Executive'}</span>
           </nav>
         </div>
       </div>
 
       {/* Hero */}
-      <PageHero category="ABOUT" title="A Word From The Chief Executive" description="Mr. Martin Mokgware leads BOCRA's mission to regulate for a connected and digitally driven Botswana." color="blue" />
+      <PageHero category="ABOUT" categoryTn="KA GA RONA" title="A Word From The Chief Executive" titleTn="Lefoko go Tswa go Mokaedi Mogolo" description="Mr. Martin Mokgware leads BOCRA's mission to regulate for a connected and digitally driven Botswana." descriptionTn="Rre Martin Mokgware o etelela pele tiragatso ya BOCRA ya go laola Botswana e e golaganeng le e e etelletsweng pele ke dijithale." color="blue" />
 
       {/* CE Profile */}
       <section className="py-10">
@@ -109,7 +111,7 @@ export default function ChiefExecutivePage() {
 
               {/* Strategic Priorities */}
               <div>
-                <h3 className="text-lg font-bold text-bocra-slate mb-4">Strategic Priorities</h3>
+                <h3 className="text-lg font-bold text-bocra-slate mb-4">{lang === 'tn' ? 'Dintlha tsa Togamaano' : 'Strategic Priorities'}</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {PRIORITIES.map(p => (
                     <div key={p.title} className="bg-white rounded-xl border border-gray-200 p-4 hover:shadow-md transition-all">
@@ -128,7 +130,7 @@ export default function ChiefExecutivePage() {
             <div className="space-y-4">
               {/* Quick Info */}
               <div className="bg-white rounded-xl border border-gray-200 p-5">
-                <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wide mb-3">About the CE</h3>
+                <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wide mb-3">{lang === 'tn' ? 'Ka ga Mokaedi Mogolo' : 'About the CE'}</h3>
                 <div className="space-y-3">
                   {[
                     { label: 'Full Name', value: 'Mr. Martin Mokgware', icon: Users, color: '#00458B' },
@@ -151,12 +153,12 @@ export default function ChiefExecutivePage() {
 
               {/* Related Pages */}
               <div className="bg-white rounded-xl border border-gray-200 p-5">
-                <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wide mb-3">BOCRA Leadership</h3>
+                <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wide mb-3">{lang === 'tn' ? 'Botsamaisi jwa BOCRA' : 'BOCRA Leadership'}</h3>
                 <div className="space-y-2">
                   {[
-                    { label: 'Board of Directors', path: '/about/board', color: '#00458B' },
+                    { label: lang === 'tn' ? 'Lekgotla la Batlhankedi' : 'Board of Directors', path: '/about/board', color: '#00458B' },
                     { label: 'Executive Management', path: '/about/executive-management', color: '#C8237B' },
-                    { label: 'About BOCRA', path: '/about/profile', color: '#00A6CE' },
+                    { label: lang === 'tn' ? 'Ka ga BOCRA' : 'About BOCRA', path: '/about/profile', color: '#00A6CE' },
                     { label: 'History', path: '/about/history', color: '#F7B731' },
                   ].map(link => (
                     <Link key={link.path} to={link.path} className="flex items-center gap-2.5 p-2 rounded-lg hover:bg-gray-50 transition-all group">
@@ -171,7 +173,7 @@ export default function ChiefExecutivePage() {
               <Link to="/media/speeches" className="flex items-center gap-3 p-4 bg-[#00458B] rounded-xl text-white hover:bg-[#003366] transition-all">
                 <BookOpen size={20} />
                 <div>
-                  <p className="text-sm font-bold">CE Speeches</p>
+                  <p className="text-sm font-bold">{lang === 'tn' ? 'Dipuo tsa Mokaedi Mogolo' : 'CE Speeches'}</p>
                   <p className="text-[10px] text-white/50">View the speech archive</p>
                 </div>
                 <ArrowRight size={16} className="ml-auto" />

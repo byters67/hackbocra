@@ -14,6 +14,7 @@ import {
   Wifi, Scale, Star
 } from 'lucide-react';
 import PageHero from '../../components/ui/PageHero';
+import { useLanguage } from '../../lib/language';
 
 gsap.registerPlugin(ScrollTrigger);
 const B = import.meta.env.BASE_URL || '/';
@@ -337,6 +338,7 @@ function CECard({ member, onClick }) {
  * MAIN PAGE EXPORT
  * ══════════════════════════════════════════════════════════════════ */
 export default function ExecutiveManagementPage() {
+  const { lang } = useLanguage();
   const [selected, setSelected] = useState(null);
   const heroRef = useRef(null);
 
@@ -368,7 +370,7 @@ export default function ExecutiveManagementPage() {
       </div>
 
       {/* Hero */}
-      <PageHero category="ABOUT" title="Executive Management" description="The Executive Management team leads BOCRA's day-to-day operations, driving the Authority's strategic vision across telecommunications, broadcasting, postal services, and digital transformation in Botswana." color="blue" />
+      <PageHero category="ABOUT" categoryTn="KA GA RONA" title="Executive Management" titleTn="Botsamaisi jwa Setheo" description="The Executive Management team leads BOCRA's day-to-day operations, driving the Authority's strategic vision across telecommunications, broadcasting, postal services, and digital transformation in Botswana." descriptionTn="Setlhopha sa botsamaisi se se etelelang pele ditiro tsa letsatsi le letsatsi tsa BOCRA." color="blue" />
 
       {/* Chief Executive — Featured */}
       <div className="section-wrapper pt-8 sm:pt-10">
@@ -376,7 +378,7 @@ export default function ExecutiveManagementPage() {
           <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: `${C.blue}15` }}>
             <Star className="w-4 h-4" style={{ color: C.blue }} />
           </div>
-          <h2 className="text-lg sm:text-xl font-bold text-[#001A3A]">Chief Executive</h2>
+          <h2 className="text-lg sm:text-xl font-bold text-[#001A3A]">{lang === 'tn' ? 'Mokaedi Mogolo' : 'Chief Executive'}</h2>
           <div className="h-px flex-1 bg-gray-100" />
         </div>
 

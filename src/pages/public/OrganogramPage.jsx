@@ -13,6 +13,7 @@ import {
   ChevronDown
 } from 'lucide-react';
 import PageHero from '../../components/ui/PageHero';
+import { useLanguage } from '../../lib/language';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -38,6 +39,7 @@ const OBJECTIVES = [
 ];
 
 export default function OrganogramPage() {
+  const { lang } = useLanguage();
   const [expanded, setExpanded] = useState(null);
   const treeRef = useRef(null);
   const boardRef = useRef(null);
@@ -116,7 +118,7 @@ export default function OrganogramPage() {
         </div>
       </div>
 
-      <PageHero category="ABOUT" title="Organisational Structure" description="BOCRA is structured into specialised departments under the leadership of the Chief Executive, each focused on a key area of the Authority's mandate." color="blue" />
+      <PageHero category="ABOUT" categoryTn="KA GA RONA" title="Organisational Structure" titleTn="Thulaganyo ya Setheo" description="BOCRA is structured into specialised departments under the leadership of the Chief Executive, each focused on a key area of the Authority's mandate." descriptionTn="BOCRA e bopilwe ka mafapha a a ikgethegileng ka fa tlase ga botsamaisi jwa Mokaedi Mogolo." color="blue" />
 
       {/* Animated Org Tree */}
       <section className="py-10 overflow-hidden" ref={treeRef}>
@@ -130,7 +132,7 @@ export default function OrganogramPage() {
                 <div className="w-11 h-11 rounded-full bg-[#00A6CE]/10 flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition-transform duration-300">
                   <Users size={20} className="text-[#00A6CE]" />
                 </div>
-                <p className="text-sm font-bold text-bocra-slate">Board of Directors</p>
+                <p className="text-sm font-bold text-bocra-slate">{lang === 'tn' ? 'Lekgotla la Batlhankedi' : 'Board of Directors'}</p>
                 <p className="text-[10px] text-bocra-slate/40">Chaired by Dr. Bokamoso Basutli</p>
               </div>
             </Link>
@@ -151,7 +153,7 @@ export default function OrganogramPage() {
                   <Briefcase size={24} className="text-[#00A6CE]" />
                 </div>
                 <p className="text-lg font-bold tracking-tight">Mr. Martin Mokgware</p>
-                <p className="text-xs text-white/40 mt-0.5">Chief Executive</p>
+                <p className="text-xs text-white/40 mt-0.5">{lang === 'tn' ? 'Mokaedi Mogolo' : 'Chief Executive'}</p>
                 <div className="flex justify-center gap-1.5 mt-3">
                   {['#00A6CE','#C8237B','#F7B731','#6BBE4E'].map(c => (
                     <div key={c} className="w-2 h-2 rounded-full" style={{ background: c }} />
@@ -172,7 +174,7 @@ export default function OrganogramPage() {
           </div>
 
           {/* Departments label */}
-          <p className="text-[10px] text-bocra-slate/25 uppercase tracking-[0.25em] font-medium text-center mb-5">Departments</p>
+          <p className="text-[10px] text-bocra-slate/25 uppercase tracking-[0.25em] font-medium text-center mb-5">{lang === 'tn' ? 'Mafapha' : 'Departments'}</p>
 
           {/* Department Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
@@ -224,7 +226,7 @@ export default function OrganogramPage() {
       {/* Objectives */}
       <section className="py-8 bg-bocra-off-white">
         <div className="section-wrapper max-w-5xl">
-          <p className="text-[10px] text-bocra-slate/25 uppercase tracking-[0.25em] font-medium text-center mb-4">Strategic Objectives</p>
+          <p className="text-[10px] text-bocra-slate/25 uppercase tracking-[0.25em] font-medium text-center mb-4">{lang === 'tn' ? 'Maikemisetso a Togamaano' : 'Strategic Objectives'}</p>
           <div ref={objRef} className="grid grid-cols-3 sm:grid-cols-6 gap-3">
             {OBJECTIVES.map(obj => {
               const OIcon = obj.icon;
@@ -246,10 +248,10 @@ export default function OrganogramPage() {
         <div className="section-wrapper max-w-5xl">
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             {[
-              { label: 'Chief Executive', path: '/about/chief-executive', icon: Briefcase, color: '#00458B' },
-              { label: 'Board of Directors', path: '/about/board', icon: Users, color: '#00A6CE' },
+              { label: lang === 'tn' ? 'Mokaedi Mogolo' : 'Chief Executive', path: '/about/chief-executive', icon: Briefcase, color: '#00458B' },
+              { label: lang === 'tn' ? 'Lekgotla la Batlhankedi' : 'Board of Directors', path: '/about/board', icon: Users, color: '#00A6CE' },
               { label: 'Executive Management', path: '/about/executive-management', icon: Award, color: '#C8237B' },
-              { label: 'About BOCRA', path: '/about/profile', icon: BookOpen, color: '#6BBE4E' },
+              { label: lang === 'tn' ? 'Ka ga BOCRA' : 'About BOCRA', path: '/about/profile', icon: BookOpen, color: '#6BBE4E' },
             ].map(link => (
               <Link key={link.path} to={link.path} className="flex items-center gap-3 p-3 bg-white rounded-xl border border-gray-100 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 group">
                 <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform" style={{ background: `${link.color}12` }}>

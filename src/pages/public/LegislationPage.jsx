@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { ChevronRight, Scale, FileText, Shield, ExternalLink, BookOpen, CheckCircle, Globe, Radio, Mail as MailIcon, Key } from 'lucide-react';
 import { useScrollReveal, useStaggerReveal } from '../../hooks/useAnimations';
 import PageHero from '../../components/ui/PageHero';
+import { useLanguage } from '../../lib/language';
 
 const LAWS = [
   { title: 'Communications Regulatory Authority Act, 2012', desc: 'The founding Act that establishes BOCRA and defines its mandate to regulate telecommunications, broadcasting, internet, and postal services in Botswana. Commenced 1 April 2013.', color: '#00A6CE', icon: Shield, links: [{ label: 'Telecommunications', path: '/mandate/telecommunications' }, { label: 'Broadcasting', path: '/mandate/broadcasting' }, { label: 'Postal Services', path: '/mandate/postal' }, { label: 'Internet & ICT', path: '/mandate/internet' }] },
@@ -17,11 +18,12 @@ const LAWS = [
 ];
 
 export default function LegislationPage() {
+  const { lang } = useLanguage();
   const cardsRef = useStaggerReveal({ stagger: 0.08 });
   return (
     <div className="bg-white min-h-screen">
       <div className="bg-bocra-off-white border-b border-gray-100"><div className="section-wrapper py-4"><nav className="text-sm text-bocra-slate/50 flex items-center gap-2"><Link to="/" className="hover:text-bocra-blue">Home</Link><ChevronRight size={14} /><span className="text-bocra-slate/50">Mandate</span><ChevronRight size={14} /><span className="text-bocra-slate font-medium">Legislation</span></nav></div></div>
-      <PageHero category="MANDATE" title="Governing Legislation" description="The laws and Acts that establish BOCRA's mandate and regulatory powers across telecommunications, broadcasting, postal, internet, and data protection." color="blue" />
+      <PageHero category="MANDATE" categoryTn="TIRAGATSO" title="Governing Legislation" titleTn="Melao e e Laolang" description="The laws and Acts that establish BOCRA's mandate and regulatory powers across telecommunications, broadcasting, postal, internet, and data protection." descriptionTn="Melao le Ditlhopho tse di tlhomang tiragatso ya BOCRA le maatla a taolo mo megala, phasalatso, poso, inthanete, le tshireletso ya data." color="blue" />
 
       <section className="py-10">
         <div className="section-wrapper max-w-5xl">
@@ -63,13 +65,13 @@ export default function LegislationPage() {
 
       <section className="py-8 bg-bocra-off-white">
         <div className="section-wrapper max-w-5xl">
-          <h3 className="text-sm font-bold text-bocra-slate mb-4">Related Pages</h3>
+          <h3 className="text-sm font-bold text-bocra-slate mb-4">{lang === 'tn' ? 'Ditsebe Tse di Amanang' : 'Related Pages'}</h3>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             {[
-              { label: 'Licensing Framework', path: '/mandate/licensing', icon: FileText, color: '#00A6CE' },
-              { label: 'Apply for a Licence', path: '/licensing', icon: BookOpen, color: '#6BBE4E' },
+              { label: lang === 'tn' ? 'Thulaganyo ya Dilaesense' : 'Licensing Framework', path: '/mandate/licensing', icon: FileText, color: '#00A6CE' },
+              { label: lang === 'tn' ? 'Ikopela Laesense' : 'Apply for a Licence', path: '/licensing', icon: BookOpen, color: '#6BBE4E' },
               { label: 'Documents Library', path: '/documents/drafts', icon: FileText, color: '#F7B731' },
-              { label: 'About BOCRA', path: '/about/profile', icon: Shield, color: '#00458B' },
+              { label: lang === 'tn' ? 'Ka ga BOCRA' : 'About BOCRA', path: '/about/profile', icon: Shield, color: '#00458B' },
             ].map(link => (
               <Link key={link.path} to={link.path} className="flex items-center gap-3 p-4 bg-white rounded-xl border border-gray-200 hover:shadow-md transition-all group">
                 <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: `${link.color}12` }}><link.icon size={16} style={{ color: link.color }} /></div>

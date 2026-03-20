@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { ChevronRight, Award, FileText, Shield, Wifi, Radio, Tv, Mail, Globe, CheckCircle, ArrowRight, Building } from 'lucide-react';
 import { useScrollReveal, useStaggerReveal } from '../../hooks/useAnimations';
 import PageHero from '../../components/ui/PageHero';
+import { useLanguage } from '../../lib/language';
 
 const CATEGORIES = [
   { title: 'Network Facilities Provider (NFP)', desc: 'Licensees own, operate or provide any form of physical infrastructure used principally for carrying services, applications and content.', color: '#00A6CE', icon: Wifi, examples: 'Fibre networks, wireless towers, satellite infrastructure' },
@@ -17,18 +18,19 @@ const CATEGORIES = [
 ];
 
 export default function LicensingFrameworkPage() {
+  const { lang } = useLanguage();
   const cardsRef = useStaggerReveal({ stagger: 0.08 });
   return (
     <div className="bg-white min-h-screen">
       <div className="bg-bocra-off-white border-b border-gray-100"><div className="section-wrapper py-4"><nav className="text-sm text-bocra-slate/50 flex items-center gap-2"><Link to="/" className="hover:text-bocra-blue">Home</Link><ChevronRight size={14} /><span className="text-bocra-slate/50">Mandate</span><ChevronRight size={14} /><span className="text-bocra-slate font-medium">Licensing</span></nav></div></div>
-      <PageHero category="MANDATE" title="Licensing Framework" description="BOCRA is mandated to process applications for and issue licences across telecommunications, broadcasting, radio communications, internet, and postal services." color="green" />
+      <PageHero category="MANDATE" categoryTn="TIRAGATSO" title="Licensing Framework" titleTn="Thulaganyo ya Dilaesense" description="BOCRA is mandated to process applications for and issue licences across telecommunications, broadcasting, radio communications, internet, and postal services." descriptionTn="BOCRA e laetswe go sekaseka dikopo tsa le go ntsha dilaesense mo megala, phasalatso, dikgolagano tsa radio, inthanete, le ditirelo tsa poso." color="green" />
 
       <section className="py-10">
         <div className="section-wrapper max-w-5xl">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2 space-y-6">
               <div>
-                <h2 className="text-xl font-bold text-bocra-slate mb-3">Licensing Mandate</h2>
+                <h2 className="text-xl font-bold text-bocra-slate mb-3">{lang === 'tn' ? 'Tiragatso ya Dilaesense' : 'Licensing Mandate'}</h2>
                 <div className="space-y-3 text-sm text-bocra-slate/70 leading-relaxed">
                   <p>BOCRA is mandated by Section 6(h) of the CRA Act to process applications for and issue licences, permits, permissions, concessions and authorities for regulated sectors being telecommunications, Internet, radio communications, broadcasting and postal.</p>
                   <p>The licensing framework ensures that all communications service providers operate within a regulated environment that promotes competition, protects consumers, and ensures efficient use of shared resources such as radio frequency spectrum.</p>
@@ -37,7 +39,7 @@ export default function LicensingFrameworkPage() {
 
               {/* Categories */}
               <div>
-                <h3 className="text-lg font-bold text-bocra-slate mb-4">Major Licensing Categories</h3>
+                <h3 className="text-lg font-bold text-bocra-slate mb-4">{lang === 'tn' ? 'Mekgwa e Megolo ya Dilaesense' : 'Major Licensing Categories'}</h3>
                 <div ref={cardsRef} className="space-y-3">
                   {CATEGORIES.map(cat => (
                     <div key={cat.title} className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-md transition-all">
@@ -63,7 +65,7 @@ export default function LicensingFrameworkPage() {
 
               {/* Application Process */}
               <div className="bg-[#6BBE4E]/5 rounded-xl border border-[#6BBE4E]/10 p-5">
-                <h3 className="text-sm font-bold text-bocra-slate mb-3">How to Apply</h3>
+                <h3 className="text-sm font-bold text-bocra-slate mb-3">{lang === 'tn' ? 'Go Ikopela Jang' : 'How to Apply'}</h3>
                 <div className="space-y-2">
                   {[
                     'Choose the licence type that matches your service or operation',
@@ -85,11 +87,11 @@ export default function LicensingFrameworkPage() {
             {/* Sidebar */}
             <div className="space-y-4">
               <Link to="/licensing" className="flex items-center gap-3 p-5 bg-[#6BBE4E] rounded-xl text-white hover:bg-[#5AAE3E] transition-all group">
-                <Award size={24} /><div><p className="text-sm font-bold">Apply for a Licence</p><p className="text-[10px] text-white/60">Download forms and submit applications</p></div><ArrowRight size={16} className="ml-auto" />
+                <Award size={24} /><div><p className="text-sm font-bold">{lang === 'tn' ? 'Ikopela Laesense' : 'Apply for a Licence'}</p><p className="text-[10px] text-white/60">Download forms and submit applications</p></div><ArrowRight size={16} className="ml-auto" />
               </Link>
 
               <div className="bg-white rounded-xl border border-gray-200 p-5">
-                <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wide mb-3">Related Pages</h3>
+                <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wide mb-3">{lang === 'tn' ? 'Ditsebe Tse di Amanang' : 'Related Pages'}</h3>
                 <div className="space-y-2">
                   {[
                     { label: 'ICT Licensing Framework', path: '/documents/ict-licensing', color: '#00A6CE' },
@@ -97,7 +99,7 @@ export default function LicensingFrameworkPage() {
                     { label: 'Broadcasting', path: '/mandate/broadcasting', color: '#C8237B' },
                     { label: 'Postal Services', path: '/mandate/postal', color: '#F7B731' },
                     { label: 'Licence Verification', path: '/services/licence-verification', color: '#6BBE4E' },
-                    { label: 'Governing Legislation', path: '/mandate/legislation', color: '#00458B' },
+                    { label: lang === 'tn' ? 'Melao e e Laolang' : 'Governing Legislation', path: '/mandate/legislation', color: '#00458B' },
                   ].map(link => (
                     <Link key={link.path} to={link.path} className="flex items-center gap-2.5 p-2 rounded-lg hover:bg-gray-50 transition-all group">
                       <div className="w-2 h-2 rounded-full" style={{ background: link.color }} />

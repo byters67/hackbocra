@@ -15,9 +15,10 @@ import {
   PolarGrid, PolarAngleAxis, PieChart, Pie, Cell
 } from 'recharts';
 import { useScrollReveal } from '../../hooks/useAnimations';
-import { supabase, supabaseUrl_, supabaseAnonKey_ } from '../../lib/supabase';
+import { supabase } from '../../lib/supabase';
 
 import PageHero from '../../components/ui/PageHero';
+import { useLanguage } from '../../lib/language';
 const BASE = import.meta.env.BASE_URL;
 const OPS = {
   mascom: { name:'Mascom Wireless', short:'Mascom', color:'#E21836', logo:`${BASE}images/operators/mascom.png` },
@@ -38,6 +39,7 @@ const KPI_INFO = {
 const KPI_KEYS = Object.keys(KPI_INFO);
 
 export default function QoSMonitoringPage() {
+  const { lang } = useLanguage();
   const [op, setOp] = useState('mascom');
   const [kpi, setKpi] = useState('call_success_rate');
   const [tab, setTab] = useState('overview');
@@ -88,12 +90,12 @@ export default function QoSMonitoringPage() {
         regional: `Analyse this REAL regional telecom data. Give exactly 4 bullet points (start each with •). Each bullet: 1-2 sentences about specific regions with numbers. No intro, no conclusion.\n\nRegional Data:\n${regionSummary}\n\nFocus: Urban vs rural coverage gaps, worst-served regions, which operator has best rural performance, digital divide.`,
       };
 
-      const res = await fetch(`${supabaseUrl_}/functions/v1/qos-insights`, {
+      const res = await fetch('https://cyalwtuladeexxfsbrcs.supabase.co/functions/v1/qos-insights', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${supabaseAnonKey_}`,
-          'apikey': supabaseAnonKey_,
+          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN5YWx3dHVsYWRlZXh4ZnNicmNzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM1MjM2NTYsImV4cCI6MjA4OTA5OTY1Nn0.rvH-J2O9sttpRFYLSo28BogTwBhwFD2Ei_QuMbnrHUk',
+          'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN5YWx3dHVsYWRlZXh4ZnNicmNzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM1MjM2NTYsImV4cCI6MjA4OTA5OTY1Nn0.rvH-J2O9sttpRFYLSo28BogTwBhwFD2Ei_QuMbnrHUk',
         },
         body: JSON.stringify({ prompt: prompts[t] || prompts.overview }),
       });
@@ -161,7 +163,7 @@ export default function QoSMonitoringPage() {
 
       
       {/* Hero */}
-      <PageHero category="SERVICES" title="Quality of Service Monitoring" description="Real-time performance data for Botswana's telecommunications operators — call success rates, throughput, latency, and more." color="cyan" />
+      <PageHero category="SERVICES" categoryTn="DITIRELO" title="Quality of Service Monitoring" titleTn="Tlhokomelo ya Boleng jwa Tirelo" description="Real-time performance data for Botswana's telecommunications operators — call success rates, throughput, latency, and more." descriptionTn="Data ya boleng jwa tirelo ya nako ya jaanong ya balaodi ba megala ba Botswana." color="cyan" />
 
 
       {/* Tabs + Operator */}

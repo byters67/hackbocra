@@ -15,6 +15,7 @@ import {
 import { useScrollReveal, useStaggerReveal } from '../../hooks/useAnimations';
 
 import PageHero from '../../components/ui/PageHero';
+import { useLanguage } from '../../lib/language';
 const BASE = import.meta.env.BASE_URL;
 
 const EXTENSIONS = [
@@ -81,6 +82,7 @@ const PARTNER_LOGOS = [
 ];
 
 export default function RegisterBWPage() {
+  const { lang } = useLanguage();
   const [domainSearch, setDomainSearch] = useState('');
   const [searchResult, setSearchResult] = useState(null);
   const [searching, setSearching] = useState(false);
@@ -167,13 +169,13 @@ export default function RegisterBWPage() {
 
       {/* ═══ HERO with domain search ═══ */}
       {/* Hero */}
-      <PageHero category="SERVICES" title="Register .BW Domain" description="Register and manage Botswana's country-code top-level domain (.bw) through the official NIC.BW registry." color="cyan" />
+      <PageHero category="SERVICES" categoryTn="DITIRELO" title="Register .BW Domain" titleTn="Kwadisa Lefelo la .BW" description="Register and manage Botswana's country-code top-level domain (.bw) through the official NIC.BW registry." descriptionTn="Kwadisa le go laola lefelo la khoutu ya naga ya Botswana (.bw) ka rejisetara ya NIC.BW." color="cyan" />
 
       {/* Domain Search */}
       <section className="px-4 sm:px-6 lg:px-8 -mt-5 relative z-10">
         <div className="max-w-2xl mx-auto">
           <div className="bg-white rounded-xl shadow-lg border border-gray-100 p-4">
-            <p className="text-xs font-bold text-bocra-slate/40 uppercase tracking-wide mb-2">Check Domain Availability</p>
+            <p className="text-xs font-bold text-bocra-slate/40 uppercase tracking-wide mb-2">{lang === 'tn' ? 'Tlhola go Nna Teng ga Lefelo' : 'Check Domain Availability'}</p>
             <form onSubmit={handleSearch} className="flex items-center gap-2">
               <div className="flex-1 relative">
                 <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
@@ -237,7 +239,7 @@ export default function RegisterBWPage() {
           <div ref={statsRef} className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             {[
               { value: '10,000+', label: 'Domains Registered', icon: Globe, color: '#00A6CE' },
-              { value: '70+', label: 'Accredited Registrars', icon: Building, color: '#C8237B' },
+              { value: '70+', label: lang === 'tn' ? 'Di-Rejisetara tse di Amogeletsweng' : 'Accredited Registrars', icon: Building, color: '#C8237B' },
               { value: '8', label: 'Domain Extensions', icon: Star, color: '#F7B731' },
               { value: '24hrs', label: 'Query Resolution Time', icon: Clock, color: '#6BBE4E' },
             ].map((s, i) => { const Icon = s.icon; return (
@@ -282,7 +284,7 @@ export default function RegisterBWPage() {
       {/* ═══ AVAILABLE EXTENSIONS ═══ */}
       <section className="py-8">
         <div className="section-wrapper">
-          <h2 className="text-xl font-bold text-bocra-slate text-center mb-2">Available Domain Extensions</h2>
+          <h2 className="text-xl font-bold text-bocra-slate text-center mb-2">{lang === 'tn' ? 'Dikgolosa tsa Lefelo tse di Teng' : 'Available Domain Extensions'}</h2>
           <p className="text-sm text-bocra-slate/40 text-center mb-6">Choose the right .bw extension for your needs</p>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-3xl mx-auto">
             {EXTENSIONS.map(e => (

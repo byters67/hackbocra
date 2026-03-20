@@ -25,6 +25,7 @@ import { supabase } from '../../lib/supabase';
 import { sanitizeInput, sanitizeError } from '../../lib/security';
 import ConsentCheckbox from '../../components/ui/ConsentCheckbox';
 import { useScrollReveal } from '../../hooks/useAnimations';
+import { useLanguage } from '../../lib/language';
 
 const REQUEST_TYPES = [
   { value: 'access', label: 'Access my data', desc: 'Get a copy of all personal data BOCRA holds about you', icon: Eye },
@@ -53,6 +54,7 @@ const STATUS_CONFIG = {
 };
 
 export default function DataRequestPage() {
+  const { lang } = useLanguage();
   const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const heroRef = useScrollReveal();
@@ -172,7 +174,7 @@ export default function DataRequestPage() {
       </div>
 
       {/* Hero */}
-      <PageHero category="SERVICES" title="My Data Rights" description="Exercise your rights under the Botswana Data Protection Act 2024. Request access to, correction, or deletion of your personal data held by BOCRA." color="blue" />
+      <PageHero category="SERVICES" categoryTn="DITIRELO" title="My Data Rights" titleTn="Ditshwanelo Tsa Me Tsa Data" description="Exercise your rights under the Botswana Data Protection Act 2024. Request access to, correction, or deletion of your personal data held by BOCRA." descriptionTn="Diragatsa ditshwanelo tsa gago ka fa tlase ga Molao wa Tshireletso ya Data wa Botswana 2024." color="blue" />
 
       <div className="max-w-4xl mx-auto px-6 py-10">
         {/* Not logged in — show explanation and login prompt */}
@@ -355,7 +357,7 @@ export default function DataRequestPage() {
         {/* ─── VIEW: New Request Form ─── */}
         {view === 'form' && (
           <form onSubmit={handleSubmit} className="space-y-6">
-            <h2 className="text-xl font-bold text-bocra-slate">Submit a Data Request</h2>
+            <h2 className="text-xl font-bold text-bocra-slate">{lang === 'tn' ? 'Romela Kopo ya Data' : 'Submit a Data Request'}</h2>
 
             {/* Step 1: Request type */}
             <div>
