@@ -412,7 +412,7 @@ export default function AdminTypeApprovalPage() {
             {filtered.length} Device{filtered.length !== 1 ? 's' : ''}
             {(filterCategory || filterStatus || searchTerm) ? ' (filtered)' : ''}
           </h3>
-          <a href="/hackathonteamproject/services/type-approval" target="_blank"
+          <a href="/hackbocra/services/type-approval" target="_blank"
             className="text-xs text-[#00A6CE] hover:underline flex items-center gap-1">
             <Eye size={12} /> View Public Page
           </a>

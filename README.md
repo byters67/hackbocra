@@ -2,7 +2,7 @@
 
 > **Botswana Communications Regulatory Authority** — Modern website built with React, Supabase, and GitHub Pages.
 
-**Live Site:** [https://hackathonteamproject.github.io/hackathonteamproject/](https://hackathonteamproject.github.io/hackathonteamproject/)
+**Live Site:** [https://byters67.github.io/hackbocra/](https://byters67.github.io/hackbocra/)
 
 ---
 
@@ -73,8 +73,8 @@ This is a complete redesign of the BOCRA website ([www.bocra.org.bw](https://www
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/hackathonteamproject/hackathonteamproject.git
-cd hackathonteamproject
+git clone https://github.com/byters67/hackbocra.git
+cd hackbocra
 
 # 2. Install dependencies
 npm install
@@ -86,7 +86,7 @@ cp .env.example .env.local
 npm run dev
 ```
 
-The dev server runs at `http://localhost:5173/hackathonteamproject/`
+The dev server runs at `http://localhost:5173/hackbocra/`
 
 ### Environment Variables
 
@@ -154,7 +154,7 @@ The site deploys automatically via GitHub Actions when you push to `main`:
 
 1. Push your changes to the `main` branch
 2. GitHub Actions builds the site and deploys to GitHub Pages
-3. Live at: https://hackathonteamproject.github.io/hackathonteamproject/
+3. Live at: https://byters67.github.io/hackbocra/
 
 ### GitHub Repository Setup
 

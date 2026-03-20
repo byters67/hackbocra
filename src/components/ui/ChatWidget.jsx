@@ -9,13 +9,14 @@ const CHAT_API = `${supabaseUrl_}/functions/v1/chat`;
 const WELCOME_MESSAGE = {
   role: "assistant",
   content:
-    "Hi! I'm the BOCRA Assistant. Ask me anything about licensing, complaints, regulations, fees, or BOCRA's services.",
+    "Hi! I'm the BOCRA Assistant. I can help you navigate the site, file complaints, find licensing info, check domain availability, report cyber threats, and more. What do you need help with?",
 };
 
 const SUGGESTED_QUESTIONS = [
   "How do I file a complaint?",
+  "I want to register a .bw domain",
   "What licences does BOCRA offer?",
-  "What is the Data Protection Act?",
+  "How do I get type approval?",
 ];
 
 export default function ChatWidget() {

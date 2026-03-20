@@ -46,6 +46,17 @@ import AdminTypeApproval from './pages/admin/AdminTypeApprovalPage';
 import AdminConsultations from './pages/admin/AdminConsultationsPage';
 import ConsultationsPage from './pages/public/ConsultationsPage';
 import SpeechesPage from './pages/public/SpeechesPage';
+import BroadcastingPage from './pages/public/BroadcastingPage';
+import InternetPage from './pages/public/InternetPage';
+import DataProtectionPage from './pages/public/DataProtectionPage';
+import LegislationPage from './pages/public/LegislationPage';
+import TelecommunicationsPage from './pages/public/TelecommunicationsPage';
+import PostalPage from './pages/public/PostalPage';
+import LicensingFrameworkPage from './pages/public/LicensingFrameworkPage';
+import InfrastructureSharingPage from './pages/public/InfrastructureSharingPage';
+import ConsumerEducationPage from './pages/public/ConsumerEducationPage';
+import TendersPage from './pages/public/TendersPage';
+import ChiefExecutivePage from './pages/public/ChiefExecutivePage';
 import DataRequestPage from './pages/public/DataRequestPage';
 
 export default function App() {
@@ -58,7 +69,7 @@ export default function App() {
           {!ready && <SplashScreen onComplete={() => setReady(true)} />}
 
           {ready && (
-            <BrowserRouter basename="/hackathonteamproject">
+            <BrowserRouter basename="/hackbocra">
               <Routes>
                 <Route path="/auth/login" element={<LoginPage />} />
                 <Route path="/auth/register" element={<LoginPage />} />
@@ -83,18 +94,18 @@ export default function App() {
                 <Route element={<Layout />}>
                   <Route path="/" element={<HomePage />} />
                   <Route path="/about/profile" element={<AboutProfilePage />} />
-                  <Route path="/about/chief-executive" element={<ContentPage />} />
+                  <Route path="/about/chief-executive" element={<ChiefExecutivePage />} />
                   <Route path="/about/history" element={<HistoryPage />} />
                   <Route path="/about/organogram" element={<ContentPage />} />
                   <Route path="/about/board" element={<BoardOfDirectorsPage />} />
                   <Route path="/about/executive-management" element={<ExecutiveManagementPage />} />
                   <Route path="/about/careers" element={<ContentPage />} />
-                  <Route path="/mandate/legislation" element={<ContentPage />} />
-                  <Route path="/mandate/telecommunications" element={<ContentPage />} />
-                  <Route path="/mandate/broadcasting" element={<ContentPage />} />
-                  <Route path="/mandate/postal" element={<ContentPage />} />
-                  <Route path="/mandate/internet" element={<ContentPage />} />
-                  <Route path="/mandate/licensing" element={<ContentPage />} />
+                  <Route path="/mandate/legislation" element={<LegislationPage />} />
+                  <Route path="/mandate/telecommunications" element={<TelecommunicationsPage />} />
+                  <Route path="/mandate/broadcasting" element={<BroadcastingPage />} />
+                  <Route path="/mandate/postal" element={<PostalPage />} />
+                  <Route path="/mandate/internet" element={<InternetPage />} />
+                  <Route path="/mandate/licensing" element={<LicensingFrameworkPage />} />
                   <Route path="/licensing" element={<LicensingHubPage />} />
                   <Route path="/licensing/:slug" element={<LicensingHubPage />} />
                   <Route path="/services/file-complaint" element={<FileComplaintPage />} />
@@ -112,22 +123,23 @@ export default function App() {
                   <Route path="/media/news-events" element={<NewsEventsPage />} />
                   <Route path="/media/speeches" element={<SpeechesPage />} />
                   <Route path="/media/center" element={<ContentPage />} />
-                  <Route path="/tenders" element={<ContentPage />} />
+                  <Route path="/tenders" element={<TendersPage />} />
                   <Route path="/contact" element={<ContactPage />} />
                   <Route path="/telecom-statistics" element={<TelecomStatisticsPage />} />
                   <Route path="/privacy-notice" element={<ContentPage />} />
                   <Route path="/portal/data-request" element={<DataRequestPage />} />
                   <Route path="/search" element={<SearchPage />} />
                   <Route path="/projects" element={<ContentPage />} />
-                  <Route path="/projects/bw-cctld" element={<ContentPage />} />
+                  <Route path="/projects/bw-cctld" element={<InternetPage />} />
                   <Route path="/projects/bw-cirt" element={<ContentPage />} />
                   <Route path="/cybersecurity" element={<CybersecurityHubPage />} />
+                  <Route path="/data-protection" element={<DataProtectionPage />} />
                   <Route path="/projects/electronic-evidence" element={<ContentPage />} />
                   <Route path="/projects/electronic-communications-transactions" element={<ContentPage />} />
                   <Route path="/projects/digital-switchover" element={<ContentPage />} />
-                  <Route path="/projects/infrastructure-sharing" element={<ContentPage />} />
+                  <Route path="/projects/infrastructure-sharing" element={<InfrastructureSharingPage />} />
                   <Route path="/complaints" element={<ContentPage />} />
-                  <Route path="/complaints/consumer-education" element={<ContentPage />} />
+                  <Route path="/complaints/consumer-education" element={<ConsumerEducationPage />} />
                   <Route path="/complaints/registering-complaints" element={<ContentPage />} />
                   <Route path="/technical/radio-frequency-plan" element={<ContentPage />} />
                   <Route path="/technical/radio-spectrum-planning" element={<ContentPage />} />

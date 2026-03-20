@@ -124,7 +124,7 @@ export default function QoSReportsPage() {
       <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
         <div className="p-4 border-b border-gray-100 flex items-center justify-between">
           <h3 className="text-sm font-bold text-gray-900">Submitted Reports ({reports.length})</h3>
-          <a href="/hackathonteamproject/services/qos-monitoring" target="_blank" className="text-xs text-[#00A6CE] hover:underline flex items-center gap-1"><BarChart3 size={12}/> View Public Dashboard</a>
+          <a href="/hackbocra/services/qos-monitoring" target="_blank" className="text-xs text-[#00A6CE] hover:underline flex items-center gap-1"><BarChart3 size={12}/> View Public Dashboard</a>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-xs">
