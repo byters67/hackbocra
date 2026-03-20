@@ -30,7 +30,8 @@
     "pdf-parse": "^1.1.1",
     "postcss": "^8.4.41",
     "tailwindcss": "^3.4.10",
-    "vite": "^5.4.2"
+    "vite": "^5.4.2",
+    "vite-plugin-pwa": "^1.2.0"
   },
   "homepage": "https://hackathonteamproject.github.io/hackathonteamproject/",
   "overrides": {
