@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>BOCRA - Redirecting...</title>
+  <script>
+    /**
+     * GitHub Pages SPA Redirect
+     * 
+     * GitHub Pages doesn't support server-side URL rewriting.
+     * This 404.html catches all routes and redirects to index.html,
+     * storing the original URL so React Router can handle it.
+     *
+     * IMPORTANT: We use location.replace() instead of <meta refresh>
+     * because meta refresh STRIPS the hash fragment (#access_token=...),
+     * which Supabase uses for email verification tokens.
+     */
+    sessionStorage.redirect = location.href;
+    location.replace('/hackathonteamproject/');
+  </script>
+</head>
+<body>
+  <p>Redirecting&hellip;</p>
+</body>
+</html>
