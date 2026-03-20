@@ -57,6 +57,7 @@ import InfrastructureSharingPage from './pages/public/InfrastructureSharingPage'
 import ConsumerEducationPage from './pages/public/ConsumerEducationPage';
 import TendersPage from './pages/public/TendersPage';
 import ChiefExecutivePage from './pages/public/ChiefExecutivePage';
+import OrganogramPage from './pages/public/OrganogramPage';
 import DataRequestPage from './pages/public/DataRequestPage';
 
 export default function App() {
@@ -96,7 +97,7 @@ export default function App() {
                   <Route path="/about/profile" element={<AboutProfilePage />} />
                   <Route path="/about/chief-executive" element={<ChiefExecutivePage />} />
                   <Route path="/about/history" element={<HistoryPage />} />
-                  <Route path="/about/organogram" element={<ContentPage />} />
+                  <Route path="/about/organogram" element={<OrganogramPage />} />
                   <Route path="/about/board" element={<BoardOfDirectorsPage />} />
                   <Route path="/about/executive-management" element={<ExecutiveManagementPage />} />
                   <Route path="/about/careers" element={<ContentPage />} />
