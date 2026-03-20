@@ -1,25 +1,42 @@
 /**
  * language.jsx — LanguageContext provider + useLanguage hook
- * English only — Setswana translation removed.
- * useLanguage() still works everywhere to avoid breaking any pages.
+ * Supports English (en) and Setswana (tn) with toggle.
+ * Language preference persisted in localStorage.
  */
-import { createContext, useContext, useCallback, useMemo } from 'react';
+import { createContext, useContext, useState, useCallback, useMemo } from 'react';
 import translations from './translations';
 
 const LanguageContext = createContext(null);
 
 export function LanguageProvider({ children }) {
-  const lang = 'en';
+  const [lang, setLangState] = useState(() => {
+    try {
+      return localStorage.getItem('bocra-lang') || 'en';
+    } catch {
+      return 'en';
+    }
+  });
 
-  const toggleLang = useCallback(() => {}, []);
-  const setLang = useCallback(() => {}, []);
+  const setLang = useCallback((newLang) => {
+    const l = newLang === 'tn' ? 'tn' : 'en';
+    setLangState(l);
+    try { localStorage.setItem('bocra-lang', l); } catch {}
+  }, []);
+
+  const toggleLang = useCallback(() => {
+    setLangState(prev => {
+      const next = prev === 'en' ? 'tn' : 'en';
+      try { localStorage.setItem('bocra-lang', next); } catch {}
+      return next;
+    });
+  }, []);
 
   const t = useCallback(
-    (key) => translations?.en?.[key] ?? key,
-    [],
+    (key) => translations?.[lang]?.[key] ?? translations?.en?.[key] ?? key,
+    [lang],
   );
 
-  const value = useMemo(() => ({ lang, setLang, toggleLang, t }), [setLang, toggleLang, t]);
+  const value = useMemo(() => ({ lang, setLang, toggleLang, t }), [lang, setLang, toggleLang, t]);
 
   return (
     <LanguageContext.Provider value={value}>
