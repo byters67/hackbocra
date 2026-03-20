@@ -54,6 +54,7 @@ import TelecommunicationsPage from './pages/public/TelecommunicationsPage';
 import PostalPage from './pages/public/PostalPage';
 import LicensingFrameworkPage from './pages/public/LicensingFrameworkPage';
 import InfrastructureSharingPage from './pages/public/InfrastructureSharingPage';
+import ConsumerEducationPage from './pages/public/ConsumerEducationPage';
 import DataRequestPage from './pages/public/DataRequestPage';
 
 export default function App() {
@@ -136,7 +137,7 @@ export default function App() {
                   <Route path="/projects/digital-switchover" element={<ContentPage />} />
                   <Route path="/projects/infrastructure-sharing" element={<InfrastructureSharingPage />} />
                   <Route path="/complaints" element={<ContentPage />} />
-                  <Route path="/complaints/consumer-education" element={<ContentPage />} />
+                  <Route path="/complaints/consumer-education" element={<ConsumerEducationPage />} />
                   <Route path="/complaints/registering-complaints" element={<ContentPage />} />
                   <Route path="/technical/radio-frequency-plan" element={<ContentPage />} />
                   <Route path="/technical/radio-spectrum-planning" element={<ContentPage />} />
