@@ -142,7 +142,7 @@ export default function AdminLayout() {
               Only admin and staff users can access this area.
             </p>
             <a
-              href="/hackathonteamproject/"
+              href="/hackbocra/"
               className="inline-block px-6 py-2.5 bg-[#00458B] text-white rounded-lg font-medium hover:bg-[#002D5C] transition-colors"
             >
               Return to Home
