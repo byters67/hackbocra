@@ -602,7 +602,7 @@ function LoginForm({ setView, signIn, lang }) {
             </button>
             <p className="text-xs text-center text-gray-400">
               Don't have an account?{' '}
-              <a href="/hackathonteamproject/services/asms-webcp" className="text-[#6BBE4E] font-medium hover:underline">Register at ASMS-WebCP</a>
+              <a href="/hackbocra/services/asms-webcp" className="text-[#6BBE4E] font-medium hover:underline">Register at ASMS-WebCP</a>
             </p>
           </form>
         </div>
