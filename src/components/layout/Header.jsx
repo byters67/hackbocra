@@ -36,7 +36,6 @@ function getNavItems(t, lang) {
         { label: t('nav.mandate.legislation'), path: '/mandate/legislation' },
         { label: t('nav.mandate.licensing'), path: '/mandate/licensing' },
         { heading: t('nav.mandate.projects') },
-        { label: t('nav.mandate.cctld'), path: '/mandate/internet' },
         { label: 'Data Protection', path: '/data-protection' },
         { label: t('nav.mandate.infraSharing'), path: '/projects/infrastructure-sharing' },
       ],
