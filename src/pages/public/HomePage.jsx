@@ -23,28 +23,16 @@ const IMG_TOWER = `${BASE}images/tower-blue.jpg`;
 const IMG_SUNSET = `${BASE}images/tower-sunset.jpg`;
 const IMG_MOBILE = `${BASE}images/mobile-world.jpeg`;
 
-const SECTORS = [
+const SECTORS_DATA = [
   { icon: Wifi, title: lang === 'tn' ? 'Megala le Tlhaeletsano' : 'Telecommunications', desc: lang === 'tn' ? 'Go laola dineteweke tsa megala, inthanete, le VoIP go fitlhelela botlhe.' : 'Regulating mobile networks, internet, and VoIP for universal access.', path: '/mandate/telecommunications', img: `${BASE}images/telecommunications.jpg`, color: '#00A6CE' },
   { icon: Radio, title: lang === 'tn' ? 'Phasalatso' : 'Broadcasting', desc: lang === 'tn' ? 'Go laola ditirelo tsa radio, TV, le phasalatso ya mo inthaneteng.' : 'Overseeing radio, TV, and online broadcasting services.', path: '/mandate/broadcasting', img: `${BASE}images/broadcasting.jpeg`, color: '#C8237B' },
   { icon: Mail, title: lang === 'tn' ? 'Ditirelo tsa Poso' : 'Postal', desc: lang === 'tn' ? 'Go laola ditirelo tsa poso tsa botlhe le tsa kgwebo.' : 'Managing universal and commercial postal services.', path: '/mandate/postal', img: `${BASE}images/postal.jpg`, color: '#F7B731' },
   { icon: Globe, title: lang === 'tn' ? 'Inthanete le ICT' : 'Internet & ICT', desc: lang === 'tn' ? 'Go rotloetsa inthanete e e lebelo, tshireletso ya saebo, le mafelo a .BW.' : 'Promoting broadband, cybersecurity, and .BW domains.', path: '/mandate/internet', img: `${BASE}images/internet_ict.jpg`, color: '#6BBE4E' },
 ];
 
-const SERVICES = [
-  { icon: AlertCircle, title: lang === 'tn' ? 'Tlhagisa Ngongorego' : 'File a Complaint', desc: 'Report issues with your service provider', path: '/services/file-complaint', color: '#C8237B' },
-  { icon: Search, title: lang === 'tn' ? 'Netefatsa Laesense' : 'Verify a Licence', desc: 'Check if an operator is licensed', path: '/services/licence-verification', color: '#00A6CE' },
-  { icon: Shield, title: lang === 'tn' ? 'Tumelelo ya Mofuta' : 'Type Approval', desc: 'Search approved equipment', path: '/services/type-approval', color: '#F7B731' },
-  { icon: Globe, title: lang === 'tn' ? 'Kwadisa .BW' : 'Register .BW', desc: 'Get your Botswana domain', path: '/services/register-bw', color: '#6BBE4E' },
-  { icon: Signal, title: lang === 'tn' ? 'Tlhokomelo ya Boleng' : 'QoS Monitoring', desc: 'Check network quality live', path: '/services/qos-monitoring', color: '#00A6CE' },
-  { icon: BarChart3, title: lang === 'tn' ? 'Dipalopalo' : 'Statistics', desc: 'Telecom sector data', path: '/telecom-statistics', color: '#C8237B' },
-];
+// SERVICES moved inside component
 
-const STATS = [
-  { value: 4200000, suffix: '+', label: lang === 'tn' ? 'Disamosetšene tsa Mogala' : 'Mobile Subscriptions', icon: Phone },
-  { value: 2100000, suffix: '+', label: lang === 'tn' ? 'Badirisi ba Madi a Mogala' : 'Mobile Money Users', icon: TrendingUp },
-  { value: 850000, suffix: '+', label: lang === 'tn' ? 'Basamosetšene ba Inthanete' : 'Broadband Subscribers', icon: Wifi },
-  { value: 3, suffix: '', label: lang === 'tn' ? 'Balaodi ba Neteweke' : 'Network Operators', icon: Building },
-];
+// STATS moved inside component
 
 const NEWS = [
   { date: 'Feb 2024', cat: 'Tender', title: 'Supply and Delivery of ICT Equipment', excerpt: 'Invitation to tender for the supply and delivery of ICT equipment to support BOCRA operations.' },
@@ -54,10 +42,32 @@ const NEWS = [
 ];
 
 export default function HomePage() {
+  const { lang } = useLanguage();
+  const tn = lang === 'tn';
   const heroRef = useRef(null);
   const sectorsRef = useStaggerReveal({ stagger: 0.15 });
   const servicesRef = useStaggerReveal({ stagger: 0.08 });
   const newsRef = useStaggerReveal({ stagger: 0.1 });
+  const SECTORS = [
+    { icon: Wifi, title: tn ? 'Megala le Tlhaeletsano' : 'Telecommunications', desc: tn ? 'Go laola dineteweke tsa megala, inthanete, le VoIP go fitlhelela botlhe.' : 'Regulating mobile networks, internet, and VoIP for universal access.', path: '/mandate/telecommunications', img: `${BASE}images/telecommunications.jpg`, color: '#00A6CE' },
+    { icon: Radio, title: tn ? 'Phasalatso' : 'Broadcasting', desc: tn ? 'Go laola ditirelo tsa radio, TV, le phasalatso ya mo inthaneteng.' : 'Overseeing radio, TV, and online broadcasting services.', path: '/mandate/broadcasting', img: `${BASE}images/broadcasting.jpeg`, color: '#C8237B' },
+    { icon: Mail, title: tn ? 'Ditirelo tsa Poso' : 'Postal', desc: tn ? 'Go laola ditirelo tsa poso tsa botlhe le tsa kgwebo.' : 'Managing universal and commercial postal services.', path: '/mandate/postal', img: `${BASE}images/postal.jpg`, color: '#F7B731' },
+    { icon: Globe, title: tn ? 'Inthanete le ICT' : 'Internet & ICT', desc: tn ? 'Go rotloetsa inthanete e e lebelo, tshireletso ya saebo, le mafelo a .BW.' : 'Promoting broadband, cybersecurity, and .BW domains.', path: '/mandate/internet', img: `${BASE}images/internet_ict.jpg`, color: '#6BBE4E' },
+  ];
+  const SERVICES = [
+    { icon: AlertCircle, title: tn ? 'Tlhagisa Ngongorego' : 'File a Complaint', desc: tn ? 'Bega mathata le motlamedi wa gago' : 'Report issues with your service provider', path: '/services/file-complaint', color: '#C8237B' },
+    { icon: Search, title: tn ? 'Netefatsa Laesense' : 'Verify a Licence', desc: tn ? 'Tlhola gore molaodi o na le laesense' : 'Check if an operator is licensed', path: '/services/licence-verification', color: '#00A6CE' },
+    { icon: Shield, title: tn ? 'Tumelelo ya Mofuta' : 'Type Approval', desc: tn ? 'Batla didirisiwa tse di amogetsweng' : 'Search approved equipment', path: '/services/type-approval', color: '#F7B731' },
+    { icon: Globe, title: tn ? 'Kwadisa .BW' : 'Register .BW', desc: tn ? 'Bona lefelo la gago la Botswana' : 'Get your Botswana domain', path: '/services/register-bw', color: '#6BBE4E' },
+    { icon: Signal, title: tn ? 'Tlhokomelo ya Boleng' : 'QoS Monitoring', desc: tn ? 'Tlhola boleng jwa neteweke ka nako' : 'Check network quality live', path: '/services/qos-monitoring', color: '#00A6CE' },
+    { icon: BarChart3, title: tn ? 'Dipalopalo' : 'Statistics', desc: tn ? 'Data ya lefapha la megala' : 'Telecom sector data', path: '/telecom-statistics', color: '#C8237B' },
+  ];
+  const STATS = [
+    { value: 4200000, suffix: '+', label: tn ? 'Disamosetšene tsa Mogala' : 'Mobile Subscriptions', icon: Phone },
+    { value: 2100000, suffix: '+', label: tn ? 'Badirisi ba Madi a Mogala' : 'Mobile Money Users', icon: TrendingUp },
+    { value: 850000, suffix: '+', label: tn ? 'Basamosetšene ba Inthanete' : 'Broadband Subscribers', icon: Wifi },
+    { value: 3, suffix: '', label: tn ? 'Balaodi ba Neteweke' : 'Network Operators', icon: Building },
+  ];
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -98,13 +108,13 @@ export default function HomePage() {
             </div>
 
             <h1 className="hero-kinetic text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-extrabold leading-[1.1] tracking-tight">
-              <span className="h-line kinetic-line text-white">{lang === 'tn' ? 'E e Golaganeng &' : 'A Connected &'}</span>
-              <span className="h-line kinetic-line kinetic-cyan text-[#00A6CE]">{lang === 'tn' ? 'E e Etelletsweng ke Dijithale' : 'Digitally Driven'}</span>
-              <span className="h-line kinetic-line text-white">{lang === 'tn' ? 'Setšhaba' : 'Society'}</span>
+              <span className="h-line kinetic-line text-white">{tn ? 'E e Golaganeng &' : 'A Connected &'}</span>
+              <span className="h-line kinetic-line kinetic-cyan text-[#00A6CE]">{tn ? 'E e Etelletsweng ke Dijithale' : 'Digitally Driven'}</span>
+              <span className="h-line kinetic-line text-white">{tn ? 'Setšhaba' : 'Society'}</span>
             </h1>
 
             <p className="h-desc text-base sm:text-lg text-white/60 mt-3 sm:mt-4 leading-relaxed max-w-lg">
-              {lang === 'tn' ? 'Go laola megala, phasalatso, poso le ditirelo tsa inthanete mo Botswana — go rotloetsa kgaisano, boitlhamedi, tshireletso ya badirisi le phitlhelelo ya botlhe.' : 'Regulating telecommunications, broadcasting, postal and internet services in Botswana — promoting competition, innovation, consumer protection and universal access for all.'}
+              {tn ? 'Go laola megala, phasalatso, poso le ditirelo tsa inthanete mo Botswana — go rotloetsa kgaisano, boitlhamedi, tshireletso ya badirisi le phitlhelelo ya botlhe.' : 'Regulating telecommunications, broadcasting, postal and internet services in Botswana — promoting competition, innovation, consumer protection and universal access for all.'}
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3 mt-4 sm:mt-6">
@@ -122,7 +132,7 @@ export default function HomePage() {
       {/* ═══ SECTORS ═══ */}
       <section className="py-10 sm:py-10 bg-white">
         <div className="section-wrapper">
-          <SectionHead label="{lang === 'tn' ? 'Se Re Se Laolang' : 'What We Regulate'}" title="{lang === 'tn' ? 'Maphata a le Manè, Pono e le Nngwe' : 'Four Sectors, One Vision'}" />
+          <SectionHead label={tn ? 'Se Re Se Laolang' : 'What We Regulate'} title={tn ? 'Maphata a le Manè, Pono e le Nngwe' : 'Four Sectors, One Vision'} />
           <div ref={sectorsRef} className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory sm:snap-none sm:pb-0 sm:grid sm:grid-cols-2 lg:grid-cols-4 sm:gap-5 mt-8 -mx-4 px-4 sm:mx-0 sm:px-0" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' }}>
             {SECTORS.map((s) => {
               const Icon = s.icon;
@@ -150,7 +160,7 @@ export default function HomePage() {
       {/* ═══ SERVICES ═══ */}
       <section className="py-10 sm:py-10 bg-gray-50">
         <div className="section-wrapper">
-          <SectionHead label="Citizen Services" title="How Can We Help You?" />
+          <SectionHead label={tn ? 'Ditirelo tsa Baagi' : 'Citizen Services'} title={tn ? 'Re ka Go Thusa Jang?' : 'How Can We Help You?'} />
           <div ref={servicesRef} className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory sm:snap-none sm:pb-0 sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-5 mt-8 -mx-4 px-4 sm:mx-0 sm:px-0" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' }}>
             {SERVICES.map((s) => {
               const Icon = s.icon;
@@ -185,8 +195,8 @@ export default function HomePage() {
         <div className="absolute inset-0 bg-bocra-blue/90" />
         <div className="section-wrapper relative z-10">
           <div className="text-center mb-8">
-            <span className="inline-block px-4 py-1.5 bg-white/10 rounded-full text-sm font-medium text-white/80 mb-4">Telecom Statistics</span>
-            <h2 className="text-3xl md:text-4xl font-extrabold text-white">Botswana by the Numbers</h2>
+            <span className="inline-block px-4 py-1.5 bg-white/10 rounded-full text-sm font-medium text-white/80 mb-4">{tn ? "Dipalopalo tsa Megala" : "Telecom Statistics"}</span>
+            <h2 className="text-3xl md:text-4xl font-extrabold text-white">{tn ? "Botswana ka Dipalo" : "Botswana by the Numbers"}</h2>
           </div>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
             {STATS.map((s) => <StatCard key={s.label} {...s} />)}
@@ -204,8 +214,8 @@ export default function HomePage() {
         <div className="section-wrapper">
           <div className="flex items-end justify-between mb-8">
             <div>
-              <span className="inline-block px-4 py-1.5 bg-bocra-blue/5 rounded-full text-sm font-medium text-bocra-blue mb-4">Latest Updates</span>
-              <h2 className="text-3xl md:text-4xl font-extrabold text-bocra-slate">News & Events</h2>
+              <span className="inline-block px-4 py-1.5 bg-bocra-blue/5 rounded-full text-sm font-medium text-bocra-blue mb-4">{tn ? "Diphetogo tsa Bosheng" : "Latest Updates"}</span>
+              <h2 className="text-3xl md:text-4xl font-extrabold text-bocra-slate">{tn ? "Dikgang le Ditiragalo" : "News & Events"}</h2>
             </div>
             <Link to="/media/news-events" className="hidden sm:inline-flex items-center gap-2 text-sm font-semibold text-bocra-blue hover:gap-3 transition-all">
               All News <ArrowRight size={14} />
@@ -238,8 +248,8 @@ export default function HomePage() {
           <div className="group relative rounded-3xl p-10 md:p-12 text-white overflow-hidden bg-bocra-magenta hover:shadow-2xl hover:shadow-bocra-magenta/20 hover:-translate-y-1 transition-all duration-300 cursor-pointer">
             <div className="absolute top-0 right-0 w-40 h-40 bg-white/5 rounded-full blur-2xl translate-x-1/3 -translate-y-1/3 group-hover:scale-150 transition-transform duration-500" />
             <AlertCircle size={32} className="mb-4 opacity-80 group-hover:scale-110 transition-transform" />
-            <h3 className="text-2xl md:text-3xl font-extrabold">Have a Complaint?</h3>
-            <p className="text-white/70 mt-2 mb-6 max-w-md">Report issues with your telecom, broadcasting, or postal provider.</p>
+            <h3 className="text-2xl md:text-3xl font-extrabold">{tn ? 'O na le Ngongorego?' : 'Have a Complaint?'}</h3>
+            <p className="text-white/70 mt-2 mb-6 max-w-md">{tn ? 'Bega mathata le motlamedi wa gago wa megala, phasalatso, kgotsa poso.' : 'Report issues with your telecom, broadcasting, or postal provider.'}</p>
             <Link to="/services/file-complaint" className="inline-flex items-center gap-2 px-6 py-3 bg-white text-bocra-magenta font-bold rounded-xl hover:shadow-lg hover:gap-3 transition-all">
               File Now <ArrowRight size={16} />
             </Link>
@@ -247,8 +257,8 @@ export default function HomePage() {
           <div className="group relative rounded-3xl p-10 md:p-12 text-white overflow-hidden bg-bocra-blue hover:shadow-2xl hover:shadow-bocra-blue/20 hover:-translate-y-1 transition-all duration-300 cursor-pointer">
             <div className="absolute top-0 right-0 w-40 h-40 bg-white/5 rounded-full blur-2xl translate-x-1/3 -translate-y-1/3 group-hover:scale-150 transition-transform duration-500" />
             <FileText size={32} className="mb-4 opacity-80 group-hover:scale-110 transition-transform" />
-            <h3 className="text-2xl md:text-3xl font-extrabold">Need a Licence?</h3>
-            <p className="text-white/70 mt-2 mb-6 max-w-md">Apply for telecom, broadcasting, or postal service licences.</p>
+            <h3 className="text-2xl md:text-3xl font-extrabold">{tn ? 'O Tlhoka Laesense?' : 'Need a Licence?'}</h3>
+            <p className="text-white/70 mt-2 mb-6 max-w-md">{tn ? 'Ikopela dilaesense tsa megala, phasalatso, kgotsa ditirelo tsa poso.' : 'Apply for telecom, broadcasting, or postal service licences.'}</p>
             <Link to="/licensing" className="inline-flex items-center gap-2 px-6 py-3 bg-white text-bocra-blue font-bold rounded-xl hover:shadow-lg hover:gap-3 transition-all">
               Learn More <ArrowRight size={16} />
             </Link>
