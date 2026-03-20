@@ -48,6 +48,7 @@ import ConsultationsPage from './pages/public/ConsultationsPage';
 import SpeechesPage from './pages/public/SpeechesPage';
 import BroadcastingPage from './pages/public/BroadcastingPage';
 import InternetPage from './pages/public/InternetPage';
+import DataProtectionPage from './pages/public/DataProtectionPage';
 import DataRequestPage from './pages/public/DataRequestPage';
 
 export default function App() {
@@ -124,6 +125,7 @@ export default function App() {
                   <Route path="/projects/bw-cctld" element={<ContentPage />} />
                   <Route path="/projects/bw-cirt" element={<ContentPage />} />
                   <Route path="/cybersecurity" element={<CybersecurityHubPage />} />
+                  <Route path="/data-protection" element={<DataProtectionPage />} />
                   <Route path="/projects/electronic-evidence" element={<ContentPage />} />
                   <Route path="/projects/electronic-communications-transactions" element={<ContentPage />} />
                   <Route path="/projects/digital-switchover" element={<ContentPage />} />
