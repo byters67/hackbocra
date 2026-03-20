@@ -72,7 +72,7 @@ const STAT_CARDS = [
   { icon: Phone, label: 'Mobile Subscriptions', value: 4710000, suffix: '', color: 'bocra-blue' },
   { icon: CreditCard, label: 'Mobile Money Users', value: 2100000, suffix: '', color: 'bocra-cyan' },
   { icon: Wifi, label: 'Broadband Subscribers', value: 922000, suffix: '', color: 'bocra-green' },
-  { icon: Radio, label: lang === 'tn' ? 'Balaodi ba ba nang le Dilaesense' : 'Licensed Operators', value: 3, suffix: '', color: 'bocra-magenta' },
+  { icon: Radio, label: 'Licensed Operators', value: 3, suffix: '', color: 'bocra-magenta' },
 ];
 
 const OPERATOR_COLORS = { Mascom: '#E21836', BTC: '#0066CC', Orange: '#FF6600' };

@@ -106,7 +106,7 @@ const SEARCH_INDEX = [
 ];
 
 const POPULAR_SEARCHES = [
-  { label: lang === 'tn' ? 'Tlhagisa Ngongorego' : 'File a Complaint', query: 'complaint' },
+  { label: 'File a Complaint', query: 'complaint' },
   { label: 'Mascom', query: 'mascom' },
   { label: 'Cybersecurity', query: 'cybersecurity' },
   { label: 'Licence', query: 'licence' },
@@ -120,6 +120,7 @@ const TYPE_ORDER = { Page: 0, Document: 1, Operator: 2 };
 
 export default function SearchPage() {
   const { lang } = useLanguage();
+  const tn = lang === 'tn';
   const [searchParams] = useSearchParams();
   const [query, setQuery] = useState(searchParams.get('q') || '');
   const heroRef = useScrollReveal();

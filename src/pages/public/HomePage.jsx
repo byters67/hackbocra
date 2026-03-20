@@ -23,12 +23,6 @@ const IMG_TOWER = `${BASE}images/tower-blue.jpg`;
 const IMG_SUNSET = `${BASE}images/tower-sunset.jpg`;
 const IMG_MOBILE = `${BASE}images/mobile-world.jpeg`;
 
-const SECTORS_DATA = [
-  { icon: Wifi, title: lang === 'tn' ? 'Megala le Tlhaeletsano' : 'Telecommunications', desc: lang === 'tn' ? 'Go laola dineteweke tsa megala, inthanete, le VoIP go fitlhelela botlhe.' : 'Regulating mobile networks, internet, and VoIP for universal access.', path: '/mandate/telecommunications', img: `${BASE}images/telecommunications.jpg`, color: '#00A6CE' },
-  { icon: Radio, title: lang === 'tn' ? 'Phasalatso' : 'Broadcasting', desc: lang === 'tn' ? 'Go laola ditirelo tsa radio, TV, le phasalatso ya mo inthaneteng.' : 'Overseeing radio, TV, and online broadcasting services.', path: '/mandate/broadcasting', img: `${BASE}images/broadcasting.jpeg`, color: '#C8237B' },
-  { icon: Mail, title: lang === 'tn' ? 'Ditirelo tsa Poso' : 'Postal', desc: lang === 'tn' ? 'Go laola ditirelo tsa poso tsa botlhe le tsa kgwebo.' : 'Managing universal and commercial postal services.', path: '/mandate/postal', img: `${BASE}images/postal.jpg`, color: '#F7B731' },
-  { icon: Globe, title: lang === 'tn' ? 'Inthanete le ICT' : 'Internet & ICT', desc: lang === 'tn' ? 'Go rotloetsa inthanete e e lebelo, tshireletso ya saebo, le mafelo a .BW.' : 'Promoting broadband, cybersecurity, and .BW domains.', path: '/mandate/internet', img: `${BASE}images/internet_ict.jpg`, color: '#6BBE4E' },
-];
 
 // SERVICES moved inside component
 
