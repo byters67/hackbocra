@@ -1,127 +1,106 @@
 /**
  * OrganogramPage.jsx — BOCRA Organisational Structure
+ * Animated org tree with GSAP — lines draw themselves, nodes fade in
  * Route: /about/organogram
  */
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import {
   ChevronRight, Users, Shield, BarChart3, Radio, Briefcase,
   Globe, Scale, Award, Wifi, BookOpen, Building, FileText,
-  Phone, ArrowRight, ChevronDown
+  ChevronDown
 } from 'lucide-react';
-import { useScrollReveal, useStaggerReveal } from '../../hooks/useAnimations';
 import PageHero from '../../components/ui/PageHero';
 
+gsap.registerPlugin(ScrollTrigger);
+
 const DEPARTMENTS = [
-  {
-    name: 'Office of the Chief Executive',
-    head: 'Mr. Martin Mokgware',
-    title: 'Chief Executive',
-    color: '#00458B',
-    icon: Briefcase,
-    desc: 'Provides overall leadership and strategic direction for the Authority. Reports to the Board of Directors.',
-    isTop: true,
-  },
-  {
-    name: 'Compliance & Monitoring',
-    head: 'Department Head',
-    title: 'Director',
-    color: '#00A6CE',
-    icon: Shield,
-    desc: 'Ensures licensee compliance with regulations, conducts inspections, and monitors adherence to licence conditions and regulatory requirements.',
-    functions: ['Licence compliance monitoring', 'Regulatory inspections', 'Consumer complaint investigation', 'Enforcement actions'],
-  },
-  {
-    name: 'Technical Services',
-    head: 'Department Head',
-    title: 'Director',
-    color: '#C8237B',
-    icon: Radio,
-    desc: 'Manages radio frequency spectrum, type approval of equipment, quality of service monitoring, and technical standards development.',
-    functions: ['Spectrum management & planning', 'Type approval certification', 'QoS monitoring & reporting', 'Technical standards development'],
-  },
-  {
-    name: 'Licensing',
-    head: 'Department Head',
-    title: 'Director',
-    color: '#6BBE4E',
-    icon: Award,
-    desc: 'Processes licence applications, manages licence renewals, and maintains the registry of licensed operators across all sectors.',
-    functions: ['Licence application processing', 'Licence renewals & amendments', 'Operator registry management', 'Fee collection & administration'],
-  },
-  {
-    name: 'Broadband & Universal Service',
-    head: 'Department Head',
-    title: 'Director',
-    color: '#F7B731',
-    icon: Wifi,
-    desc: 'Implements the Universal Access Service Fund (UASF) and broadband expansion projects to extend coverage to underserved and rural areas.',
-    functions: ['UASF project management', 'Broadband strategy implementation', 'Rural connectivity expansion', 'Digital inclusion programmes'],
-  },
-  {
-    name: 'Business Development',
-    head: 'Department Head',
-    title: 'Director',
-    color: '#7C3AED',
-    icon: BarChart3,
-    desc: 'Drives strategy, research, market analysis, and stakeholder engagement to inform regulatory decisions and industry development.',
-    functions: ['Strategic planning & research', 'Market analysis & statistics', 'Stakeholder engagement', 'Industry benchmarking'],
-  },
-  {
-    name: 'Corporate Communications & Relations',
-    head: 'Department Head',
-    title: 'Director',
-    color: '#00A6CE',
-    icon: Globe,
-    desc: 'Manages public affairs, media relations, consumer education, and BOCRA\'s public image and outreach programmes.',
-    functions: ['Public affairs & media relations', 'Consumer education campaigns', 'Website & digital presence', 'Public consultations'],
-  },
-  {
-    name: 'Legal, Compliance & Board Secretary',
-    head: 'Department Head',
-    title: 'Director',
-    color: '#DC2626',
-    icon: Scale,
-    desc: 'Provides legal advice, manages governance and board affairs, handles dispute resolution, and ensures regulatory compliance.',
-    functions: ['Legal advisory services', 'Board secretariat & governance', 'Dispute resolution', 'Regulatory compliance framework'],
-  },
-  {
-    name: 'Finance',
-    head: 'Department Head',
-    title: 'Director',
-    color: '#059669',
-    icon: FileText,
-    desc: 'Manages financial planning, budgeting, accounting, procurement, and financial reporting for the Authority.',
-    functions: ['Financial management & reporting', 'Budget planning & control', 'Procurement & tenders', 'Revenue management'],
-  },
-  {
-    name: 'Corporate Support',
-    head: 'Department Head',
-    title: 'Director',
-    color: '#64748B',
-    icon: Building,
-    desc: 'Handles human resources, administration, facilities management, IT infrastructure, and organisational development.',
-    functions: ['Human resources management', 'ICT & infrastructure', 'Facilities management', 'Training & development'],
-  },
+  { name: 'Compliance & Monitoring', icon: Shield, color: '#00A6CE', desc: 'Licensee compliance, inspections, enforcement', functions: ['Licence compliance monitoring', 'Regulatory inspections', 'Consumer complaint investigation', 'Enforcement actions'] },
+  { name: 'Technical Services', icon: Radio, color: '#C8237B', desc: 'Spectrum, type approval, QoS monitoring', functions: ['Spectrum management & planning', 'Type approval certification', 'QoS monitoring & reporting', 'Technical standards'] },
+  { name: 'Licensing', icon: Award, color: '#6BBE4E', desc: 'Licence applications, renewals, registry', functions: ['Application processing', 'Licence renewals', 'Operator registry', 'Fee administration'] },
+  { name: 'Broadband & Universal Service', icon: Wifi, color: '#F7B731', desc: 'UASF, broadband expansion, rural coverage', functions: ['UASF projects', 'Broadband strategy', 'Rural connectivity', 'Digital inclusion'] },
+  { name: 'Business Development', icon: BarChart3, color: '#7C3AED', desc: 'Strategy, research, market analysis', functions: ['Strategic planning', 'Market analysis', 'Stakeholder engagement', 'Industry benchmarking'] },
+  { name: 'Corporate Communications', icon: Globe, color: '#0891B2', desc: 'Public affairs, media, consumer education', functions: ['Media relations', 'Consumer education', 'Digital presence', 'Public consultations'] },
+  { name: 'Legal & Board Secretary', icon: Scale, color: '#DC2626', desc: 'Legal affairs, governance, disputes', functions: ['Legal advisory', 'Board secretariat', 'Dispute resolution', 'Compliance framework'] },
+  { name: 'Finance', icon: FileText, color: '#059669', desc: 'Financial management, procurement', functions: ['Financial reporting', 'Budget control', 'Procurement & tenders', 'Revenue management'] },
+  { name: 'Corporate Support', icon: Building, color: '#64748B', desc: 'HR, administration, IT, facilities', functions: ['Human resources', 'ICT infrastructure', 'Facilities', 'Training & development'] },
 ];
 
 const OBJECTIVES = [
-  { title: 'Promote Competition', desc: 'Foster a competitive market that benefits consumers', icon: BarChart3, color: '#00A6CE' },
-  { title: 'Universal Access', desc: 'Expand communications services to all Batswana', icon: Wifi, color: '#6BBE4E' },
-  { title: 'Consumer Protection', desc: 'Safeguard the interests of communications consumers', icon: Shield, color: '#C8237B' },
-  { title: 'Resource Optimisation', desc: 'Efficient management of spectrum and national resources', icon: Radio, color: '#F7B731' },
-  { title: 'Talent Development', desc: 'Build a skilled and motivated workforce', icon: Users, color: '#7C3AED' },
-  { title: 'Stakeholder Engagement', desc: 'Meaningful engagement with industry and public', icon: Globe, color: '#00458B' },
+  { title: 'Competition', icon: BarChart3, color: '#00A6CE' },
+  { title: 'Universal Access', icon: Wifi, color: '#6BBE4E' },
+  { title: 'Consumer Protection', icon: Shield, color: '#C8237B' },
+  { title: 'Resource Optimisation', icon: Radio, color: '#F7B731' },
+  { title: 'Talent Development', icon: Users, color: '#7C3AED' },
+  { title: 'Stakeholder Engagement', icon: Globe, color: '#00458B' },
 ];
 
 export default function OrganogramPage() {
-  const [expandedDept, setExpandedDept] = useState(null);
-  const heroRef = useScrollReveal();
-  const deptRef = useStaggerReveal({ stagger: 0.06 });
-  const objRef = useStaggerReveal({ stagger: 0.08 });
+  const [expanded, setExpanded] = useState(null);
+  const treeRef = useRef(null);
+  const boardRef = useRef(null);
+  const ceRef = useRef(null);
+  const lineRefs = useRef([]);
+  const deptRefs = useRef([]);
+  const objRef = useRef(null);
 
-  const ceDept = DEPARTMENTS.find(d => d.isTop);
-  const depts = DEPARTMENTS.filter(d => !d.isTop);
+  useEffect(() => {
+    if (!treeRef.current) return;
+
+    const ctx = gsap.context(() => {
+      const trigger = { trigger: treeRef.current, start: 'top 80%' };
+
+      // Board node
+      gsap.fromTo(boardRef.current,
+        { opacity: 0, y: -30, scale: 0.8 },
+        { opacity: 1, y: 0, scale: 1, duration: 0.7, ease: 'back.out(1.7)', scrollTrigger: trigger }
+      );
+
+      // Connector lines draw in
+      lineRefs.current.forEach((el, i) => {
+        if (!el) return;
+        gsap.fromTo(el,
+          { scaleY: 0, transformOrigin: 'top' },
+          { scaleY: 1, duration: 0.4, delay: 0.3 + i * 0.15, ease: 'power2.out', scrollTrigger: trigger }
+        );
+      });
+
+      // CE node
+      gsap.fromTo(ceRef.current,
+        { opacity: 0, scale: 0.7 },
+        { opacity: 1, scale: 1, duration: 0.7, delay: 0.4, ease: 'back.out(1.7)', scrollTrigger: trigger }
+      );
+
+      // CE glow pulse
+      gsap.to('.ce-glow', {
+        boxShadow: '0 0 40px rgba(0, 166, 206, 0.25)',
+        repeat: -1, yoyo: true, duration: 2.5, ease: 'sine.inOut',
+      });
+
+      // Department cards
+      deptRefs.current.forEach((el, i) => {
+        if (!el) return;
+        gsap.fromTo(el,
+          { opacity: 0, y: 40, scale: 0.9 },
+          { opacity: 1, y: 0, scale: 1, duration: 0.5, delay: 0.7 + i * 0.07, ease: 'back.out(1.2)', scrollTrigger: trigger }
+        );
+      });
+
+      // Objectives
+      if (objRef.current) {
+        gsap.fromTo(objRef.current.children,
+          { opacity: 0, y: 20, scale: 0.9 },
+          { opacity: 1, y: 0, scale: 1, stagger: 0.08, duration: 0.4, ease: 'back.out(1.2)',
+            scrollTrigger: { trigger: objRef.current, start: 'top 85%' }
+          }
+        );
+      }
+    }, treeRef);
+
+    return () => ctx.revert();
+  }, []);
 
   return (
     <div className="bg-white min-h-screen">
@@ -139,102 +118,131 @@ export default function OrganogramPage() {
 
       <PageHero category="ABOUT" title="Organisational Structure" description="BOCRA is structured into specialised departments under the leadership of the Chief Executive, each focused on a key area of the Authority's mandate." color="blue" />
 
-      {/* Visual Org Chart */}
-      <section className="py-10">
-        <div className="section-wrapper max-w-5xl">
-
-          {/* CE Box — Top */}
-          <div className="flex justify-center mb-2">
-            <Link to="/about/chief-executive" className="bg-gradient-to-br from-[#00458B] to-[#001A3A] text-white rounded-xl p-5 text-center max-w-xs w-full hover:shadow-xl transition-all group">
-              <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center mx-auto mb-2">
-                <Briefcase size={22} className="text-[#00A6CE]" />
-              </div>
-              <p className="text-sm font-bold">{ceDept.head}</p>
-              <p className="text-[10px] text-white/50">{ceDept.title}</p>
-              <p className="text-[10px] text-[#00A6CE] mt-1 opacity-0 group-hover:opacity-100 transition-all">View Profile →</p>
-            </Link>
-          </div>
-
-          {/* Connector line */}
-          <div className="flex justify-center mb-2">
-            <div className="w-px h-8 bg-gray-300" />
-          </div>
-          <div className="flex justify-center mb-4">
-            <div className="h-px bg-gray-300" style={{ width: '80%' }} />
-          </div>
+      {/* Animated Org Tree */}
+      <section className="py-10 overflow-hidden" ref={treeRef}>
+        <div className="section-wrapper max-w-6xl">
 
           {/* Board */}
-          <div className="flex justify-center mb-6">
-            <Link to="/about/board" className="bg-white border-2 border-[#00A6CE]/20 rounded-xl px-5 py-3 text-center hover:border-[#00A6CE] hover:shadow-md transition-all">
-              <p className="text-xs font-bold text-bocra-slate">Board of Directors</p>
-              <p className="text-[10px] text-bocra-slate/40">Chaired by Dr. Bokamoso Basutli</p>
+          <div className="flex justify-center" ref={boardRef} style={{ opacity: 0 }}>
+            <Link to="/about/board" className="bg-white border-2 border-[#00A6CE]/20 rounded-2xl px-8 py-5 text-center hover:border-[#00A6CE] hover:shadow-xl transition-all duration-500 group relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-[#00A6CE]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="relative">
+                <div className="w-11 h-11 rounded-full bg-[#00A6CE]/10 flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition-transform duration-300">
+                  <Users size={20} className="text-[#00A6CE]" />
+                </div>
+                <p className="text-sm font-bold text-bocra-slate">Board of Directors</p>
+                <p className="text-[10px] text-bocra-slate/40">Chaired by Dr. Bokamoso Basutli</p>
+              </div>
             </Link>
           </div>
 
+          {/* Line: Board → CE */}
+          <div className="flex justify-center" ref={el => lineRefs.current[0] = el} style={{ transformOrigin: 'top', transform: 'scaleY(0)' }}>
+            <div className="w-0.5 h-8 bg-gradient-to-b from-[#00A6CE]/40 to-[#00458B]/40 rounded-full" />
+          </div>
+
+          {/* CE */}
+          <div className="flex justify-center" ref={ceRef} style={{ opacity: 0 }}>
+            <Link to="/about/chief-executive" className="ce-glow bg-gradient-to-br from-[#00458B] via-[#003366] to-[#001A3A] text-white rounded-2xl p-6 text-center max-w-sm w-full hover:shadow-2xl transition-all duration-500 group relative overflow-hidden">
+              <div className="absolute -top-12 -right-12 w-32 h-32 bg-[#00A6CE]/5 rounded-full" />
+              <div className="absolute -bottom-8 -left-8 w-24 h-24 bg-[#C8237B]/5 rounded-full" />
+              <div className="relative">
+                <div className="w-14 h-14 rounded-full bg-white/10 flex items-center justify-center mx-auto mb-3 group-hover:bg-white/20 transition-colors duration-300 group-hover:scale-110">
+                  <Briefcase size={24} className="text-[#00A6CE]" />
+                </div>
+                <p className="text-lg font-bold tracking-tight">Mr. Martin Mokgware</p>
+                <p className="text-xs text-white/40 mt-0.5">Chief Executive</p>
+                <div className="flex justify-center gap-1.5 mt-3">
+                  {['#00A6CE','#C8237B','#F7B731','#6BBE4E'].map(c => (
+                    <div key={c} className="w-2 h-2 rounded-full" style={{ background: c }} />
+                  ))}
+                </div>
+              </div>
+            </Link>
+          </div>
+
+          {/* Line: CE → Departments */}
+          <div className="flex justify-center" ref={el => lineRefs.current[1] = el} style={{ transformOrigin: 'top', transform: 'scaleY(0)' }}>
+            <div className="w-0.5 h-8 bg-gradient-to-b from-[#00458B]/40 to-gray-200 rounded-full" />
+          </div>
+
+          {/* Horizontal connector */}
+          <div className="flex justify-center mb-2" ref={el => lineRefs.current[2] = el} style={{ transformOrigin: 'top', transform: 'scaleY(0)' }}>
+            <div className="h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent" style={{ width: '90%' }} />
+          </div>
+
+          {/* Departments label */}
+          <p className="text-[10px] text-bocra-slate/25 uppercase tracking-[0.25em] font-medium text-center mb-5">Departments</p>
+
           {/* Department Grid */}
-          <h3 className="text-lg font-bold text-bocra-slate text-center mb-6">Departments</h3>
-          <div ref={deptRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-            {depts.map(dept => {
-              const isExpanded = expandedDept === dept.name;
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            {DEPARTMENTS.map((dept, i) => {
+              const isExp = expanded === dept.name;
+              const Icon = dept.icon;
               return (
-                <button
+                <div
                   key={dept.name}
-                  onClick={() => setExpandedDept(isExpanded ? null : dept.name)}
-                  className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-md transition-all text-left w-full"
+                  ref={el => deptRefs.current[i] = el}
+                  style={{ opacity: 0 }}
+                  onClick={() => setExpanded(isExp ? null : dept.name)}
+                  className="cursor-pointer bg-white rounded-xl border border-gray-100 overflow-hidden hover:shadow-lg hover:border-gray-200 transition-all duration-300 group relative"
                 >
-                  <div className="h-1.5" style={{ background: dept.color }} />
-                  <div className="p-4">
-                    <div className="flex items-center gap-2.5 mb-2">
-                      <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: `${dept.color}12` }}>
-                        <dept.icon size={16} style={{ color: dept.color }} />
+                  <div className="h-1 transition-all duration-500 group-hover:h-1.5" style={{ background: dept.color }} />
+                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-xl"
+                    style={{ boxShadow: `inset 0 0 40px ${dept.color}06` }} />
+                  <div className="p-4 relative">
+                    <div className="flex items-center gap-3 mb-2">
+                      <div className="w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:rotate-3"
+                        style={{ background: `${dept.color}12` }}>
+                        <Icon size={18} style={{ color: dept.color }} />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-xs font-bold text-bocra-slate truncate">{dept.name}</p>
-                        <p className="text-[10px] text-gray-400">{dept.title}</p>
+                        <p className="text-sm font-bold text-bocra-slate truncate group-hover:text-[#00458B] transition-colors">{dept.name}</p>
+                        <p className="text-[10px] text-bocra-slate/30">Director</p>
                       </div>
-                      <ChevronDown size={14} className={`text-gray-300 transition-transform flex-shrink-0 ${isExpanded ? 'rotate-180' : ''}`} />
+                      <ChevronDown size={14} className={`text-gray-300 transition-all duration-300 flex-shrink-0 ${isExp ? 'rotate-180 text-gray-500' : 'group-hover:text-gray-400'}`} />
                     </div>
                     <p className="text-[11px] text-bocra-slate/50 leading-relaxed">{dept.desc}</p>
-
-                    {isExpanded && dept.functions && (
-                      <div className="mt-3 pt-3 border-t border-gray-100 space-y-1.5">
-                        {dept.functions.map((fn, i) => (
-                          <div key={i} className="flex items-center gap-2">
-                            <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: dept.color }} />
+                    <div className={`overflow-hidden transition-all duration-400 ${isExp ? 'max-h-40 mt-3 pt-3 border-t border-gray-100' : 'max-h-0'}`}>
+                      <div className="space-y-1.5">
+                        {dept.functions.map((fn, j) => (
+                          <div key={j} className="flex items-center gap-2">
+                            <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: dept.color, animation: `pulse 2s ease-in-out ${j * 0.2}s infinite` }} />
                             <p className="text-[10px] text-bocra-slate/60">{fn}</p>
                           </div>
                         ))}
                       </div>
-                    )}
+                    </div>
                   </div>
-                </button>
+                </div>
               );
             })}
           </div>
         </div>
       </section>
 
-      {/* Organisational Objectives */}
+      {/* Objectives */}
       <section className="py-8 bg-bocra-off-white">
         <div className="section-wrapper max-w-5xl">
-          <h3 className="text-lg font-bold text-bocra-slate text-center mb-2">Organisational Objectives</h3>
-          <p className="text-sm text-bocra-slate/40 text-center mb-6">The strategic goals that guide BOCRA's operations</p>
-          <div ref={objRef} className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-            {OBJECTIVES.map(obj => (
-              <div key={obj.title} className="bg-white rounded-xl border border-gray-200 p-4 text-center hover:shadow-md transition-all">
-                <div className="w-10 h-10 rounded-full mx-auto mb-2 flex items-center justify-center" style={{ background: `${obj.color}12` }}>
-                  <obj.icon size={18} style={{ color: obj.color }} />
+          <p className="text-[10px] text-bocra-slate/25 uppercase tracking-[0.25em] font-medium text-center mb-4">Strategic Objectives</p>
+          <div ref={objRef} className="grid grid-cols-3 sm:grid-cols-6 gap-3">
+            {OBJECTIVES.map(obj => {
+              const OIcon = obj.icon;
+              return (
+                <div key={obj.title} className="bg-white rounded-xl border border-gray-100 p-3 text-center hover:shadow-md hover:-translate-y-1 transition-all duration-300 group">
+                  <div className="w-9 h-9 rounded-full mx-auto mb-1.5 flex items-center justify-center group-hover:scale-110 transition-transform duration-300" style={{ background: `${obj.color}10` }}>
+                    <OIcon size={16} style={{ color: obj.color }} />
+                  </div>
+                  <p className="text-[10px] font-bold text-bocra-slate leading-tight">{obj.title}</p>
                 </div>
-                <p className="text-[11px] font-bold text-bocra-slate">{obj.title}</p>
-                <p className="text-[9px] text-bocra-slate/40 mt-0.5">{obj.desc}</p>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
 
       {/* Related */}
-      <section className="py-8">
+      <section className="py-6">
         <div className="section-wrapper max-w-5xl">
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             {[
@@ -243,11 +251,11 @@ export default function OrganogramPage() {
               { label: 'Executive Management', path: '/about/executive-management', icon: Award, color: '#C8237B' },
               { label: 'About BOCRA', path: '/about/profile', icon: BookOpen, color: '#6BBE4E' },
             ].map(link => (
-              <Link key={link.path} to={link.path} className="flex items-center gap-3 p-4 bg-white rounded-xl border border-gray-200 hover:shadow-md transition-all group">
-                <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: `${link.color}12` }}>
-                  <link.icon size={16} style={{ color: link.color }} />
+              <Link key={link.path} to={link.path} className="flex items-center gap-3 p-3 bg-white rounded-xl border border-gray-100 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 group">
+                <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform" style={{ background: `${link.color}12` }}>
+                  <link.icon size={14} style={{ color: link.color }} />
                 </div>
-                <span className="text-xs font-medium text-bocra-slate/70 group-hover:text-bocra-slate">{link.label}</span>
+                <span className="text-xs font-medium text-bocra-slate/60 group-hover:text-bocra-slate transition-colors">{link.label}</span>
               </Link>
             ))}
           </div>
