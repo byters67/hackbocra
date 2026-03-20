@@ -47,6 +47,7 @@ import AdminConsultations from './pages/admin/AdminConsultationsPage';
 import ConsultationsPage from './pages/public/ConsultationsPage';
 import SpeechesPage from './pages/public/SpeechesPage';
 import BroadcastingPage from './pages/public/BroadcastingPage';
+import InternetPage from './pages/public/InternetPage';
 import DataRequestPage from './pages/public/DataRequestPage';
 
 export default function App() {
@@ -94,7 +95,7 @@ export default function App() {
                   <Route path="/mandate/telecommunications" element={<ContentPage />} />
                   <Route path="/mandate/broadcasting" element={<BroadcastingPage />} />
                   <Route path="/mandate/postal" element={<ContentPage />} />
-                  <Route path="/mandate/internet" element={<ContentPage />} />
+                  <Route path="/mandate/internet" element={<InternetPage />} />
                   <Route path="/mandate/licensing" element={<ContentPage />} />
                   <Route path="/licensing" element={<LicensingHubPage />} />
                   <Route path="/licensing/:slug" element={<LicensingHubPage />} />
