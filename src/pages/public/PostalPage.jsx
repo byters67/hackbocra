@@ -55,7 +55,7 @@ export default function PostalPage() {
 
               {/* BOCRA's Role */}
               <div className="bg-[#F7B731]/5 rounded-xl border border-[#F7B731]/10 p-5">
-                <h3 className="text-sm font-bold text-bocra-slate mb-3">{lang === 'tn' ? 'Tiragatso ya BOCRA ya Poso' : 'BOCRA's Postal Mandate'}</h3>
+                <h3 className="text-sm font-bold text-bocra-slate mb-3">{lang === 'tn' ? 'Tiragatso ya BOCRA ya Poso' : "BOCRA's Postal Mandate"}</h3>
                 <div className="space-y-2">
                   {[
                     'License and regulate all postal service providers in Botswana',
