@@ -72,10 +72,9 @@ export default function DataRequestPage() {
   const [refNumber, setRefNumber] = useState('');
 
   useEffect(() => {
-    if (!authLoading && !user) {
-      navigate('/auth/login');
-    }
-  }, [user, authLoading, navigate]);
+    // No redirect — page is accessible to everyone
+    // Logged-in users can see their previous requests
+  }, [user, authLoading]);
 
   useEffect(() => {
     if (user) fetchRequests();
@@ -157,7 +156,7 @@ export default function DataRequestPage() {
     );
   }
 
-  if (!user) return null;
+  // Page is accessible to everyone — non-logged-in users see a sign-in prompt
 
   return (
     <div className="min-h-screen bg-bocra-off-white">
@@ -176,6 +175,39 @@ export default function DataRequestPage() {
       <PageHero category="SERVICES" title="My Data Rights" description="Exercise your rights under the Botswana Data Protection Act 2024. Request access to, correction, or deletion of your personal data held by BOCRA." color="blue" />
 
       <div className="max-w-4xl mx-auto px-6 py-10">
+        {/* Not logged in — show explanation and login prompt */}
+        {!user && !authLoading && (
+          <div className="bg-white rounded-2xl border border-gray-200 p-8 text-center">
+            <div className="w-16 h-16 rounded-full bg-[#00458B]/10 flex items-center justify-center mx-auto mb-4">
+              <Shield size={28} className="text-[#00458B]" />
+            </div>
+            <h2 className="text-xl font-bold text-bocra-slate mb-2">Sign In to Access Data Rights</h2>
+            <p className="text-sm text-bocra-slate/60 max-w-md mx-auto mb-6">
+              To submit a Data Subject Access Request or view your previous requests, please sign in with your BOCRA account. If you don't have one, you can register through the ASMS-WebCP portal.
+            </p>
+            <div className="flex items-center justify-center gap-3">
+              <Link to="/services/asms-webcp" className="px-6 py-2.5 bg-[#00458B] text-white text-sm font-medium rounded-xl hover:bg-[#003366] transition-all">
+                Sign In
+              </Link>
+              <Link to="/services/asms-webcp" className="px-6 py-2.5 border border-gray-200 text-sm font-medium text-bocra-slate rounded-xl hover:bg-gray-50 transition-all">
+                Create Account
+              </Link>
+            </div>
+            <p className="text-xs text-bocra-slate/30 mt-6">
+              For general enquiries about data protection, contact us at <a href="mailto:info@bocra.org.bw" className="text-[#00A6CE] hover:underline">info@bocra.org.bw</a> or call <a href="tel:+2673957755" className="text-[#00A6CE] hover:underline">+267 395 7755</a>.
+            </p>
+          </div>
+        )}
+
+        {/* Loading */}
+        {authLoading && (
+          <div className="flex items-center justify-center py-16">
+            <div className="w-10 h-10 border-4 border-[#00458B]/20 border-t-[#00458B] rounded-full animate-spin" />
+          </div>
+        )}
+
+        {/* Logged in — show full page */}
+        {user && <>
         {/* Logged in as */}
         <div className="flex items-center justify-between mb-8 bg-white rounded-xl border border-gray-200 px-5 py-3">
           <div className="flex items-center gap-3">
@@ -467,6 +499,7 @@ export default function DataRequestPage() {
             </div>
           </div>
         )}
+        </>}
       </div>
     </div>
   );
