@@ -140,7 +140,7 @@ export default function AboutProfilePage() {
         </div>
       </div>
       {/* Hero */}
-      <PageHero category="ABOUT" title="Regulating for a Connected Botswana" description="BOCRA was established on 1 April 2013 through the Communications Regulatory Authority Act 2012 to regulate telecommunications, broadcasting, internet, and postal services in Botswana." color="cyan" />
+      <PageHero category="ABOUT" categoryTn="KA GA RONA" title="Regulating for a Connected Botswana" titleTn="Go Laola Botswana e e Golaganeng" description="BOCRA was established on 1 April 2013 through the Communications Regulatory Authority Act 2012 to regulate telecommunications, broadcasting, internet, and postal services in Botswana." descriptionTn="BOCRA e tlhomilwe ka la 1 Moranang 2013 ka Molao wa Communications Regulatory Authority Act 2012." color="cyan" />
 
 
       {/* Mission & Vision — side by side with BOCRA colours */}
