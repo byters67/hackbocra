@@ -172,6 +172,7 @@ function CompanySearch() {
 }
 
 function RegisterForm({ setView, signUp }) {
+  const { lang } = useLanguage();
   const [form, setForm] = useState({ company: '', firstName: '', lastName: '', idType: 'omang', nationalId: '', email: '', phone: '', password: '', confirmPassword: '', address: '' });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -360,6 +361,7 @@ function LoginForm({ setView, signIn }) {
 }
 
 function OperatorDashboard({ operator, user, signOut, setView }) {
+  const { lang } = useLanguage();
   const profile = operator; // this is from profiles table
   const name = profile?.full_name || user?.user_metadata?.full_name || user?.email || 'Operator';
   const [applications, setApplications] = useState([]);

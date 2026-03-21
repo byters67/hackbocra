@@ -370,6 +370,7 @@ function MemberDetail({ member, onClose }) {
 
 /* ── Board Member Card ── */
 function MemberCard({ member, index, onClick }) {
+  const { lang } = useLanguage();
   const cardRef = useRef(null);
 
   useEffect(() => {

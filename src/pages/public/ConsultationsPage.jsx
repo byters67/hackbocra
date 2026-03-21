@@ -364,6 +364,7 @@ function ConsultationCard({ item, onRespond }) {
 }
 
 function SubmitResponsePage({ consultation, onBack }) {
+  const { lang } = useLanguage();
   const [form, setForm] = useState({ fullName: '', email: '', organisation: '', respondentType: '', consultationId: consultation?.id || '', selectedTags: [], response: '', makePublic: false, notifyOnDetermination: false });
   const [errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
