@@ -55,12 +55,15 @@ export default function OperatorPortalPage() {
   const navigate = useNavigate();
   const heroRef = useScrollReveal();
 
-  // Check if user is already logged in — fetch profile
+  // Check if user is already logged in — fetch profile and go to dashboard
   useEffect(() => {
     if (user) {
       (async () => {
         const { data } = await supabase.from('profiles').select('*').eq('id', user.id).single();
-        if (data) setOperator(data);
+        if (data) {
+          setOperator(data);
+          setView('dashboard');
+        }
       })();
     }
   }, [user]);

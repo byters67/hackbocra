@@ -64,7 +64,8 @@ export default function ContactPage() {
       if (insertErr) throw insertErr;
       setSubmitted(true);
     } catch (err) {
-      setErrors(prev => ({ ...prev, form: 'Something went wrong. Please try again or contact us by phone.' }));
+      console.error('[BOCRA] Contact form error:', err);
+      setErrors(prev => ({ ...prev, form: err?.message || 'Something went wrong. Please try again or contact us by phone.' }));
     }
     setLoading(false);
   };

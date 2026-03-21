@@ -240,11 +240,9 @@ export default function ApplicationReview({ applicationId, onStatusChange }) {
     setError(null);
 
     try {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-
-      if (!session?.access_token) {
+      // Force token refresh to avoid stale/expired JWT
+      const { data: { session }, error: refreshErr } = await supabase.auth.refreshSession();
+      if (refreshErr || !session?.access_token) {
         throw new Error('You must be logged in to run AI reviews.');
       }
 
