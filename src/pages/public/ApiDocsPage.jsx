@@ -158,7 +158,7 @@ export default function ApiDocsPage() {
       <div className="bg-bocra-off-white border-b border-gray-100">
         <div className="section-wrapper py-4">
           <nav className="text-sm text-bocra-slate/50 flex items-center gap-2">
-            <Link to="/" className="hover:text-bocra-blue transition-colors">Home</Link>
+            <Link to="/" className="hover:text-bocra-blue transition-colors">{lang === 'tn' ? 'Gae' : 'Home'}</Link>
             <ChevronRight size={14} />
             <span className="text-bocra-slate">Open Data API</span>
           </nav>

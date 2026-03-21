@@ -297,7 +297,7 @@ const PAGE_CONTENT = {
     `,
   },
   'licensing': {
-    title: 'Licensing',
+    title: lang === 'tn' ? 'Dilaesense' : 'Licensing',
     breadcrumb: ['Mandate', 'Licensing'],
     accent: 'bocra-blue',
     content: `
@@ -1079,7 +1079,7 @@ const PAGE_CONTENT = {
 };
 
 /* ── Map accent name to hex colour ── */
-const ACCENT_COLOURS = {
+const ACCENT_COLOURS = ({
   'bocra-blue':    '#00458B',
   'bocra-cyan':    '#00A6CE',
   'bocra-magenta': '#C8237B',
@@ -1088,7 +1088,7 @@ const ACCENT_COLOURS = {
 };
 
 /* ── Map section names to BOCRA dot colours (English + Setswana) ── */
-const SECTION_COLOURS = {
+const SECTION_COLOURS = ({
   'Mandate':    '#00458B',
   'About':      '#00A6CE',
   'Services':   '#C8237B',

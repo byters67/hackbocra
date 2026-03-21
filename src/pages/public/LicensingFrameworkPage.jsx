@@ -8,17 +8,18 @@ import { useScrollReveal, useStaggerReveal } from '../../hooks/useAnimations';
 import PageHero from '../../components/ui/PageHero';
 import { useLanguage } from '../../lib/language';
 
-const CATEGORIES = [
-  { title: 'Network Facilities Provider (NFP)', desc: 'Licensees own, operate or provide any form of physical infrastructure used principally for carrying services, applications and content.', color: '#00A6CE', icon: Wifi, examples: 'Fibre networks, wireless towers, satellite infrastructure' },
-  { title: 'Service Application Provider (SAP)', desc: 'Licensees provide telecommunications services to end users using network facilities provided by NFP licensees.', color: '#C8237B', icon: Globe, examples: 'ISPs, VoIP providers, mobile operators' },
-  { title: 'Content Service Provider (CSP)', desc: 'Licensees provide content material solely for broadcasting (TV and radio) and other information services including Subscription TV.', color: '#F7B731', icon: Tv, examples: 'TV stations, radio stations, streaming services' },
-  { title: 'Private Telecommunications Network (PTNL)', desc: 'Organisations operating private telecommunications networks for internal use.', color: '#6BBE4E', icon: Building, examples: 'Corporate networks, mining operations, government agencies' },
-  { title: 'Commercial Postal Operator', desc: 'Courier and value-added postal services providers requiring a licence from BOCRA.', color: '#00458B', icon: Mail, examples: 'Express couriers, parcel delivery, logistics companies' },
+const getCATEGORIES = (lang) => [
+  { title: lang === 'tn' ? 'Motlamedi wa Mafaratlhatlha a Neteweke (NFP)' : 'Network Facilities Provider (NFP)', desc: lang === 'tn' ? 'Ba ba nang le dilaesense ba rua, ba laola kgotsa ba fana ka mofuta ope wa mafaratlhatlha a a dirisiwang go isa ditirelo, ditiriso le diteng.' : 'Licensees own, operate or provide any form of physical infrastructure used principally for carrying services, applications and content.', color: '#00A6CE', icon: Wifi, examples: 'Fibre networks, wireless towers, satellite infrastructure' },
+  { title: lang === 'tn' ? 'Motlamedi wa Tiriso ya Ditirelo (SAP)' : 'Service Application Provider (SAP)', desc: lang === 'tn' ? 'Ba ba nang le dilaesense ba fana ka ditirelo tsa megala go badirisi ba bofelo ba dirisa mafaratlhatlha a neteweke a a fanwang ke ba ba nang le dilaesense tsa NFP.' : 'Licensees provide telecommunications services to end users using network facilities provided by NFP licensees.', color: '#C8237B', icon: Globe, examples: 'ISPs, VoIP providers, mobile operators' },
+  { title: lang === 'tn' ? 'Motlamedi wa Tirelo ya Diteng (CSP)' : 'Content Service Provider (CSP)', desc: lang === 'tn' ? 'Ba ba nang le dilaesense ba fana ka diteng tsa phasalatso fela (TV le radio) le ditirelo tse dingwe tsa tshedimosetso go akaretsa TV ya Samasetšhene.' : 'Licensees provide content material solely for broadcasting (TV and radio) and other information services including Subscription TV.', color: '#F7B731', icon: Tv, examples: 'TV stations, radio stations, streaming services' },
+  { title: lang === 'tn' ? 'Neteweke ya Megala ya Poraefete (PTNL)' : 'Private Telecommunications Network (PTNL)', desc: lang === 'tn' ? 'Mekgatlho e e laolang dineteweke tsa megala tsa poraefete tsa tiriso ya ka fa gare.' : 'Organisations operating private telecommunications networks for internal use.', color: '#6BBE4E', icon: Building, examples: 'Corporate networks, mining operations, government agencies' },
+  { title: lang === 'tn' ? 'Molaodi wa Poso ya Kgwebo' : 'Commercial Postal Operator', desc: lang === 'tn' ? 'Batlhagisi ba ditirelo tsa go romela ka bonako le tsa poso e e okeditsweng boleng ba ba tlhokang laesense go tswa go BOCRA.' : 'Courier and value-added postal services providers requiring a licence from BOCRA.', color: '#00458B', icon: Mail, examples: 'Express couriers, parcel delivery, logistics companies' },
   { title: 'Radio Communications', desc: 'Various radio frequency licences including amateur radio, aircraft radio, land mobile, maritime, and commercial radio.', color: '#C8237B', icon: Radio, examples: 'Amateur radio, aviation, maritime, two-way radios' },
 ];
 
 export default function LicensingFrameworkPage() {
   const { lang } = useLanguage();
+  const CATEGORIES = getCATEGORIES(lang);
   const cardsRef = useStaggerReveal({ stagger: 0.08 });
   return (
     <div className="bg-white min-h-screen">

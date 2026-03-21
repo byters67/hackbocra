@@ -19,22 +19,22 @@ const getFaqs = (lang) => [
     color: '#00458B',
     items: [
       {
-        q: 'What is BOCRA?',
+        q: lang === 'tn' ? 'BOCRA ke eng?' : 'What is BOCRA?',
         a: 'BOCRA is the Botswana Communications Regulatory Authority, established on 1 April 2013 under the Communications Regulatory Authority Act 2012. It regulates telecommunications, broadcasting, internet, and postal services in Botswana to ensure accessible, affordable, and quality communications for all.',
         links: [{ label: lang === 'tn' ? 'Ka ga BOCRA' : 'About BOCRA', path: '/about/profile' }],
       },
       {
-        q: 'Where is BOCRA located?',
+        q: lang === 'tn' ? 'BOCRA e kae?' : 'Where is BOCRA located?',
         a: 'BOCRA is located at Plot 50671, Independence Avenue, Gaborone, Botswana. Our postal address is Private Bag 00495, Gaborone. Office hours are Monday to Friday, 7:30 AM to 4:30 PM.',
         links: [{ label: 'Contact Us', path: '/contact' }],
       },
       {
-        q: 'How do I contact BOCRA?',
+        q: lang === 'tn' ? 'Ke ikgolaganya le BOCRA jang?' : 'How do I contact BOCRA?',
         a: 'You can reach BOCRA by calling +267 395 7755, faxing +267 395 7976, or emailing info@bocra.org.bw. You can also use the online contact form on our website.',
         links: [{ label: 'Contact Page', path: '/contact' }],
       },
       {
-        q: 'What sectors does BOCRA regulate?',
+        q: lang === 'tn' ? 'BOCRA e laola maphata afe?' : 'What sectors does BOCRA regulate?',
         a: 'BOCRA regulates four sectors: Telecommunications (mobile networks, internet, VoIP), Broadcasting (radio, TV, online streaming), Postal Services (national and commercial mail delivery), and Internet & ICT (broadband, cybersecurity, .bw domains).',
         links: [
           { label: 'Telecommunications', path: '/mandate/telecommunications' },
@@ -51,17 +51,17 @@ const getFaqs = (lang) => [
     color: '#C8237B',
     items: [
       {
-        q: 'How do I file a complaint?',
+        q: lang === 'tn' ? 'Ke tlhagisa ngongorego jang?' : 'How do I file a complaint?',
         a: 'You can file a complaint using our online complaint form, by calling +267 395 7755, or by emailing info@bocra.org.bw. We recommend first raising the issue with your service provider directly. If unresolved, BOCRA will investigate and mediate.',
         links: [{ label: lang === 'tn' ? 'Tlhagisa Ngongorego' : 'File a Complaint', path: '/services/file-complaint' }],
       },
       {
-        q: 'What types of complaints does BOCRA handle?',
+        q: lang === 'tn' ? 'BOCRA e dira ka mefuta efe ya dingongorego?' : 'What types of complaints does BOCRA handle?',
         a: 'BOCRA handles complaints related to billing issues, network coverage and quality, service interruptions, data and internet problems, unfair contract terms, SIM swap fraud, and poor customer service from licensed operators including Mascom, BTC, and Orange.',
         links: [{ label: 'Consumer Education', path: '/complaints/consumer-education' }],
       },
       {
-        q: 'How long does it take to resolve a complaint?',
+        q: lang === 'tn' ? 'Go tsaya nako e kae go rarabolola ngongorego?' : 'How long does it take to resolve a complaint?',
         a: 'BOCRA aims to acknowledge complaints within 2 business days and resolve them within 30 days. Complex cases involving multiple parties or technical investigations may take longer. You can track your complaint status through the operator portal.',
         links: [{ label: 'Operator Portal', path: '/services/asms-webcp' }],
       },
@@ -73,22 +73,22 @@ const getFaqs = (lang) => [
     color: '#6BBE4E',
     items: [
       {
-        q: 'How do I apply for a licence?',
+        q: lang === 'tn' ? 'Ke ikopela laesense jang?' : 'How do I apply for a licence?',
         a: 'Visit our Licensing Hub to browse all available licence types including Aircraft Radio, Amateur Radio, Broadcasting, Cellular, Private Radio, Radio Dealers, Radio Frequency, Satellite, VANS, and more. Each licence type has specific requirements and fees.',
         links: [{ label: 'Licensing Hub', path: '/licensing' }],
       },
       {
-        q: 'How do I verify if an operator is licensed?',
+        q: lang === 'tn' ? 'Ke netefatsa jang gore molaodi o na le laesense?' : 'How do I verify if an operator is licensed?',
         a: 'Use our Licence Verification page to search for any operator by name or licence number. The database contains 187 verified licences covering all telecommunications, broadcasting, and postal operators in Botswana.',
         links: [{ label: 'Verify a Licence', path: '/services/licence-verification' }],
       },
       {
-        q: 'How do I check if equipment is type-approved?',
+        q: lang === 'tn' ? 'Ke tlhola jang gore sedirisiwa se amogetswe?' : 'How do I check if equipment is type-approved?',
         a: 'All telecommunications equipment used in Botswana must be type-approved by BOCRA. Visit our Type Approval page to search the approved equipment database or submit a new type approval application.',
         links: [{ label: 'Type Approval', path: '/services/type-approval' }],
       },
       {
-        q: 'What ICT licensing documents are available?',
+        q: lang === 'tn' ? 'Ke dikwalo dife tsa dilaesense tsa ICT tse di leng teng?' : 'What ICT licensing documents are available?',
         a: 'BOCRA provides 15 ICT licensing framework documents covering application requirements, fee structures, and regulatory guidelines for all licence categories.',
         links: [{ label: 'ICT Licensing Documents', path: '/documents/ict-licensing' }],
       },
@@ -100,12 +100,12 @@ const getFaqs = (lang) => [
     color: '#00A6CE',
     items: [
       {
-        q: 'How do I register a .bw domain?',
+        q: lang === 'tn' ? 'Ke kwadisa domeine ya .bw jang?' : 'How do I register a .bw domain?',
         a: 'Domain registrations are processed through BOCRA-accredited ISP registrars. Visit the Register .BW page to search for available domains, find accredited registrars, and view registration policies. Available extensions include .co.bw, .org.bw, and .ac.bw.',
         links: [{ label: 'Register .BW Domain', path: '/services/register-bw' }],
       },
       {
-        q: 'What is the cost of a .bw domain?',
+        q: lang === 'tn' ? 'Domeine ya .bw e ja bokae?' : 'What is the cost of a .bw domain?',
         a: 'Domain registration fees vary by registrar. Typically, a .bw domain costs between BWP 150 and BWP 500 per year. Contact an accredited registrar for specific pricing. BOCRA does not charge directly for domain registration.',
         links: [{ label: '.BW Registration', path: '/services/register-bw' }],
       },
@@ -117,12 +117,12 @@ const getFaqs = (lang) => [
     color: '#F7B731',
     items: [
       {
-        q: 'How do I report a cybersecurity incident?',
+        q: lang === 'tn' ? 'Ke bega tiragalo ya tshireletso ya saebo jang?' : 'How do I report a cybersecurity incident?',
         a: 'Use BOCRA\'s Cybersecurity Hub to report incidents including phishing attacks, malware infections, ransomware, data breaches, and SIM swap fraud. You can also contact the Botswana CSIRT team directly through the hub.',
         links: [{ label: 'Cybersecurity Hub', path: '/cybersecurity' }],
       },
       {
-        q: 'What is SIM swap fraud and how do I protect myself?',
+        q: lang === 'tn' ? 'Boferefere jwa go fetola SIM ke eng mme ke itshireletsa jang?' : 'What is SIM swap fraud and how do I protect myself?',
         a: 'SIM swap fraud occurs when criminals trick your mobile operator into transferring your phone number to a new SIM card, gaining access to your calls, messages, and mobile banking. Protect yourself by using strong PINs, enabling two-factor authentication, and never sharing your personal details with strangers.',
         links: [{ label: 'Safety Tips', path: '/cybersecurity' }],
       },
@@ -134,12 +134,12 @@ const getFaqs = (lang) => [
     color: '#00A6CE',
     items: [
       {
-        q: 'How can I check network quality in my area?',
+        q: lang === 'tn' ? 'Ke ka tlhola boleng jwa neteweke mo kgaolong ya me jang?' : 'How can I check network quality in my area?',
         a: 'BOCRA monitors Quality of Service (QoS) metrics for all three mobile operators — Mascom, BTC, and Orange. The QoS Monitoring page shows call success rates, dropped call rates, network uptime, download speeds, and regional comparisons.',
         links: [{ label: 'QoS Monitoring', path: '/services/qos-monitoring' }],
       },
       {
-        q: 'Where can I find telecom statistics?',
+        q: lang === 'tn' ? 'Ke ka bona dipalopalo tsa megala kae?' : 'Where can I find telecom statistics?',
         a: 'BOCRA publishes comprehensive telecommunications statistics including mobile subscriptions, internet penetration, broadband growth, and mobile money usage across Botswana.',
         links: [{ label: 'Telecom Statistics', path: '/telecom-statistics' }],
       },

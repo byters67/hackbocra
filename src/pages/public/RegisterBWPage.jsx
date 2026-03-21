@@ -18,12 +18,12 @@ import PageHero from '../../components/ui/PageHero';
 import { useLanguage } from '../../lib/language';
 const BASE = import.meta.env.BASE_URL;
 
-const EXTENSIONS = [
-  { ext: '.co.bw', desc: 'Commercial businesses', icon: Building, color: '#00A6CE', popular: true },
-  { ext: '.org.bw', desc: 'Non-profit organisations', icon: Users, color: '#6BBE4E', popular: true },
-  { ext: '.net.bw', desc: 'Internet & network services', icon: Globe, color: '#C8237B', popular: false },
-  { ext: '.ac.bw', desc: 'Academic institutions', icon: BookOpen, color: '#F7B731', popular: false },
-  { ext: '.gov.bw', desc: 'Government entities', icon: Shield, color: '#00458B', popular: false },
+const getEXTENSIONS = (lang) => [
+  { ext: '.co.bw', desc: lang === 'tn' ? 'Dikgwebo tsa kgwebo' : 'Commercial businesses', icon: Building, color: '#00A6CE', popular: true },
+  { ext: '.org.bw', desc: lang === 'tn' ? 'Mekgatlho e e sa direng lotseno' : 'Non-profit organisations', icon: Users, color: '#6BBE4E', popular: true },
+  { ext: '.net.bw', desc: lang === 'tn' ? 'Ditirelo tsa inthanete le neteweke' : 'Internet & network services', icon: Globe, color: '#C8237B', popular: false },
+  { ext: '.ac.bw', desc: lang === 'tn' ? 'Ditheo tsa thuto' : 'Academic institutions', icon: BookOpen, color: '#F7B731', popular: false },
+  { ext: '.gov.bw', desc: lang === 'tn' ? 'Mekgatlho ya puso' : 'Government entities', icon: Shield, color: '#00458B', popular: false },
   { ext: '.me.bw', desc: 'Personal brands & individuals', icon: Star, color: '#7C3AED', popular: true },
   { ext: '.shop.bw', desc: 'Online shops & retail', icon: Building, color: '#EA580C', popular: true },
   { ext: '.agric.bw', desc: 'Agriculture businesses', icon: Globe, color: '#059669', popular: true },
@@ -83,6 +83,7 @@ const PARTNER_LOGOS = [
 
 export default function RegisterBWPage() {
   const { lang } = useLanguage();
+  const EXTENSIONS = getEXTENSIONS(lang);
   const [domainSearch, setDomainSearch] = useState('');
   const [searchResult, setSearchResult] = useState(null);
   const [searching, setSearching] = useState(false);

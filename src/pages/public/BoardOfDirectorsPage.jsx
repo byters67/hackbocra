@@ -26,11 +26,11 @@ const C = {
 const DOT_COLOURS = [C.cyan, C.magenta, C.yellow, C.green];
 
 /* ── Board Members Data ── */
-const BOARD_MEMBERS = [
+const getBoardMembers = (lang) => [
   {
     id: 'basutli',
     name: 'Dr. Bokamoso Basutli, PhD',
-    role: 'Chairperson',
+    role: lang === 'tn' ? 'Modulasetilo' : 'Chairperson',
     roleTag: 'Board Chairperson',
     photo: `${B}images/board/Dr__Bokamoso_Basutli__-_Chairperson.jpg`,
     colour: C.cyan,
@@ -45,7 +45,7 @@ const BOARD_MEMBERS = [
   {
     id: 'pusumane',
     name: 'Mr. Moabi Pusumane',
-    role: 'Vice Chairperson',
+    role: lang === 'tn' ? 'Motlatsa Modulasetilo' : 'Vice Chairperson',
     roleTag: 'Vice Chairperson',
     photo: `${B}images/board/Mr__Moabi_Pusumane__-_Vice_Chairperson.jpg`,
     colour: C.magenta,
@@ -59,7 +59,7 @@ const BOARD_MEMBERS = [
   {
     id: 'phuthego',
     name: 'Ms. Montle Phuthego',
-    role: 'Board Member',
+    role: lang === 'tn' ? 'Leloko la Boto' : 'Board Member',
     roleTag: 'Board Member',
     photo: `${B}images/board/Ms__Montle_Phuthego_-_Member.jpg`,
     colour: C.yellow,
@@ -72,7 +72,7 @@ const BOARD_MEMBERS = [
   {
     id: 'seleka',
     name: 'Ms. Alta Dimpho Seleka',
-    role: 'Board Member',
+    role: lang === 'tn' ? 'Leloko la Boto' : 'Board Member',
     roleTag: 'Board Member',
     photo: `${B}images/board/Ms__Alta_Dimpho_Seleka_-_Member.jpg`,
     colour: C.green,
@@ -85,7 +85,7 @@ const BOARD_MEMBERS = [
   {
     id: 'george',
     name: 'Ms. Lebogang George',
-    role: 'Board Member',
+    role: lang === 'tn' ? 'Leloko la Boto' : 'Board Member',
     roleTag: 'Board Member',
     photo: `${B}images/board/Ms_Lebogang_George_-_Member.jpg`,
     colour: C.cyan,
@@ -98,7 +98,7 @@ const BOARD_MEMBERS = [
   {
     id: 'kgafela',
     name: 'Mr. Ronald Kgafela, CODP',
-    role: 'Board Member',
+    role: lang === 'tn' ? 'Leloko la Boto' : 'Board Member',
     roleTag: 'Board Member',
     photo: `${B}images/board/Mr__Ronald_Kgafela_-_Member.jpg`,
     colour: C.magenta,
@@ -112,7 +112,7 @@ const BOARD_MEMBERS = [
   {
     id: 'ramojela',
     name: 'Dr. Kennedy Ramojela',
-    role: 'Board Member',
+    role: lang === 'tn' ? 'Leloko la Boto' : 'Board Member',
     roleTag: 'Board Member',
     photo: `${B}images/board/Dr__Kennedy_Ramojela_-_Member.jpg`,
     colour: C.yellow,
@@ -436,7 +436,7 @@ function MemberCard({ member, index, onClick }) {
         {/* CTA */}
         <div className="mt-4 flex items-center justify-center gap-1.5 text-sm font-semibold opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0"
           style={{ color: member.colour }}>
-          <span>View Profile</span>
+          <span>{lang === 'tn' ? 'Bona Porofaele' : 'View Profile'}</span>
           <ChevronRight className="w-4 h-4" />
         </div>
       </div>
@@ -454,6 +454,7 @@ function MemberCard({ member, index, onClick }) {
  * ══════════════════════════════════════════════════════════════════ */
 export default function BoardOfDirectorsPage() {
   const { lang } = useLanguage();
+  const BOARD_MEMBERS = getBoardMembers(lang);
   const [selected, setSelected] = useState(null);
   const heroRef = useRef(null);
 
@@ -497,7 +498,7 @@ export default function BoardOfDirectorsPage() {
           <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: `${C.cyan}15` }}>
             <Award className="w-4 h-4" style={{ color: C.cyan }} />
           </div>
-          <h2 className="text-lg sm:text-xl font-bold text-[#001A3A]">Leadership</h2>
+          <h2 className="text-lg sm:text-xl font-bold text-[#001A3A]">{lang === 'tn' ? 'Botsamaisi' : 'Leadership'}</h2>
           <div className="h-px flex-1 bg-gray-100" />
         </div>
 
@@ -514,7 +515,7 @@ export default function BoardOfDirectorsPage() {
           <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: `${C.magenta}15` }}>
             <Briefcase className="w-4 h-4" style={{ color: C.magenta }} />
           </div>
-          <h2 className="text-lg sm:text-xl font-bold text-[#001A3A]">Board Members</h2>
+          <h2 className="text-lg sm:text-xl font-bold text-[#001A3A]">{lang === 'tn' ? 'Maloko a Boto' : 'Board Members'}</h2>
           <div className="h-px flex-1 bg-gray-100" />
         </div>
 

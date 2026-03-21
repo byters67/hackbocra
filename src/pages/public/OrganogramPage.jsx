@@ -17,29 +17,31 @@ import { useLanguage } from '../../lib/language';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const DEPARTMENTS = [
-  { name: 'Compliance & Monitoring', icon: Shield, color: '#00A6CE', desc: 'Licensee compliance, inspections, enforcement', functions: ['Licence compliance monitoring', 'Regulatory inspections', 'Consumer complaint investigation', 'Enforcement actions'] },
-  { name: 'Technical Services', icon: Radio, color: '#C8237B', desc: 'Spectrum, type approval, QoS monitoring', functions: ['Spectrum management & planning', 'Type approval certification', 'QoS monitoring & reporting', 'Technical standards'] },
-  { name: 'Licensing', icon: Award, color: '#6BBE4E', desc: 'Licence applications, renewals, registry', functions: ['Application processing', 'Licence renewals', 'Operator registry', 'Fee administration'] },
-  { name: 'Broadband & Universal Service', icon: Wifi, color: '#F7B731', desc: 'UASF, broadband expansion, rural coverage', functions: ['UASF projects', 'Broadband strategy', 'Rural connectivity', 'Digital inclusion'] },
-  { name: 'Business Development', icon: BarChart3, color: '#7C3AED', desc: 'Strategy, research, market analysis', functions: ['Strategic planning', 'Market analysis', 'Stakeholder engagement', 'Industry benchmarking'] },
+const getDEPARTMENTS = (lang) => [
+  { name: lang === 'tn' ? 'Go Obamela le Tlhokomelo' : 'Compliance & Monitoring', icon: Shield, color: '#00A6CE', desc: lang === 'tn' ? 'Go obamela ga ba ba nang le dilaesense, ditlhatlhobo, tiragatso' : 'Licensee compliance, inspections, enforcement', functions: ['Licence compliance monitoring', 'Regulatory inspections', 'Consumer complaint investigation', 'Enforcement actions'] },
+  { name: lang === 'tn' ? 'Ditirelo tsa Setegeniki' : 'Technical Services', icon: Radio, color: '#C8237B', desc: lang === 'tn' ? 'Sepeketeramo, tumelelo ya mofuta, tlhokomelo ya boleng' : 'Spectrum, type approval, QoS monitoring', functions: ['Spectrum management & planning', 'Type approval certification', 'QoS monitoring & reporting', 'Technical standards'] },
+  { name: lang === 'tn' ? 'Dilaesense' : 'Licensing', icon: Award, color: '#6BBE4E', desc: lang === 'tn' ? 'Dikopo tsa dilaesense, diphetogo, rejisteri' : 'Licence applications, renewals, registry', functions: ['Application processing', 'Licence renewals', 'Operator registry', 'Fee administration'] },
+  { name: lang === 'tn' ? 'Inthanete e e Lebelo le Tirelo ya Botlhe' : 'Broadband & Universal Service', icon: Wifi, color: '#F7B731', desc: lang === 'tn' ? 'UASF, go atolosa inthanete, phitlhelelo ya magae' : 'UASF, broadband expansion, rural coverage', functions: ['UASF projects', 'Broadband strategy', 'Rural connectivity', 'Digital inclusion'] },
+  { name: lang === 'tn' ? 'Tlhabololo ya Kgwebo' : 'Business Development', icon: BarChart3, color: '#7C3AED', desc: lang === 'tn' ? 'Leano, patlisiso, tshekatsheko ya mmaraka' : 'Strategy, research, market analysis', functions: ['Strategic planning', 'Market analysis', 'Stakeholder engagement', 'Industry benchmarking'] },
   { name: 'Corporate Communications', icon: Globe, color: '#0891B2', desc: 'Public affairs, media, consumer education', functions: ['Media relations', 'Consumer education', 'Digital presence', 'Public consultations'] },
   { name: 'Legal & Board Secretary', icon: Scale, color: '#DC2626', desc: 'Legal affairs, governance, disputes', functions: ['Legal advisory', 'Board secretariat', 'Dispute resolution', 'Compliance framework'] },
   { name: 'Finance', icon: FileText, color: '#059669', desc: 'Financial management, procurement', functions: ['Financial reporting', 'Budget control', 'Procurement & tenders', 'Revenue management'] },
   { name: 'Corporate Support', icon: Building, color: '#64748B', desc: 'HR, administration, IT, facilities', functions: ['Human resources', 'ICT infrastructure', 'Facilities', 'Training & development'] },
 ];
 
-const OBJECTIVES = [
-  { title: 'Competition', icon: BarChart3, color: '#00A6CE' },
-  { title: 'Universal Access', icon: Wifi, color: '#6BBE4E' },
-  { title: 'Consumer Protection', icon: Shield, color: '#C8237B' },
-  { title: 'Resource Optimisation', icon: Radio, color: '#F7B731' },
-  { title: 'Talent Development', icon: Users, color: '#7C3AED' },
+const getOBJECTIVES = (lang) => [
+  { title: lang === 'tn' ? 'Kgaisano' : 'Competition', icon: BarChart3, color: '#00A6CE' },
+  { title: lang === 'tn' ? 'Phitlhelelo e e Akaretsang' : 'Universal Access', icon: Wifi, color: '#6BBE4E' },
+  { title: lang === 'tn' ? 'Tshireletso ya Badirisi' : 'Consumer Protection', icon: Shield, color: '#C8237B' },
+  { title: lang === 'tn' ? 'Tokafatso ya Metswedi' : 'Resource Optimisation', icon: Radio, color: '#F7B731' },
+  { title: lang === 'tn' ? 'Tlhabololo ya Bokgoni' : 'Talent Development', icon: Users, color: '#7C3AED' },
   { title: 'Stakeholder Engagement', icon: Globe, color: '#00458B' },
 ];
 
 export default function OrganogramPage() {
   const { lang } = useLanguage();
+  const OBJECTIVES = getOBJECTIVES(lang);
+  const DEPARTMENTS = getDEPARTMENTS(lang);
   const [expanded, setExpanded] = useState(null);
   const treeRef = useRef(null);
   const boardRef = useRef(null);

@@ -17,12 +17,12 @@ import PageHero from '../../components/ui/PageHero';
 import { useLanguage } from '../../lib/language';
 const BASE = import.meta.env.BASE_URL;
 
-const CATEGORY_CONFIG = {
-  'Legislation': { color: '#C8237B', icon: Scale, desc: 'Acts, bills, regulations and legal instruments' },
-  'Annual Reports': { color: '#00A6CE', icon: BookOpen, desc: 'BOCRA and BTA annual reports' },
-  'Guidelines & Standards': { color: '#6BBE4E', icon: Shield, desc: 'Regulatory guidelines, codes of conduct and standards' },
-  'Licensing': { color: '#F7B731', icon: FileCheck, desc: 'Licensing frameworks, applications and requirements' },
-  'Technical Specifications': { color: '#7C3AED', icon: Cpu, desc: 'Equipment standards and type approval specifications' },
+const getCATEGORY_CONFIG = (lang) => ({
+  'Legislation': { color: '#C8237B', icon: Scale, desc: lang === 'tn' ? 'Melao, dikaelo, le didirisiwa tsa molao' : 'Acts, bills, regulations and legal instruments' },
+  'Annual Reports': { color: '#00A6CE', icon: BookOpen, desc: lang === 'tn' ? 'Dipego tsa ngwaga le ngwaga tsa BOCRA le BTA' : 'BOCRA and BTA annual reports' },
+  'Guidelines & Standards': { color: '#6BBE4E', icon: Shield, desc: lang === 'tn' ? 'Ditaelo tsa taolo, melao ya maitsholo le maemo' : 'Regulatory guidelines, codes of conduct and standards' },
+  'Licensing': { color: '#F7B731', icon: FileCheck, desc: lang === 'tn' ? 'Dithulaganyo tsa dilaesense, dikopo le ditlhokego' : 'Licensing frameworks, applications and requirements' },
+  'Technical Specifications': { color: '#7C3AED', icon: Cpu, desc: lang === 'tn' ? 'Maemo a didirisiwa le dintlha tsa tumelelo ya mofuta' : 'Equipment standards and type approval specifications' },
   'Consultation Papers': { color: '#0891B2', icon: Users, desc: 'Public consultation documents and discussion papers' },
   'Measurement Reports': { color: '#DC2626', icon: Signal, desc: 'EMF and site measurement reports' },
   'Broadband & Internet': { color: '#2563EB', icon: Wifi, desc: 'Broadband strategy, internet pricing and connectivity' },
@@ -322,6 +322,7 @@ const getYears = () => { const y = [...new Set(DOCUMENTS.map(d => d.year))].sort
 
 export default function DocumentsPage() {
   const { lang } = useLanguage();
+  const CATEGORY_CONFIG = getCATEGORY_CONFIG(lang);
   const [category, setCategory] = useState('All');
   const [search, setSearch] = useState('');
   const [year, setYear] = useState('All Years');

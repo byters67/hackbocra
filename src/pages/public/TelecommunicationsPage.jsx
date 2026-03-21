@@ -8,22 +8,23 @@ import { useScrollReveal, useStaggerReveal } from '../../hooks/useAnimations';
 import PageHero from '../../components/ui/PageHero';
 import { useLanguage } from '../../lib/language';
 
-const OPERATORS = [
+const getOPERATORS = (lang) => [
   { name: 'Mascom Wireless', type: 'Mobile Network Operator', color: '#E21836', services: 'Mobile voice, data, mobile money (MyZaka), SMS, roaming', coverage: 'Nationwide — urban and rural coverage', market: 'Largest mobile operator by subscribers' },
   { name: 'Botswana Telecommunications Corporation (BTC)', type: 'Fixed & Mobile Operator', color: '#0066CC', services: 'Fixed-line, broadband internet, mobile (beMOBILE), enterprise solutions', coverage: 'Nationwide — fixed-line and mobile coverage', market: 'National fixed-line operator and broadband provider' },
   { name: 'Orange Botswana', type: 'Mobile Network Operator', color: '#FF6600', services: 'Mobile voice, data, Orange Money, SMS, roaming, fibre', coverage: 'Nationwide — urban and peri-urban areas', market: 'Third largest mobile operator' },
   { name: 'BoFiNet', type: 'Wholesale Infrastructure Provider', color: '#00458B', services: 'National fibre optic backbone, wholesale broadband, EASSy submarine cable access', coverage: 'National backbone network', market: 'Wholesale-only — provides infrastructure to retail operators' },
 ];
 
-const LICENCE_TYPES = [
-  { title: 'Network Facilities Provider (NFP)', desc: 'Own, operate or provide physical infrastructure used principally for carrying services, applications and content.', color: '#00A6CE' },
-  { title: 'Service Application Provider (SAP)', desc: 'Provide telecommunications services to end users using network facilities provided by NFP licensees.', color: '#C8237B' },
-  { title: 'Content Service Provider (CSP)', desc: 'Provide content material solely for broadcasting (TV and radio) and other information services including Subscription TV.', color: '#F7B731' },
-  { title: 'Value Added Network Services (VANS)', desc: 'Liberalised services including VoIP, internet services, and value-added applications.', color: '#6BBE4E' },
+const getLICENCE_TYPES = (lang) => [
+  { title: lang === 'tn' ? 'Motlamedi wa Mafaratlhatlha a Neteweke (NFP)' : 'Network Facilities Provider (NFP)', desc: lang === 'tn' ? 'Rua, laola kgotsa fana ka mafaratlhatlha a a dirisiwang go isa ditirelo, ditiriso le diteng.' : 'Own, operate or provide physical infrastructure used principally for carrying services, applications and content.', color: '#00A6CE' },
+  { title: lang === 'tn' ? 'Motlamedi wa Tiriso ya Ditirelo (SAP)' : 'Service Application Provider (SAP)', desc: lang === 'tn' ? 'Fana ka ditirelo tsa megala go badirisi ba bofelo ba dirisa mafaratlhatlha a neteweke a a fanwang ke ba ba nang le dilaesense tsa NFP.' : 'Provide telecommunications services to end users using network facilities provided by NFP licensees.', color: '#C8237B' },
+  { title: lang === 'tn' ? 'Motlamedi wa Tirelo ya Diteng (CSP)' : 'Content Service Provider (CSP)', desc: lang === 'tn' ? 'Fana ka diteng tsa phasalatso fela (TV le radio) le ditirelo tse dingwe tsa tshedimosetso.' : 'Provide content material solely for broadcasting (TV and radio) and other information services including Subscription TV.', color: '#F7B731' },
+  { title: lang === 'tn' ? 'Ditirelo tsa Neteweke tse di Okeditsweng Boleng (VANS)' : 'Value Added Network Services (VANS)', desc: lang === 'tn' ? 'Ditirelo tse di ntshitsweng go akaretsa VoIP, ditirelo tsa inthanete, le ditiriso tse di okeditsweng boleng.' : 'Liberalised services including VoIP, internet services, and value-added applications.', color: '#6BBE4E' },
 ];
 
 export default function TelecommunicationsPage() {
   const { lang } = useLanguage();
+  const LICENCE_TYPES = getLICENCE_TYPES(lang);
   const cardsRef = useStaggerReveal({ stagger: 0.1 });
   return (
     <div className="bg-white min-h-screen">

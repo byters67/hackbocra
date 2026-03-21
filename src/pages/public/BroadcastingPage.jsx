@@ -17,7 +17,7 @@ import { useLanguage } from '../../lib/language';
 const BASE = import.meta.env.BASE_URL || '/';
 
 /* ── Licensed Broadcasters ── */
-const RADIO_STATIONS = [
+const getRADIO_STATIONS = (lang) => [
   {
     name: 'Yarona FM',
     type: 'Commercial Radio',
@@ -43,7 +43,7 @@ const RADIO_STATIONS = [
     coverage: 'Major towns and villages nationwide',
     online: true,
     color: '#6BBE4E',
-    desc: 'Commercial radio station serving communities across Botswana. Accessible globally through online broadcasting platforms.',
+    desc: lang === 'tn' ? 'Setešene sa radio sa kgwebo se se direlang ditšhaba mo Botswana yotlhe. Se fitlhelelwa lefatshe lotlhe ka dipoletefomo tsa phasalatso ya inthanete.' : 'Commercial radio station serving communities across Botswana. Accessible globally through online broadcasting platforms.',
   },
 ];
 
@@ -61,6 +61,7 @@ const TV_STATIONS = [
 
 export default function BroadcastingPage() {
   const { lang } = useLanguage();
+  const RADIO_STATIONS = getRADIO_STATIONS(lang);
   const heroRef = useScrollReveal();
   const cardsRef = useStaggerReveal({ stagger: 0.1 });
 

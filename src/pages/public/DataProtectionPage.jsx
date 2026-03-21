@@ -16,12 +16,12 @@ import PageHero from '../../components/ui/PageHero';
 import { useLanguage } from '../../lib/language';
 
 /* ── Your Rights Under the Act ── */
-const RIGHTS = [
-  { icon: Eye, title: 'Right of Access', desc: 'You have the right to request a copy of all personal data BOCRA holds about you, and to know how it is being used.', color: '#00A6CE' },
-  { icon: Edit3, title: 'Right to Rectification', desc: 'If your personal data is inaccurate or incomplete, you can request that BOCRA corrects or updates it.', color: '#6BBE4E' },
-  { icon: Trash2, title: 'Right to Erasure', desc: 'You can request that BOCRA deletes your personal data where there is no compelling reason to continue processing it.', color: '#C8237B' },
-  { icon: Lock, title: 'Right to Restrict Processing', desc: 'You can request that BOCRA limits how your personal data is used while a complaint or concern is being resolved.', color: '#F7B731' },
-  { icon: Globe, title: 'Right to Data Portability', desc: 'You can request your personal data in a structured, commonly used format to transfer to another organisation.', color: '#00458B' },
+const getRIGHTS = (lang) => [
+  { icon: Eye, title: lang === 'tn' ? 'Tshwanelo ya Phitlhelelo' : 'Right of Access', desc: lang === 'tn' ? 'O na le tshwanelo ya go kopa khopi ya data yotlhe ya botho e BOCRA e nang le yona ka ga gago, le go itse gore e dirisiwa jang.' : 'You have the right to request a copy of all personal data BOCRA holds about you, and to know how it is being used.', color: '#00A6CE' },
+  { icon: Edit3, title: lang === 'tn' ? 'Tshwanelo ya go Baakanya' : 'Right to Rectification', desc: lang === 'tn' ? 'Fa data ya gago ya botho e sa nepagala kgotsa e sa felela, o ka kopa gore BOCRA e e baakanye kgotsa e e ntšhwafatse.' : 'If your personal data is inaccurate or incomplete, you can request that BOCRA corrects or updates it.', color: '#6BBE4E' },
+  { icon: Trash2, title: lang === 'tn' ? 'Tshwanelo ya go Phimola' : 'Right to Erasure', desc: lang === 'tn' ? 'O ka kopa gore BOCRA e phimole data ya gago ya botho fa go se na lebaka le le nonofileng la go tswelela go e dirisa.' : 'You can request that BOCRA deletes your personal data where there is no compelling reason to continue processing it.', color: '#C8237B' },
+  { icon: Lock, title: lang === 'tn' ? 'Tshwanelo ya go Kganela go Dirwa' : 'Right to Restrict Processing', desc: lang === 'tn' ? 'O ka kopa gore BOCRA e kganele tsela e data ya gago ya botho e dirisiwang ka yona fa ngongorego e ntse e rarabololwa.' : 'You can request that BOCRA limits how your personal data is used while a complaint or concern is being resolved.', color: '#F7B731' },
+  { icon: Globe, title: lang === 'tn' ? 'Tshwanelo ya go Tsamaisa Data' : 'Right to Data Portability', desc: lang === 'tn' ? 'O ka kopa data ya gago ya botho ka mokgwa o o rulagantsweng, o o dirisiwang thata go e fetisedisa kwa mokgatlhong o mongwe.' : 'You can request your personal data in a structured, commonly used format to transfer to another organisation.', color: '#00458B' },
   { icon: AlertCircle, title: 'Right to Object', desc: 'You can object to the processing of your personal data in certain circumstances, including direct marketing.', color: '#7C3AED' },
 ];
 
@@ -37,6 +37,7 @@ const DATA_CATEGORIES = [
 
 export default function DataProtectionPage() {
   const { lang } = useLanguage();
+  const RIGHTS = getRIGHTS(lang);
   const heroRef = useScrollReveal();
   const rightsRef = useStaggerReveal({ stagger: 0.08 });
 

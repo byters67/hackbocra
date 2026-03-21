@@ -30,7 +30,7 @@ import ConsentCheckbox from '../../components/ui/ConsentCheckbox';
 
 import PageHero from '../../components/ui/PageHero';
 import { useLanguage } from '../../lib/language';
-const COMPLAINT_TYPES = [
+const getCOMPLAINT_TYPES = (lang) => [
   'Billing / Charging Issues',
   'Network Coverage / Signal Problems',
   'Internet Service Quality',
@@ -46,7 +46,7 @@ const COMPLAINT_TYPES = [
   'Other',
 ];
 
-const SERVICE_PROVIDERS = [
+const getSERVICE_PROVIDERS = (lang) => [
   'Mascom Wireless',
   'Botswana Telecommunications Corporation (BTC)',
   'Orange Botswana',
@@ -59,15 +59,16 @@ const SERVICE_PROVIDERS = [
   'Other',
 ];
 
-const STEPS = [
-  { icon: Phone, title: 'Contact Provider', description: 'First, raise your complaint directly with your service provider.' },
-  { icon: Clock, title: 'Wait for Resolution', description: 'Allow the provider reasonable time to resolve your issue.' },
-  { icon: FileText, title: 'Escalate to BOCRA', description: 'If unresolved, file a formal complaint with BOCRA using this form.' },
-  { icon: Shield, title: 'BOCRA Investigates', description: 'We investigate and aim to resolve complaints within 2 business days.' },
+const getSTEPS = (lang) => [
+  { icon: Phone, title: lang === 'tn' ? 'Ikgolaganye le Motlamedi' : 'Contact Provider', description: lang === 'tn' ? 'Sa ntlha, tlhagisa ngongorego ya gago ka tlhamalalo le motlamedi wa gago wa tirelo.' : 'First, raise your complaint directly with your service provider.' },
+  { icon: Clock, title: lang === 'tn' ? 'Emela Tharabololo' : 'Wait for Resolution', description: lang === 'tn' ? 'Letla motlamedi nako e e utlwalang go rarabolola bothata jwa gago.' : 'Allow the provider reasonable time to resolve your issue.' },
+  { icon: FileText, title: lang === 'tn' ? 'Fetisedisa kwa BOCRA' : 'Escalate to BOCRA', description: lang === 'tn' ? 'Fa e sa rarabololwa, tlhagisa ngongorego ya semmuso le BOCRA o dirisa foromo e.' : 'If unresolved, file a formal complaint with BOCRA using this form.' },
+  { icon: Shield, title: lang === 'tn' ? 'BOCRA e a Batlisisa' : 'BOCRA Investigates', description: lang === 'tn' ? 'Re batlisisa mme re ikaelela go rarabolola dingongorego mo malatsing a le 2 a tiriso.' : 'We investigate and aim to resolve complaints within 2 business days.' },
 ];
 
 export default function FileComplaintPage() {
   const { lang } = useLanguage();
+  const STEPS = getSTEPS(lang);
   const [step, setStep] = useState('info'); // 'info' | 'form' | 'success'
   const [form, setForm] = useState({
     name: '', company: '', phone: '', email: '',

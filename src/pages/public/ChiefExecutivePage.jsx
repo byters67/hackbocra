@@ -13,15 +13,16 @@ import { useLanguage } from '../../lib/language';
 
 const BASE = import.meta.env.BASE_URL || '/';
 
-const PRIORITIES = [
-  { title: 'Digital Transformation', desc: 'Driving Botswana towards a connected and digitally driven society through modern regulation and innovation.', icon: Globe, color: '#00A6CE' },
-  { title: 'Consumer Protection', desc: 'Ensuring all Batswana have access to quality, affordable, and reliable communications services.', icon: Shield, color: '#C8237B' },
-  { title: 'Fair Competition', desc: 'Maintaining a level playing field for all operators while encouraging investment and market growth.', icon: Award, color: '#F7B731' },
-  { title: 'Universal Access', desc: 'Expanding coverage to rural and underserved areas through the Universal Access Service Fund.', icon: Wifi, color: '#6BBE4E' },
+const getPRIORITIES = (lang) => [
+  { title: lang === 'tn' ? 'Phetogo ya Dijithale' : 'Digital Transformation', desc: lang === 'tn' ? 'Go gogela Botswana kwa setšhabeng se se golaganeng le se se etelletsweng ke dijithale ka taolo ya seša le boitlhamedi.' : 'Driving Botswana towards a connected and digitally driven society through modern regulation and innovation.', icon: Globe, color: '#00A6CE' },
+  { title: lang === 'tn' ? 'Tshireletso ya Badirisi' : 'Consumer Protection', desc: lang === 'tn' ? 'Go netefatsa gore Batswana botlhe ba na le phitlhelelo ya ditirelo tsa dikgolagano tse di boleng, tse di sa tureng, le tse di ikanyegang.' : 'Ensuring all Batswana have access to quality, affordable, and reliable communications services.', icon: Shield, color: '#C8237B' },
+  { title: lang === 'tn' ? 'Kgaisano e e Siameng' : 'Fair Competition', desc: lang === 'tn' ? 'Go boloka lefelo le le lekalekanyeng la go tshamekelana ga balaodi botlhe fa go rotloediwa matsolo le kgolo ya mmaraka.' : 'Maintaining a level playing field for all operators while encouraging investment and market growth.', icon: Award, color: '#F7B731' },
+  { title: lang === 'tn' ? 'Phitlhelelo e e Akaretsang' : 'Universal Access', desc: lang === 'tn' ? 'Go atolosa phitlhelelo kwa mafelong a magae le a a sa fitisweng ka Letlole la Tirelo ya Phitlhelelo ya Botlhe.' : 'Expanding coverage to rural and underserved areas through the Universal Access Service Fund.', icon: Wifi, color: '#6BBE4E' },
 ];
 
 export default function ChiefExecutivePage() {
   const { lang } = useLanguage();
+  const PRIORITIES = getPRIORITIES(lang);
   const heroRef = useScrollReveal();
 
   return (

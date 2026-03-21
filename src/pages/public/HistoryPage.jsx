@@ -15,15 +15,15 @@ const getTimeline = (lang) => [
     year: '1997',
     title: lang === 'tn' ? 'BTA e Tlhomilwe' : 'BTA Established',
     events: [
-      'Botswana Telecommunications Authority (BTA) created under the Telecommunications Act, 1996',
-      'BTA begins regulating telecommunications sector',
+      lang === 'tn' ? 'Botswana Telecommunications Authority (BTA) e tlhomilwe ka Molao wa Telecommunications Act, 1996' : 'Botswana Telecommunications Authority (BTA) created under the Telecommunications Act, 1996',
+      lang === 'tn' ? 'BTA e simolola go laola lefapha la megala' : 'BTA begins regulating telecommunications sector',
     ],
   },
   {
     year: '1998-1999',
     title: lang === 'tn' ? 'Dilaesense tsa Mogala le Inthanete' : 'Mobile & Internet Licences',
     events: [
-      'Mobile operator licences awarded to Mascom Wireless and Vista Cellular (now Orange Botswana)',
+      lang === 'tn' ? 'Dilaesense tsa balaodi ba mogala di abetsweng Mascom Wireless le Vista Cellular (jaanong e le Orange Botswana)' : 'Mobile operator licences awarded to Mascom Wireless and Vista Cellular (now Orange Botswana)',
       'BTA awarded the first Internet Service Providers\u2019 (ISPs) licences',
     ],
   },
@@ -31,8 +31,8 @@ const getTimeline = (lang) => [
     year: '2001',
     title: lang === 'tn' ? 'Dinomoro le Sepeketeramo' : 'Numbering & Spectrum',
     events: [
-      'Implementation of the new seven-digit numbering plan for Botswana',
-      'Numbering policy established',
+      lang === 'tn' ? 'Go diriwa thulaganyo e ntšhwa ya dinomoro tsa disitšhite di supa tsa Botswana' : 'Implementation of the new seven-digit numbering plan for Botswana',
+      lang === 'tn' ? 'Pholisi ya dinomoro e tlhomilwe' : 'Numbering policy established',
     ],
   },
   {
@@ -94,10 +94,10 @@ const getTimeline = (lang) => [
     title: lang === 'tn' ? 'BOCRA e Tlhomilwe' : 'BOCRA Established',
     highlight: true,
     events: [
-      'Botswana Communications Regulatory Authority (BOCRA) officially established on 1 April 2013',
-      'Replaced the Botswana Telecommunications Authority (BTA) and National Broadcasting Board (NBB)',
-      'Structural unbundling of BTC into BTCL (retail) and BoFiNet (wholesale infrastructure)',
-      'Unified oversight of telecommunications, broadcasting, postal, and internet services',
+      lang === 'tn' ? 'Botswana Communications Regulatory Authority (BOCRA) e tlhomilwe ka semmuso ka la 1 Moranang 2013' : 'Botswana Communications Regulatory Authority (BOCRA) officially established on 1 April 2013',
+      lang === 'tn' ? 'E tsentse BTA le National Broadcasting Board (NBB) legato' : 'Replaced the Botswana Telecommunications Authority (BTA) and National Broadcasting Board (NBB)',
+      lang === 'tn' ? 'Kgaogano ya BTC go nna BTCL (thekiso) le BoFiNet (mafaratlhatlha)' : 'Structural unbundling of BTC into BTCL (retail) and BoFiNet (wholesale infrastructure)',
+      lang === 'tn' ? 'Taolo e e kopanetsweng ya megala, phasalatso, poso, le ditirelo tsa inthanete' : 'Unified oversight of telecommunications, broadcasting, postal, and internet services',
     ],
   },
   {
@@ -123,17 +123,17 @@ const getTimeline = (lang) => [
     year: '2024',
     title: lang === 'tn' ? 'Tshireletso ya Data' : 'Data Protection',
     events: [
-      'Botswana Data Protection Act, 2024 (BDPA) enacted',
-      'BOCRA Strategic Plan 2024-2029 published with collaboration as key objective',
+      lang === 'tn' ? 'Molao wa Tshireletso ya Data wa Botswana, 2024 (BDPA) o dirilwe' : 'Botswana Data Protection Act, 2024 (BDPA) enacted',
+      lang === 'tn' ? 'Leano la BOCRA la 2024-2029 le phatlhaladitswe ka tirisanommogo jaaka maikaelelo a botlhokwa' : 'BOCRA Strategic Plan 2024-2029 published with collaboration as key objective',
     ],
   },
   {
     year: '2025',
     title: lang === 'tn' ? 'Thulaganyo ya Seša' : 'Modern Framework',
     events: [
-      'Digital Services Act, 2025 enacted',
-      'Cybersecurity Act, 2025 enacted',
-      'Comprehensive framework for regulating digital services and national cybersecurity',
+      lang === 'tn' ? 'Molao wa Ditirelo tsa Dijithale, 2025 o dirilwe' : 'Digital Services Act, 2025 enacted',
+      lang === 'tn' ? 'Molao wa Tshireletso ya Saebo, 2025 o dirilwe' : 'Cybersecurity Act, 2025 enacted',
+      lang === 'tn' ? 'Thulaganyo e e feletseng ya go laola ditirelo tsa dijithale le tshireletso ya setšhaba ya saebo' : 'Comprehensive framework for regulating digital services and national cybersecurity',
     ],
   },
 ];

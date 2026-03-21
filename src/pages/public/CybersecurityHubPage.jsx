@@ -64,40 +64,40 @@ const SEV_STYLE = {
 };
 
 /* ── Incident types ── */
-const INCIDENT_TYPES = [
-  { id: 'phishing', icon: Mail, label: 'Scam Email or SMS', desc: 'Someone pretending to be your bank, BOCRA, or another company', color: '#C8237B' },
-  { id: 'malware', icon: Bug, label: 'Virus or Malware', desc: 'Your computer or phone is acting strangely or has been infected', color: '#DC2626' },
-  { id: 'fraud', icon: CreditCard, label: 'Money Stolen Online', desc: 'Unauthorised transactions from your bank or mobile money', color: '#F7B731' },
-  { id: 'data-breach', icon: Lock, label: 'Personal Data Leaked', desc: 'Your private information was shared without permission', color: '#7C3AED' },
-  { id: 'network', icon: Wifi, label: 'Hacking / Break-in', desc: 'Someone accessed your accounts or network without permission', color: '#00A6CE' },
+const getINCIDENT_TYPES = (lang) => [
+  { id: 'phishing', icon: Mail, label: lang === 'tn' ? 'Imeile kgotsa SMS ya Boferefere' : 'Scam Email or SMS', desc: lang === 'tn' ? 'Motho a itira banka ya gago, BOCRA, kgotsa kompone e nngwe' : 'Someone pretending to be your bank, BOCRA, or another company', color: '#C8237B' },
+  { id: 'malware', icon: Bug, label: lang === 'tn' ? 'Baerasi kgotsa Malware' : 'Virus or Malware', desc: lang === 'tn' ? 'Khomputara kgotsa mogala wa gago o dira ka tsela e e sa tlwaelegang kgotsa o tshwaeditswe' : 'Your computer or phone is acting strangely or has been infected', color: '#DC2626' },
+  { id: 'fraud', icon: CreditCard, label: lang === 'tn' ? 'Madi a a Utswilweng mo Inthaneteng' : 'Money Stolen Online', desc: lang === 'tn' ? 'Ditiro tse di sa dumelelwang go tswa mo bankeng kgotsa mading a mogala wa gago' : 'Unauthorised transactions from your bank or mobile money', color: '#F7B731' },
+  { id: 'data-breach', icon: Lock, label: lang === 'tn' ? 'Data ya Botho e Tsholotswe' : 'Personal Data Leaked', desc: lang === 'tn' ? 'Tshedimosetso ya gago ya sephiri e arogantswe kwa ntle ga tetla' : 'Your private information was shared without permission', color: '#7C3AED' },
+  { id: 'network', icon: Wifi, label: lang === 'tn' ? 'Go Tsena ka Boferefere' : 'Hacking / Break-in', desc: lang === 'tn' ? 'Motho o fitlheletse di-akhaonto kgotsa neteweke ya gago kwa ntle ga tetla' : 'Someone accessed your accounts or network without permission', color: '#00A6CE' },
   { id: 'sim-swap', icon: Smartphone, label: 'SIM Swap Attack', desc: 'Your phone number was taken over by someone else', color: '#EA580C' },
   { id: 'impersonation', icon: Users, label: 'Impersonation / Scam Call', desc: 'Someone pretending to be a government official or company', color: '#059669' },
   { id: 'other', icon: HelpCircle, label: 'Something Else', desc: 'Any other online safety concern you want to report', color: '#64748B' },
 ];
 
 /* ── Interactive Safety Tips with quizzes ── */
-const SAFETY_TIPS = [
-  { icon: Lock, title: 'Create Strong Passwords', color: '#00A6CE',
+const getSAFETY_TIPS = (lang) => [
+  { icon: Lock, title: lang === 'tn' ? 'Tlhama Mafoko a Sephiri a a Nonofileng' : 'Create Strong Passwords', color: '#00A6CE',
     tip: 'Use passwords with 12 or more characters — mix letters, numbers, and symbols. Never use the same password for different accounts. A free app called Bitwarden can remember all your passwords for you.',
     quiz: 'Which of these is the safest password?',
     options: ['password123', 'BotswanaSunrise2024!#', 'my name'], answer: 1,
     why: 'A strong password has letters, numbers, AND symbols. "BotswanaSunrise2024!#" is long and complex — very hard to guess.' },
-  { icon: Smartphone, title: 'Protect Your Phone Number', color: '#DC2626',
+  { icon: Smartphone, title: lang === 'tn' ? 'Sireletsa Nomoro ya Mogala wa Gago' : 'Protect Your Phone Number', color: '#DC2626',
     tip: 'SIM swap fraud is very common in Botswana. Call your mobile operator (Mascom, BTC, or Orange) and ask them to add a SIM lock or PIN to your account. Never give your OTP code to anyone who calls you.',
     quiz: 'Someone calls saying they are from Mascom and need your OTP code. What should you do?',
     options: ['Give them the code — they work for Mascom', 'Hang up and call Mascom yourself on their official number', 'Send the code by SMS'], answer: 1,
     why: 'Mascom, BTC and Orange will NEVER call you to ask for your OTP. If someone does, they are a scammer. Always hang up and call the operator yourself.' },
-  { icon: Mail, title: 'Spot Fake Messages', color: '#C8237B',
+  { icon: Mail, title: lang === 'tn' ? 'Lemoga Melaetsa ya Maaka' : 'Spot Fake Messages', color: '#C8237B',
     tip: 'Scammers send emails and SMS that look real but are fake. BOCRA and your bank will NEVER ask for your PIN or password by message. If you get a suspicious link, do not click it — call the company directly.',
     quiz: 'You get a text: "Your BOCRA licence is expiring. Click here to renew now." What do you do?',
     options: ['Click the link to renew quickly', 'Delete it and call BOCRA on +267 395 7755 to check', 'Forward it to your friends to warn them'], answer: 1,
     why: 'BOCRA will never send you a link to renew by SMS. Always call BOCRA directly to verify. Clicking unknown links can steal your information.' },
-  { icon: CreditCard, title: 'Keep Your Money Safe Online', color: '#F7B731',
+  { icon: CreditCard, title: lang === 'tn' ? 'Boloka Madi a Gago a Babalesegile mo Inthaneteng' : 'Keep Your Money Safe Online', color: '#F7B731',
     tip: 'Check your Orange Money, MyZaka, or Smega transactions every week. Turn on SMS alerts for every transaction. If you see money you did not send, report it to your bank and BOCRA immediately.',
     quiz: 'You receive an SMS saying: "Congratulations! Send P50 to claim your P5,000 prize!" This is:',
     options: ['A real prize you should claim quickly', 'A scam — no real company asks you to pay to win a prize', 'Probably real if it mentions your name'], answer: 1,
     why: 'This is ALWAYS a scam. No legitimate company will ever ask you to send money to receive a prize. Report the number to your mobile operator.' },
-  { icon: Wifi, title: 'Use the Internet Safely', color: '#6BBE4E',
+  { icon: Wifi, title: lang === 'tn' ? 'Dirisa Inthanete ka Polokego' : 'Use the Internet Safely', color: '#6BBE4E',
     tip: 'Never enter your banking details or passwords when using free WiFi at malls, hotels, or cafes. Use your mobile data instead for banking. Look for the padlock icon in your browser before entering any personal details.',
     quiz: 'Is it safe to check your bank account using free WiFi at a shopping mall?',
     options: ['Yes, if the website looks normal', 'No — always use your own mobile data for banking', 'Yes, free WiFi is always safe'], answer: 1,
@@ -198,6 +198,8 @@ function QuizCard({ tip, index }) {
 
 export default function CybersecurityHubPage() {
   const { lang } = useLanguage();
+  const SAFETY_TIPS = getSAFETY_TIPS(lang);
+  const INCIDENT_TYPES = getINCIDENT_TYPES(lang);
   const heroRef = useScrollReveal();
   const statsRef = useStaggerReveal({ stagger: 0.1 });
 
