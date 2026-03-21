@@ -156,13 +156,13 @@ export default function TypeApprovalPage() {
               </h2>
               <div className="space-y-4 text-sm text-bocra-slate/70 leading-relaxed">
                 <p>
-                  BOCRA is mandated by Section 84 of the CRA Act to Type Approve communications equipment that may be connected, used or operated to provide broadcasting or telecommunications services in Botswana. In addition, BOCRA is mandated to ensure consumer protection.
+                  {lang === 'tn' ? 'BOCRA e laetswe ke Karolo 84 ya Molao wa CRA go Amogela ka Mofuta didirisiwa tsa dikgolagano tse di ka golaganngwang, dirisiwang kgotsa dirisiwang go fana ka ditirelo tsa phasalatso kgotsa megala mo Botswana. Go feta moo, BOCRA e laetswe go netefatsa tshireletso ya badirisi.' : 'BOCRA is mandated by Section 84 of the CRA Act to Type Approve communications equipment that may be connected, used or operated to provide broadcasting or telecommunications services in Botswana. In addition, BOCRA is mandated to ensure consumer protection.'}
                 </p>
                 <p>
-                  The purpose of the Type Approval procedure is to ensure that all radio communication and telecommunication equipment used in Botswana comply with international standards applicable as a member of the ITU Region 1. Type approval also ensures that no substandard equipment which may represent health and safety hazards to consumers is used in Botswana.
+                  {lang === 'tn' ? 'Maikaelelo a tsamaiso ya Tumelelo ya Mofuta ke go netefatsa gore didirisiwa tsotlhe tsa dikgolagano tsa radio le megala tse di dirisiwang mo Botswana di obamela maemo a boditšhabatšhaba a a dirisiwang jaaka leloko la ITU Region 1. Tumelelo ya mofuta gape e netefatsa gore ga go na didirisiwa tse di sa siamang tse di ka bontshang dikotsi tsa boitekanelo le polokego go badirisi tse di dirisiwang mo Botswana.' : 'The purpose of the Type Approval procedure is to ensure that all radio communication and telecommunication equipment used in Botswana comply with international standards applicable as a member of the ITU Region 1. Type approval also ensures that no substandard equipment which may represent health and safety hazards to consumers is used in Botswana.'}
                 </p>
                 <p>
-                  Type Approval serves to protect consumers from products that are not compatible with the local telecommunications network, and ensures that the operating frequency of all radio communication equipment is in conformity with the Botswana frequency spectrum allocation plan to avoid causing harmful interference to essential services.
+                  {lang === 'tn' ? 'Tumelelo ya Mofuta e direla go sireletsa badirisi go tswa go ditlhagisiwa tse di sa tsamaelaneng le neteweke ya selegae ya megala, le go netefatsa gore frikwensi ya go bereka ya didirisiwa tsotlhe tsa dikgolagano tsa radio e obamela leano la kabelo ya sepeketeramo sa frikwensi ya Botswana go efoga go baka tshitswako e e kotsi mo ditirelong tse di botlhokwa.' : 'Type Approval serves to protect consumers from products that are not compatible with the local telecommunications network, and ensures that the operating frequency of all radio communication equipment is in conformity with the Botswana frequency spectrum allocation plan to avoid causing harmful interference to essential services.'}
                 </p>
               </div>
 
@@ -293,12 +293,17 @@ export default function TypeApprovalPage() {
               <div className="bg-white rounded-2xl border border-gray-200 p-5">
                 <h3 className="text-sm font-bold text-bocra-slate mb-3">{lang === 'tn' ? 'Tsamaiso ya Kopo' : 'Application Process'}</h3>
                 <div className="space-y-3">
-                  {[
+                  {(lang === 'tn' ? [
+                    { step: '1', text: 'Romela dikwalo go akaretsa dipego tsa diteko go tswa laboratoreng e e amogetseng ke ILAC' },
+                    { step: '2', text: 'Kwadisa didirisiwa mo Tsamaisong ya Tumelelo ya Mofuta ya BOCRA' },
+                    { step: '3', text: 'BOCRA e sekaseka kopo le dikwalo tsa go obamela' },
+                    { step: '4', text: 'Duela dituelo fa Setifikeiti sa Tumelelo ya Mofuta se ntshiwa' },
+                  ] : [
                     { step: '1', text: 'Submit documentation including test reports from ILAC-accredited laboratory' },
                     { step: '2', text: 'Register equipment on the BOCRA Type Approval System' },
                     { step: '3', text: 'BOCRA reviews application and compliance documentation' },
                     { step: '4', text: 'Pay fees upon issuance of Type Approval Certificate' },
-                  ].map((item, i) => (
+                  ]).map((item, i) => (
                     <div key={i} className="flex items-start gap-3">
                       <div className="w-6 h-6 rounded-full bg-[#00A6CE]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
                         <span className="text-[10px] font-bold text-[#00A6CE]">{item.step}</span>
