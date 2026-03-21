@@ -23,18 +23,18 @@ const getCATEGORY_CONFIG = (lang) => ({
   'Guidelines & Standards': { color: '#6BBE4E', icon: Shield, desc: lang === 'tn' ? 'Ditaelo tsa taolo, melao ya maitsholo le maemo' : 'Regulatory guidelines, codes of conduct and standards' },
   'Licensing': { color: '#F7B731', icon: FileCheck, desc: lang === 'tn' ? 'Dithulaganyo tsa dilaesense, dikopo le ditlhokego' : 'Licensing frameworks, applications and requirements' },
   'Technical Specifications': { color: '#7C3AED', icon: Cpu, desc: lang === 'tn' ? 'Maemo a didirisiwa le dintlha tsa tumelelo ya mofuta' : 'Equipment standards and type approval specifications' },
-  'Consultation Papers': { color: '#0891B2', icon: Users, desc: 'Public consultation documents and discussion papers' },
-  'Measurement Reports': { color: '#DC2626', icon: Signal, desc: 'EMF and site measurement reports' },
-  'Broadband & Internet': { color: '#2563EB', icon: Wifi, desc: 'Broadband strategy, internet pricing and connectivity' },
-  'Spectrum & Frequency': { color: '#059669', icon: Signal, desc: 'Radio frequency plans and spectrum management' },
-  'Consumer Protection': { color: '#E11D48', icon: AlertCircle, desc: 'Complaints handling, consumer policies and KYC' },
-  'Rulings & Disputes': { color: '#9333EA', icon: Scale, desc: 'Dispute resolutions, judgments and rulings' },
-  'Forms & Applications': { color: '#0284C7', icon: FileText, desc: 'Application forms and questionnaires' },
-  'Numbering Plan': { color: '#4F46E5', icon: Settings, desc: 'National numbering plans and allocations' },
-  'Research & Publications': { color: '#B45309', icon: BarChart3, desc: 'Market studies, surveys, presentations and research' },
-  'Policy': { color: '#0D9488', icon: Globe, desc: 'Policies, strategies, directives and public notices' },
-  'EMF & Health': { color: '#BE185D', icon: MapPin, desc: 'Electromagnetic field exposure and health research' },
-  'Broadcasting': { color: '#EA580C', icon: Radio, desc: 'Broadcasting codes, election guidelines and notices' },
+  'Consultation Papers': { color: '#0891B2', icon: Users, desc: lang === 'tn' ? 'Dikwalo tsa ditherisano tsa setšhaba le dipampiri tsa dipuisano' : 'Public consultation documents and discussion papers' },
+  'Measurement Reports': { color: '#DC2626', icon: Signal, desc: lang === 'tn' ? 'Dipego tsa ditekanyo tsa EMF le lefelo' : 'EMF and site measurement reports' },
+  'Broadband & Internet': { color: '#2563EB', icon: Wifi, desc: lang === 'tn' ? 'Leano la inthanete ya lobelo, ditlhwatlhwa tsa inthanete le kgolagano' : 'Broadband strategy, internet pricing and connectivity' },
+  'Spectrum & Frequency': { color: '#059669', icon: Signal, desc: lang === 'tn' ? 'Mananeo a frikwensi ya radio le tsamaiso ya sepeketeramo' : 'Radio frequency plans and spectrum management' },
+  'Consumer Protection': { color: '#E11D48', icon: AlertCircle, desc: lang === 'tn' ? 'Go tsamaisa dingongorego, dipholisi tsa badirisi le KYC' : 'Complaints handling, consumer policies and KYC' },
+  'Rulings & Disputes': { color: '#9333EA', icon: Scale, desc: lang === 'tn' ? 'Ditharabololo tsa dikganetsano, dikatlholo le ditshwetso' : 'Dispute resolutions, judgments and rulings' },
+  'Forms & Applications': { color: '#0284C7', icon: FileText, desc: lang === 'tn' ? 'Diforomo tsa dikopo le dipotsolotso' : 'Application forms and questionnaires' },
+  'Numbering Plan': { color: '#4F46E5', icon: Settings, desc: lang === 'tn' ? 'Mananeo a bosetšhaba a dinomoro le dikabelo' : 'National numbering plans and allocations' },
+  'Research & Publications': { color: '#B45309', icon: BarChart3, desc: lang === 'tn' ? 'Dithuto tsa mmaraka, dipatlisiso, ditlhagiso le dipatlisiso' : 'Market studies, surveys, presentations and research' },
+  'Policy': { color: '#0D9488', icon: Globe, desc: lang === 'tn' ? 'Dipholisi, maano, ditaelo le dikitsiso tsa setšhaba' : 'Policies, strategies, directives and public notices' },
+  'EMF & Health': { color: '#BE185D', icon: MapPin, desc: lang === 'tn' ? 'Go amiwa ke mafelo a electromagnetic le dipatlisiso tsa boitekanelo' : 'Electromagnetic field exposure and health research' },
+  'Broadcasting': { color: '#EA580C', icon: Radio, desc: lang === 'tn' ? 'Melao ya phasalatso, ditaelo tsa ditlhopho le dikitsiso' : 'Broadcasting codes, election guidelines and notices' },
 });
 
 const DOCUMENTS = [
@@ -317,13 +317,12 @@ const DOCUMENTS = [
   { title: 'Campus Radio Broadcasters Notice', file: 'Public_Notice_Campus_Radio_Broadcasters.pdf', category: 'Broadcasting', year: '2024' },
 ];
 
-const CATEGORIES_STATIC = ['All', 'Legislation', 'Annual Reports', 'Guidelines & Standards', 'Licensing', 'Technical Specifications', 'Consultation Papers', 'Measurement Reports', 'Broadband & Internet', 'Spectrum & Frequency', 'Consumer Protection', 'Rulings & Disputes', 'Forms & Applications', 'Numbering Plan', 'Research & Publications', 'Policy', 'EMF & Health', 'Broadcasting'];
+const CATEGORIES = ['All', ...Object.keys(CATEGORY_CONFIG)];
 const getYears = () => { const y = [...new Set(DOCUMENTS.map(d => d.year))].sort((a, b) => b.localeCompare(a)); return ['All Years', ...y]; };
 
 export default function DocumentsPage() {
   const { lang } = useLanguage();
   const CATEGORY_CONFIG = getCATEGORY_CONFIG(lang);
-  const CATEGORIES = CATEGORIES_STATIC;
   const [category, setCategory] = useState('All');
   const [search, setSearch] = useState('');
   const [year, setYear] = useState('All Years');
@@ -359,7 +358,7 @@ export default function DocumentsPage() {
 
   return (
     <div className="bg-white">
-      <div className="bg-bocra-off-white border-b border-gray-100"><div className="section-wrapper py-4"><nav className="text-sm text-bocra-slate/50 flex items-center gap-2"><Link to="/" className="hover:text-bocra-blue transition-colors">{lang === 'tn' ? 'Gae' : 'Home'}</Link><ChevronRight size={14} /><span className="text-bocra-slate">Documents & Legislation</span></nav></div></div>
+      <div className="bg-bocra-off-white border-b border-gray-100"><div className="section-wrapper py-4"><nav className="text-sm text-bocra-slate/50 flex items-center gap-2"><Link to="/" className="hover:text-bocra-blue transition-colors">{lang === 'tn' ? 'Gae' : 'Home'}</Link><ChevronRight size={14} /><span className="text-bocra-slate">{lang === 'tn' ? 'Dikwalo le Melao' : 'Documents & Legislation'}</span></nav></div></div>
       {/* Hero */}
       <PageHero category="RESOURCES" categoryTn="DITHULAGANYO" title="Documents & Legislation" titleTn="Dikwalo le Melao" description="Access BOCRA regulatory documents, draft legislation, consultation papers, and published guidelines." descriptionTn="Fitlhelela dikwalo tsa taolo tsa BOCRA, melao e e sa ntseng e dirwa, dipampiri tsa therisano, le ditaelo tse di gatisitsweng." color="yellow" />
 
@@ -368,39 +367,39 @@ export default function DocumentsPage() {
       <div className="bg-white sticky top-16 lg:top-[120px] z-30 border-b border-gray-100 shadow-sm">
         <div className="section-wrapper py-3">
           <div className="flex flex-col sm:flex-row gap-3">
-            <div className="relative flex-1"><Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-bocra-slate/30" /><input type="search" placeholder={`Search ${filtered.length} documents...`} value={search} onChange={e => setSearch(e.target.value)} className="w-full pl-10 pr-10 py-2.5 bg-bocra-off-white border border-gray-200 rounded-xl text-sm focus:border-bocra-blue focus:ring-2 focus:ring-bocra-blue/10 outline-none transition-all" />{search && <button onClick={() => setSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-bocra-slate/30 hover:text-bocra-slate"><X size={14} /></button>}</div>
+            <div className="relative flex-1"><Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-bocra-slate/30" /><input type="search" placeholder={lang === 'tn' ? `Batla mo dikwalong di le ${filtered.length}...` : `Search ${filtered.length} documents...`} value={search} onChange={e => setSearch(e.target.value)} className="w-full pl-10 pr-10 py-2.5 bg-bocra-off-white border border-gray-200 rounded-xl text-sm focus:border-bocra-blue focus:ring-2 focus:ring-bocra-blue/10 outline-none transition-all" />{search && <button onClick={() => setSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-bocra-slate/30 hover:text-bocra-slate"><X size={14} /></button>}</div>
             <div className="flex gap-2">
-              <select value={year} onChange={e => setYear(e.target.value)} className="px-3 py-2.5 bg-bocra-off-white border border-gray-200 rounded-xl text-sm focus:border-bocra-blue outline-none">{years.map(y => <option key={y} value={y}>{y}</option>)}</select>
-              <button onClick={() => setSortDir(s => s === 'desc' ? 'asc' : 'desc')} className="px-3 py-2.5 bg-bocra-off-white border border-gray-200 rounded-xl text-sm hover:border-gray-300 transition-colors flex items-center gap-1.5" title={sortDir === 'desc' ? 'Newest first' : 'Oldest first'}>{sortDir === 'desc' ? <SortDesc size={14} /> : <SortAsc size={14} />}<span className="hidden sm:inline">{sortDir === 'desc' ? 'Newest' : 'Oldest'}</span></button>
+              <select value={year} onChange={e => setYear(e.target.value)} className="px-3 py-2.5 bg-bocra-off-white border border-gray-200 rounded-xl text-sm focus:border-bocra-blue outline-none">{years.map(y => <option key={y} value={y}>{y === 'All Years' ? (lang === 'tn' ? 'Dingwaga Tsotlhe' : 'All Years') : y}</option>)}</select>
+              <button onClick={() => setSortDir(s => s === 'desc' ? 'asc' : 'desc')} className="px-3 py-2.5 bg-bocra-off-white border border-gray-200 rounded-xl text-sm hover:border-gray-300 transition-colors flex items-center gap-1.5" title={sortDir === 'desc' ? 'Newest first' : 'Oldest first'}>{sortDir === 'desc' ? <SortDesc size={14} /> : <SortAsc size={14} />}<span className="hidden sm:inline">{sortDir === 'desc' ? (lang === 'tn' ? 'Tsa Bosheng' : 'Newest') : (lang === 'tn' ? 'Tsa Bogologolo' : 'Oldest')}</span></button>
               <div className="hidden sm:flex border border-gray-200 rounded-xl overflow-hidden"><button onClick={() => setViewMode('list')} className={`p-2.5 ${viewMode === 'list' ? 'bg-bocra-blue text-white' : 'bg-bocra-off-white text-bocra-slate/40'}`}><List size={16} /></button><button onClick={() => setViewMode('grid')} className={`p-2.5 ${viewMode === 'grid' ? 'bg-bocra-blue text-white' : 'bg-bocra-off-white text-bocra-slate/40'}`}><Grid size={16} /></button></div>
             </div>
           </div>
-          {(category !== 'All' || year !== 'All Years' || search) && <div className="flex flex-wrap items-center gap-2 mt-3"><span className="text-xs text-bocra-slate/40">Filters:</span>{category !== 'All' && <span className="inline-flex items-center gap-1 px-2.5 py-1 text-xs rounded-full text-white" style={{ backgroundColor: CATEGORY_CONFIG[category]?.color }}>{category}<button onClick={() => setCategory('All')}><X size={12} /></button></span>}{year !== 'All Years' && <span className="inline-flex items-center gap-1 px-2.5 py-1 text-xs rounded-full bg-gray-200 text-bocra-slate">{year}<button onClick={() => setYear('All Years')}><X size={12} /></button></span>}{search && <span className="inline-flex items-center gap-1 px-2.5 py-1 text-xs rounded-full bg-gray-200 text-bocra-slate">"{search}"<button onClick={() => setSearch('')}><X size={12} /></button></span>}<button onClick={() => { setCategory('All'); setYear('All Years'); setSearch(''); }} className="text-xs text-bocra-blue hover:underline">{lang === 'tn' ? 'Tlosa tsotlhe' : 'Clear all'}</button></div>}
+          {(category !== 'All' || year !== 'All Years' || search) && <div className="flex flex-wrap items-center gap-2 mt-3"><span className="text-xs text-bocra-slate/40">{lang === 'tn' ? 'Disefa:' : 'Filters:'}</span>{category !== 'All' && <span className="inline-flex items-center gap-1 px-2.5 py-1 text-xs rounded-full text-white" style={{ backgroundColor: CATEGORY_CONFIG[category]?.color }}>{category}<button onClick={() => setCategory('All')}><X size={12} /></button></span>}{year !== 'All Years' && <span className="inline-flex items-center gap-1 px-2.5 py-1 text-xs rounded-full bg-gray-200 text-bocra-slate">{year}<button onClick={() => setYear('All Years')}><X size={12} /></button></span>}{search && <span className="inline-flex items-center gap-1 px-2.5 py-1 text-xs rounded-full bg-gray-200 text-bocra-slate">"{search}"<button onClick={() => setSearch('')}><X size={12} /></button></span>}<button onClick={() => { setCategory('All'); setYear('All Years'); setSearch(''); }} className="text-xs text-bocra-blue hover:underline">{lang === 'tn' ? 'Tlosa tsotlhe' : 'Clear all'}</button></div>}
         </div>
       </div>
 
       <section className="py-6 sm:py-8"><div className="section-wrapper">
         <div className="lg:hidden mb-4">
-          <button onClick={() => setShowMobileCats(!showMobileCats)} className="flex items-center gap-2 text-sm font-medium text-bocra-slate mb-3"><Filter size={16} />{lang === 'tn' ? 'Batla ka Karolo' : 'Browse by Category'}<ChevronRight size={16} className={`transition-transform ${showMobileCats ? 'rotate-90' : ''}`} /></button>
+          <button onClick={() => setShowMobileCats(!showMobileCats)} className="flex items-center gap-2 text-sm font-medium text-bocra-slate mb-3"><Filter size={16} />{lang === 'tn' ? 'Batla ka Karolo' : (lang === 'tn' ? 'Batla ka Karolo' : 'Browse by Category')}<ChevronRight size={16} className={`transition-transform ${showMobileCats ? 'rotate-90' : ''}`} /></button>
           {showMobileCats && <div className="flex flex-wrap gap-2 mb-4">{CATEGORIES.map(cat => { const config = CATEGORY_CONFIG[cat]; const active = category === cat; return (<button key={cat} onClick={() => { setCategory(cat); setShowMobileCats(false); }} className={`px-3 py-1.5 text-xs rounded-full font-medium transition-all border ${active ? 'text-white border-transparent' : 'text-bocra-slate/60 border-gray-200 bg-white'}`} style={active ? { backgroundColor: config?.color || '#00A6CE' } : {}}>{cat} ({categoryCounts[cat] || 0})</button>); })}</div>}
         </div>
 
         <div className="flex gap-6">
           <aside className="hidden lg:block w-72 flex-shrink-0"><div className="sticky top-[200px] space-y-1.5 max-h-[calc(100vh-240px)] overflow-y-auto pr-2">
-            <h3 className="text-xs font-semibold text-bocra-slate/40 uppercase tracking-widest mb-3 px-3">Categories</h3>
+            <h3 className="text-xs font-semibold text-bocra-slate/40 uppercase tracking-widest mb-3 px-3">{lang === 'tn' ? 'Dikarolo' : 'Categories'}</h3>
             {CATEGORIES.map(cat => { const config = CATEGORY_CONFIG[cat]; const Icon = config?.icon || FolderOpen; const active = category === cat; return (
               <button key={cat} onClick={() => setCategory(cat)} className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left text-sm transition-all ${active ? 'bg-white shadow-sm text-bocra-slate font-medium' : 'text-bocra-slate/60 hover:text-bocra-slate hover:bg-gray-50'}`}>
                 <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${active ? '' : 'bg-gray-100'}`} style={active ? { backgroundColor: `${config?.color || '#00A6CE'}15` } : {}}>
                   {cat === 'All' ? <FolderOpen size={16} className={active ? 'text-bocra-blue' : 'text-bocra-slate/40'} /> : <Icon size={16} style={active ? { color: config.color } : {}} className={!active ? 'text-bocra-slate/40' : ''} />}
                 </div>
-                <span className="flex-1 truncate">{cat}</span>
+                <span className="flex-1 truncate">{cat === 'All' ? (lang === 'tn' ? 'Tsotlhe' : 'All') : cat}</span>
                 <span className={`text-xs px-2 py-0.5 rounded-full ${active ? 'bg-bocra-blue/10 text-bocra-blue' : 'bg-gray-100 text-bocra-slate/40'}`}>{categoryCounts[cat] || 0}</span>
               </button>
             ); })}
           </div></aside>
 
           <div className="flex-1 min-w-0">
-            <div ref={listRef} className="pb-2"><p className="text-sm text-bocra-slate/50">{filtered.length} document{filtered.length !== 1 ? 's' : ''}{category !== 'All' && <span className="text-bocra-slate/30"> — {CATEGORY_CONFIG[category]?.desc}</span>}</p></div>
+            <div ref={listRef} className="pb-2"><p className="text-sm text-bocra-slate/50">{filtered.length} {lang === 'tn' ? (filtered.length !== 1 ? 'dikwalo' : 'sekwalo') : `document${filtered.length !== 1 ? 's' : ''}`}{category !== 'All' && <span className="text-bocra-slate/30"> — {CATEGORY_CONFIG[category]?.desc}</span>}</p></div>
 
             {filtered.length === 0 ? (
               <div className="text-center py-12"><FileText size={48} className="mx-auto text-bocra-slate/20 mb-4" /><h3 className="text-lg font-medium text-bocra-slate/40">{lang === 'tn' ? 'Ga go na dikwalo tse di bonweng' : 'No documents found'}</h3><p className="text-sm text-bocra-slate/30 mt-1">{lang === 'tn' ? 'Leka go fetola dipatlisiso kgotsa disefa' : 'Try adjusting your search or filters'}</p></div>
@@ -409,7 +408,7 @@ export default function DocumentsPage() {
                 <button key={i} onClick={() => handleDownload(doc.file)} className="bg-white rounded-xl p-5 text-left hover:shadow-lg transition-all group border border-gray-100 hover:border-gray-200 relative overflow-hidden">
                   <div className="absolute top-0 left-0 w-full h-1 rounded-t-xl" style={{ backgroundColor: config?.color }} />
                   <div className="flex items-start gap-3"><div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0" style={{ backgroundColor: `${config?.color}15` }}><FileText size={18} style={{ color: config?.color }} /></div><div className="flex-1 min-w-0"><h3 className="font-medium text-sm text-bocra-slate group-hover:text-bocra-blue transition-colors line-clamp-2 leading-snug">{doc.title}</h3><div className="flex items-center gap-2 mt-2"><span className="text-[10px] px-2 py-0.5 rounded-full font-medium text-white" style={{ backgroundColor: config?.color }}>{doc.category}</span><span className="text-xs text-bocra-slate/40">{doc.year}</span></div></div></div>
-                  <div className="mt-3 flex items-center gap-1 text-xs text-bocra-blue opacity-0 group-hover:opacity-100 transition-opacity"><Download size={12} /> {lang === 'tn' ? 'Tsenya PDF' : 'Download PDF'}</div>
+                  <div className="mt-3 flex items-center gap-1 text-xs text-bocra-blue opacity-0 group-hover:opacity-100 transition-opacity"><Download size={12} /> {lang === 'tn' ? 'Tsenya PDF' : (lang === 'tn' ? 'Tsenya PDF' : 'Download PDF')}</div>
                 </button>
               ); })}</div>
             ) : (
