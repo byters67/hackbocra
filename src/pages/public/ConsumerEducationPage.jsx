@@ -49,17 +49,19 @@ export default function ConsumerEducationPage() {
   const rightsRef = useStaggerReveal({ stagger: 0.08 });
   const issuesRef = useStaggerReveal({ stagger: 0.08 });
 
+  const tn = lang === 'tn';
+
   return (
     <div className="bg-white min-h-screen">
       {/* Breadcrumb */}
       <div className="bg-bocra-off-white border-b border-gray-100">
         <div className="section-wrapper py-4">
           <nav className="text-sm text-bocra-slate/50 flex items-center gap-2">
-            <Link to="/" className="hover:text-bocra-blue">Home</Link>
+            <Link to="/" className="hover:text-bocra-blue">{tn ? 'Gae' : 'Home'}</Link>
             <ChevronRight size={14} />
-            <span className="text-bocra-slate/50">Services</span>
+            <span className="text-bocra-slate/50">{tn ? 'Ditirelo' : 'Services'}</span>
             <ChevronRight size={14} />
-            <span className="text-bocra-slate font-medium">Consumer Education</span>
+            <span className="text-bocra-slate font-medium">{tn ? 'Thuto ya Badirisi' : 'Consumer Education'}</span>
           </nav>
         </div>
       </div>
@@ -108,7 +110,7 @@ export default function ConsumerEducationPage() {
                     <h3 className="text-xs font-bold text-bocra-slate">{issue.title}</h3>
                   </div>
                   <p className="text-xs text-bocra-slate/60 leading-relaxed mb-2">{issue.desc}</p>
-                  <p className="text-[10px] text-bocra-slate/40">Affected providers: {issue.provider}</p>
+                  <p className="text-[10px] text-bocra-slate/40">{tn ? 'Batlamedi ba ba amiwang' : 'Affected providers'}: {issue.provider}</p>
                 </div>
               </div>
             ))}
@@ -138,7 +140,7 @@ export default function ConsumerEducationPage() {
           <div className="text-center mt-8">
             <Link to="/services/file-complaint"
               className="inline-flex items-center gap-2 px-6 py-3 bg-[#C8237B] text-white text-sm font-medium rounded-xl hover:bg-[#A01D64] transition-all">
-              <AlertCircle size={16} /> File a Complaint Now <ArrowRight size={14} />
+              <AlertCircle size={16} /> {tn ? 'Tlhagisa Ngongorego Jaanong' : 'File a Complaint Now'} <ArrowRight size={14} />
             </Link>
           </div>
         </div>
@@ -151,17 +153,24 @@ export default function ConsumerEducationPage() {
             {/* Protect Yourself */}
             <div className="bg-white rounded-xl border border-gray-200 p-6">
               <h3 className="text-sm font-bold text-bocra-slate mb-4 flex items-center gap-2">
-                <Shield size={16} className="text-[#00A6CE]" /> Protect Yourself
+                <Shield size={16} className="text-[#00A6CE]" /> {tn ? 'Itshireletse' : 'Protect Yourself'}
               </h3>
               <div className="space-y-3">
-                {[
+                {(tn ? [
+                  'Ka metlha bala maemo le dipehelo pele o ikwadisa mo tirelong epe',
+                  'Boloka direkoto tsotlhe tsa ditsamaiso, dirisiti, le dikgolagano',
+                  'Se ke wa abelana PIN, lefoko la sephiri, kgotsa OTP ya gago le ope — le fa ba re ba tswa go motlamedi wa gago',
+                  'Kwadisa SIM karata ya gago ka leina la gago mme o sireletse akhaonto ya gago ya madi a mogala',
+                  'Tlhola balansi le ditatamente tsa gago ka metlha bakeng sa dituelo tse di sa letlelelwang',
+                  'Bega SMS, megala, kgotsa diimeile dife kgotsa dife tse di belaetsang go motlamedi wa gago ka bonako',
+                ] : [
                   'Always read terms and conditions before subscribing to any service',
                   'Keep records of all transactions, receipts, and communications',
                   'Never share your PIN, password, or OTP with anyone — even if they claim to be from your provider',
                   'Register your SIM card in your own name and secure your mobile money account',
                   'Check your balance and statements regularly for unauthorised charges',
                   'Report any suspicious SMS, calls, or emails to your provider immediately',
-                ].map((tip, i) => (
+                ]).map((tip, i) => (
                   <div key={i} className="flex items-start gap-2">
                     <CheckCircle size={13} className="text-[#00A6CE] mt-0.5 flex-shrink-0" />
                     <p className="text-xs text-bocra-slate/60">{tip}</p>
@@ -173,7 +182,7 @@ export default function ConsumerEducationPage() {
             {/* Useful Contacts */}
             <div className="bg-white rounded-xl border border-gray-200 p-6">
               <h3 className="text-sm font-bold text-bocra-slate mb-4 flex items-center gap-2">
-                <Phone size={16} className="text-[#C8237B]" /> Useful Contacts
+                <Phone size={16} className="text-[#C8237B]" /> {tn ? 'Dikgolagano tse di Mosola' : 'Useful Contacts'}
               </h3>
               <div className="space-y-3">
                 <div className="p-3 bg-bocra-off-white rounded-lg">
@@ -208,10 +217,10 @@ export default function ConsumerEducationPage() {
           <h3 className="text-sm font-bold text-bocra-slate mb-4">{lang === 'tn' ? 'Ditsebe Tse di Amanang' : 'Related Pages'}</h3>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             {[
-              { label: lang === 'tn' ? 'Tlhagisa Ngongorego' : 'File a Complaint', path: '/services/file-complaint', icon: AlertCircle, color: '#C8237B' },
-              { label: 'FAQs', path: '/faqs', icon: HelpCircle, color: '#F7B731' },
-              { label: 'Data Protection', path: '/data-protection', icon: Lock, color: '#00458B' },
-              { label: 'Cybersecurity Hub', path: '/cybersecurity', icon: Shield, color: '#00A6CE' },
+              { label: tn ? 'Tlhagisa Ngongorego' : 'File a Complaint', path: '/services/file-complaint', icon: AlertCircle, color: '#C8237B' },
+              { label: tn ? 'Dipotso tse di Botswang Thata' : 'FAQs', path: '/faqs', icon: HelpCircle, color: '#F7B731' },
+              { label: tn ? 'Tshireletso ya Data' : 'Data Protection', path: '/data-protection', icon: Lock, color: '#00458B' },
+              { label: tn ? 'Setlhogo sa Tshireletso ya Saebo' : 'Cybersecurity Hub', path: '/cybersecurity', icon: Shield, color: '#00A6CE' },
             ].map(link => (
               <Link key={link.path} to={link.path} className="flex items-center gap-3 p-4 bg-white rounded-xl border border-gray-200 hover:shadow-md transition-all group">
                 <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: `${link.color}12` }}>
