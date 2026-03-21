@@ -38,57 +38,57 @@ const DL = `<p>To begin the licence application process, download the applicatio
 
 /* ── ALL 13 LICENCES — every one has a banner now ── */
 const LICENCES = [
-  { slug:'aircraft-radio', title:'Aircraft Radio Licence', short:'Aircraft Radio',
+  { slug:'aircraft-radio', title:'Aircraft Radio Licence', title_tn:'Laesense ya Radio ya Difofane', short:'Aircraft Radio',
     banner:`${B}images/licences/air_radio.jpg`,
     pdf:`${B}documents/Aircraft_Radio_Licence_Application.pdf`, pdfName:'Aircraft Radio Licence Application.pdf', pdfSize:'124.21 KB',
     colour:C.cyan, content: INTRO + DL },
-  { slug:'amateur-radio', title:'Amateur Radio Licence', short:'Amateur Radio',
+  { slug:'amateur-radio', title:'Amateur Radio Licence', title_tn:'Laesense ya Radio ya Baratani', short:'Amateur Radio',
     banner:`${B}images/licences/amateur.jpg`,
     pdf:`${B}documents/Amateur__Application_Form.pdf`, pdfName:'Amateur Application Form.pdf', pdfSize:'106.94 KB',
     colour:C.green, content: INTRO + DL },
-  { slug:'broadcasting', title:'Broadcasting Licence', short:'Broadcasting',
+  { slug:'broadcasting', title:'Broadcasting Licence', title_tn:'Laesense ya Phasalatso', short:'Broadcasting',
     banner:`${B}images/licences/broadcast.png`,
     pdf:null, pdfName:null, pdfSize:null,
     colour:C.magenta, content: INTRO + `<p>To <strong>begin the licence application process</strong> download the application form below, fill in and submit to BOCRA with all relevant documentation.</p>` },
-  { slug:'cellular', title:'Cellular Licence', short:'Cellular',
+  { slug:'cellular', title:'Cellular Licence', title_tn:'Laesense ya Mogala', short:'Cellular',
     banner:`${B}images/licences/cellular.jpg`,
     pdf:`${B}documents/Cellular_Licence_Application.pdf`, pdfName:'Cellular Licence Application.pdf', pdfSize:'~160 KB',
     colour:C.yellow, content: INTRO + DL },
-  { slug:'citizen-band-radio', title:'Citizen Band Radio Licence', short:'Citizen Band Radio',
+  { slug:'citizen-band-radio', title:'Citizen Band Radio Licence', title_tn:'Laesense ya Radio ya Baagi', short:'Citizen Band Radio',
     banner:`${B}images/licences/citizen_band.jpg`,
     pdf:`${B}documents/Citizen_Band_Radio_Licence_Application.pdf`, pdfName:'Citizen Band Radio Licence Application.pdf', pdfSize:'106.25 KB',
     colour:C.cyan, content: INTRO + DL },
-  { slug:'point-to-multipoint', title:'Point-to-Multipoint Licence', short:'Point-to-Multipoint',
+  { slug:'point-to-multipoint', title:'Point-to-Multipoint Licence', title_tn:'Laesense ya Ntlha-go-Dintlha-tse-Dintsi', short:'Point-to-Multipoint',
     banner:`${B}images/licences/point_to_multipoint.jpg`,
     pdf:`${B}documents/Point-to-Multipoint_Licence_Application.pdf`, pdfName:'Point-to-Multipoint Licence Application.pdf', pdfSize:'149.7 KB',
     colour:C.green, content: INTRO + DL },
-  { slug:'point-to-point', title:'Point-to-Point Licence', short:'Point-to-Point',
+  { slug:'point-to-point', title:'Point-to-Point Licence', title_tn:'Laesense ya Ntlha-go-Ntlha', short:'Point-to-Point',
     banner:`${B}images/licences/point_to_point.jpg`,
     pdf:`${B}documents/Point-To-Point_Application.pdf`, pdfName:'Point-To-Point Application.pdf', pdfSize:'115.73 KB',
     colour:C.magenta, content: INTRO + DL },
-  { slug:'private-radio', title:'Private Radio Communication Licence', short:'Private Radio',
+  { slug:'private-radio', title:'Private Radio Communication Licence', title_tn:'Laesense ya Dikgolagano tsa Radio ya Poraefete', short:'Private Radio',
     banner:`${B}images/licences/private_radio.jpg`,
     pdf:`${B}documents/Private_Radio_Application_Form.pdf`, pdfName:'Private Radio Application Form.pdf', pdfSize:'176.02 KB',
     colour:C.yellow, content: INTRO + DL },
-  { slug:'radio-dealers', title:'Radio Dealers Licence', short:'Radio Dealers',
+  { slug:'radio-dealers', title:'Radio Dealers Licence', title_tn:'Laesense ya Barekisi ba Radio', short:'Radio Dealers',
     banner:`${B}images/licences/radio_dealer.png`,
     pdf:null, pdfName:null, pdfSize:null, colour:C.green,
     content: `<p>Any business involved in supplying and installing telecommunications equipment for clients will need to be licensed as a radio dealer in Botswana. The licence will enable a company to import, sell, or install radio communications equipment into Botswana. To protect Botswana consumers, BOCRA has to certify itself that the company is capable of selling and supporting Telecommunication equipment it is selling.</p><p>The following are the conditions for the radio dealers licence:</p><h3>Particulars Of The Applicant</h3><ul><li>A complete ownership profile of your company must be provided, listing all the directors and their equity holding in Pula</li><li>The applicant must state whether it is a member of a group, and if so, the ownership must detail ownership of the subsidiaries from the ultimate parent company of the group to the applicant</li><li>With respect to juristic person, the nature of the juristic person must be disclosed, i.e. whether company (in which the event it should be disclosed whether it is a private or public or closed corporation, or a trust or a partnership)</li></ul><h3>Technical Information</h3><ul><li>The applicant must provide detailed information about its technical experience and capability for the authority to assess whether the applicant has sufficient technical experience and capability to be a radio dealer</li><li>The applicant must provide a list of all test instruments it has which it will use for installation and maintenance of the radio equipment</li><li>The applicant must provide the profile of its technical staff</li></ul><h3>Financial Information</h3><ul><li>The capacity and resources available to trade on radio equipment</li><li>The authority shall be entitled to request written proof for any of the particulars disclosed</li></ul>` },
-  { slug:'radio-frequency', title:'Radio Frequency Licence', short:'Radio Frequency',
+  { slug:'radio-frequency', title:'Radio Frequency Licence', title_tn:'Laesense ya Frikwensi ya Radio', short:'Radio Frequency',
     banner:`${B}images/licences/radio_freq.jpg`,
     pdf:null, pdfName:null, pdfSize:null,
     colour:C.cyan, content: INTRO + DL },
-  { slug:'satellite-service', title:'Satellite Service Licence', short:'Satellite Service',
+  { slug:'satellite-service', title:'Satellite Service Licence', title_tn:'Laesense ya Tirelo ya Satellite', short:'Satellite Service',
     banner:`${B}images/licences/satellite_service.jpg`,
     pdf:`${B}documents/Satelllite_Service_Application_Form.pdf`, pdfName:'Satellite Service Application Form.pdf', pdfSize:'~155 KB',
     colour:C.magenta, content: INTRO + DL },
-  { slug:'type-approval', title:'Type Approval Licence', short:'Type Approval',
+  { slug:'type-approval', title:'Type Approval Licence', title_tn:'Laesense ya Tumelelo ya Mofuta', short:'Type Approval',
     banner:`${B}images/licences/type_approval.webp`,
     pdf:`${B}documents/Type_Approval_Application.pdf`, pdfName:'Type Approval Application.pdf', pdfSize:'201.89 KB',
     colour:C.yellow,
     pdf2:`${B}documents/Type_Approval_Guidelines_0.pdf`, pdf2Name:'Type Approval Guidelines.pdf', pdf2Size:'227.41 KB',
     content: `<p>BOCRA&rsquo;s mandate to type approve equipment is provided in the Telecommunications Act of 1996, Section 21 and Part IV of the Telecommunications Regulations of 1997. Type approval is required for all telecommunications and radio-communications equipment.</p><p>The Department carries out equipment type approvals and maintenance of a type approval register. The Department also develops type approval guidelines and regulations.</p><p>The equipment type approval is necessary:</p><ul><li>To prevent any technical harm to the public network, by ensuring conformance to set standards</li><li>To prevent the emissions of electro-magnetic radiation above prescribed levels and provide safety to network, personnel and users operating the equipment</li><li>To ensure inter-operability of networks</li></ul><p>In carrying out the type approval process, BOCRA may recognize type approval certificates and test reports from type approving authorities and testing laboratories of other countries, especially those in Region 1 of the ITU.</p>` },
-  { slug:'vans', title:'VANS Licence', short:'VANS',
+  { slug:'vans', title:'VANS Licence', title_tn:'Laesense ya VANS', short:'VANS',
     banner:`${B}images/licences/vans_licence.jpg`,
     pdf:null, pdfName:null, pdfSize:null, colour:C.green,
     content: `<p>Applicants should furnish the Authority with the following information:</p><h3>Particulars Of The Applicant</h3><ul><li>Provide certified copy of certificate of incorporation or certificate of registration of the company</li><li>A complete ownership profile must be provided, listing all the Shareholders, their nationalities, their physical and postal addresses and their shareholding</li><li>Disclose the Directorship of the company. We require certified copies of Form 2A and 2B. Form 2E is required if the company is Close Company</li><li>It must be indicated whether your company is a member of a group, and if so, give details of the ownership profile of the subsidiaries from the ultimate parent company</li><li>The nature of the company must be disclosed i.e. whether it is a private or public company incorporated in terms of the Companies Act</li><li>The company must have a registered office in Botswana. Provide details of Registered Office i.e. certified copy of Form 2</li><li>Provide contact details of the Registered Office</li></ul><h3>Business Plan</h3><p>Provide a 3-year business plan of your proposed project. The business plan must at a minimum show the following:</p><ul><li>A statement on how the applicant will be different from other players in the market</li><li>Services on offer and how such services will benefit the market</li><li>Description of aftersales support structures for customers</li><li>Target market</li><li>Pricing for the services</li><li>3 year financial projections of the Cash Flows and Income Statement</li><li>A statement of commitment indicating the date of commencement of operations</li><li>Proof of funding</li></ul><h3>Technical Information</h3><p>The configuration and description of all the technical aspects of the network as well as the equipment that will be used must be fully disclosed:</p><ul><li>Network diagram/configuration</li><li>The description of all interfaces within the network</li><li>Description of major equipment that will form the core components of the network</li><li>Applicants must include brief CVs of technical experience and managerial capability of the personnel</li><li>Applicant must show if there is any job creation and transfer of skills to local personnel</li></ul><h3>Applicable Fees</h3><ul><li>An initial licence fee of <strong>P10,000</strong> (ten thousand Pula)</li><li>An annual fee of <strong>P3,000</strong> (three thousand Pula)</li><li>All licence fees attract a <strong>12% Value Added Tax</strong></li><li>Fees for spectrum are based on spectrum requirements and considered on a case-by-case basis</li><li>BOCRA reserves the right to change these fees from time to time</li><li>Licence is valid for <strong>15 years</strong></li></ul>` },
@@ -120,7 +120,7 @@ function Sidebar({ slug, nav }) {
           <div ref={ref} className="relative">
             <button onClick={() => setOpen(!open)}
               className="w-full flex items-center justify-between bg-white/10 hover:bg-white/20 border border-white/20 rounded-xl px-4 py-3 text-sm transition-all duration-200">
-              <span className="text-white/90 truncate">{cur?.short || (lang === 'tn' ? 'Tlhopha Laesense' : 'Choose a Licence')}</span>
+              <span className="text-white/90 truncate">{cur?.short || lang === 'tn' ? 'Tlhopha Laesense' : 'Choose a Licence'}</span>
               <ChevronDown className={`w-4 h-4 text-white/60 transition-transform duration-200 flex-shrink-0 ml-2 ${open ? 'rotate-180' : ''}`} />
             </button>
             {open && (
@@ -240,7 +240,7 @@ function Grid({ nav }) {
                     <Ic className="w-4 h-4" style={{ color: c }} />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h3 className="font-bold text-[#00458B] text-sm leading-tight group-hover:text-[#00A6CE] transition-colors">{l.title}</h3>
+                    <h3 className="font-bold text-[#00458B] text-sm leading-tight group-hover:text-[#00A6CE] transition-colors">{lang === 'tn' && l.title_tn ? l.title_tn : l.title}</h3>
                   </div>
                 </div>
                 <div className="flex items-center justify-between mt-3">
@@ -250,7 +250,7 @@ function Grid({ nav }) {
                     <span className="flex items-center gap-1.5 text-xs text-gray-400"><AlertCircle className="w-3 h-3" />{lang === 'tn' ? 'Ikgolaganye le BOCRA' : 'Contact BOCRA'}</span>
                   )}
                   <span className="flex items-center gap-1 text-xs font-semibold opacity-0 group-hover:opacity-100 transition-all duration-200" style={{ color: c }}>
-                    View <ChevronRight className="w-3 h-3" />
+                    {lang === 'tn' ? 'Bona' : 'View'} <ChevronRight className="w-3 h-3" />
                   </span>
                 </div>
               </div>
@@ -356,9 +356,9 @@ function LicenceApplicationForm({ licence }) {
       <div className="mt-6 sm:mt-8 p-6 sm:p-8 bg-green-50 rounded-2xl border border-green-200 text-center">
         <div className="w-14 h-14 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4"><CheckCircle className="w-7 h-7 text-green-600" /></div>
         <h3 className="text-lg font-bold text-gray-900 mb-2">{lang === 'tn' ? 'Kopo e Rometse ka Katlego' : 'Application Submitted Successfully'}</h3>
-        <p className="text-sm text-gray-600 mb-3">Your {licence.title} application has been received by BOCRA. A confirmation will be sent to <strong>{form.email}</strong>.</p>
+        <p className="text-sm text-gray-600 mb-3">{lang === 'tn' ? <>Kopo ya gago ya {licence.title_tn || licence.title} e amogetse ke BOCRA. Netefatso e tla romelwa kwa go <strong>{form.email}</strong>.</> : <>Your {licence.title} application has been received by BOCRA. A confirmation will be sent to <strong>{form.email}</strong>.</>}</p>
         <div className="inline-block px-5 py-2.5 bg-white rounded-lg text-lg font-mono font-bold text-[#00458B] border border-green-200 mb-4">{refNum}</div>
-        <p className="text-xs text-gray-400">Save this reference number. BOCRA will review your application and respond within 10 business days.</p>
+        <p className="text-xs text-gray-400">{lang === 'tn' ? 'Boloka nomoro e ya tshupetso. BOCRA e tla sekaseka kopo ya gago mme e arabe mo malatsing a le 10 a tiriso.' : 'Save this reference number. BOCRA will review your application and respond within 10 business days.'}</p>
       </div>
     );
   }
@@ -371,14 +371,14 @@ function LicenceApplicationForm({ licence }) {
           <Lock className="w-10 h-10 text-[#00458B] mx-auto mb-3" />
           <h3 className="font-bold text-base text-[#00458B] mb-2">{lang === 'tn' ? 'Go Ikwadisa go a Tlhokega' : 'Registration Required'}</h3>
           <p className="text-sm text-gray-600 mb-4 max-w-md mx-auto">
-            You must be registered and signed in to your BOCRA operator account before applying for a licence. This ensures your application is linked to your company profile.
+            {lang === 'tn' ? 'O tshwanetse go kwadisiwa le go tsena mo akhaontong ya gago ya BOCRA pele o ikopela laesense. Se se netefatsa gore kopo ya gago e golagane le porofaele ya kompone ya gago.' : 'You must be registered and signed in to your BOCRA operator account before applying for a licence. This ensures your application is linked to your company profile.'}
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link to="/services/asms-webcp" className="px-6 py-3 bg-[#00458B] text-white font-semibold text-sm rounded-xl hover:bg-[#003366] transition-all inline-flex items-center justify-center gap-2">
-              Register / Sign In
+              {lang === 'tn' ? 'Kwadisa / Tsena' : 'Register / Sign In'}
             </Link>
           </div>
-          <p className="text-xs text-gray-400 mt-4">Already registered? <Link to="/services/asms-webcp" className="text-[#00A6CE] hover:underline">Sign in to your operator account</Link></p>
+          <p className="text-xs text-gray-400 mt-4">{lang === 'tn' ? 'O setse o kwadisitswe?' : 'Already registered?'} <Link to="/services/asms-webcp" className="text-[#00A6CE] hover:underline">{lang === 'tn' ? 'Tsena mo akhaontong ya gago ya molaodi' : 'Sign in to your operator account'}</Link></p>
         </div>
       </div>
     );
@@ -393,7 +393,7 @@ function LicenceApplicationForm({ licence }) {
           </div>
           <div>
             <h3 className="font-bold text-base text-[#00458B]">{lang === 'tn' ? 'Romela Kopo ya Gago' : 'Submit Your Application'}</h3>
-            <p className="text-xs text-gray-500">Upload your completed {licence.short} application form</p>
+            <p className="text-xs text-gray-500">{lang === 'tn' ? `Tsenya foromo ya gago e e tladitsweng ya kopo ya ${licence.short}` : `Upload your completed ${licence.short} application form`}</p>
           </div>
         </div>
 
@@ -403,15 +403,15 @@ function LicenceApplicationForm({ licence }) {
           <div className="space-y-2">
             <div className="flex items-start gap-3">
               <span className="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold flex-shrink-0" style={{ backgroundColor: licence.colour + '15', color: licence.colour }}>1</span>
-              <p className="text-sm text-gray-600"><strong>Download</strong> the application form above{licence.pdf ? '' : ' (contact BOCRA if not available online)'}</p>
+              <p className="text-sm text-gray-600">{lang === 'tn' ? <><strong>Tsenya</strong> foromo ya kopo e e fa godimo{licence.pdf ? '' : ' (ikgolaganye le BOCRA fa e se mo inthaneteng)'}</> : <><strong>Download</strong> the application form above{licence.pdf ? '' : ' (contact BOCRA if not available online)'}</>}</p>
             </div>
             <div className="flex items-start gap-3">
               <span className="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold flex-shrink-0" style={{ backgroundColor: licence.colour + '15', color: licence.colour }}>2</span>
-              <p className="text-sm text-gray-600"><strong>Fill in</strong> all required fields in the form, print and sign it, then scan or photograph it as a PDF</p>
+              <p className="text-sm text-gray-600">{lang === 'tn' ? <><strong>Tlatsa</strong> mafelo otlhe a a tlhokegang mo foromong, e gate le go e saena, mme o e skene kgotsa o e tshwantshe jaaka PDF</> : <><strong>Fill in</strong> all required fields in the form, print and sign it, then scan or photograph it as a PDF</>}</p>
             </div>
             <div className="flex items-start gap-3">
               <span className="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold flex-shrink-0" style={{ backgroundColor: licence.colour + '15', color: licence.colour }}>3</span>
-              <p className="text-sm text-gray-600"><strong>Upload</strong> the completed form below with your contact details and submit</p>
+              <p className="text-sm text-gray-600">{lang === 'tn' ? <><strong>Tsenya</strong> foromo e e tladitsweng fa tlase le dintlha tsa gago tsa kgolagano mme o e romele</> : <><strong>Upload</strong> the completed form below with your contact details and submit</>}</p>
             </div>
           </div>
         </div>
@@ -442,7 +442,7 @@ function LicenceApplicationForm({ licence }) {
                   <CheckCircle className="w-6 h-6 text-green-500" />
                   <div className="text-left">
                     <p className="text-sm font-semibold text-gray-700">{file.name}</p>
-                    <p className="text-xs text-gray-400">{(file.size / 1024).toFixed(0)} KB · Click to change file</p>
+                    <p className="text-xs text-gray-400">{(file.size / 1024).toFixed(0)} KB · {lang === 'tn' ? 'Tobetsa go fetola faele' : 'Click to change file'}</p>
                   </div>
                 </div>
               ) : (
@@ -460,10 +460,10 @@ function LicenceApplicationForm({ licence }) {
           )}
 
           <div className="flex items-center justify-between pt-2">
-            <p className="text-[10px] text-gray-400 max-w-xs">By submitting, you agree that BOCRA may contact you. Your data is protected under the Data Protection Act 2018.</p>
+            <p className="text-[10px] text-gray-400 max-w-xs">{lang === 'tn' ? 'Ka go romela, o dumela gore BOCRA e ka ikgolaganya le wena. Data ya gago e sireletswa ka fa tlase ga Molao wa Tshireletso ya Data wa 2018.' : 'By submitting, you agree that BOCRA may contact you. Your data is protected under the Data Protection Act 2018.'}</p>
             <button type="submit" disabled={!file || !form.fullName || !form.email || !form.phone || submitting}
               className="px-6 py-3 text-white font-bold text-sm rounded-xl hover:opacity-90 transition-all flex items-center gap-2 flex-shrink-0 disabled:opacity-30 disabled:cursor-not-allowed" style={{ backgroundColor: licence.colour }}>
-              <Send className="w-4 h-4" /> {submitting ? 'Submitting...' : 'Submit Application'}
+              <Send className="w-4 h-4" /> {submitting ? (lang === 'tn' ? 'E a romela...' : 'Submitting...') : (lang === 'tn' ? 'Romela Kopo' : 'Submit Application')}
             </button>
           </div>
         </form>
@@ -496,7 +496,7 @@ function Detail({ licence: l, nav }) {
             <div className="w-6 h-1 rounded-full" style={{ backgroundColor: l.colour }} />
             <span className="text-xs text-white/60 uppercase tracking-wider font-medium">{lang === 'tn' ? 'Laesense' : 'Licence'}</span>
           </div>
-          <h1 className="text-xl sm:text-2xl lg:text-4xl font-bold text-white drop-shadow-lg">{l.title}</h1>
+          <h1 className="text-xl sm:text-2xl lg:text-4xl font-bold text-white drop-shadow-lg">{lang === 'tn' && l.title_tn ? l.title_tn : l.title}</h1>
         </div>
       </div>
 
@@ -515,7 +515,7 @@ function Detail({ licence: l, nav }) {
           {(l.pdf || l.pdf2) && (
             <div className="mt-6 sm:mt-8 p-4 sm:p-6 bg-gray-50 rounded-2xl border border-gray-100 space-y-3">
               <h3 className="text-xs font-bold text-[#00458B] uppercase tracking-widest mb-3">
-                {l.pdf2 ? 'Licence Files' : 'Licence File'}
+                {l.pdf2 ? (lang === 'tn' ? 'Difaele tsa Laesense' : 'Licence Files') : (lang === 'tn' ? 'Faele ya Laesense' : 'Licence File')}
               </h3>
               <PdfCard url={l.pdf} name={l.pdfName} size={l.pdfSize} />
               <PdfCard url={l.pdf2} name={l.pdf2Name} size={l.pdf2Size} />
@@ -528,9 +528,9 @@ function Detail({ licence: l, nav }) {
                 <AlertCircle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
                 <div>
                   <p className="text-sm font-semibold text-amber-800">{lang === 'tn' ? 'Foromo ya Kopo ga e yo mo Inthaneteng' : 'Application Form Not Available Online'}</p>
-                  <p className="text-sm text-amber-700 mt-1">Please contact BOCRA directly or visit the{' '}
+                  <p className="text-sm text-amber-700 mt-1">{lang === 'tn' ? 'Tsweetswee ikgolaganye le BOCRA ka tlhamalalo kgotsa etela ' : 'Please contact BOCRA directly or visit the '}
                     <a href="https://op-web.bocra.org.bw/" target="_blank" rel="noopener noreferrer" className="underline font-medium hover:text-amber-900">BOCRA Portal</a>
-                    {' '}for this licence application.</p>
+                    {lang === 'tn' ? ' bakeng sa kopo e ya laesense.' : ' for this licence application.'}</p>
                 </div>
               </div>
             </div>
@@ -558,7 +558,7 @@ export default function LicensingHubPage() {
       <AlertCircle className="w-16 h-16 text-gray-300 mx-auto mb-4" />
       <h1 className="text-2xl font-bold text-[#00458B] mb-2">{lang === 'tn' ? 'Laesense ga e a Bonwa' : 'Licence Not Found'}</h1>
       <button onClick={() => nav('/licensing')} className="inline-flex items-center gap-2 px-6 py-3 bg-[#00A6CE] text-white rounded-xl font-semibold hover:bg-[#0090B5] transition-colors mt-4">
-        <ArrowLeft className="w-4 h-4" /> Back to All Licences
+        <ArrowLeft className="w-4 h-4" /> {lang === 'tn' ? 'Boela kwa Dilaesenseng Tsotlhe' : 'Back to All Licences'}
       </button>
     </div>
   );
