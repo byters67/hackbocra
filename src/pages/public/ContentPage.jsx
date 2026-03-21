@@ -297,7 +297,7 @@ const PAGE_CONTENT = {
     `,
   },
   'licensing': {
-    title: lang === 'tn' ? 'Dilaesense' : 'Licensing',
+    title: 'Licensing',
     breadcrumb: ['Mandate', 'Licensing'],
     accent: 'bocra-blue',
     content: `

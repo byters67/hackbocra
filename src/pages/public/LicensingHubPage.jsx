@@ -120,7 +120,7 @@ function Sidebar({ slug, nav }) {
           <div ref={ref} className="relative">
             <button onClick={() => setOpen(!open)}
               className="w-full flex items-center justify-between bg-white/10 hover:bg-white/20 border border-white/20 rounded-xl px-4 py-3 text-sm transition-all duration-200">
-              <span className="text-white/90 truncate">{cur?.short || lang === 'tn' ? 'Tlhopha Laesense' : 'Choose a Licence'}</span>
+              <span className="text-white/90 truncate">{cur?.short || (lang === 'tn' ? 'Tlhopha Laesense' : 'Choose a Licence')}</span>
               <ChevronDown className={`w-4 h-4 text-white/60 transition-transform duration-200 flex-shrink-0 ml-2 ${open ? 'rotate-180' : ''}`} />
             </button>
             {open && (
