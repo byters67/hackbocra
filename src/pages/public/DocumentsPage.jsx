@@ -348,7 +348,7 @@ export default function DocumentsPage() {
   const handleDownload = (file) => { if (file) window.open(`${BASE}documents/${file}`, '_blank'); };
 
   return (
-    <div className="bg-white min-h-screen">
+    <div className="bg-white">
       <div className="bg-bocra-off-white border-b border-gray-100"><div className="section-wrapper py-4"><nav className="text-sm text-bocra-slate/50 flex items-center gap-2">
         <Link to="/" className="hover:text-bocra-blue">{tn ? 'Gae' : 'Home'}</Link><ChevronRight size={14} />
         {activeCategory ? (<><button onClick={() => setActiveCategory(null)} className="hover:text-bocra-blue">{tn ? 'Dikwalo' : 'Documents'}</button><ChevronRight size={14} /><span className="text-bocra-slate font-medium">{CATS[activeCategory]?.name}</span></>) : (<span className="text-bocra-slate font-medium">{tn ? 'Dikwalo le Melao' : 'Documents & Legislation'}</span>)}
