@@ -92,7 +92,17 @@ const TENDERS = [
 
 const CATEGORIES = ['All', 'Infrastructure', 'Consultancy', 'Technical Standards', 'Universal Access', 'General'];
 
-const ITT_SECTIONS = [
+const getITT_SECTIONS = (tn) => tn ? [
+  'Matseno — tshedimosetso ya lemorago ka ga tendara',
+  'Maemo a Tendara — dipehelo tsa molao tse di amanang le tendara',
+  'Tlhaloso — tlhaloso ya dithoto, tirelo kgotsa ditiro tse di tshwanetseng go fanwa',
+  'Ditaelo tsa go Romela Tendara — ditaelo bakeng sa batšhwari ba ditendara',
+  'Karabo ya Tendara ya Boleng — dipotso tsa boleng tse di tshwanetseng go arabiwa ke motšhwari wa tendara',
+  'Lenaane la Ditlhwatlhwa le Thomelo — dipotso tsa dipalopalo tse di tshwanetseng go arabiwa ke motšhwari wa tendara',
+  'Foromo ya Tendara — boikano jo bo tshwanetseng go saeniwa ke motšhwari wa tendara',
+  'Setifikeiti sa Go Sa Dirisane — boikano jwa gore motšhwari wa tendara ga a dirisana le motšhwari mongwe',
+  'Setlhogo sa Konteraka e e Tshitshinywang — setlhogo sa konteraka e e tshwanetseng go saeniwa ke mofenyi',
+] : [
   'Introduction — background information on the tender',
   'Tender Conditions — the legal parameters surrounding the tender',
   'Specification — the description of the supplies, service or works to be provided',
@@ -149,7 +159,7 @@ export default function TendersPage() {
             ].map(s => (
               <div key={s.label} className="text-center">
                 <p className="text-2xl font-bold" style={{ color: s.color }}>{s.value}</p>
-                <p className="text-[10px] text-gray-400">{s.label}</p>
+                <p className="text-[10px] text-gray-400">{lang === 'tn' && s.label_tn ? s.label_tn : s.label}</p>
               </div>
             ))}
           </div>
@@ -194,7 +204,7 @@ export default function TendersPage() {
                       <div className="flex items-start justify-between gap-3">
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 flex-wrap mb-1.5">
-                            <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${s.bg} ${s.text} border ${s.border}`}>{s.label}</span>
+                            <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${s.bg} ${s.text} border ${s.border}`}>{lang === 'tn' && s.label_tn ? s.label_tn : s.label}</span>
                             <span className="text-[10px] font-mono text-[#00A6CE]">{tender.ref}</span>
                             <span className="text-[10px] text-gray-300 px-2 py-0.5 bg-gray-50 rounded">{tender.category}</span>
                           </div>
@@ -254,13 +264,13 @@ export default function TendersPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div className="bg-white rounded-xl border border-gray-200 p-6">
               <h3 className="text-sm font-bold text-bocra-slate mb-3 flex items-center gap-2">
-                <FileText size={16} className="text-[#F7B731]" /> What's in a Tender Document?
+                <FileText size={16} className="text-[#F7B731]" /> {lang === 'tn' ? 'Sekwalo sa Tendara se na le Eng?' : "What's in a Tender Document?"}
               </h3>
               <p className="text-xs text-bocra-slate/60 mb-3">
-                Tendering documents — usually called an Invitation to Tender (ITT) — will most likely contain the following sections:
+                {lang === 'tn' ? 'Dikwalo tsa ditendara — tse di tlwaelegileng go bidiwa Taletso ya go Tendra (ITT) — ka tlwaelo di na le dikarolo tse di latelang:' : 'Tendering documents — usually called an Invitation to Tender (ITT) — will most likely contain the following sections:'}
               </p>
               <div className="space-y-2">
-                {ITT_SECTIONS.map((s, i) => (
+                {getITT_SECTIONS(lang === 'tn').map((s, i) => (
                   <div key={i} className="flex items-start gap-2">
                     <CheckCircle size={12} className="text-[#F7B731] mt-0.5 flex-shrink-0" />
                     <p className="text-[11px] text-bocra-slate/60">{s}</p>
@@ -272,19 +282,19 @@ export default function TendersPage() {
             <div className="space-y-4">
               <div className="bg-white rounded-xl border border-gray-200 p-6">
                 <h3 className="text-sm font-bold text-bocra-slate mb-2 flex items-center gap-2">
-                  <Award size={16} className="text-[#00A6CE]" /> Our Commitment
+                  <Award size={16} className="text-[#00A6CE]" /> {lang === 'tn' ? 'Maitlamo a Rona' : 'Our Commitment'}
                 </h3>
                 <p className="text-xs text-bocra-slate/60 leading-relaxed">
-                  In order to ensure that BOCRA is offered the best value-for-money, we follow a thorough tendering process in compliance with the Public Procurement Regulations of Botswana. All tenders are evaluated fairly and transparently.
+                  {lang === 'tn' ? 'Go netefatsa gore BOCRA e fiwa boleng jo bo gaisang jwa madi, re latela tsamaiso e e tseneletseng ya go tendra go ya ka Melao ya Theko ya Setšhaba ya Botswana. Ditendara tsotlhe di atlholwa ka tekatekanyo le ka ponagatso.' : 'In order to ensure that BOCRA is offered the best value-for-money, we follow a thorough tendering process in compliance with the Public Procurement Regulations of Botswana. All tenders are evaluated fairly and transparently.'}
                 </p>
               </div>
 
               <div className="bg-white rounded-xl border border-gray-200 p-6">
                 <h3 className="text-sm font-bold text-bocra-slate mb-2 flex items-center gap-2">
-                  <Mail size={16} className="text-[#C8237B]" /> Tender Enquiries
+                  <Mail size={16} className="text-[#C8237B]" /> {lang === 'tn' ? 'Dipotso tsa Ditendara' : 'Tender Enquiries'}
                 </h3>
                 <p className="text-xs text-bocra-slate/60 leading-relaxed mb-3">
-                  For debriefing requests and tender enquiries, contact the BOCRA Procurement Department.
+                  {lang === 'tn' ? 'Bakeng sa dikopo tsa tlhalosetso le dipotso tsa ditendara, ikgolaganye le Lefapha la Theko la BOCRA.' : 'For debriefing requests and tender enquiries, contact the BOCRA Procurement Department.'}
                 </p>
                 <div className="space-y-1.5">
                   <a href="mailto:tenders@bocra.org.bw" className="flex items-center gap-2 text-xs text-[#00458B] hover:underline font-medium">
@@ -298,7 +308,7 @@ export default function TendersPage() {
 
               <Link to="/media/news-events" className="flex items-center gap-3 p-4 bg-white rounded-xl border border-gray-200 hover:shadow-md transition-all group">
                 <ShoppingBag size={18} className="text-[#6BBE4E]" />
-                <div><p className="text-xs font-bold text-bocra-slate">News & Public Notices</p><p className="text-[10px] text-gray-400">Latest procurement announcements</p></div>
+                <div><p className="text-xs font-bold text-bocra-slate">{lang === 'tn' ? 'Dikgang le Dikitsiso tsa Setšhaba' : 'News & Public Notices'}</p><p className="text-[10px] text-gray-400">{lang === 'tn' ? 'Dipapatso tsa bosheng tsa theko' : 'Latest procurement announcements'}</p></div>
               </Link>
             </div>
           </div>
