@@ -148,24 +148,24 @@ export default function ConsultationsPage() {
 
   const stats = [
     { num: CONSULTATIONS.filter(c => c.status === 'open').length, label: lang === 'tn' ? 'Ditherisano tse di Butsweng' : 'Open Consultations', color: '#6BBE4E' },
-    { num: CONSULTATIONS.reduce((a, c) => a + c.documents.length, 0), label: 'Documents Available', color: '#00A6CE' },
-    { num: totalSubmissions ?? '—', label: 'Total Submissions', color: '#C8237B' },
+    { num: CONSULTATIONS.reduce((a, c) => a + c.documents.length, 0), label: lang === 'tn' ? 'Dikwalo tse di Leng Teng' : 'Documents Available', color: '#00A6CE' },
+    { num: totalSubmissions ?? '—', label: lang === 'tn' ? 'Dikarabo Tsotlhe' : 'Total Submissions', color: '#C8237B' },
   ];
 
   if (tab === 'submit') return <SubmitResponsePage consultation={respondTo} onBack={() => { setTab('open'); setRespondTo(null); }} />;
 
   return (
     <div className="bg-white min-h-screen">
-      <div className="bg-bocra-off-white border-b border-gray-100"><div className="section-wrapper py-4"><nav className="text-sm text-bocra-slate/50 flex items-center gap-2"><Link to="/" className="hover:text-bocra-blue transition-colors">Home</Link><ChevronRight size={14} /><span className="text-bocra-slate font-medium">{lang === 'tn' ? 'Ditheriso tsa Setšhaba' : 'Public Consultations'}</span></nav></div></div>
+      <div className="bg-bocra-off-white border-b border-gray-100"><div className="section-wrapper py-4"><nav className="text-sm text-bocra-slate/50 flex items-center gap-2"><Link to="/" className="hover:text-bocra-blue transition-colors">{lang === 'tn' ? 'Gae' : 'Home'}</Link><ChevronRight size={14} /><span className="text-bocra-slate font-medium">{lang === 'tn' ? 'Ditheriso tsa Setšhaba' : 'Public Consultations'}</span></nav></div></div>
 
       <section className="px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6 pb-0">
         <div className="relative py-12 sm:py-16 px-5 sm:px-8 lg:px-10 rounded-2xl overflow-hidden bg-gradient-to-br from-[#00458B] to-[#001A3A]">
           <div className="absolute top-0 right-0 w-48 sm:w-64 h-48 sm:h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2" />
           <div className="absolute bottom-0 left-0 w-36 sm:w-48 h-36 sm:h-48 bg-white/10 rounded-full translate-y-1/2 -translate-x-1/2" />
           <div ref={heroRef} className="relative max-w-3xl mx-auto text-center">
-            <div className="flex items-center justify-center gap-2 mb-3"><div className="w-1.5 h-6 rounded-full bg-[#00A6CE]" /><span className="text-xs text-[#00A6CE] uppercase tracking-widest font-medium">PARTICIPATE</span></div>
+            <div className="flex items-center justify-center gap-2 mb-3"><div className="w-1.5 h-6 rounded-full bg-[#00A6CE]" /><span className="text-xs text-[#00A6CE] uppercase tracking-widest font-medium">{lang === 'tn' ? 'TSAYA KAROLO' : 'PARTICIPATE'}</span></div>
             <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white">{lang === 'tn' ? 'Ditheriso tsa Setšhaba' : 'Public Consultations'}</h1>
-            <p className="text-white/60 mt-3 text-sm sm:text-base max-w-xl mx-auto">Have your say on proposed regulations and policies. BOCRA invites stakeholders and the public to review and comment on draft regulatory instruments.</p>
+            <p className="text-white/60 mt-3 text-sm sm:text-base max-w-xl mx-auto">{lang === 'tn' ? 'Nna le seabe mo melaong le dipholising tse di tshitshinywang. BOCRA e laletsa baamegi le setšhaba go sekaseka le go ntsha maikutlo mo didirisiiweng tsa taolo tsa setlhogo.' : 'Have your say on proposed regulations and policies. BOCRA invites stakeholders and the public to review and comment on draft regulatory instruments.'}</p>
           </div>
         </div>
       </section>
@@ -176,7 +176,7 @@ export default function ConsultationsPage() {
 
       <section className="py-8"><div className="section-wrapper max-w-4xl">
         <div className="flex border-b border-gray-200 mb-6">
-          {[{ key: 'open', label: 'Open', count: CONSULTATIONS.filter(c => c.status === 'open').length }, { key: 'closed', label: 'Closed', count: closedItems.length }].map(t => (
+          {[{ key: 'open', label: lang === 'tn' ? 'Tse di Butsweng' : 'Open', count: CONSULTATIONS.filter(c => c.status === 'open').length }, { key: 'closed', label: lang === 'tn' ? 'Tse di Tswaletsweng' : 'Closed', count: closedItems.length }].map(t => (
             <button key={t.key} onClick={() => setTab(t.key)} className={`px-5 py-3 text-sm font-medium border-b-2 -mb-px transition-all ${tab === t.key ? 'border-[#00458B] text-[#00458B]' : 'border-transparent text-gray-400 hover:text-gray-600'}`}>
               {t.label}<span className={`ml-1.5 text-[10px] px-1.5 py-0.5 rounded-full font-bold ${t.key === 'open' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'}`}>{t.count}</span>
             </button>
@@ -188,12 +188,12 @@ export default function ConsultationsPage() {
             {['All', ...Object.keys(SECTORS)].map(s => (
               <button key={s} onClick={() => setSectorFilter(s)} className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5 ${sectorFilter === s ? 'bg-[#00458B] text-white' : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50'}`}>
                 {SECTORS[s] && <span className="w-2 h-2 rounded-full" style={{ background: sectorFilter === s ? '#fff' : SECTORS[s].color }} />}
-                {s === 'All' ? 'All Sectors' : s}
+                {s === 'All' ? (lang === 'tn' ? 'Mafapha Otlhe' : 'All Sectors') : s}
               </button>
             ))}
           </div>
           {openItems.length > 0 ? <div className="space-y-4">{openItems.map(item => <ConsultationCard key={item.id} item={item} onRespond={c => { setRespondTo(c); setTab('submit'); }} />)}</div>
-          : <div className="py-12 text-center"><FileText size={32} className="text-gray-200 mx-auto mb-3" /><p className="text-sm text-gray-400">No open consultations in this sector at the moment.</p></div>}
+          : <div className="py-12 text-center"><FileText size={32} className="text-gray-200 mx-auto mb-3" /><p className="text-sm text-gray-400">{lang === 'tn' ? 'Ga go na ditherisano tse di butsweng mo lefapheng leno ga jaana.' : 'No open consultations in this sector at the moment.'}</p></div>}
         </>)}
 
         {tab === 'closed' && <div className="space-y-4">{closedItems.map(item => <ConsultationCard key={item.id} item={item} onRespond={() => {}} />)}</div>}
@@ -205,6 +205,8 @@ export default function ConsultationsPage() {
 }
 
 function ConsultationCard({ item, onRespond }) {
+  const { lang } = useLanguage();
+  const tn = lang === 'tn';
   const [docsOpen, setDocsOpen] = useState(false);
   const [heardOpen, setHeardOpen] = useState(false);
   const [responsesOpen, setResponsesOpen] = useState(false);
@@ -259,7 +261,7 @@ function ConsultationCard({ item, onRespond }) {
             </div>
             <div className="flex items-center gap-2 mt-1 flex-wrap text-xs text-gray-400">
               <span style={{ color: cfg.color }} className="font-medium">{item.sector}</span><span>·</span><span>Ref: {item.id}</span><span>·</span>
-              {item.status === 'open' ? <span>Opened {formatDate(item.opened)} · <span className={urgent ? 'text-red-600 font-semibold' : ''}>Closes {formatDate(item.closes)}{urgent ? ` (${days} day${days !== 1 ? 's' : ''} left)` : ''}</span></span> : <span>Closed {formatDate(item.closes)}</span>}
+              {item.status === 'open' ? <span>{tn ? 'E butswwe' : 'Opened'} {formatDate(item.opened)} · <span className={urgent ? 'text-red-600 font-semibold' : ''}>{tn ? 'E tswala' : 'Closes'} {formatDate(item.closes)}{urgent ? ` (${tn ? `malatsi a le ${days} a a setseng` : `${days} day${days !== 1 ? 's' : ''} left`})` : ''}</span></span> : <span>{tn ? 'E tswaletswe' : 'Closed'} {formatDate(item.closes)}</span>}
             </div>
           </div>
         </div>
@@ -275,13 +277,13 @@ function ConsultationCard({ item, onRespond }) {
         )}
 
         <div className="flex flex-wrap items-center gap-2">
-          <button onClick={() => setDocsOpen(!docsOpen)} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border border-gray-200 hover:bg-gray-50 transition-all text-gray-600"><FileText size={12} />{docsOpen ? 'Hide Documents' : `Documents (${item.documents.length})`}</button>
-          {item.status === 'open' && <button onClick={() => onRespond(item)} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-[#00458B] text-white hover:bg-[#003366] transition-all"><Send size={12} /> Submit Response</button>}
-          {item.whatWeHeard && <button onClick={() => setHeardOpen(!heardOpen)} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border border-[#6BBE4E]/30 text-[#6BBE4E] hover:bg-[#6BBE4E]/5 transition-all"><Users size={12} />What We Heard ({item.whatWeHeard.responseCount})</button>}
+          <button onClick={() => setDocsOpen(!docsOpen)} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border border-gray-200 hover:bg-gray-50 transition-all text-gray-600"><FileText size={12} />{docsOpen ? (tn ? 'Fitha Dikwalo' : 'Hide Documents') : `${tn ? 'Dikwalo' : 'Documents'} (${item.documents.length})`}</button>
+          {item.status === 'open' && <button onClick={() => onRespond(item)} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-[#00458B] text-white hover:bg-[#003366] transition-all"><Send size={12} /> {tn ? 'Romela Karabo' : 'Submit Response'}</button>}
+          {item.whatWeHeard && <button onClick={() => setHeardOpen(!heardOpen)} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border border-[#6BBE4E]/30 text-[#6BBE4E] hover:bg-[#6BBE4E]/5 transition-all"><Users size={12} />{tn ? 'Se re se Utlwileng' : 'What We Heard'} ({item.whatWeHeard.responseCount})</button>}
           {/* Public Responses button */}
           {responseCount !== null && responseCount > 0 && (
             <button onClick={loadResponses} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border border-[#00A6CE]/30 text-[#00A6CE] hover:bg-[#00A6CE]/5 transition-all">
-              <MessageSquare size={12} />{responsesOpen ? 'Hide Responses' : `Public Responses (${responseCount})`}
+              <MessageSquare size={12} />{responsesOpen ? (tn ? 'Fitha Dikarabo' : 'Hide Responses') : `${tn ? 'Dikarabo tsa Setšhaba' : 'Public Responses'} (${responseCount})`}
             </button>
           )}
         </div>
@@ -300,7 +302,7 @@ function ConsultationCard({ item, onRespond }) {
             <div key={i} className={`rounded-lg border p-4 ${t.accepted ? 'border-green-200 bg-green-50/50' : 'border-red-200 bg-red-50/50'}`}>
               <div className="flex items-start gap-3">
                 <div className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 ${t.accepted ? 'bg-green-500' : 'bg-red-500'}`}><span className="text-white text-[10px] font-bold">{t.accepted ? '✓' : '–'}</span></div>
-                <div><p className="text-sm font-semibold text-bocra-slate">{t.theme}</p><p className="text-[10px] text-gray-400 mt-0.5">Raised by {t.heardFrom}</p><p className="text-xs text-gray-600 mt-1 leading-relaxed">{t.outcome}</p></div>
+                <div><p className="text-sm font-semibold text-bocra-slate">{t.theme}</p><p className="text-[10px] text-gray-400 mt-0.5">{tn ? 'Go tswa go' : 'Raised by'} {t.heardFrom}</p><p className="text-xs text-gray-600 mt-1 leading-relaxed">{t.outcome}</p></div>
               </div>
             </div>
           ))}</div>
@@ -311,17 +313,17 @@ function ConsultationCard({ item, onRespond }) {
           <div className="mt-4 pt-4 border-t border-gray-100">
             <div className="flex items-center gap-2 mb-3">
               <MessageSquare size={14} className="text-[#00A6CE]" />
-              <h4 className="text-xs font-bold text-bocra-slate">Public Responses</h4>
-              <span className="text-[10px] text-gray-400">({publicResponses.length} visible)</span>
+              <h4 className="text-xs font-bold text-bocra-slate">{tn ? 'Dikarabo tsa Setšhaba' : 'Public Responses'}</h4>
+              <span className="text-[10px] text-gray-400">({publicResponses.length} {tn ? 'tse di bonalang' : 'visible'})</span>
             </div>
 
             {responsesLoading ? (
               <div className="py-6 text-center">
                 <div className="w-6 h-6 border-3 border-[#00A6CE]/20 border-t-[#00A6CE] rounded-full animate-spin mx-auto" />
-                <p className="text-[10px] text-gray-400 mt-2">Loading responses...</p>
+                <p className="text-[10px] text-gray-400 mt-2">{tn ? 'E a laisa dikarabo...' : 'Loading responses...'}</p>
               </div>
             ) : publicResponses.length === 0 ? (
-              <p className="text-xs text-gray-400 text-center py-4">No public responses yet.</p>
+              <p className="text-xs text-gray-400 text-center py-4">{tn ? 'Ga go na dikarabo tsa setšhaba ka nako eno.' : 'No public responses yet.'}</p>
             ) : (
               <div className="space-y-3 max-h-[500px] overflow-y-auto pr-1">
                 {publicResponses.map(r => (
