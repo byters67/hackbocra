@@ -22,7 +22,7 @@ export default function LegislationPage() {
   const cardsRef = useStaggerReveal({ stagger: 0.08 });
   return (
     <div className="bg-white min-h-screen">
-      <div className="bg-bocra-off-white border-b border-gray-100"><div className="section-wrapper py-4"><nav className="text-sm text-bocra-slate/50 flex items-center gap-2"><Link to="/" className="hover:text-bocra-blue">Home</Link><ChevronRight size={14} /><span className="text-bocra-slate/50">Mandate</span><ChevronRight size={14} /><span className="text-bocra-slate font-medium">{lang === 'tn' ? 'Molao' : 'Legislation'}</span></nav></div></div>
+      <div className="bg-bocra-off-white border-b border-gray-100"><div className="section-wrapper py-4"><nav className="text-sm text-bocra-slate/50 flex items-center gap-2"><Link to="/" className="hover:text-bocra-blue">{(lang === 'tn') ? 'Gae' : 'Home'}</Link><ChevronRight size={14} /><span className="text-bocra-slate/50">{(lang === 'tn') ? 'Tiragatso' : 'Mandate'}</span><ChevronRight size={14} /><span className="text-bocra-slate font-medium">{lang === 'tn' ? 'Molao' : 'Legislation'}</span></nav></div></div>
       <PageHero category="MANDATE" categoryTn="TIRAGATSO" title="Governing Legislation" titleTn="Melao e e Laolang" description="The laws and Acts that establish BOCRA's mandate and regulatory powers across telecommunications, broadcasting, postal, internet, and data protection." descriptionTn="Melao le Ditlhopho tse di tlhomang tiragatso ya BOCRA le maatla a taolo mo megala, phasalatso, poso, inthanete, le tshireletso ya data." color="blue" />
 
       <section className="py-10">
