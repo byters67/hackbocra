@@ -35,7 +35,7 @@ const getCATEGORY_CONFIG = (lang) => ({
   'Policy': { color: '#0D9488', icon: Globe, desc: 'Policies, strategies, directives and public notices' },
   'EMF & Health': { color: '#BE185D', icon: MapPin, desc: 'Electromagnetic field exposure and health research' },
   'Broadcasting': { color: '#EA580C', icon: Radio, desc: 'Broadcasting codes, election guidelines and notices' },
-};
+});
 
 const DOCUMENTS = [
   // LEGISLATION
