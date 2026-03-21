@@ -471,22 +471,22 @@ function TypeApprovalSearch({ setView, lang }) {
             </div>
             <select value={sortBy} onChange={e => setSortBy(e.target.value)}
               className="px-3 py-1.5 border border-gray-200 rounded-lg text-xs text-gray-600 bg-white">
-              <option value="date">Newest First</option>
-              <option value="name">Name A-Z</option>
-              <option value="make">Manufacturer A-Z</option>
+              <option value="date">{lang === 'tn' ? 'Tsa Bosheng Pele' : 'Newest First'}</option>
+              <option value="name">{lang === 'tn' ? 'Leina A-Z' : 'Name A-Z'}</option>
+              <option value="make">{lang === 'tn' ? 'Modiri A-Z' : 'Manufacturer A-Z'}</option>
             </select>
           </div>
 
           {/* Results count */}
           <p className="text-xs text-bocra-slate/40 mb-4">
-            {loading ? 'Searching...' : `${totalCount} approved device${totalCount !== 1 ? 's' : ''} found`}
+            {loading ? (lang === 'tn' ? 'E a batla...' : 'Searching...') : `${totalCount} ${lang === 'tn' ? 'didirisiwa tse di amogetsweng di bonwe' : `approved device${totalCount !== 1 ? 's' : ''} found`}`}
           </p>
 
           {/* Loading */}
           {loading ? (
             <div className="py-12 text-center">
               <div className="w-8 h-8 border-4 border-[#00A6CE]/20 border-t-[#00A6CE] rounded-full animate-spin mx-auto" />
-              <p className="text-xs text-gray-400 mt-3">Searching BOCRA database...</p>
+              <p className="text-xs text-gray-400 mt-3">{lang === 'tn' ? 'E batla mo database ya BOCRA...' : 'Searching BOCRA database...'}</p>
             </div>
           ) : devices.length === 0 ? (
             <div className="py-12 text-center">
@@ -572,8 +572,8 @@ function LoginForm({ setView, signIn, lang }) {
         <div className="bg-white rounded-2xl overflow-hidden shadow-2xl">
           <div className="bg-gradient-to-br from-[#00458B] to-[#003366] p-6 text-center">
             <Shield size={28} className="text-[#00A6CE] mx-auto mb-2" />
-            <h2 className="text-xl font-bold text-white">Sign In to Your Account</h2>
-            <p className="text-white/50 text-xs mt-1">Access the Type Approval Portal</p>
+            <h2 className="text-xl font-bold text-white">{lang === 'tn' ? 'Tsena mo Akhaontong ya Gago' : 'Sign In to Your Account'}</h2>
+            <p className="text-white/50 text-xs mt-1">{lang === 'tn' ? 'Fitlhelela Potala ya Tumelelo ya Mofuta' : 'Access the Type Approval Portal'}</p>
           </div>
           <form onSubmit={handleSubmit} className="p-6 space-y-4">
             {error && <div className="p-3 bg-red-50 border border-red-200 rounded-xl text-sm text-red-600">{error}</div>}
@@ -598,11 +598,11 @@ function LoginForm({ setView, signIn, lang }) {
             </div>
             <button type="submit" disabled={loading}
               className="w-full py-3 bg-[#00458B] text-white font-semibold rounded-xl hover:bg-[#003366] disabled:opacity-50 transition-all text-sm flex items-center justify-center gap-2">
-              {loading ? 'Signing In...' : 'Sign In'} {!loading && <ArrowRight size={14} />}
+              {loading ? (lang === 'tn' ? 'E a tsena...' : 'Signing In...') : (lang === 'tn' ? 'Tsena' : 'Sign In')} {!loading && <ArrowRight size={14} />}
             </button>
             <p className="text-xs text-center text-gray-400">
-              Don't have an account?{' '}
-              <a href="/hackbocra/services/asms-webcp" className="text-[#6BBE4E] font-medium hover:underline">Register at ASMS-WebCP</a>
+              {lang === 'tn' ? 'Ga o na akhaonto?' : "Don't have an account?"}{' '}
+              <a href="/hackbocra/services/asms-webcp" className="text-[#6BBE4E] font-medium hover:underline">{lang === 'tn' ? 'Ikwadise kwa ASMS-WebCP' : 'Register at ASMS-WebCP'}</a>
             </p>
           </form>
         </div>
@@ -660,7 +660,7 @@ function TypeApprovalDashboard({ operator, user, signOut, setView, lang }) {
         <div className="section-wrapper py-3 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Shield size={18} className="text-[#00A6CE]" />
-            <span className="text-sm font-bold">Type Approval Portal</span>
+            <span className="text-sm font-bold">{lang === 'tn' ? 'Potala ya Tumelelo ya Mofuta' : 'Type Approval Portal'}</span>
             <span className="text-xs text-white/40 hidden sm:inline">SIMS Customer Portal</span>
           </div>
           <div className="flex items-center gap-3">
@@ -691,7 +691,7 @@ function TypeApprovalDashboard({ operator, user, signOut, setView, lang }) {
 
         {/* Tabs */}
         <div className="flex gap-2 mb-5">
-          {[['overview', 'Overview'], ['applications', 'Applications'], ['complaints', 'Complaints']].map(([k, v]) => (
+          {[['overview', lang === 'tn' ? 'Kakaretso' : 'Overview'], ['applications', lang === 'tn' ? 'Dikopo' : 'Applications'], ['complaints', lang === 'tn' ? 'Dingongorego' : 'Complaints']].map(([k, v]) => (
             <button key={k} onClick={() => setActiveTab(k)}
               className={`px-4 py-2 rounded-xl text-xs font-medium transition-all ${activeTab === k ? 'bg-[#00458B] text-white' : 'bg-white text-gray-600 border border-gray-200'}`}>
               {v}{k === 'applications' && applications.length > 0 ? ` (${applications.length})` : ''}{k === 'complaints' && complaints.length > 0 ? ` (${complaints.length})` : ''}
@@ -737,7 +737,7 @@ function TypeApprovalDashboard({ operator, user, signOut, setView, lang }) {
                   <FileCheck size={22} className="text-[#6BBE4E]" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-sm text-bocra-slate group-hover:text-[#6BBE4E]">Application Form</h3>
+                  <h3 className="font-bold text-sm text-bocra-slate group-hover:text-[#6BBE4E]">{lang === 'tn' ? 'Foromo ya Kopo' : 'Application Form'}</h3>
                   <p className="text-[10px] text-gray-400">Download PDF form</p>
                 </div>
               </a>
@@ -794,7 +794,7 @@ function TypeApprovalDashboard({ operator, user, signOut, setView, lang }) {
         {activeTab === 'complaints' && (
           <div className="bg-white rounded-xl border border-gray-200 p-6">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-sm font-bold text-bocra-slate">My Enquiries & Complaints</h2>
+              <h2 className="text-sm font-bold text-bocra-slate">{lang === 'tn' ? 'Dipotso le Dingongorego Tsa Me' : 'My Enquiries & Complaints'}</h2>
               <button onClick={() => setView('complaints')} className="text-xs text-[#C8237B] hover:underline">+ New Enquiry</button>
             </div>
             {loading ? (
@@ -907,7 +907,7 @@ function ComplaintsSection({ setView, lang }) {
             <ChevronRight size={14} />
             <button onClick={() => setView('landing')} className="hover:text-bocra-blue">Type Approval</button>
             <ChevronRight size={14} />
-            <span className="text-bocra-slate font-medium">Complaints & Enquiries</span>
+            <span className="text-bocra-slate font-medium">{lang === 'tn' ? 'Dingongorego le Dipotso' : 'Complaints & Enquiries'}</span>
           </nav>
         </div>
       </div>
@@ -944,7 +944,7 @@ function ComplaintsSection({ setView, lang }) {
               </div>
             ) : (
               <div className="bg-white rounded-xl border border-gray-200 p-6">
-                <h2 className="text-lg font-bold text-bocra-slate mb-1">Complaints and Enquiries</h2>
+                <h2 className="text-lg font-bold text-bocra-slate mb-1">{lang === 'tn' ? 'Dingongorego le Dipotso' : 'Complaints and Enquiries'}</h2>
                 <p className="text-sm text-gray-400 mb-6">Please fill in the below details to register a complaint with us regarding our services.</p>
                 <form onSubmit={handleSubmitComplaint} className="space-y-4">
                   <div>
