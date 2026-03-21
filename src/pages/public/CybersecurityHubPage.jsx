@@ -78,47 +78,47 @@ const getINCIDENT_TYPES = (lang) => [
 /* ── Interactive Safety Tips with quizzes ── */
 const getSAFETY_TIPS = (lang) => [
   { icon: Lock, title: lang === 'tn' ? 'Tlhama Mafoko a Sephiri a a Nonofileng' : 'Create Strong Passwords', color: '#00A6CE',
-    tip: 'Use passwords with 12 or more characters — mix letters, numbers, and symbols. Never use the same password for different accounts. A free app called Bitwarden can remember all your passwords for you.',
+    tip: lang === 'tn' ? 'Dirisa mafoko a sephiri a a nang le ditlhaka di le 12 kgotsa go feta — kopanya ditlhaka, dinomoro, le matshwao. Se ke wa dirisa lefoko la sephiri le le tshwanang mo diakhaontong tse di farologaneng. App e e mahala e e bidiwang Bitwarden e ka gopola mafoko a gago otlhe a sephiri.' : 'Use passwords with 12 or more characters — mix letters, numbers, and symbols. Never use the same password for different accounts. A free app called Bitwarden can remember all your passwords for you.',
     quiz: 'Which of these is the safest password?',
     options: ['password123', 'BotswanaSunrise2024!#', 'my name'], answer: 1,
     why: 'A strong password has letters, numbers, AND symbols. "BotswanaSunrise2024!#" is long and complex — very hard to guess.' },
   { icon: Smartphone, title: lang === 'tn' ? 'Sireletsa Nomoro ya Mogala wa Gago' : 'Protect Your Phone Number', color: '#DC2626',
-    tip: 'SIM swap fraud is very common in Botswana. Call your mobile operator (Mascom, BTC, or Orange) and ask them to add a SIM lock or PIN to your account. Never give your OTP code to anyone who calls you.',
+    tip: lang === 'tn' ? 'Boferefere jwa go fetola SIM bo tlwaelegile thata mo Botswana. Leletsa molaodi wa gago wa mogala (Mascom, BTC, kgotsa Orange) mme o ba kope go tsenya lokho ya SIM kgotsa PIN mo akhaontong ya gago. Se ke wa fa ope khoutu ya gago ya OTP yo o go letetsang.' : 'SIM swap fraud is very common in Botswana. Call your mobile operator (Mascom, BTC, or Orange) and ask them to add a SIM lock or PIN to your account. Never give your OTP code to anyone who calls you.',
     quiz: 'Someone calls saying they are from Mascom and need your OTP code. What should you do?',
     options: ['Give them the code — they work for Mascom', 'Hang up and call Mascom yourself on their official number', 'Send the code by SMS'], answer: 1,
     why: 'Mascom, BTC and Orange will NEVER call you to ask for your OTP. If someone does, they are a scammer. Always hang up and call the operator yourself.' },
   { icon: Mail, title: lang === 'tn' ? 'Lemoga Melaetsa ya Maaka' : 'Spot Fake Messages', color: '#C8237B',
-    tip: 'Scammers send emails and SMS that look real but are fake. BOCRA and your bank will NEVER ask for your PIN or password by message. If you get a suspicious link, do not click it — call the company directly.',
+    tip: lang === 'tn' ? 'Baferefere ba romela diimeile le SMS tse di lebegang di le nnete mme di le maaka. BOCRA le banka ya gago ga di kitla di go kopa PIN kgotsa lefoko la sephiri ka molaetsa. Fa o amogela linki e e belaetsang, se e tobetse — leletsa kompone ka tlhamalalo.' : 'Scammers send emails and SMS that look real but are fake. BOCRA and your bank will NEVER ask for your PIN or password by message. If you get a suspicious link, do not click it — call the company directly.',
     quiz: 'You get a text: "Your BOCRA licence is expiring. Click here to renew now." What do you do?',
     options: ['Click the link to renew quickly', 'Delete it and call BOCRA on +267 395 7755 to check', 'Forward it to your friends to warn them'], answer: 1,
     why: 'BOCRA will never send you a link to renew by SMS. Always call BOCRA directly to verify. Clicking unknown links can steal your information.' },
   { icon: CreditCard, title: lang === 'tn' ? 'Boloka Madi a Gago a Babalesegile mo Inthaneteng' : 'Keep Your Money Safe Online', color: '#F7B731',
-    tip: 'Check your Orange Money, MyZaka, or Smega transactions every week. Turn on SMS alerts for every transaction. If you see money you did not send, report it to your bank and BOCRA immediately.',
+    tip: lang === 'tn' ? 'Tlhola ditsamaiso tsa gago tsa Orange Money, MyZaka, kgotsa Smega beke le beke. Bula ditlhagiso tsa SMS bakeng sa tsamaiso nngwe le nngwe. Fa o bona madi a o sa a romang, a bege kwa bankeng ya gago le BOCRA ka bonako.' : 'Check your Orange Money, MyZaka, or Smega transactions every week. Turn on SMS alerts for every transaction. If you see money you did not send, report it to your bank and BOCRA immediately.',
     quiz: 'You receive an SMS saying: "Congratulations! Send P50 to claim your P5,000 prize!" This is:',
     options: ['A real prize you should claim quickly', 'A scam — no real company asks you to pay to win a prize', 'Probably real if it mentions your name'], answer: 1,
     why: 'This is ALWAYS a scam. No legitimate company will ever ask you to send money to receive a prize. Report the number to your mobile operator.' },
   { icon: Wifi, title: lang === 'tn' ? 'Dirisa Inthanete ka Polokego' : 'Use the Internet Safely', color: '#6BBE4E',
-    tip: 'Never enter your banking details or passwords when using free WiFi at malls, hotels, or cafes. Use your mobile data instead for banking. Look for the padlock icon in your browser before entering any personal details.',
+    tip: lang === 'tn' ? 'Se ke wa tsenya dintlha tsa gago tsa banka kgotsa mafoko a sephiri fa o dirisa WiFi ya mahala kwa dimaelong, dihoteleng, kgotsa dikafeng. Dirisa data ya gago ya mogala bakeng sa go dira ditiro tsa banka. Batla setshwantsho sa lokho mo sebatlisisong sa gago pele o tsenya dintlha dife tsa botho.' : 'Never enter your banking details or passwords when using free WiFi at malls, hotels, or cafes. Use your mobile data instead for banking. Look for the padlock icon in your browser before entering any personal details.',
     quiz: 'Is it safe to check your bank account using free WiFi at a shopping mall?',
     options: ['Yes, if the website looks normal', 'No — always use your own mobile data for banking', 'Yes, free WiFi is always safe'], answer: 1,
     why: 'Free public WiFi can be monitored by criminals. They can see your passwords and banking details. Always use your own mobile data for anything sensitive.' },
-  { icon: Eye, title: 'Guard Your Personal Information', color: '#0891B2',
-    tip: 'Do not share your Omang number, phone number, or date of birth publicly on Facebook or WhatsApp. This information can be used to steal your identity. Go to your Facebook Settings and check who can see your posts.',
+  { icon: Eye, title: lang === 'tn' ? 'Sireletsa Tshedimosetso ya Gago ya Botho' : 'Guard Your Personal Information', color: '#0891B2',
+    tip: lang === 'tn' ? 'Se ke wa abelana nomoro ya gago ya Omang, nomoro ya mogala, kgotsa letsatsi la matsalo mo pontsheng mo Facebook kgotsa WhatsApp. Tshedimosetso e e ka dirisiwa go utswa boitshupo jwa gago. Ya kwa Dipeelo tsa gago tsa Facebook mme o tlhole gore ke mang yo o ka bonang diposo tsa gago.' : 'Do not share your Omang number, phone number, or date of birth publicly on Facebook or WhatsApp. This information can be used to steal your identity. Go to your Facebook Settings and check who can see your posts.',
     quiz: 'Which of these should you NEVER share publicly on social media?',
     options: ['A photo of your food', 'Your Omang number and phone number', 'Your favourite football team'], answer: 1,
     why: 'Your Omang number and phone number can be used by criminals to impersonate you, open accounts in your name, or perform SIM swaps.' },
-  { icon: Bug, title: 'Keep Your Devices Updated', color: '#059669',
-    tip: 'When your phone or computer asks you to update, always say yes. Updates fix security problems that criminals use to break in. Only download apps from Google Play Store or Apple App Store — never from links in messages.',
+  { icon: Bug, title: lang === 'tn' ? 'Boloka Didirisiwa tsa Gago di Ntšhwafaditswe' : 'Keep Your Devices Updated', color: '#059669',
+    tip: lang === 'tn' ? 'Fa mogala wa gago kgotsa khomphutha e go kopa go ntšhwafatsa, ka metlha dumela. Dinthšhwafatso di baakanya mathata a tshireletso a basenyi ba a dirisang go tsena. Tsenya di-app fela go tswa Google Play Store kgotsa Apple App Store — e seng go tswa dilinking mo melaetseng.' : 'When your phone or computer asks you to update, always say yes. Updates fix security problems that criminals use to break in. Only download apps from Google Play Store or Apple App Store — never from links in messages.',
     quiz: 'Your phone shows "Software update available." What should you do?',
     options: ['Ignore it — updates slow down your phone', 'Install it — updates fix security problems', 'Wait a few months to see if it is safe'], answer: 1,
     why: 'Software updates patch security vulnerabilities. Delaying updates leaves your phone exposed to attacks that have already been fixed.' },
-  { icon: Shield, title: 'Protect Against Ransomware', color: '#0D9488',
-    tip: 'Ransomware is a virus that locks all your files and demands payment. Protect yourself by saving copies of important files to Google Drive or a USB drive every week. If attacked, you can get your files back without paying.',
+  { icon: Shield, title: lang === 'tn' ? 'Itshireletse Kgatlhanong le Ransomware' : 'Protect Against Ransomware', color: '#0D9488',
+    tip: lang === 'tn' ? 'Ransomware ke baerasi e e kwalang difaele tsa gago tsotlhe mme e batla tuelo. Itshireletse ka go boloka dikhopi tsa difaele tse di botlhokwa kwa Google Drive kgotsa USB draefe beke le beke. Fa o tlhaselwa, o ka bona difaele tsa gago kwa morago kwa ntle ga go duela.' : 'Ransomware is a virus that locks all your files and demands payment. Protect yourself by saving copies of important files to Google Drive or a USB drive every week. If attacked, you can get your files back without paying.',
     quiz: 'Ransomware locks all your files and demands P10,000. What is your best protection?',
     options: ['Pay the money to get your files back', 'Having backup copies of your files saved somewhere else', 'Turn off the computer and wait'], answer: 1,
     why: 'Paying the ransom does not guarantee you will get your files back. Having regular backups means you can restore everything without paying criminals.' },
-  { icon: FileText, title: 'Know Your Rights', color: '#64748B',
-    tip: 'Botswana has laws that protect you online. The Data Protection Act 2018 protects your personal data. The Cybersecurity Act 2025 makes cyber attacks a crime. If you are a victim, report it to BOCRA and the Botswana Police.',
+  { icon: FileText, title: lang === 'tn' ? 'Itse Ditshwanelo tsa Gago' : 'Know Your Rights', color: '#64748B',
+    tip: lang === 'tn' ? 'Botswana e na le melao e e go sireletsang mo inthaneteng. Molao wa Tshireletso ya Data wa 2018 o sireletsa data ya gago ya botho. Molao wa Tshireletso ya Saebo wa 2025 o dira ditlhaselo tsa saebo bosenyi. Fa o setse o le motlhasedi, e bege kwa BOCRA le Mapodisi a Botswana.' : 'Botswana has laws that protect you online. The Data Protection Act 2018 protects your personal data. The Cybersecurity Act 2025 makes cyber attacks a crime. If you are a victim, report it to BOCRA and the Botswana Police.',
     quiz: 'Which Botswana law protects your personal data?',
     options: ['The Companies Act', 'The Data Protection Act 2018', 'The Traffic Act'], answer: 1,
     why: 'The Data Protection Act 2018 gives you the right to control how your personal information is collected, used, and shared by companies and government.' },
@@ -126,6 +126,7 @@ const getSAFETY_TIPS = (lang) => [
 
 /* ── Quiz Card Component — large, friendly, accessible ── */
 function QuizCard({ tip, index }) {
+  const { lang } = useLanguage();
   const [showQuiz, setShowQuiz] = useState(false);
   const [selected, setSelected] = useState(null);
   const [answered, setAnswered] = useState(false);
@@ -142,7 +143,7 @@ function QuizCard({ tip, index }) {
           </div>
           <div>
             <h3 className="font-bold text-base text-bocra-slate">{tip.title}</h3>
-            <span className="text-xs text-bocra-slate/30">Safety Tip #{index + 1}</span>
+            <span className="text-xs text-bocra-slate/30">{lang === 'tn' ? 'Keletso ya Polokego' : 'Safety Tip'} #{index + 1}</span>
           </div>
         </div>
 
@@ -151,13 +152,13 @@ function QuizCard({ tip, index }) {
             <p className="text-sm text-bocra-slate/60 leading-relaxed mb-4">{tip.tip}</p>
             <button onClick={() => setShowQuiz(true)}
               className="w-full py-3 bg-bocra-off-white hover:bg-bocra-blue/5 border border-gray-200 hover:border-bocra-blue/30 rounded-xl text-sm font-semibold text-bocra-blue transition-all flex items-center justify-center gap-2">
-              <Target size={16} /> Test What You Learned
+              <Target size={16} /> {lang === 'tn' ? 'Itlhatlhobe ka Se o se Ithutileng' : 'Test What You Learned'}
             </button>
           </>
         ) : (
           <>
             <div className="bg-bocra-off-white rounded-xl p-4 mb-4">
-              <p className="text-sm font-bold text-bocra-slate mb-1">Quick Quiz:</p>
+              <p className="text-sm font-bold text-bocra-slate mb-1">{lang === 'tn' ? 'Potso e e Bonako:' : 'Quick Quiz:'}</p>
               <p className="text-sm text-bocra-slate/70">{tip.quiz}</p>
             </div>
             <div className="space-y-2 mb-4">
@@ -181,13 +182,13 @@ function QuizCard({ tip, index }) {
             </div>
             {answered && (
               <div className={'rounded-xl p-4 text-sm leading-relaxed ' + (correct ? 'bg-green-50 text-green-700 border border-green-200' : 'bg-orange-50 text-orange-700 border border-orange-200')}>
-                <p className="font-bold mb-1">{correct ? 'Correct!' : 'Not quite — here is the answer:'}</p>
+                <p className="font-bold mb-1">{correct ? (lang === 'tn' ? 'Ke Nnete!' : 'Correct!') : (lang === 'tn' ? 'Ga se ka kgakala — karabo ke e:' : 'Not quite — here is the answer:')}</p>
                 <p>{tip.why}</p>
               </div>
             )}
             <button onClick={() => { setShowQuiz(false); setSelected(null); setAnswered(false); }}
               className="mt-3 w-full py-2.5 text-sm text-bocra-slate/40 hover:text-bocra-blue transition-colors flex items-center justify-center gap-1">
-              <ChevronLeft size={14} /> Back to tip
+              <ChevronLeft size={14} /> {lang === 'tn' ? 'Boela kwa keletso' : 'Back to tip'}
             </button>
           </>
         )}
@@ -444,7 +445,7 @@ export default function CybersecurityHubPage() {
           {/* Severity summary */}
           {!alertsLoading && alerts.length > 0 && (
             <div className="flex flex-wrap gap-2 mb-4">
-              <button onClick={() => setAlertFilter('ALL')} className={'px-3 py-1.5 text-xs font-medium rounded-lg transition-all border ' + (alertFilter === 'ALL' ? 'bg-bocra-blue text-white border-bocra-blue' : 'bg-white text-bocra-slate/50 border-gray-200')}>All ({alerts.length})</button>
+              <button onClick={() => setAlertFilter('ALL')} className={'px-3 py-1.5 text-xs font-medium rounded-lg transition-all border ' + (alertFilter === 'ALL' ? 'bg-bocra-blue text-white border-bocra-blue' : 'bg-white text-bocra-slate/50 border-gray-200')}>{lang === 'tn' ? 'Tsotlhe' : 'All'} ({alerts.length})</button>
               {Object.entries(sevCounts).filter(([, c]) => c > 0).map(([sev, count]) => {
                 const s = SEV_STYLE[sev]; return (
                 <button key={sev} onClick={() => setAlertFilter(sev)} className={'px-3 py-1.5 text-xs font-medium rounded-lg transition-all border ' + (alertFilter === sev ? s.bg + ' ' + s.text + ' ' + s.border : 'bg-white text-bocra-slate/40 border-gray-200')}>
