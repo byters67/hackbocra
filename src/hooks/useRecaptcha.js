@@ -9,7 +9,8 @@
  *   const token = await executeRecaptcha('submit_complaint');
  */
 
-const SITE_KEY = '6LfmO44sAAAAAMvl4RNNWdzHjF4SJBvVSTkK5wHL';
+// Must match the `render=` key in index.html (and your reCAPTCHA v3 site key in Google Admin).
+const SITE_KEY = import.meta.env.VITE_RECAPTCHA_SITE_KEY || '6LdQpZIsAAAAAOcSTO1ysgiemIV7HwC_1aej1jwz';
 
 export function useRecaptcha() {
   const executeRecaptcha = async (action = 'submit') => {

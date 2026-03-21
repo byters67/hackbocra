@@ -366,7 +366,7 @@
   content: '';
 }
 
-/* ── reCAPTCHA badge: hide on mobile (attribution is in footer) ── */
+/* ── Hide default Google reCAPTCHA badge (custom badge in RecaptchaBadge.jsx) ── */
 .grecaptcha-badge {
   visibility: hidden !important;
 }

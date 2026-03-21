@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import { useScrollReveal } from '../../hooks/useAnimations';
 import { supabase } from '../../lib/supabase';
+import { useRecaptcha } from '../../hooks/useRecaptcha';
 import { useLanguage } from '../../lib/language';
 
 const BASE = import.meta.env.BASE_URL || '/';
@@ -386,11 +387,13 @@ function ConsultationCard({ item, onRespond }) {
 
 function SubmitResponsePage({ consultation, onBack }) {
   const { lang } = useLanguage();
+  const { executeRecaptcha } = useRecaptcha();
   const [form, setForm] = useState({ fullName: '', email: '', organisation: '', respondentType: '', consultationId: consultation?.id || '', selectedTags: [], response: '', makePublic: false, notifyOnDetermination: false });
   const [errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [refNumber, setRefNumber] = useState('');
+  const [formErr, setFormErr] = useState('');
   const heroRef = useScrollReveal();
   const openConsultations = CONSULTATIONS.filter(c => c.status === 'open');
   const active = openConsultations.find(c => c.id === form.consultationId);
@@ -410,16 +413,24 @@ function SubmitResponsePage({ consultation, onBack }) {
   const handleSubmit = async () => {
     if (!validate()) return;
     setSubmitting(true);
+    setFormErr('');
+    const recaptchaToken = await executeRecaptcha('submit_consultation_response');
+    if (!recaptchaToken) {
+      setFormErr('Security check failed. Please wait and try again.');
+      setSubmitting(false);
+      return;
+    }
     const ref = `BOCRA/SUB/${new Date().getFullYear()}/${String(Date.now()).slice(-4)}`;
     try {
-      await supabase.from('consultation_submissions').insert({
+      const { error: insErr } = await supabase.from('consultation_submissions').insert({
         consultation_id: form.consultationId, consultation_title: active?.title || '',
         full_name: form.fullName, email: form.email, organisation: form.organisation || null,
         respondent_type: form.respondentType, topic_tags: form.selectedTags,
         response_text: form.response, is_public: form.makePublic,
         notify_on_determination: form.notifyOnDetermination, submission_ref: ref, status: 'received',
       });
-    } catch (err) { console.warn('Insert error:', err); }
+      if (insErr) throw insErr;
+    } catch (err) { console.warn('Insert error:', err); setFormErr('Could not submit. Please try again.'); setSubmitting(false); return; }
     setRefNumber(ref); setSubmitted(true); setSubmitting(false);
   };
 
@@ -476,6 +487,7 @@ function SubmitResponsePage({ consultation, onBack }) {
             <label className="flex items-start gap-2.5 cursor-pointer"><input type="checkbox" checked={form.notifyOnDetermination} onChange={e => u('notifyOnDetermination', e.target.checked)} className="mt-0.5 w-4 h-4 rounded border-gray-300 text-[#00458B] focus:ring-[#00458B]" /><span className="text-xs text-gray-600">Notify me by email when the final determination is published.</span></label>
           </div>
 
+          {formErr && <p className="text-sm text-red-600 bg-red-50 p-3 rounded-lg mb-4">{formErr}</p>}
           <button onClick={handleSubmit} disabled={submitting} className="px-6 py-3 bg-[#00458B] text-white text-sm font-medium rounded-xl hover:bg-[#003366] disabled:opacity-50 transition-all flex items-center gap-2">{submitting ? 'Submitting...' : 'Submit Response'} {!submitting && <Send size={14} />}</button>
         </div>
       </div></section>

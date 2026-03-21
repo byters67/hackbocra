@@ -199,6 +199,7 @@ function QuizCard({ tip, index }) {
 
 export default function CybersecurityHubPage() {
   const { lang } = useLanguage();
+  const { executeRecaptcha } = useRecaptcha();
   const SAFETY_TIPS = getSAFETY_TIPS(lang);
   const INCIDENT_TYPES = getINCIDENT_TYPES(lang);
   const heroRef = useScrollReveal();
@@ -215,6 +216,7 @@ export default function CybersecurityHubPage() {
   const [lastRefresh, setLastRefresh] = useState(null);
   const [showAllTips, setShowAllTips] = useState(false);
   const [incidentError, setIncidentError] = useState('');
+  const [incidentSubmitting, setIncidentSubmitting] = useState(false);
   const [submittedRef, setSubmittedRef] = useState('');
 
   useEffect(() => { (async () => { setAlertsLoading(true); const d = await fetchCVEs(); if (d?.length) { setAlerts(d); setLastRefresh(new Date()); } setAlertsLoading(false); })(); }, []);
@@ -357,28 +359,48 @@ export default function CybersecurityHubPage() {
               <div className="flex justify-between pt-2">
                 <button onClick={() => setFormStep(1)} className="text-sm text-bocra-slate/40 hover:text-bocra-slate">Back</button>
                 {incidentError && <p className="text-sm text-red-600 bg-red-50 p-3 rounded-lg">{incidentError}</p>}
-                <button disabled={!incidentConsent} onClick={async () => {
-                  setIncidentError('');
-                  const ref = 'CSIRT-' + new Date().getFullYear() + '-' + crypto.randomUUID().slice(0, 8).toUpperCase();
-                  try {
-                    const { error: insertErr } = await supabase.from('cyber_incidents').insert([{
-                      incident_type: selectedType,
-                      description: formData.description,
-                      incident_date: formData.date || null,
-                      urgency: formData.urgency,
-                      reporter_name: formData.anonymous ? null : formData.name,
-                      reporter_email: formData.anonymous ? null : formData.email,
-                      reporter_phone: formData.anonymous ? null : formData.phone,
-                      is_anonymous: formData.anonymous,
-                      reference_number: ref,
-                      status: 'received',
-                      consent_given_at: new Date().toISOString(),
-                    }]);
-                    if (insertErr) throw insertErr;
-                    setSubmittedRef(ref);
-                    setFormStep(3);
-                  } catch (err) { setIncidentError('Something went wrong. Please try again or call +267 395 7755.'); }
-                }} className="px-6 py-2.5 bg-[#C8237B] text-white font-bold text-sm rounded-xl flex items-center gap-2"><Send size={14} />{lang === 'tn' ? ' Romela Pego' : ' Submit Report'}</button>
+                <button
+                  disabled={!incidentConsent || incidentSubmitting}
+                  onClick={async () => {
+                    setIncidentError('');
+                    setIncidentSubmitting(true);
+                    try {
+                      const recaptchaToken = await executeRecaptcha('submit_cyber_incident');
+                      if (!recaptchaToken) {
+                        setIncidentError(lang === 'tn' ? 'Tsweetswee leka gape (tshireletso ya saete).' : 'Security check failed. Please wait and try again.');
+                        return;
+                      }
+                      const ref = 'CSIRT-' + new Date().getFullYear() + '-' + crypto.randomUUID().slice(0, 8).toUpperCase();
+                      const { error: insertErr } = await supabase.from('cyber_incidents').insert([{
+                        incident_type: selectedType,
+                        description: formData.description,
+                        incident_date: formData.date || null,
+                        urgency: formData.urgency,
+                        reporter_name: formData.anonymous ? null : formData.name,
+                        reporter_email: formData.anonymous ? null : formData.email,
+                        reporter_phone: formData.anonymous ? null : formData.phone,
+                        is_anonymous: formData.anonymous,
+                        reference_number: ref,
+                        status: 'received',
+                      }]);
+                      if (insertErr) throw insertErr;
+                      setSubmittedRef(ref);
+                      setFormStep(3);
+                    } catch (err) {
+                      console.error('[BOCRA] Cyber incident insert error:', err);
+                      setIncidentError(err?.message || 'Something went wrong. Please try again or call +267 395 7755.');
+                    } finally {
+                      setIncidentSubmitting(false);
+                    }
+                  }}
+                  className="px-6 py-2.5 bg-[#C8237B] text-white font-bold text-sm rounded-xl flex items-center gap-2 disabled:opacity-60"
+                >
+                  {incidentSubmitting ? (
+                    <><span className="inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> {lang === 'tn' ? 'E a romela...' : 'Submitting...'}</>
+                  ) : (
+                    <><Send size={14} /> {lang === 'tn' ? 'Romela Pego' : 'Submit Report'}</>
+                  )}
+                </button>
               </div>
             </div>
           )}
