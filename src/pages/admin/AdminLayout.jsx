@@ -136,7 +136,7 @@ export default function AdminLayout() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
-            <h2 className="text-xl font-bold text-gray-900 mb-2">Access Denied</h2>
+            <h2 className="text-xl font-bold text-gray-900 mb-2">{lang === 'tn' ? 'Phitlhelelo e Ganetswe' : 'Access Denied'}</h2>
             <p className="text-gray-600 mb-6">
               You do not have permission to access the admin portal.
               Only admin and staff users can access this area.
