@@ -32,6 +32,7 @@ import RegisterBWPage from './pages/public/RegisterBWPage';
 import IctLicensingPage from './pages/public/IctLicensingPage';
 import OperatorPortalPage from './pages/public/OperatorPortalPage';
 import QoSMonitoringPage from './pages/public/QoSMonitoringPage';
+import SpectrumManagementPage from './pages/public/SpectrumManagementPage';
 import LoginPage from './pages/auth/LoginPage';
 import EmailVerifiedPage from './pages/auth/EmailVerifiedPage';
 import AdminLayout from './pages/admin/AdminLayout';
@@ -44,8 +45,6 @@ import AdminContact from './pages/admin/ContactPage';
 import AdminDataRequests from './pages/admin/DataRequestsPage';
 import AdminTypeApproval from './pages/admin/AdminTypeApprovalPage';
 import AdminConsultations from './pages/admin/AdminConsultationsPage';
-import AdminAutomation from './pages/admin/AutomationPage';
-import AdminAutomationLog from './pages/admin/AutomationLogPage';
 import ConsultationsPage from './pages/public/ConsultationsPage';
 import SpeechesPage from './pages/public/SpeechesPage';
 import BroadcastingPage from './pages/public/BroadcastingPage';
@@ -93,8 +92,6 @@ export default function App() {
                   <Route path="consultations" element={<AdminConsultations />} />
                   <Route path="type-approval" element={<AdminTypeApproval />} />
                   <Route path="data-requests" element={<AdminDataRequests />} />
-                  <Route path="automation" element={<AdminAutomation />} />
-                  <Route path="automation/logs" element={<AdminAutomationLog />} />
                 </Route>
 
                 <Route element={<Layout />}>
@@ -120,7 +117,7 @@ export default function App() {
                   <Route path="/services/register-bw" element={<RegisterBWPage />} />
                   <Route path="/services/asms-webcp" element={<OperatorPortalPage />} />
                   <Route path="/services/qos-monitoring" element={<QoSMonitoringPage />} />
-                  <Route path="/services/spectrum" element={<ContentPage />} />
+                  <Route path="/services/spectrum" element={<SpectrumManagementPage />} />
                   <Route path="/documents/drafts" element={<DocumentsPage />} />
                   <Route path="/documents/ict-licensing" element={<IctLicensingPage />} />
                   <Route path="/documents/publications" element={<DocumentsPage />} />
