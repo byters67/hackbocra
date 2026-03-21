@@ -16,9 +16,9 @@ import { useLanguage } from '../../lib/language';
 const BASE = import.meta.env.BASE_URL || '/';
 
 const getStatusStyle = (lang) => ({
-  open: { bg: 'bg-green-50', text: 'text-green-700', border: 'border-green-200', label: 'Open' },
-  closed: { bg: 'bg-gray-100', text: 'text-gray-500', border: 'border-gray-200', label: 'Closed' },
-  awarded: { bg: 'bg-blue-50', text: 'text-blue-700', border: 'border-blue-200', label: 'Awarded' },
+  open: { bg: 'bg-green-50', text: 'text-green-700', border: 'border-green-200', label: 'Open', label_tn: 'E Butswe' },
+  closed: { bg: 'bg-gray-100', text: 'text-gray-500', border: 'border-gray-200', label: 'Closed', label_tn: 'E Tswaletswe' },
+  awarded: { bg: 'bg-blue-50', text: 'text-blue-700', border: 'border-blue-200', label: 'Awarded', label_tn: 'E Abetswe' },
   adjudicated: { bg: 'bg-[#F7B731]/10', text: 'text-[#F7B731]', border: 'border-[#F7B731]/20', label: lang === 'tn' ? 'Tse di Atlholetsweng' : 'Adjudicated' },
 });
 
@@ -133,7 +133,7 @@ export default function TendersPage() {
 
   return (
     <div className="bg-white min-h-screen">
-      <div className="bg-bocra-off-white border-b border-gray-100"><div className="section-wrapper py-4"><nav className="text-sm text-bocra-slate/50 flex items-center gap-2"><Link to="/" className="hover:text-bocra-blue">Home</Link><ChevronRight size={14} /><span className="text-bocra-slate font-medium">Tenders</span></nav></div></div>
+      <div className="bg-bocra-off-white border-b border-gray-100"><div className="section-wrapper py-4"><nav className="text-sm text-bocra-slate/50 flex items-center gap-2"><Link to="/" className="hover:text-bocra-blue">Home</Link><ChevronRight size={14} /><span className="text-bocra-slate font-medium">{lang === 'tn' ? 'Ditendara' : 'Tenders'}</span></nav></div></div>
 
       <PageHero category="PROCUREMENT" categoryTn="THEKO" title="Tenders & Procurement" titleTn="Ditendara le Theko" description="BOCRA follows a thorough tendering process to ensure best value-for-money. View current and past tenders, adjudication decisions, and procurement opportunities." descriptionTn="BOCRA e latela thulaganyo e e tseneletseng ya ditendara go netefatsa boleng jo bo gaisang jwa madi. Bona ditendara tsa jaanong le tse di fetileng." color="yellow" />
 
@@ -163,12 +163,12 @@ export default function TendersPage() {
             <div className="flex-1 relative">
               <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
               <input type="text" value={searchTerm} onChange={e => setSearchTerm(e.target.value)}
-                placeholder="Search tenders by title or reference..."
+                placeholder={lang === 'tn' ? 'Batla ditendara ka setlhogo kgotsa tshupetso...' : 'Search tenders by title or reference...'}
                 className="w-full pl-9 pr-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:border-[#00458B] outline-none" />
             </div>
             <select value={filterStatus} onChange={e => setFilterStatus(e.target.value)}
               className="px-3 py-2.5 border border-gray-200 rounded-lg text-xs bg-white">
-              <option value="All">All Status</option>
+              <option value="All">{lang === 'tn' ? 'Maemo Otlhe' : 'All Status'}</option>
               <option value="open">Open</option>
               <option value="adjudicated">{lang === 'tn' ? 'Tse di Atlholetsweng' : 'Adjudicated'}</option>
               <option value="closed">Closed</option>
@@ -179,7 +179,7 @@ export default function TendersPage() {
             </select>
           </div>
 
-          <p className="text-xs text-gray-400 mb-4">{filtered.length} tender{filtered.length !== 1 ? 's' : ''} found</p>
+          <p className="text-xs text-gray-400 mb-4">{filtered.length} {lang === 'tn' ? (filtered.length !== 1 ? 'ditendara di bonwe' : 'tendara e bonwe') : `tender${filtered.length !== 1 ? 's' : ''} found`}</p>
 
           {/* Tender List */}
           <div ref={cardsRef} className="space-y-3">
@@ -200,14 +200,14 @@ export default function TendersPage() {
                           </div>
                           <h3 className="text-sm font-bold text-bocra-slate leading-snug">{tender.title}</h3>
                           <div className="flex items-center gap-3 mt-2 flex-wrap">
-                            <span className="flex items-center gap-1 text-xs text-gray-400"><Calendar size={11} /> Published: {tender.publishDate}</span>
-                            <span className="flex items-center gap-1 text-xs text-gray-400"><Clock size={11} /> Closing: {tender.closingDate}</span>
+                            <span className="flex items-center gap-1 text-xs text-gray-400"><Calendar size={11} /> {lang === 'tn' ? 'E Gatisitswe' : 'Published'}: {tender.publishDate}</span>
+                            <span className="flex items-center gap-1 text-xs text-gray-400"><Clock size={11} /> {lang === 'tn' ? 'E Tswala' : 'Closing'}: {tender.closingDate}</span>
                           </div>
-                          <p className="text-[11px] text-gray-400 mt-1">Method: {tender.method}</p>
+                          <p className="text-[11px] text-gray-400 mt-1">{lang === 'tn' ? 'Mokgwa' : 'Method'}: {tender.method}</p>
                         </div>
                         <button onClick={() => setExpanded(isExpanded ? null : tender.id)}
                           className="text-xs text-[#00A6CE] font-medium hover:underline flex-shrink-0 mt-1">
-                          {isExpanded ? 'Less' : 'Details'}
+                          {isExpanded ? (lang === 'tn' ? 'Bonnye' : 'Less') : (lang === 'tn' ? 'Dintlha' : 'Details')}
                         </button>
                       </div>
 
@@ -216,18 +216,18 @@ export default function TendersPage() {
                         <div className="mt-4 pt-4 border-t border-gray-100 space-y-3">
                           {tender.awardedTo && (
                             <div className="bg-[#F7B731]/5 rounded-lg p-3 border border-[#F7B731]/10">
-                              <p className="text-xs font-bold text-bocra-slate mb-1">Adjudication Decision</p>
+                              <p className="text-xs font-bold text-bocra-slate mb-1">{lang === 'tn' ? 'Tshwetso ya Katlholo' : 'Adjudication Decision'}</p>
                               <div className="space-y-1 text-xs text-bocra-slate/60">
-                                <p><strong>Awarded to:</strong> {tender.awardedTo}</p>
-                                <p><strong>Amount:</strong> {tender.amount}</p>
-                                <p><strong>Decision:</strong> {tender.decision} — {tender.decisionDate}</p>
+                                <p><strong>{lang === 'tn' ? 'E abetswe:' : 'Awarded to:'}</strong> {tender.awardedTo}</p>
+                                <p><strong>{lang === 'tn' ? 'Selekanyo:' : 'Amount:'}</strong> {tender.amount}</p>
+                                <p><strong>{lang === 'tn' ? 'Tshwetso:' : 'Decision:'}</strong> {tender.decision} — {tender.decisionDate}</p>
                               </div>
                             </div>
                           )}
                           {tender.file && (
                             <a href={`${BASE}documents/tenders/${tender.file}`} target="_blank" rel="noopener noreferrer"
                               className="inline-flex items-center gap-2 px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-xs font-medium text-bocra-slate hover:border-[#00A6CE] hover:text-[#00A6CE] transition-all">
-                              <Download size={13} /> Download Notice (PDF)
+                              <Download size={13} /> {lang === 'tn' ? 'Tsenya Kitsiso (PDF)' : 'Download Notice (PDF)'}
                             </a>
                           )}
                         </div>
@@ -241,7 +241,7 @@ export default function TendersPage() {
             {filtered.length === 0 && (
               <div className="py-16 text-center">
                 <ShoppingBag size={32} className="text-gray-200 mx-auto mb-3" />
-                <p className="text-sm text-gray-400">No tenders found matching your search.</p>
+                <p className="text-sm text-gray-400">{lang === 'tn' ? 'Ga go na ditendara tse di bonweng tse di tsamaelanang le patlo ya gago.' : 'No tenders found matching your search.'}</p>
               </div>
             )}
           </div>
