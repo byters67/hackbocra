@@ -163,7 +163,7 @@ export default function RegisterBWPage() {
           <nav className="text-sm text-bocra-slate/50 flex items-center gap-2">
             <Link to="/" className="hover:text-bocra-blue transition-colors">{lang === 'tn' ? 'Gae' : 'Home'}</Link>
             <ChevronRight size={14} />
-            <span className="text-bocra-slate">Register .BW Domain</span>
+            <span className="text-bocra-slate">{lang === 'tn' ? 'Kwadisa Lefelo la .BW' : 'Register .BW Domain'}</span>
           </nav>
         </div>
       </div>
@@ -184,7 +184,7 @@ export default function RegisterBWPage() {
                   type="text"
                   value={domainSearch}
                   onChange={e => setDomainSearch(e.target.value)}
-                  placeholder="Enter domain name (e.g. mybusiness)"
+                  placeholder={lang === 'tn' ? 'Tsenya leina la lefelo (sk. kgwebo_yame)' : 'Enter domain name (e.g. mybusiness)'}
                   className="w-full pl-9 pr-4 py-3 border border-gray-200 rounded-lg text-sm focus:border-[#00A6CE] focus:ring-2 focus:ring-[#00A6CE]/10 outline-none"
                 />
               </div>
@@ -195,7 +195,7 @@ export default function RegisterBWPage() {
               <button type="submit" disabled={searching || !domainSearch.trim()}
                 className="px-5 py-3 bg-[#00A6CE] text-white text-sm font-medium rounded-lg hover:bg-[#008DB0] disabled:opacity-50 transition-all flex items-center gap-2">
                 {searching ? <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : <Search size={14} />}
-                {searching ? 'Checking...' : 'Search'}
+                {searching ? (lang === 'tn' ? 'E a tlhola...' : 'Checking...') : (lang === 'tn' ? 'Batla' : 'Search')}
               </button>
             </form>
 
@@ -206,24 +206,24 @@ export default function RegisterBWPage() {
                   <>
                     <AlertCircle size={18} className="text-yellow-600 flex-shrink-0" />
                     <div>
-                      <p className="text-sm font-medium text-yellow-800">Could not verify</p>
-                      <p className="text-xs text-yellow-600">Unable to check <strong>{searchResult.domain}</strong>. The DNS query may have failed — try again or contact a registrar directly.</p>
+                      <p className="text-sm font-medium text-yellow-800">{lang === 'tn' ? 'Ga re a kgona go netefatsa' : 'Could not verify'}</p>
+                      <p className="text-xs text-yellow-600">{lang === 'tn' ? <>Ga re a kgona go tlhola <strong>{searchResult.domain}</strong>. Potso ya DNS e ka tswa e padile — leka gape kgotsa ikgolaganye le mokwadisi ka tlhamalalo.</> : <>Unable to check <strong>{searchResult.domain}</strong>. The DNS query may have failed — try again or contact a registrar directly.</>}</p>
                     </div>
                   </>
                 ) : searchResult.available ? (
                   <>
                     <CheckCircle size={18} className="text-green-600 flex-shrink-0" />
                     <div>
-                      <p className="text-sm font-medium text-green-800">Available!</p>
-                      <p className="text-xs text-green-600"><strong>{searchResult.domain}</strong> appears to be available. Contact an accredited registrar below to register it.</p>
+                      <p className="text-sm font-medium text-green-800">{lang === 'tn' ? 'E teng!' : 'Available!'}</p>
+                      <p className="text-xs text-green-600">{lang === 'tn' ? <><strong>{searchResult.domain}</strong> e bonala e le teng. Ikgolaganye le mokwadisi o o amogeletsweng fa tlase go e kwadisa.</> : <><strong>{searchResult.domain}</strong> appears to be available. Contact an accredited registrar below to register it.</>}</p>
                     </div>
                   </>
                 ) : (
                   <>
                     <XCircle size={18} className="text-red-600 flex-shrink-0" />
                     <div>
-                      <p className="text-sm font-medium text-red-800">Already Taken</p>
-                      <p className="text-xs text-red-600"><strong>{searchResult.domain}</strong> is already registered. Try a different name or extension.</p>
+                      <p className="text-sm font-medium text-red-800">{lang === 'tn' ? 'E Setse e Tserweng' : 'Already Taken'}</p>
+                      <p className="text-xs text-red-600">{lang === 'tn' ? <><strong>{searchResult.domain}</strong> e setse e kwadisitswe. Leka leina kgotsa kgolosa e sele.</> : <><strong>{searchResult.domain}</strong> is already registered. Try a different name or extension.</>}</p>
                     </div>
                   </>
                 )}
@@ -239,10 +239,10 @@ export default function RegisterBWPage() {
         <div className="section-wrapper">
           <div ref={statsRef} className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             {[
-              { value: '10,000+', label: 'Domains Registered', icon: Globe, color: '#00A6CE' },
+              { value: '10,000+', label: lang === 'tn' ? 'Mafelo a a Kwadisitsweng' : 'Domains Registered', icon: Globe, color: '#00A6CE' },
               { value: '70+', label: lang === 'tn' ? 'Di-Rejisetara tse di Amogeletsweng' : 'Accredited Registrars', icon: Building, color: '#C8237B' },
-              { value: '8', label: 'Domain Extensions', icon: Star, color: '#F7B731' },
-              { value: '24hrs', label: 'Query Resolution Time', icon: Clock, color: '#6BBE4E' },
+              { value: '8', label: lang === 'tn' ? 'Dikgolosa tsa Lefelo' : 'Domain Extensions', icon: Star, color: '#F7B731' },
+              { value: '24hrs', label: lang === 'tn' ? 'Nako ya Tharabololo ya Potso' : 'Query Resolution Time', icon: Clock, color: '#6BBE4E' },
             ].map((s, i) => { const Icon = s.icon; return (
               <div key={i} className="bg-white border border-gray-100 rounded-xl p-5 hover:shadow-md transition-all">
                 <div className="flex items-center gap-3">
@@ -260,13 +260,13 @@ export default function RegisterBWPage() {
       {/* ═══ HOW IT WORKS — 3-R Model ═══ */}
       <section className="py-8 bg-bocra-off-white">
         <div className="section-wrapper">
-          <h2 className="text-xl font-bold text-bocra-slate text-center mb-2">How .BW Domains Work</h2>
-          <p className="text-sm text-bocra-slate/40 text-center mb-8">BOCRA follows the international 3-R Model of the DNS Industry</p>
+          <h2 className="text-xl font-bold text-bocra-slate text-center mb-2">{lang === 'tn' ? 'Mafelo a .BW a Bereka Jang' : 'How .BW Domains Work'}</h2>
+          <p className="text-sm text-bocra-slate/40 text-center mb-8">{lang === 'tn' ? 'BOCRA e latela Sekao sa 3-R sa boditšhabatšhaba sa Madirelo a DNS' : 'BOCRA follows the international 3-R Model of the DNS Industry'}</p>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-3xl mx-auto">
             {[
-              { title: 'Registry', sub: 'BOCRA', desc: 'Manages and maintains the database of all .bw domain names and infrastructure.', icon: Server, color: '#00A6CE' },
-              { title: 'Registrar', sub: '70+ Accredited', desc: 'Companies accredited by BOCRA to register domains on behalf of customers.', icon: Building, color: '#C8237B' },
-              { title: 'Registrant', sub: 'You', desc: 'The person or organisation that registers and owns the domain name.', icon: Users, color: '#6BBE4E' },
+              { title: lang === 'tn' ? 'Rejisetara' : 'Registry', sub: 'BOCRA', desc: lang === 'tn' ? 'E laola le go tlhokomela database ya maina otlhe a mafelo a .bw le mafaratlhatlha.' : 'Manages and maintains the database of all .bw domain names and infrastructure.', icon: Server, color: '#00A6CE' },
+              { title: lang === 'tn' ? 'Mokwadisi' : 'Registrar', sub: lang === 'tn' ? '70+ Tse di Amogeletsweng' : '70+ Accredited', desc: lang === 'tn' ? 'Dikompone tse di amogeletsweng ke BOCRA go kwadisa mafelo mo boemong jwa bareki.' : 'Companies accredited by BOCRA to register domains on behalf of customers.', icon: Building, color: '#C8237B' },
+              { title: lang === 'tn' ? 'Mokwadisiwa' : 'Registrant', sub: lang === 'tn' ? 'Wena' : 'You', desc: lang === 'tn' ? 'Motho kgotsa mokgatlho o o kwadisang le go rua leina la lefelo.' : 'The person or organisation that registers and owns the domain name.', icon: Users, color: '#6BBE4E' },
             ].map((r, i) => (
               <div key={i} className="bg-white rounded-xl p-5 border border-gray-100 text-center hover:shadow-md transition-all relative">
                 {i < 2 && <div className="hidden sm:block absolute top-1/2 -right-3 w-6 text-gray-300 text-lg font-bold">→</div>}
@@ -286,7 +286,7 @@ export default function RegisterBWPage() {
       <section className="py-8">
         <div className="section-wrapper">
           <h2 className="text-xl font-bold text-bocra-slate text-center mb-2">{lang === 'tn' ? 'Dikgolosa tsa Lefelo tse di Teng' : 'Available Domain Extensions'}</h2>
-          <p className="text-sm text-bocra-slate/40 text-center mb-6">Choose the right .bw extension for your needs</p>
+          <p className="text-sm text-bocra-slate/40 text-center mb-6">{lang === 'tn' ? 'Tlhopha kgolosa e e siameng ya .bw bakeng sa ditlhokego tsa gago' : 'Choose the right .bw extension for your needs'}</p>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-3xl mx-auto">
             {EXTENSIONS.map(e => (
               <button key={e.ext} onClick={() => { setSearchExt(e.ext); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
@@ -297,22 +297,22 @@ export default function RegisterBWPage() {
               </button>
             ))}
           </div>
-          <p className="text-xs text-bocra-slate/30 text-center mt-4">me.bw, shop.bw, and agric.bw were introduced in March 2021 following stakeholder consultation.</p>
+          <p className="text-xs text-bocra-slate/30 text-center mt-4">{lang === 'tn' ? 'me.bw, shop.bw, le agric.bw di tlhagisitswe ka Mopitlo 2021 morago ga therisano le baamegi.' : 'me.bw, shop.bw, and agric.bw were introduced in March 2021 following stakeholder consultation.'}</p>
         </div>
       </section>
 
       {/* ═══ WHY .BW ═══ */}
       <section className="py-8 bg-bocra-off-white">
         <div className="section-wrapper">
-          <h2 className="text-xl font-bold text-bocra-slate text-center mb-6">Why Choose .BW?</h2>
+          <h2 className="text-xl font-bold text-bocra-slate text-center mb-6">{lang === 'tn' ? 'Goreng o Tlhophe .BW?' : 'Why Choose .BW?'}</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-4xl mx-auto">
             {[
-              { icon: Globe, title: 'Botswana Identity', desc: 'Instantly tells visitors you are a Botswana business or individual.', color: '#00A6CE' },
-              { icon: Shield, title: 'DNSSEC Protected', desc: 'Secured with DNS Security Extensions against tampering and attacks.', color: '#6BBE4E' },
-              { icon: Lock, title: 'Anti-Phishing', desc: 'Netcraft anti-phishing tools detect and take down attacks on your domain.', color: '#C8237B' },
-              { icon: Zap, title: 'Affordable', desc: 'No maintenance fees for registrars. Competitive pricing for registrants.', color: '#F7B731' },
-              { icon: CheckCircle, title: 'Fair & Regulated', desc: 'First-come-first-served registration with clear, transparent policies.', color: '#059669' },
-              { icon: Award, title: 'Government Backed', desc: 'Managed by BOCRA under the CRA Act 2012 with full government mandate.', color: '#00458B' },
+              { icon: Globe, title: lang === 'tn' ? 'Boitshupo jwa Botswana' : 'Botswana Identity', desc: lang === 'tn' ? 'E bolelela baeng ka bonako gore o kgwebo kgotsa motho wa Botswana.' : 'Instantly tells visitors you are a Botswana business or individual.', color: '#00A6CE' },
+              { icon: Shield, title: lang === 'tn' ? 'E Sireletswe ka DNSSEC' : 'DNSSEC Protected', desc: lang === 'tn' ? 'E sireletswa ka DNS Security Extensions kgatlhanong le go fetolwa le ditlhaselo.' : 'Secured with DNS Security Extensions against tampering and attacks.', color: '#6BBE4E' },
+              { icon: Lock, title: lang === 'tn' ? 'Kgatlhanong le Phishing' : 'Anti-Phishing', desc: lang === 'tn' ? 'Didirisiwa tsa Netcraft tsa kgatlhanong le phishing di lemoga le go ntsha ditlhaselo mo lefelong la gago.' : 'Netcraft anti-phishing tools detect and take down attacks on your domain.', color: '#C8237B' },
+              { icon: Zap, title: lang === 'tn' ? 'E a Kgonagala' : 'Affordable', desc: lang === 'tn' ? 'Ga go na dituelo tsa tlhokomelo bakeng sa bakwadisi. Ditlhwatlhwa tse di kgaisanyang bakeng sa bakwadisiwa.' : 'No maintenance fees for registrars. Competitive pricing for registrants.', color: '#F7B731' },
+              { icon: CheckCircle, title: lang === 'tn' ? 'E e Tshwanetseng le e e Laolwang' : 'Fair & Regulated', desc: lang === 'tn' ? 'Kwadiso ya ntlha-go-tla-ntlha-go-dirediwa ka dipholisi tse di tlhamaletseng.' : 'First-come-first-served registration with clear, transparent policies.', color: '#059669' },
+              { icon: Award, title: lang === 'tn' ? 'E Tshegeditswe ke Puso' : 'Government Backed', desc: lang === 'tn' ? 'E laotswe ke BOCRA ka fa tlase ga Molao wa CRA wa 2012 ka tiragatso e e feletseng ya puso.' : 'Managed by BOCRA under the CRA Act 2012 with full government mandate.', color: '#00458B' },
             ].map((f, i) => (
               <div key={i} className="flex items-start gap-3 p-4 bg-white border border-gray-100 rounded-xl hover:shadow-md transition-all">
                 <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0" style={{ backgroundColor: f.color + '15' }}>
@@ -331,11 +331,11 @@ export default function RegisterBWPage() {
       {/* ═══ HOW TO REGISTER / RENEW / TRANSFER ═══ */}
       <section className="py-8">
         <div className="section-wrapper max-w-3xl mx-auto">
-          <h2 className="text-xl font-bold text-bocra-slate text-center mb-8">How to Register, Renew & Transfer</h2>
+          <h2 className="text-xl font-bold text-bocra-slate text-center mb-8">{lang === 'tn' ? 'Go Kwadisa, go Ntšhwafatsa le go Fetisa Jang' : 'How to Register, Renew & Transfer'}</h2>
           {[
-            { title: 'Register a New Domain', color: '#00A6CE', steps: ['Choose your domain name (e.g. mybusiness.co.bw)', 'Use the search above to check if it is available', 'Pick an accredited registrar from the list below', 'Provide your details: name, contact info, name servers', 'The registrar processes your registration', 'Your .bw domain is live!'] },
-            { title: 'Renew a Domain', color: '#6BBE4E', steps: ['Contact your registrar before your domain expires', 'Registrars: log in, select the domain, choose renewal period, and save', 'Registrants: write to your registrar requesting renewal', 'Payment is processed and the domain is renewed'] },
-            { title: 'Transfer a Domain', color: '#C8237B', steps: ['Write to your current registrar requesting the transfer', 'Contact your preferred new registrar', 'The new registrar initiates the transfer via the BOCRA registry', 'Both registrars coordinate and your domain moves to the new provider'] },
+            { title: lang === 'tn' ? 'Kwadisa Lefelo le Lesha' : 'Register a New Domain', color: '#00A6CE', steps: lang === 'tn' ? ['Tlhopha leina la lefelo la gago (sk. kgwebo_yame.co.bw)', 'Dirisa patlo e e fa godimo go tlhola gore a e teng', 'Tlhopha mokwadisi o o amogeletsweng go tswa lenaaneng le le fa tlase', 'Fana ka dintlha tsa gago: leina, tshedimosetso ya kgolagano, di-name server', 'Mokwadisi o dira kwadiso ya gago', 'Lefelo la gago la .bw le a bereka!'] : ['Choose your domain name (e.g. mybusiness.co.bw)', 'Use the search above to check if it is available', 'Pick an accredited registrar from the list below', 'Provide your details: name, contact info, name servers', 'The registrar processes your registration', 'Your .bw domain is live!'] },
+            { title: lang === 'tn' ? 'Ntšhwafatsa Lefelo' : 'Renew a Domain', color: '#6BBE4E', steps: lang === 'tn' ? ['Ikgolaganye le mokwadisi wa gago pele lefelo la gago le fela', 'Bakwadisi: tsena, tlhopha lefelo, tlhopha nako ya ntšhwafatso, mme o boloke', 'Bakwadisiwa: kwalela mokwadisi wa gago o kopa ntšhwafatso', 'Tuelo e a dirwa mme lefelo le a ntšhwafadiwa'] : ['Contact your registrar before your domain expires', 'Registrars: log in, select the domain, choose renewal period, and save', 'Registrants: write to your registrar requesting renewal', 'Payment is processed and the domain is renewed'] },
+            { title: lang === 'tn' ? 'Fetisa Lefelo' : 'Transfer a Domain', color: '#C8237B', steps: lang === 'tn' ? ['Kwalela mokwadisi wa gago wa jaanong o kopa phetiso', 'Ikgolaganye le mokwadisi o mosha o o o ratang', 'Mokwadisi o mosha o simolola phetiso ka rejisetara ya BOCRA', 'Bakwadisi ka bobedi ba dira mmogo mme lefelo la gago le fetela kwa motlameding o mosha'] : ['Write to your current registrar requesting the transfer', 'Contact your preferred new registrar', 'The new registrar initiates the transfer via the BOCRA registry', 'Both registrars coordinate and your domain moves to the new provider'] },
           ].map((s, si) => (
             <div key={si} className="mb-8 last:mb-0">
               <h3 className="text-base font-bold text-bocra-slate mb-3 flex items-center gap-2">
@@ -353,7 +353,7 @@ export default function RegisterBWPage() {
             </div>
           ))}
           <div className="mt-4 p-4 bg-amber-50 rounded-xl border border-amber-100">
-            <p className="text-sm text-amber-700"><strong>Note:</strong> BOCRA does not accept registration requests directly. You must register through an accredited registrar. Pricing varies by registrar.</p>
+            <p className="text-sm text-amber-700">{lang === 'tn' ? <><strong>Ela Tlhoko:</strong> BOCRA ga e amogele dikopo tsa kwadiso ka tlhamalalo. O tshwanetse go kwadisa ka mokwadisi o o amogeletsweng. Ditlhwatlhwa di farologana ka mokwadisi.</> : <><strong>Note:</strong> BOCRA does not accept registration requests directly. You must register through an accredited registrar. Pricing varies by registrar.</>}</p>
           </div>
         </div>
       </section>
@@ -361,12 +361,12 @@ export default function RegisterBWPage() {
       {/* ═══ ACCREDITED REGISTRARS ═══ */}
       <section className="py-8 bg-bocra-off-white">
         <div className="section-wrapper">
-          <h2 className="text-xl font-bold text-bocra-slate text-center mb-2">Accredited .BW Registrars</h2>
-          <p className="text-sm text-bocra-slate/40 text-center mb-6">Contact any of these BOCRA-accredited registrars to register your domain</p>
+          <h2 className="text-xl font-bold text-bocra-slate text-center mb-2">{lang === 'tn' ? 'Bakwadisi ba .BW ba ba Amogeletsweng' : 'Accredited .BW Registrars'}</h2>
+          <p className="text-sm text-bocra-slate/40 text-center mb-6">{lang === 'tn' ? 'Ikgolaganye le mongwe wa bakwadisi ba ba amogeletsweng ke BOCRA go kwadisa lefelo la gago' : 'Contact any of these BOCRA-accredited registrars to register your domain'}</p>
           <div className="max-w-md mx-auto mb-6">
             <div className="relative">
               <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-bocra-slate/30" />
-              <input type="text" value={registrarSearch} onChange={e => setRegistrarSearch(e.target.value)} placeholder="Search by name or location..."
+              <input type="text" value={registrarSearch} onChange={e => setRegistrarSearch(e.target.value)} placeholder={lang === 'tn' ? 'Batla ka leina kgotsa lefelo...' : 'Search by name or location...'}
                 className="w-full pl-10 pr-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm focus:border-[#00A6CE] outline-none" />
             </div>
           </div>
@@ -385,7 +385,7 @@ export default function RegisterBWPage() {
           {filteredRegistrars.length > 6 && (
             <button onClick={() => setShowAllRegistrars(!showAllRegistrars)}
               className="mt-4 w-full py-3 text-sm text-bocra-blue font-medium hover:bg-white border border-gray-200 rounded-xl transition-all flex items-center justify-center gap-2">
-              {showAllRegistrars ? 'Show Less' : `View All ${filteredRegistrars.length} Registrars`}
+              {showAllRegistrars ? (lang === 'tn' ? 'Bontsha Bonnye' : 'Show Less') : (lang === 'tn' ? `Bona Botlhe ${filteredRegistrars.length} Bakwadisi` : `View All ${filteredRegistrars.length} Registrars`)}
               <ChevronDown size={14} className={`transition-transform ${showAllRegistrars ? 'rotate-180' : ''}`} />
             </button>
           )}
@@ -395,8 +395,8 @@ export default function RegisterBWPage() {
       {/* ═══ RESOURCES & DOCUMENTS ═══ */}
       <section className="py-8">
         <div className="section-wrapper max-w-4xl mx-auto">
-          <h2 className="text-xl font-bold text-bocra-slate text-center mb-2">Resources & Documents</h2>
-          <p className="text-sm text-bocra-slate/40 text-center mb-8">Forms, policies, guidelines, and consultation papers for the .bw domain</p>
+          <h2 className="text-xl font-bold text-bocra-slate text-center mb-2">{lang === 'tn' ? 'Metswedi le Dikwalo' : 'Resources & Documents'}</h2>
+          <p className="text-sm text-bocra-slate/40 text-center mb-8">{lang === 'tn' ? 'Diforomo, dipholisi, ditaelo, le dipampiri tsa ditherisano tsa lefelo la .bw' : 'Forms, policies, guidelines, and consultation papers for the .bw domain'}</p>
           {Object.entries(NIC_DOCS).map(([category, docs], ci) => {
             const catColors = ['#00A6CE', '#C8237B', '#F7B731', '#00458B'];
             const catColor = catColors[ci % catColors.length];
@@ -405,7 +405,7 @@ export default function RegisterBWPage() {
                 <div className="flex items-center gap-2 mb-3">
                   <div className="w-1 h-5 rounded-full" style={{ backgroundColor: catColor }} />
                   <h3 className="font-bold text-sm text-bocra-slate">{category}</h3>
-                  <span className="text-[10px] text-bocra-slate/30">{docs.length} {docs.length === 1 ? 'document' : 'documents'}</span>
+                  <span className="text-[10px] text-bocra-slate/30">{docs.length} {docs.length === 1 ? (lang === 'tn' ? 'tokumente' : 'document') : (lang === 'tn' ? 'ditokumente' : 'documents')}</span>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                   {docs.map((doc, di) => (
@@ -422,10 +422,10 @@ export default function RegisterBWPage() {
                         {doc.file ? (
                           <a href={`${BASE}documents/${doc.file}`} target="_blank" rel="noopener noreferrer"
                             className="inline-flex items-center gap-1 mt-2 text-xs font-medium text-bocra-blue hover:underline">
-                            <Download size={12} /> Download
+                            <Download size={12} /> {lang === 'tn' ? 'Tsenya' : 'Download'}
                           </a>
                         ) : (
-                          <span className="inline-block mt-2 text-[10px] text-bocra-slate/25">Coming soon</span>
+                          <span className="inline-block mt-2 text-[10px] text-bocra-slate/25">{lang === 'tn' ? 'E a tla' : 'Coming soon'}</span>
                         )}
                       </div>
                     </div>
