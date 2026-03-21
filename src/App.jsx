@@ -44,6 +44,8 @@ import AdminContact from './pages/admin/ContactPage';
 import AdminDataRequests from './pages/admin/DataRequestsPage';
 import AdminTypeApproval from './pages/admin/AdminTypeApprovalPage';
 import AdminConsultations from './pages/admin/AdminConsultationsPage';
+import AdminAutomation from './pages/admin/AutomationPage';
+import AdminAutomationLog from './pages/admin/AutomationLogPage';
 import ConsultationsPage from './pages/public/ConsultationsPage';
 import SpeechesPage from './pages/public/SpeechesPage';
 import BroadcastingPage from './pages/public/BroadcastingPage';
@@ -91,6 +93,8 @@ export default function App() {
                   <Route path="consultations" element={<AdminConsultations />} />
                   <Route path="type-approval" element={<AdminTypeApproval />} />
                   <Route path="data-requests" element={<AdminDataRequests />} />
+                  <Route path="automation" element={<AdminAutomation />} />
+                  <Route path="automation/logs" element={<AdminAutomationLog />} />
                 </Route>
 
                 <Route element={<Layout />}>

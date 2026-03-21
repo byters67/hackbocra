@@ -157,6 +157,7 @@ export default function FileComplaintPage() {
       }
 
       setStep('success');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch (err) {
       // ─── SECURITY: Never expose raw errors (F06 remediation) ───
       setErrors(prev => ({ ...prev, form: 'Something went wrong. Please try again or contact us by phone.' }));

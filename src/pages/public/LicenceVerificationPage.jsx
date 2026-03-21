@@ -1,5 +1,6 @@
 import{useState,useMemo}from'react';import{Link}from'react-router-dom';import{ChevronRight,Search,Shield,CheckCircle,Building,Wifi,Globe,Truck,Tv,FileCheck,AlertCircle,ChevronDown}from'lucide-react';import{useScrollReveal}from'../../hooks/useAnimations';
 import { useLanguage } from '../../lib/language';
+import PageHero from '../../components/ui/PageHero';
 const L=[
 {l:'NFP 01-18/19',c:'Mascom Wireless Botswana (Pty) Ltd',t:'NFP',s:'PTO',sec:'Telecommunications',i:'2018-09-01',e:'2033-08-31',a:'Tsholetsa House, Plot 4705/6, Main Mall, Gaborone'},
 {l:'NFP 02-18/19',c:'Orange Botswana (Pty) Ltd',t:'NFP',s:'PTO',sec:'Telecommunications',i:'2018-09-01',e:'2033-08-31',a:'Plot 166, Queens Road, Main Mall, Gaborone'},

@@ -371,12 +371,11 @@ export default function CybersecurityHubPage() {
                       is_anonymous: formData.anonymous,
                       reference_number: ref,
                       status: 'received',
-                      consent_given_at: new Date().toISOString(),
                     }]);
                     if (insertErr) throw insertErr;
                     setSubmittedRef(ref);
                     setFormStep(3);
-                  } catch (err) { setIncidentError('Something went wrong. Please try again or call +267 395 7755.'); }
+                  } catch (err) { console.error('[BOCRA] Cyber incident insert error:', err); setIncidentError(err?.message || 'Something went wrong. Please try again or call +267 395 7755.'); }
                 }} className="px-6 py-2.5 bg-[#C8237B] text-white font-bold text-sm rounded-xl flex items-center gap-2"><Send size={14} /> Submit Report</button>
               </div>
             </div>

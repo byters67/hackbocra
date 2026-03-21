@@ -54,12 +54,15 @@ export default function OperatorPortalPage() {
   const navigate = useNavigate();
   const heroRef = useScrollReveal();
 
-  // Check if user is already logged in — fetch profile
+  // Check if user is already logged in — fetch profile and go to dashboard
   useEffect(() => {
     if (user) {
       (async () => {
         const { data } = await supabase.from('profiles').select('*').eq('id', user.id).single();
-        if (data) setOperator(data);
+        if (data) {
+          setOperator(data);
+          setView('dashboard');
+        }
       })();
     }
   }, [user]);
@@ -311,6 +314,8 @@ function RegisterForm({ setView, signUp }) {
 }
 
 function LoginForm({ setView, signIn }) {
+  const { lang } = useLanguage();
+  const tn = lang === 'tn';
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [show, setShow] = useState(false);

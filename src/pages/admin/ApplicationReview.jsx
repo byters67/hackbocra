@@ -8,7 +8,7 @@
  */
 
 import { useState, useEffect } from 'react';
-import { supabase } from '../../lib/supabase';
+import { supabase, supabaseAnonKey_ } from '../../lib/supabase';
 import {
   CheckCircle,
   XCircle,
@@ -240,11 +240,9 @@ export default function ApplicationReview({ applicationId, onStatusChange }) {
     setError(null);
 
     try {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-
-      if (!session?.access_token) {
+      // Force token refresh to avoid stale/expired JWT
+      const { data: { session }, error: refreshErr } = await supabase.auth.refreshSession();
+      if (refreshErr || !session?.access_token) {
         throw new Error('You must be logged in to run AI reviews.');
       }
 
@@ -257,6 +255,7 @@ export default function ApplicationReview({ applicationId, onStatusChange }) {
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${session.access_token}`,
+            apikey: supabaseAnonKey_,
           },
           body: JSON.stringify({ application_id: applicationId }),
         }

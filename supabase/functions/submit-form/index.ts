@@ -25,6 +25,7 @@ const ANTHROPIC_API_KEY = Deno.env.get('ANTHROPIC_API_KEY');
 // V-07 remediation: localhost origins only included when ENVIRONMENT env var is set to 'development'
 const PRODUCTION_ORIGINS = [
   'https://hackathonteamproject.github.io',
+  'https://byters67.github.io',
 ];
 const DEV_ORIGINS = [
   'http://localhost:5173',

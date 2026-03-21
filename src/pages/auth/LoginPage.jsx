@@ -8,7 +8,7 @@
 
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Mail, Lock, ArrowRight, Eye, EyeOff } from 'lucide-react';
+import { Mail, Lock, ArrowRight, ArrowLeft, Eye, EyeOff } from 'lucide-react';
 import { useAuth } from '../../lib/auth';
 import BocraLogo from '../../components/ui/BocraLogo';
 
@@ -111,9 +111,15 @@ export default function LoginPage() {
           </form>
         </div>
 
-        <p className="text-center text-xs text-white/30 mt-6">
-          © {new Date().getFullYear()} BOCRA. All Rights Reserved.
-        </p>
+        <div className="text-center mt-6 space-y-2">
+          <Link to="/" className="inline-flex items-center gap-1.5 text-sm text-white/60 hover:text-white transition-colors">
+            <ArrowLeft size={14} />
+            Back to Home
+          </Link>
+          <p className="text-xs text-white/30">
+            © {new Date().getFullYear()} BOCRA. All Rights Reserved.
+          </p>
+        </div>
       </div>
     </div>
   );

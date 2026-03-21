@@ -14,20 +14,12 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
-// ─── Validate environment at startup ────────────────────────────
+// ─── Environment (validated per POST request; no top-level throw) ───
 const ANTHROPIC_API_KEY = Deno.env.get('ANTHROPIC_API_KEY');
-const SUPABASE_URL = Deno.env.get('SUPABASE_URL');
-const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
+const SUPABASE_URL = Deno.env.get('SUPABASE_URL') ?? '';
+const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
 
-if (!ANTHROPIC_API_KEY || !SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
-  throw new Error(
-    `Missing required environment variables: ${[
-      !ANTHROPIC_API_KEY && 'ANTHROPIC_API_KEY',
-      !SUPABASE_URL && 'SUPABASE_URL',
-      !SUPABASE_SERVICE_ROLE_KEY && 'SUPABASE_SERVICE_ROLE_KEY',
-    ].filter(Boolean).join(', ')}`
-  );
-}
+// Do not throw at module load — a failed boot makes OPTIONS preflight return non-2xx and breaks CORS in the browser.
 
 // ─── Document requirements per licence type ─────────────────────
 const LICENCE_REQUIREMENTS: Record<string, string[]> = {
@@ -75,26 +67,24 @@ const VALID_VERDICTS = ['PASS', 'FAIL', 'UNCLEAR'];
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 const REVIEW_COOLDOWN_MS = 60 * 1000; // 1 minute between re-runs
 
-// V-07 remediation: localhost origins only included when ENVIRONMENT env var is set to 'development'
-const PRODUCTION_ORIGINS = [
+// Browser origins that may call this function (GitHub Pages + Vite dev). Auth is still enforced via JWT on POST.
+const ALLOWED_ORIGINS = [
   'https://hackathonteamproject.github.io',
-];
-const DEV_ORIGINS = [
+  'https://byters67.github.io',
   'http://localhost:5173',
+  'http://127.0.0.1:5173',
   'http://localhost:5174',
   'http://localhost:5175',
 ];
-const isDev = Deno.env.get('ENVIRONMENT') === 'development';
-const ALLOWED_ORIGINS = isDev ? [...PRODUCTION_ORIGINS, ...DEV_ORIGINS] : PRODUCTION_ORIGINS;
 
 function getCorsHeaders(origin: string | null) {
-  const allowedOrigin = origin && ALLOWED_ORIGINS.some((o) => origin.startsWith(o))
-    ? origin
-    : ALLOWED_ORIGINS[0];
+  const o = origin || '';
+  const allowedOrigin = ALLOWED_ORIGINS.includes(o) ? o : ALLOWED_ORIGINS[0];
   return {
     'Access-Control-Allow-Origin': allowedOrigin,
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type, Authorization, apikey, x-client-info',
+    'Access-Control-Allow-Headers': 'authorization, content-type, apikey, x-client-info',
+    'Access-Control-Max-Age': '86400',
   };
 }
 
@@ -286,13 +276,24 @@ async function resetStatusOnError(
 serve(async (req) => {
   const origin = req.headers.get('Origin');
 
-  // CORS preflight
+  // CORS preflight — must return 2xx with CORS headers (never depend on secrets being loaded).
   if (req.method === 'OPTIONS') {
-    return new Response(null, { headers: getCorsHeaders(origin) });
+    return new Response(null, { status: 204, headers: getCorsHeaders(origin) });
   }
 
   if (req.method !== 'POST') {
     return jsonResponse({ error: 'Method not allowed' }, 405, origin);
+  }
+
+  if (!ANTHROPIC_API_KEY || !SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
+    return jsonResponse(
+      {
+        error:
+          'Server configuration error: missing secrets. Set ANTHROPIC_API_KEY, SUPABASE_URL, and SUPABASE_SERVICE_ROLE_KEY for this function.',
+      },
+      503,
+      origin
+    );
   }
 
   // Service role client — only used server-side, never exposed

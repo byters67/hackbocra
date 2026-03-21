@@ -55,6 +55,17 @@ IMPORTANT RULES:
 - Keep all accessibility features (48px touch targets, ARIA labels)
 - Use BOCRA dot colours when assigning colours to sectors
 - Always give me the COMPLETE file back, not just the changed section
+
+SCOPE-LOCK (CRITICAL — READ THIS CAREFULLY):
+- ONLY modify the specific section, component, function, or data I ask you to change
+- Do NOT refactor, rename, reformat, reorder, or "improve" any code outside the requested change
+- Do NOT change import statements unless the task requires a new dependency
+- Do NOT rename variables, functions, or CSS classes that already work
+- Do NOT re-order array items, object keys, or JSX elements unless I explicitly ask
+- Do NOT "clean up" or "optimise" unrelated code — even if you think it's better
+- Do NOT change whitespace, indentation style, or formatting in lines you didn't need to touch
+- If you are unsure whether something is in scope, leave it exactly as-is
+- Before returning the file, mentally diff your output against the original — the ONLY differences should be the change I requested
 ```
 
 ---
@@ -93,6 +104,9 @@ IMPORTANT RULES:
 ---
 
 ## 4. Ready-Made Prompts
+
+> **⚠️ Add this line to the end of EVERY prompt you send to the AI:**
+> `"SCOPE-LOCK: Only change what I asked for. Do not refactor, rename, reorder, reformat, or clean up anything else in the file."`
 
 ### 4.1 Update Page Content
 
@@ -355,6 +369,15 @@ If it succeeds, your code is safe to push to GitHub.
 - Don't paste real passwords into AI chat
 - Don't disable Row Level Security in Supabase
 - Don't accept partial file responses
+
+### Prevent the AI from breaking unrelated code:
+AI models often "helpfully" refactor, rename, or reorder things you didn't ask them to touch — and this silently breaks other parts of the site. To prevent this:
+
+- **One task per prompt.** Don't combine "update the telecoms content AND fix the nav menu" in one message. Each change = one prompt.
+- **Add this line to every prompt:** `"Only change what I asked for. Do not refactor, rename, reorder, or clean up anything else."`
+- **Spot-check the output before committing.** Quickly scan the file the AI returns — look for unexpected changes in sections you didn't ask about (renamed functions, reordered arrays, deleted comments, changed imports).
+- **Use GitHub's diff view.** After pasting the AI's file into GitHub's editor, click **"Preview changes"** before committing. Scroll through the red/green diff. If you see changes in areas you didn't request, **don't commit** — go back and tell the AI to redo it without those changes.
+- **If in doubt, test locally first.** Run `npm run dev` and `npm run build` (see Section 6) before pushing to GitHub.
 
 ### If something breaks:
 1. Go to GitHub → navigate to the file → click **"History"**

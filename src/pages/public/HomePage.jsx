@@ -193,7 +193,7 @@ export default function HomePage() {
             <span className="inline-block px-4 py-1.5 bg-white/10 rounded-full text-sm font-medium text-white/80 mb-4">{lang === 'tn' ? 'Dipalopalo tsa Megala' : 'Telecom Statistics'}</span>
             <h2 className="text-3xl md:text-4xl font-extrabold text-white">{lang === 'tn' ? 'Botswana ka Dipalo' : 'Botswana by the Numbers'}</h2>
           </div>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8">
             {STATS.map((s) => <StatCard key={s.label} {...s} />)}
           </div>
           <div className="text-center mt-10">
@@ -275,14 +275,17 @@ function SectionHead({ label, title }) {
 }
 
 function StatCard({ value, suffix, label, icon: Icon }) {
-  const ref = useCountUp(value, suffix);
+  const refFull = useCountUp(value, suffix);
+  const refCompact = useCountUp(value, suffix, true);
   return (
     <div className="text-center">
-      <div className="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center mx-auto mb-3">
-        <Icon size={24} className="text-white/80" />
+      <div className="w-12 h-12 sm:w-14 sm:h-14 bg-white/10 rounded-2xl flex items-center justify-center mx-auto mb-2 sm:mb-3">
+        <Icon size={20} className="text-white/80 sm:hidden" />
+        <Icon size={24} className="text-white/80 hidden sm:block" />
       </div>
-      <div ref={ref} className="text-3xl md:text-4xl font-extrabold text-white mb-1">0</div>
-      <div className="text-sm text-white/50">{label}</div>
+      <div ref={refFull} className="hidden sm:block text-3xl md:text-4xl font-extrabold text-white mb-1">0</div>
+      <div ref={refCompact} className="sm:hidden text-2xl font-extrabold text-white mb-1">0</div>
+      <div className="text-xs sm:text-sm text-white/50">{label}</div>
     </div>
   );
 }

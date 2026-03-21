@@ -67,9 +67,20 @@ export default function ContactPage() {
   const handleSubmit = async (e) => {
     e.preventDefault(); if (!validate()) return; setLoading(true);
     try {
-      const { error: insertErr } = await supabase.from('contact_submissions').insert([{ name: form.name, email: form.email, phone: form.phone, subject: form.subject, message: form.message, consent_given_at: new Date().toISOString() }]);
-      if (insertErr) throw insertErr; setSubmitted(true);
-    } catch (err) { setErrors(prev => ({ ...prev, form: T.formErr })); }
+      const { error: insertErr } = await supabase.from('contact_submissions').insert([{
+        name: form.name,
+        email: form.email,
+        phone: form.phone,
+        subject: form.subject,
+        message: form.message,
+        consent_given_at: new Date().toISOString(),
+      }]);
+      if (insertErr) throw insertErr;
+      setSubmitted(true);
+    } catch (err) {
+      console.error('[BOCRA] Contact form error:', err);
+      setErrors(prev => ({ ...prev, form: T.formErr }));
+    }
     setLoading(false);
   };
 

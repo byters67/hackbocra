@@ -197,7 +197,7 @@ export default function HistoryPage() {
 }
 
 function TimelineItem({ item, index }) {
-  const [open, setOpen] = useState(item.highlight || false);
+  const [open, setOpen] = useState(false);
 
   return (
     <div className="relative pl-14 md:pl-16 pb-8 group">
