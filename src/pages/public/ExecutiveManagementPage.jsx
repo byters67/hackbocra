@@ -51,7 +51,7 @@ const getExecMembers = (lang) => [
     colour: C.cyan,
     icon: TrendingUp,
     bio: [
-      lang === 'tn' ? 'Rre Murphy Setshwane o bereka jaaka Motlhankedi wa Tlhabololo ya Kgwebo kwa BOCRA. O ikarabela ka go tsamaisa tlhabololo ya mmaraka, tshekatsheko ya madirelo, le mananeo a leano a kgwebo a a rotloetsang kgolo le kgaisano mo Botswana\u2019s communications sector.',
+      lang === 'tn' ? 'Rre Murphy Setshwane o bereka jaaka Motlhankedi wa Tlhabololo ya Kgwebo kwa BOCRA. O ikarabela ka go tsamaisa tlhabololo ya mmaraka, tshekatsheko ya madirelo, le mananeo a leano a kgwebo a a rotloetsang kgolo le kgaisano mo Botswana\u2019s communications sector.' : 'Mr. Murphy Setshwane serves as Director of Business Development at BOCRA. He is responsible for driving market development, industry analysis, and business strategy programmes that promote growth and competition in Botswana\u2019s communications sector.',
       'His department oversees market research, economic analysis of the telecommunications industry, and the development of policies that encourage investment and innovation in the sector.',
     ],
   },
@@ -64,7 +64,7 @@ const getExecMembers = (lang) => [
     colour: C.magenta,
     icon: Settings,
     bio: [
-      lang === 'tn' ? 'Rre Peter Tladinyane o bereka jaaka Motlhankedi wa Ditirelo tsa Khomporasi kwa BOCRA. O okamela Bothati\u2019s human resources, administration, and corporate governance functions.',
+      lang === 'tn' ? 'Rre Peter Tladinyane o bereka jaaka Motlhankedi wa Ditirelo tsa Khomporasi kwa BOCRA. O okamela Bothati\u2019s human resources, administration, and corporate governance functions.' : 'Mr. Peter Tladinyane serves as Director of Corporate Services at BOCRA. He oversees the Authority\u2019s human resources, administration, and corporate governance functions.',
       'His department is responsible for organisational development, talent management, and ensuring BOCRA maintains world-class operational standards in the delivery of its regulatory mandate.',
     ],
   },
@@ -77,7 +77,7 @@ const getExecMembers = (lang) => [
     colour: C.yellow,
     icon: DollarSign,
     bio: [
-      lang === 'tn' ? 'Mme Bonny Mine o bereka jaaka Motlhankedi wa Ditšhelete kwa BOCRA. O ikarabela ka Bothati\u2019s financial management, budgeting, procurement, and reporting functions.',
+      lang === 'tn' ? 'Mme Bonny Mine o bereka jaaka Motlhankedi wa Ditšhelete kwa BOCRA. O ikarabela ka Bothati\u2019s financial management, budgeting, procurement, and reporting functions.' : 'Ms. Bonny Mine serves as Director of Finance at BOCRA. She is responsible for the Authority\u2019s financial management, budgeting, procurement, and reporting functions.',
       'Her department ensures sound financial governance, compliance with public sector accounting standards, and efficient management of BOCRA\u2019s resources to support the Authority\u2019s regulatory activities.',
     ],
   },
