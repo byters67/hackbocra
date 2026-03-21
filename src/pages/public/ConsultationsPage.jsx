@@ -25,6 +25,13 @@ import { useLanguage } from '../../lib/language';
 
 const BASE = import.meta.env.BASE_URL || '/';
 
+const SECTOR_LABELS = {
+  'Telecommunications': { en: 'Telecommunications', tn: 'Megala' },
+  'Broadcasting': { en: 'Broadcasting', tn: 'Phasalatso' },
+  'Postal': { en: 'Postal', tn: 'Poso' },
+  'Internet & ICT': { en: 'Internet & ICT', tn: 'Inthanete le ICT' },
+};
+
 const SECTORS = {
   'Telecommunications': { color: '#00A6CE', icon: Wifi },
   'Broadcasting': { color: '#C8237B', icon: Radio },
@@ -36,7 +43,9 @@ const CONSULTATIONS = [
   {
     id: 'BOCRA/CON/2025/001', status: 'open', sector: 'Telecommunications',
     title: 'National Broadband Strategy 2025–2030 — Public Review',
+    title_tn: 'Leano la Bosetšhaba la Inthanete ya Lobelo 2025–2030 — Tshekatsheko ya Setšhaba',
     summary: 'BOCRA invites public comments on the proposed National Broadband Strategy, covering quality-of-service targets for fixed and mobile broadband, rural connectivity plans including underserved areas in Kgalagadi and North-West districts, spectrum allocation priorities for 5G deployment, and infrastructure sharing obligations for licensed operators.',
+    summary_tn: 'BOCRA e laletsa maikutlo a setšhaba mo Leanong le le Tshitshinywang la Bosetšhaba la Inthanete ya Lobelo, le le akaretsang maikaelelo a boleng jwa tirelo, mananeo a kgolagano ya magae go akaretsa mafelo a a sa fitisweng mo Kgalagadi le dikgaolong tsa Bokone-Bophirima, ditogamaano tsa kabelo ya sepeketeramo sa 5G, le maikarabelo a karoganyo ya mafaratlhatlha.',
     opened: '2025-03-03', closes: '2025-06-30',
     tags: ['QoS Standards', 'Rural Connectivity', '5G Spectrum', 'Infrastructure Investment'],
     documents: [
@@ -48,7 +57,9 @@ const CONSULTATIONS = [
   {
     id: 'BOCRA/CON/2025/002', status: 'open', sector: 'Broadcasting',
     title: 'Community Broadcasting Licence Framework — Proposed Amendments',
+    title_tn: 'Thulaganyo ya Laesense ya Phasalatso ya Setšhaba — Diphetogo tse di Tshitshinywang',
     summary: 'Proposed amendments to the licensing framework for community radio and television services under the CRA Act 2012. Key changes include revised ownership rules to ensure community representation, updated local content quotas aligned with national cultural policy, adjusted financial thresholds for licence applicants, and new provisions for campus radio stations.',
+    summary_tn: 'Diphetogo tse di tshitshinywang mo thulaganyong ya dilaesense tsa ditirelo tsa radio le thelebišene ya setšhaba ka fa tlase ga Molao wa CRA wa 2012. Diphetogo tse dikgolo di akaretsa melao e e baakantsweng ya bong go netefatsa kemelo ya setšhaba, dikwoto tse di ntšhwafaditsweng tsa diteng tsa selegae, le dithulaganyo tse disha tsa ditešene tsa radio tsa dikampase.',
     opened: '2025-02-18', closes: '2025-05-15',
     tags: ['Ownership Rules', 'Local Content Quotas', 'Licensing Fees', 'Community Radio', 'Campus Radio'],
     documents: [
@@ -60,7 +71,9 @@ const CONSULTATIONS = [
   {
     id: 'BOCRA/CON/2025/003', status: 'open', sector: 'Internet & ICT',
     title: 'Data Protection Compliance Guidelines for Licensed Operators',
+    title_tn: 'Ditaelo tsa Go Obamela Tshireletso ya Data Bakeng sa Balaodi ba ba nang le Dilaesense',
     summary: 'BOCRA seeks input on proposed guidelines for compliance with the Data Protection Act 2018 by licensed telecommunications and internet service providers. The guidelines address data breach notification timelines, cross-border data transfer safeguards, and minimum cybersecurity standards for operators handling subscriber data.',
+    summary_tn: 'BOCRA e batla ditshwaelo mo ditaelong tse di tshitshinywang tsa go obamela Molao wa Tshireletso ya Data wa 2018 ke batlamedi ba megala le ba inthanete ba ba nang le dilaesense. Ditaelo di bua ka dinako tsa kitsiso ya go tshologa ga data, ditshireletso tsa go fetisa data kwa dinageng tse dingwe, le maemo a a kwa tlase a tshireletso ya saebo.',
     opened: '2025-03-10', closes: '2025-05-31',
     tags: ['Data Protection', 'Cybersecurity', 'Breach Notification', 'Cross-border Data'],
     documents: [
@@ -71,7 +84,9 @@ const CONSULTATIONS = [
   {
     id: 'BOCRA/CON/2024/001', status: 'closed', sector: 'Telecommunications',
     title: 'Quality of Service Regulations for Mobile Voice — 2024 Review',
+    title_tn: 'Melao ya Boleng jwa Tirelo ya Lentswe la Mogala — Tshekatsheko ya 2024',
     summary: 'Review of quality-of-service benchmarks for mobile voice calls including call setup success rates, dropped call rates, and voice clarity metrics. 51 responses received from operators, industry associations, academic institutions, and members of the public. Final determination published February 2025.',
+    summary_tn: 'Tshekatsheko ya maemo a boleng jwa tirelo ya megala ya lentswe go akaretsa dipholo tsa go simolola megala, go wa ga megala, le boleng jwa lentswe. Go amogetse dikarabo di le 51 go tswa go balaodi, mekgatlho ya madirelo, ditheo tsa thuto, le maloko a setšhaba.',
     opened: '2024-09-01', closes: '2024-12-15',
     tags: ['Call Drop Rates', 'Voice Quality', 'Operator Obligations', 'Penalty Framework'],
     documents: [
@@ -97,7 +112,9 @@ const CONSULTATIONS = [
   {
     id: 'BOCRA/CON/2024/002', status: 'closed', sector: 'Internet & ICT',
     title: 'Consumer Protection Code — Proposed Amendments 2024',
+    title_tn: 'Molao wa Tshireletso ya Badirisi — Diphetogo tse di Tshitshinywang tsa 2024',
     summary: 'Amendments to the Consumer Protection Code covering data breach notification requirements, billing transparency obligations for prepaid and postpaid services, and enhanced dispute resolution procedures. 34 responses received.',
+    summary_tn: 'Diphetogo mo Molaong wa Tshireletso ya Badirisi tse di akaretsang ditlhokego tsa kitsiso ya go tshologa ga data, maikarabelo a ponagatso ya dituelo bakeng sa ditirelo tsa prepaid le postpaid, le ditsamaiso tse di tokafaditsweng tsa tharabololo ya dikganetsano. Go amogetse dikarabo di le 34.',
     opened: '2024-04-01', closes: '2024-06-28',
     tags: ['Data Breach Notification', 'Billing Transparency', 'Consumer Rights', 'Dispute Resolution'],
     documents: [
@@ -108,7 +125,9 @@ const CONSULTATIONS = [
   {
     id: 'BOCRA/CON/2024/003', status: 'closed', sector: 'Telecommunications',
     title: 'Universal Access and Service Fund (UASF) Strategy 2024–2029',
+    title_tn: 'Leano la Letlole la Tirelo ya Phitlhelelo ya Botlhe (UASF) 2024–2029',
     summary: 'Review of the UASF strategy to expand telecommunications coverage to underserved and unserved areas of Botswana, particularly rural communities. Pursuant to Section 80 of the CRA Act 2012, BOCRA invited stakeholder input on funding mechanisms, project prioritisation criteria, and monitoring frameworks.',
+    summary_tn: 'Tshekatsheko ya leano la UASF la go atolosa phitlhelelo ya megala kwa mafelong a a sa fitisweng a Botswana, bogolo jang ditšhaba tsa magae. Go ya ka Karolo 80 ya Molao wa CRA wa 2012, BOCRA e ne ya laletsa ditshwaelo tsa baamegi ka mekgwa ya matlole, maemo a go baya ditogamaano tsa diporojeke, le dithulaganyo tsa tlhokomelo.',
     opened: '2024-01-15', closes: '2024-04-30',
     tags: ['Universal Access', 'Rural Coverage', 'UASF Funding', 'Digital Inclusion'],
     documents: [
@@ -128,7 +147,6 @@ function daysLeft(iso) { return Math.ceil((new Date(iso) - Date.now()) / 8640000
 
 export default function ConsultationsPage() {
   const { lang } = useLanguage();
-  const tn = lang === 'tn';
   const [tab, setTab] = useState('open');
   const [sectorFilter, setSectorFilter] = useState('All');
   const [respondTo, setRespondTo] = useState(null);
@@ -149,24 +167,24 @@ export default function ConsultationsPage() {
 
   const stats = [
     { num: CONSULTATIONS.filter(c => c.status === 'open').length, label: lang === 'tn' ? 'Ditherisano tse di Butsweng' : 'Open Consultations', color: '#6BBE4E' },
-    { num: CONSULTATIONS.reduce((a, c) => a + c.documents.length, 0), label: 'Documents Available', color: '#00A6CE' },
-    { num: totalSubmissions ?? '—', label: 'Total Submissions', color: '#C8237B' },
+    { num: CONSULTATIONS.reduce((a, c) => a + c.documents.length, 0), label: lang === 'tn' ? 'Dikwalo tse di Leng Teng' : 'Documents Available', color: '#00A6CE' },
+    { num: totalSubmissions ?? '—', label: lang === 'tn' ? 'Dikarabo Tsotlhe' : 'Total Submissions', color: '#C8237B' },
   ];
 
   if (tab === 'submit') return <SubmitResponsePage consultation={respondTo} onBack={() => { setTab('open'); setRespondTo(null); }} />;
 
   return (
     <div className="bg-white min-h-screen">
-      <div className="bg-bocra-off-white border-b border-gray-100"><div className="section-wrapper py-4"><nav className="text-sm text-bocra-slate/50 flex items-center gap-2"><Link to="/" className="hover:text-bocra-blue transition-colors">Home</Link><ChevronRight size={14} /><span className="text-bocra-slate font-medium">{tn ? 'Ditherisano tsa Setšhaba' : 'Public Consultations'}</span></nav></div></div>
+      <div className="bg-bocra-off-white border-b border-gray-100"><div className="section-wrapper py-4"><nav className="text-sm text-bocra-slate/50 flex items-center gap-2"><Link to="/" className="hover:text-bocra-blue transition-colors">{lang === 'tn' ? 'Gae' : 'Home'}</Link><ChevronRight size={14} /><span className="text-bocra-slate font-medium">{lang === 'tn' ? 'Ditheriso tsa Setšhaba' : 'Public Consultations'}</span></nav></div></div>
 
       <section className="px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6 pb-0">
         <div className="relative py-12 sm:py-16 px-5 sm:px-8 lg:px-10 rounded-2xl overflow-hidden bg-gradient-to-br from-[#00458B] to-[#001A3A]">
           <div className="absolute top-0 right-0 w-48 sm:w-64 h-48 sm:h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2" />
           <div className="absolute bottom-0 left-0 w-36 sm:w-48 h-36 sm:h-48 bg-white/10 rounded-full translate-y-1/2 -translate-x-1/2" />
           <div ref={heroRef} className="relative max-w-3xl mx-auto text-center">
-            <div className="flex items-center justify-center gap-2 mb-3"><div className="w-1.5 h-6 rounded-full bg-[#00A6CE]" /><span className="text-xs text-[#00A6CE] uppercase tracking-widest font-medium">PARTICIPATE</span></div>
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white">Public Consultations</h1>
-            <p className="text-white/60 mt-3 text-sm sm:text-base max-w-xl mx-auto">Have your say on proposed regulations and policies. BOCRA invites stakeholders and the public to review and comment on draft regulatory instruments.</p>
+            <div className="flex items-center justify-center gap-2 mb-3"><div className="w-1.5 h-6 rounded-full bg-[#00A6CE]" /><span className="text-xs text-[#00A6CE] uppercase tracking-widest font-medium">{lang === 'tn' ? 'TSAYA KAROLO' : 'PARTICIPATE'}</span></div>
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white">{lang === 'tn' ? 'Ditheriso tsa Setšhaba' : 'Public Consultations'}</h1>
+            <p className="text-white/60 mt-3 text-sm sm:text-base max-w-xl mx-auto">{lang === 'tn' ? 'Nna le seabe mo melaong le dipholising tse di tshitshinywang. BOCRA e laletsa baamegi le setšhaba go sekaseka le go ntsha maikutlo mo didirisiiweng tsa taolo tsa setlhogo.' : 'Have your say on proposed regulations and policies. BOCRA invites stakeholders and the public to review and comment on draft regulatory instruments.'}</p>
           </div>
         </div>
       </section>
@@ -177,7 +195,7 @@ export default function ConsultationsPage() {
 
       <section className="py-8"><div className="section-wrapper max-w-4xl">
         <div className="flex border-b border-gray-200 mb-6">
-          {[{ key: 'open', label: tn ? 'Tse di Butsweng' : 'Open', count: CONSULTATIONS.filter(c => c.status === 'open').length }, { key: 'closed', label: tn ? 'Tse di Tswaletsweng' : 'Closed', count: closedItems.length }].map(t => (
+          {[{ key: 'open', label: lang === 'tn' ? 'Tse di Butsweng' : 'Open', count: CONSULTATIONS.filter(c => c.status === 'open').length }, { key: 'closed', label: lang === 'tn' ? 'Tse di Tswaletsweng' : 'Closed', count: closedItems.length }].map(t => (
             <button key={t.key} onClick={() => setTab(t.key)} className={`px-5 py-3 text-sm font-medium border-b-2 -mb-px transition-all ${tab === t.key ? 'border-[#00458B] text-[#00458B]' : 'border-transparent text-gray-400 hover:text-gray-600'}`}>
               {t.label}<span className={`ml-1.5 text-[10px] px-1.5 py-0.5 rounded-full font-bold ${t.key === 'open' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'}`}>{t.count}</span>
             </button>
@@ -189,12 +207,12 @@ export default function ConsultationsPage() {
             {['All', ...Object.keys(SECTORS)].map(s => (
               <button key={s} onClick={() => setSectorFilter(s)} className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5 ${sectorFilter === s ? 'bg-[#00458B] text-white' : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50'}`}>
                 {SECTORS[s] && <span className="w-2 h-2 rounded-full" style={{ background: sectorFilter === s ? '#fff' : SECTORS[s].color }} />}
-                {s === 'All' ? 'All Sectors' : s}
+                {s === 'All' ? (lang === 'tn' ? 'Mafapha Otlhe' : 'All Sectors') : (lang === 'tn' && SECTOR_LABELS[s] ? SECTOR_LABELS[s].tn : s)}
               </button>
             ))}
           </div>
           {openItems.length > 0 ? <div className="space-y-4">{openItems.map(item => <ConsultationCard key={item.id} item={item} onRespond={c => { setRespondTo(c); setTab('submit'); }} />)}</div>
-          : <div className="py-12 text-center"><FileText size={32} className="text-gray-200 mx-auto mb-3" /><p className="text-sm text-gray-400">No open consultations in this sector at the moment.</p></div>}
+          : <div className="py-12 text-center"><FileText size={32} className="text-gray-200 mx-auto mb-3" /><p className="text-sm text-gray-400">{lang === 'tn' ? 'Ga go na ditherisano tse di butsweng mo lefapheng leno ga jaana.' : 'No open consultations in this sector at the moment.'}</p></div>}
         </>)}
 
         {tab === 'closed' && <div className="space-y-4">{closedItems.map(item => <ConsultationCard key={item.id} item={item} onRespond={() => {}} />)}</div>}
@@ -206,6 +224,8 @@ export default function ConsultationsPage() {
 }
 
 function ConsultationCard({ item, onRespond }) {
+  const { lang } = useLanguage();
+  const tn = lang === 'tn';
   const [docsOpen, setDocsOpen] = useState(false);
   const [heardOpen, setHeardOpen] = useState(false);
   const [responsesOpen, setResponsesOpen] = useState(false);
@@ -255,17 +275,17 @@ function ConsultationCard({ item, onRespond }) {
           <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: `${cfg.color}15` }}><Icon size={20} style={{ color: cfg.color }} /></div>
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 flex-wrap">
-              <h3 className="text-sm font-bold text-bocra-slate">{item.title}</h3>
-              <span className={`px-2 py-0.5 text-[9px] font-bold rounded-full uppercase ${item.status === 'open' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'}`}>{item.status}</span>
+              <h3 className="text-sm font-bold text-bocra-slate">{tn && item.title_tn ? item.title_tn : item.title}</h3>
+              <span className={`px-2 py-0.5 text-[9px] font-bold rounded-full uppercase ${item.status === 'open' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'}`}>{item.status === 'open' ? (tn ? 'E BUTSWE' : 'OPEN') : (tn ? 'E TSWALETSWE' : 'CLOSED')}</span>
             </div>
             <div className="flex items-center gap-2 mt-1 flex-wrap text-xs text-gray-400">
-              <span style={{ color: cfg.color }} className="font-medium">{item.sector}</span><span>·</span><span>Ref: {item.id}</span><span>·</span>
-              {item.status === 'open' ? <span>Opened {formatDate(item.opened)} · <span className={urgent ? 'text-red-600 font-semibold' : ''}>Closes {formatDate(item.closes)}{urgent ? ` (${days} day${days !== 1 ? 's' : ''} left)` : ''}</span></span> : <span>Closed {formatDate(item.closes)}</span>}
+              <span style={{ color: cfg.color }} className="font-medium">{tn && SECTOR_LABELS[item.sector] ? SECTOR_LABELS[item.sector].tn : item.sector}</span><span>·</span><span>Ref: {item.id}</span><span>·</span>
+              {item.status === 'open' ? <span>{tn ? 'E butswwe' : 'Opened'} {formatDate(item.opened)} · <span className={urgent ? 'text-red-600 font-semibold' : ''}>{tn ? 'E tswala' : 'Closes'} {formatDate(item.closes)}{urgent ? ` (${tn ? `malatsi a le ${days} a a setseng` : `${days} day${days !== 1 ? 's' : ''} left`})` : ''}</span></span> : <span>{tn ? 'E tswaletswe' : 'Closed'} {formatDate(item.closes)}</span>}
             </div>
           </div>
         </div>
 
-        <p className="text-sm text-bocra-slate/60 leading-relaxed mb-3">{item.summary}</p>
+        <p className="text-sm text-bocra-slate/60 leading-relaxed mb-3">{tn && item.summary_tn ? item.summary_tn : item.summary}</p>
 
         {item.tags?.length > 0 && <div className="flex flex-wrap gap-1.5 mb-3">{item.tags.map(t => <span key={t} className="text-[10px] px-2 py-0.5 rounded-lg bg-[#00458B]/5 text-[#00458B] font-medium">{t}</span>)}</div>}
 
@@ -276,13 +296,13 @@ function ConsultationCard({ item, onRespond }) {
         )}
 
         <div className="flex flex-wrap items-center gap-2">
-          <button onClick={() => setDocsOpen(!docsOpen)} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border border-gray-200 hover:bg-gray-50 transition-all text-gray-600"><FileText size={12} />{docsOpen ? 'Hide Documents' : `Documents (${item.documents.length})`}</button>
-          {item.status === 'open' && <button onClick={() => onRespond(item)} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-[#00458B] text-white hover:bg-[#003366] transition-all"><Send size={12} /> Submit Response</button>}
-          {item.whatWeHeard && <button onClick={() => setHeardOpen(!heardOpen)} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border border-[#6BBE4E]/30 text-[#6BBE4E] hover:bg-[#6BBE4E]/5 transition-all"><Users size={12} />What We Heard ({item.whatWeHeard.responseCount})</button>}
+          <button onClick={() => setDocsOpen(!docsOpen)} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border border-gray-200 hover:bg-gray-50 transition-all text-gray-600"><FileText size={12} />{docsOpen ? (tn ? 'Fitha Dikwalo' : 'Hide Documents') : `${tn ? 'Dikwalo' : 'Documents'} (${item.documents.length})`}</button>
+          {item.status === 'open' && <button onClick={() => onRespond(item)} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-[#00458B] text-white hover:bg-[#003366] transition-all"><Send size={12} /> {tn ? 'Romela Karabo' : 'Submit Response'}</button>}
+          {item.whatWeHeard && <button onClick={() => setHeardOpen(!heardOpen)} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border border-[#6BBE4E]/30 text-[#6BBE4E] hover:bg-[#6BBE4E]/5 transition-all"><Users size={12} />{tn ? 'Se re se Utlwileng' : 'What We Heard'} ({item.whatWeHeard.responseCount})</button>}
           {/* Public Responses button */}
           {responseCount !== null && responseCount > 0 && (
             <button onClick={loadResponses} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border border-[#00A6CE]/30 text-[#00A6CE] hover:bg-[#00A6CE]/5 transition-all">
-              <MessageSquare size={12} />{responsesOpen ? 'Hide Responses' : `Public Responses (${responseCount})`}
+              <MessageSquare size={12} />{responsesOpen ? (tn ? 'Fitha Dikarabo' : 'Hide Responses') : `${tn ? 'Dikarabo tsa Setšhaba' : 'Public Responses'} (${responseCount})`}
             </button>
           )}
         </div>
@@ -301,7 +321,7 @@ function ConsultationCard({ item, onRespond }) {
             <div key={i} className={`rounded-lg border p-4 ${t.accepted ? 'border-green-200 bg-green-50/50' : 'border-red-200 bg-red-50/50'}`}>
               <div className="flex items-start gap-3">
                 <div className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 ${t.accepted ? 'bg-green-500' : 'bg-red-500'}`}><span className="text-white text-[10px] font-bold">{t.accepted ? '✓' : '–'}</span></div>
-                <div><p className="text-sm font-semibold text-bocra-slate">{t.theme}</p><p className="text-[10px] text-gray-400 mt-0.5">Raised by {t.heardFrom}</p><p className="text-xs text-gray-600 mt-1 leading-relaxed">{t.outcome}</p></div>
+                <div><p className="text-sm font-semibold text-bocra-slate">{t.theme}</p><p className="text-[10px] text-gray-400 mt-0.5">{tn ? 'Go tswa go' : 'Raised by'} {t.heardFrom}</p><p className="text-xs text-gray-600 mt-1 leading-relaxed">{t.outcome}</p></div>
               </div>
             </div>
           ))}</div>
@@ -313,16 +333,16 @@ function ConsultationCard({ item, onRespond }) {
             <div className="flex items-center gap-2 mb-3">
               <MessageSquare size={14} className="text-[#00A6CE]" />
               <h4 className="text-xs font-bold text-bocra-slate">{tn ? 'Dikarabo tsa Setšhaba' : 'Public Responses'}</h4>
-              <span className="text-[10px] text-gray-400">({publicResponses.length} visible)</span>
+              <span className="text-[10px] text-gray-400">({publicResponses.length} {tn ? 'tse di bonalang' : 'visible'})</span>
             </div>
 
             {responsesLoading ? (
               <div className="py-6 text-center">
                 <div className="w-6 h-6 border-3 border-[#00A6CE]/20 border-t-[#00A6CE] rounded-full animate-spin mx-auto" />
-                <p className="text-[10px] text-gray-400 mt-2">Loading responses...</p>
+                <p className="text-[10px] text-gray-400 mt-2">{tn ? 'E a laisa dikarabo...' : 'Loading responses...'}</p>
               </div>
             ) : publicResponses.length === 0 ? (
-              <p className="text-xs text-gray-400 text-center py-4">No public responses yet.</p>
+              <p className="text-xs text-gray-400 text-center py-4">{tn ? 'Ga go na dikarabo tsa setšhaba ka nako eno.' : 'No public responses yet.'}</p>
             ) : (
               <div className="space-y-3 max-h-[500px] overflow-y-auto pr-1">
                 {publicResponses.map(r => (

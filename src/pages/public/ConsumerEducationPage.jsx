@@ -15,34 +15,36 @@ import { useScrollReveal, useStaggerReveal } from '../../hooks/useAnimations';
 import PageHero from '../../components/ui/PageHero';
 import { useLanguage } from '../../lib/language';
 
-const RIGHTS = [
-  { icon: CheckCircle, title: 'Right to Quality Service', desc: 'You are entitled to reliable, uninterrupted telecommunications, broadcasting, and postal services that meet the quality standards set by BOCRA.', color: '#00A6CE' },
-  { icon: CreditCard, title: 'Right to Fair Pricing', desc: 'Service providers must charge fair, transparent prices. You should receive clear billing with no hidden charges or unauthorised deductions.', color: '#6BBE4E' },
-  { icon: FileText, title: 'Right to Information', desc: 'You have the right to clear, accurate information about services, tariffs, terms and conditions before subscribing.', color: '#F7B731' },
-  { icon: Shield, title: 'Right to Complain', desc: 'If you are dissatisfied with a service, you have the right to complain — first to your provider, then to BOCRA if unresolved.', color: '#C8237B' },
-  { icon: Lock, title: 'Right to Privacy', desc: 'Your personal data and communications must be protected. Providers cannot share your information without consent.', color: '#00458B' },
-  { icon: Scale, title: 'Right to Redress', desc: 'If your complaint is valid, you are entitled to a remedy — whether a refund, service restoration, or compensation.', color: '#7C3AED' },
+const getRights = (lang) => [
+  { icon: CheckCircle, title: lang === 'tn' ? 'Tshwanelo ya Tirelo e e Boleng' : 'Right to Quality Service', desc: lang === 'tn' ? 'O na le tshwanelo ya ditirelo tsa megala, phasalatso, le poso tse di ikanyegang, tse di sa kgoreletsegeng tse di fitlhelang maemo a boleng a a beilweng ke BOCRA.' : 'You are entitled to reliable, uninterrupted telecommunications, broadcasting, and postal services that meet the quality standards set by BOCRA.', color: '#00A6CE' },
+  { icon: CreditCard, title: lang === 'tn' ? 'Tshwanelo ya Ditlhwatlhwa tse di Siameng' : 'Right to Fair Pricing', desc: lang === 'tn' ? 'Batlhagisi ba ditirelo ba tshwanetse go duedisa ditlhwatlhwa tse di siameng, tse di bonalang. O tshwanetse go amogela tuelo e e tlhamaletseng e e senang dituelo tse di fitlhegileng.' : 'Service providers must charge fair, transparent prices. You should receive clear billing with no hidden charges or unauthorised deductions.', color: '#6BBE4E' },
+  { icon: FileText, title: lang === 'tn' ? 'Tshwanelo ya Tshedimosetso' : 'Right to Information', desc: lang === 'tn' ? 'O na le tshwanelo ya tshedimosetso e e tlhamaletseng, e e nepagetseng ka ditirelo, ditlhwatlhwa, le maemo pele o ikwadisa.' : 'You have the right to clear, accurate information about services, tariffs, terms and conditions before subscribing.', color: '#F7B731' },
+  { icon: Shield, title: lang === 'tn' ? 'Tshwanelo ya go Ngongorega' : 'Right to Complain', desc: 'If you are dissatisfied with a service, you have the right to complain — first to your provider, then to BOCRA if unresolved.', color: '#C8237B' },
+  { icon: Lock, title: lang === 'tn' ? 'Tshwanelo ya Sephiri' : 'Right to Privacy', desc: 'Your personal data and communications must be protected. Providers cannot share your information without consent.', color: '#00458B' },
+  { icon: Scale, title: lang === 'tn' ? 'Tshwanelo ya Pusolosego' : 'Right to Redress', desc: 'If your complaint is valid, you are entitled to a remedy — whether a refund, service restoration, or compensation.', color: '#7C3AED' },
 ];
 
-const COMMON_ISSUES = [
-  { icon: Wifi, title: 'Poor Network Coverage', desc: 'Dropped calls, slow internet, or no signal in your area', provider: 'Mascom, BTC, Orange', color: '#00A6CE' },
-  { icon: CreditCard, title: 'Billing & Airtime Issues', desc: 'Unexplained deductions, wrong charges, or failed mobile money transactions', provider: 'All operators', color: '#C8237B' },
-  { icon: Smartphone, title: 'SIM Swap Fraud', desc: 'Someone swapped your SIM without authorisation to steal your accounts', provider: 'All operators', color: '#DC2626' },
-  { icon: Clock, title: 'Service Downtime', desc: 'Extended outages without notice or compensation', provider: 'All operators', color: '#F7B731' },
-  { icon: Mail, title: 'Postal Delays', desc: 'Lost parcels, late delivery, or damaged mail items', provider: 'Botswana Post, couriers', color: '#F7B731' },
-  { icon: Tv, title: 'Broadcasting Complaints', desc: 'Offensive content, misleading advertising, or signal issues', provider: 'Radio & TV stations', color: '#6BBE4E' },
+const getCOMMON_ISSUES = (lang) => [
+  { icon: Wifi, title: lang === 'tn' ? 'Phitlhelelo e e Bokoa ya Neteweke' : 'Poor Network Coverage', desc: lang === 'tn' ? 'Megala e e wetseng, inthanete e e bonya, kgotsa go se na letshwao mo kgaolong ya gago' : 'Dropped calls, slow internet, or no signal in your area', provider: 'Mascom, BTC, Orange', color: '#00A6CE' },
+  { icon: CreditCard, title: lang === 'tn' ? 'Mathata a Tuelo le Eathime' : 'Billing & Airtime Issues', desc: lang === 'tn' ? 'Dituelo tse di sa tlhalosiwang, dituelo tse di phoso, kgotsa ditiro tsa madi a mogala tse di palelwang' : 'Unexplained deductions, wrong charges, or failed mobile money transactions', provider: 'All operators', color: '#C8237B' },
+  { icon: Smartphone, title: lang === 'tn' ? 'Boferefere jwa go Fetola SIM' : 'SIM Swap Fraud', desc: 'Someone swapped your SIM without authorisation to steal your accounts', provider: 'All operators', color: '#DC2626' },
+  { icon: Clock, title: lang === 'tn' ? 'Go Ema ga Tirelo' : 'Service Downtime', desc: 'Extended outages without notice or compensation', provider: 'All operators', color: '#F7B731' },
+  { icon: Mail, title: lang === 'tn' ? 'Go Diega ga Poso' : 'Postal Delays', desc: 'Lost parcels, late delivery, or damaged mail items', provider: 'Botswana Post, couriers', color: '#F7B731' },
+  { icon: Tv, title: lang === 'tn' ? 'Dingongorego tsa Phasalatso' : 'Broadcasting Complaints', desc: 'Offensive content, misleading advertising, or signal issues', provider: 'Radio & TV stations', color: '#6BBE4E' },
 ];
 
-const STEPS = [
-  { step: '1', title: 'Contact Your Provider', desc: 'Always try to resolve the issue directly with your service provider first. Keep records of all communications — dates, reference numbers, and what was discussed.', color: '#00A6CE' },
-  { step: '2', title: 'Wait for Response', desc: 'Give your provider a reasonable time to respond — usually 14 days. If they don\'t respond or you\'re not satisfied with their response, proceed to step 3.', color: '#F7B731' },
-  { step: '3', title: 'File with BOCRA', desc: 'Submit a formal complaint to BOCRA through our online complaint form. Include your provider\'s response (or lack thereof) and all supporting evidence.', color: '#C8237B' },
-  { step: '4', title: 'BOCRA Investigates', desc: 'BOCRA will review your complaint, contact the provider, and work towards a resolution. You\'ll receive a reference number to track progress.', color: '#6BBE4E' },
+const getSteps = (lang) => [
+  { step: '1', title: lang === 'tn' ? 'Ikgolaganye le Motlamedi wa Gago' : 'Contact Your Provider', desc: 'Always try to resolve the issue directly with your service provider first. Keep records of all communications — dates, reference numbers, and what was discussed.', color: '#00A6CE' },
+  { step: '2', title: lang === 'tn' ? 'Emela Karabo' : 'Wait for Response', desc: 'Give your provider a reasonable time to respond — usually 14 days. If they don\'t respond or you\'re not satisfied with their response, proceed to step 3.', color: '#F7B731' },
+  { step: '3', title: lang === 'tn' ? 'Tlhagisa mo BOCRA' : 'File with BOCRA', desc: 'Submit a formal complaint to BOCRA through our online complaint form. Include your provider\'s response (or lack thereof) and all supporting evidence.', color: '#C8237B' },
+  { step: '4', title: lang === 'tn' ? 'BOCRA e a Batlisisa' : 'BOCRA Investigates', desc: 'BOCRA will review your complaint, contact the provider, and work towards a resolution. You\'ll receive a reference number to track progress.', color: '#6BBE4E' },
 ];
 
 export default function ConsumerEducationPage() {
   const { lang } = useLanguage();
-  const tn = lang === 'tn';
+  const RIGHTS = getRights(lang);
+  const COMMON_COMPLAINTS = getCOMMON_ISSUES(lang);
+  const STEPS = getSteps(lang);
   const heroRef = useScrollReveal();
   const rightsRef = useStaggerReveal({ stagger: 0.08 });
   const issuesRef = useStaggerReveal({ stagger: 0.08 });
@@ -74,7 +76,7 @@ export default function ConsumerEducationPage() {
       <section className="py-10">
         <div className="section-wrapper max-w-5xl">
           <h2 className="text-xl font-bold text-bocra-slate text-center mb-2">{lang === 'tn' ? 'Ditshwanelo Tsa Gago Tsa Bodirisi' : 'Your Consumer Rights'}</h2>
-          <p className="text-sm text-bocra-slate/40 text-center mb-8">Every consumer of communications services in Botswana is entitled to these rights</p>
+          <p className="text-sm text-bocra-slate/40 text-center mb-8">{lang === 'tn' ? 'Modirisi mongwe le mongwe wa ditirelo tsa dikgolagano mo Botswana o na le ditshwanelo tse' : 'Every consumer of communications services in Botswana is entitled to these rights'}</p>
           <div ref={rightsRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {RIGHTS.map(right => (
               <div key={right.title} className="bg-white rounded-xl border border-gray-200 p-5 hover:shadow-md transition-all">
@@ -93,9 +95,9 @@ export default function ConsumerEducationPage() {
       <section className="py-8 bg-bocra-off-white">
         <div className="section-wrapper max-w-5xl">
           <h2 className="text-xl font-bold text-bocra-slate text-center mb-2">{lang === 'tn' ? 'Mathata a a Tlwaelegileng a Badirisi' : 'Common Consumer Issues'}</h2>
-          <p className="text-sm text-bocra-slate/40 text-center mb-8">These are the most frequent complaints BOCRA receives from consumers</p>
+          <p className="text-sm text-bocra-slate/40 text-center mb-8">{lang === 'tn' ? 'Tse ke dingongorego tse di tlwaelegileng thata tse BOCRA e di amogelang go tswa go badirisi' : 'These are the most frequent complaints BOCRA receives from consumers'}</p>
           <div ref={issuesRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {COMMON_ISSUES.map(issue => (
+            {COMMON_COMPLAINTS.map(issue => (
               <div key={issue.title} className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-md transition-all">
                 <div className="h-1.5" style={{ background: issue.color }} />
                 <div className="p-4">
@@ -118,7 +120,7 @@ export default function ConsumerEducationPage() {
       <section className="py-10">
         <div className="section-wrapper max-w-4xl">
           <h2 className="text-xl font-bold text-bocra-slate text-center mb-2">{lang === 'tn' ? 'Go Tlhagisa Ngongorego Jang' : 'How to File a Complaint'}</h2>
-          <p className="text-sm text-bocra-slate/40 text-center mb-8">Follow these steps if you have an issue with your service provider</p>
+          <p className="text-sm text-bocra-slate/40 text-center mb-8">{lang === 'tn' ? 'Latela dikgato tse fa o na le bothata le motlamedi wa gago wa tirelo' : 'Follow these steps if you have an issue with your service provider'}</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {STEPS.map((s, i) => (
               <div key={s.step} className="relative">

@@ -17,6 +17,7 @@ import { Outlet, Navigate } from 'react-router-dom';
 import { useAuth } from '../../lib/auth';
 import { supabase } from '../../lib/supabase';
 import AdminSidebar from '../../components/admin/AdminSidebar';
+import { useLanguage } from '../../lib/language';
 
 export default function AdminLayout() {
   // Auth bypass strictly for local development only — stripped from production builds by Vite
@@ -26,6 +27,7 @@ export default function AdminLayout() {
     && window.location.hostname === 'localhost';
 
   const { user, loading: authLoading, signOut } = useAuth();
+  const { lang } = useLanguage();
   const [profile, setProfile] = useState(DEV_BYPASS_AUTH ? { id: 'demo', full_name: 'Demo Admin', role: 'admin' } : null);
   const [profileLoading, setProfileLoading] = useState(DEV_BYPASS_AUTH ? false : true);
   const [profileError, setProfileError] = useState(null);
@@ -136,7 +138,7 @@ export default function AdminLayout() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
-            <h2 className="text-xl font-bold text-gray-900 mb-2">Access Denied</h2>
+            <h2 className="text-xl font-bold text-gray-900 mb-2">{lang === 'tn' ? 'Phitlhelelo e Ganetswe' : 'Access Denied'}</h2>
             <p className="text-gray-600 mb-6">
               You do not have permission to access the admin portal.
               Only admin and staff users can access this area.

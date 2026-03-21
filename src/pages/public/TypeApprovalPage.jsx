@@ -38,13 +38,13 @@ const CATEGORY_ICONS = {
   'Vehicle System': Shield, 'Solar Inverter': Globe,
 };
 
-const ID_TYPES = [
+const getID_TYPES = (lang) => [
   { value: 'omang', label: 'Omang (National ID)' },
   { value: 'passport', label: 'Passport' },
   { value: 'company_reg', label: 'Company Registration' },
 ];
 
-const COMPLAINT_CATEGORIES = [
+const getCOMPLAINT_CATEGORIES = (lang) => [
   'Type Approval Application Delay',
   'Certificate Issue',
   'Device Verification Problem',
@@ -169,10 +169,10 @@ export default function TypeApprovalPage() {
               {/* Key Aspects */}
               <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {[
-                  { icon: Shield, title: 'Purpose', desc: 'Protects the public from hazardous equipment and ensures radio devices operate within authorized frequency spectrum.', color: '#00458B' },
-                  { icon: Award, title: 'Lifetime Validity', desc: 'Type approval is granted for the lifetime of the specific version/model of the equipment.', color: '#6BBE4E' },
-                  { icon: Cpu, title: 'IMEI Verification', desc: 'For SIM-enabled devices, applicants must submit a sample IMEI number checked against GSMA databases.', color: '#00A6CE' },
-                  { icon: FileText, title: 'ILAC Accreditation', desc: 'Test reports must be from an ILAC-accredited laboratory for equipment compliance certification.', color: '#F7B731' },
+                  { icon: Shield, title: lang === 'tn' ? 'Maikaelelo' : 'Purpose', desc: lang === 'tn' ? 'E sireletsa setšhaba go tswa go didirisiwa tse di kotsi mme e netefatsa gore didirisiwa tsa radio di dira mo sepeketeramong se se dumeletsweng.' : 'Protects the public from hazardous equipment and ensures radio devices operate within authorized frequency spectrum.', color: '#00458B' },
+                  { icon: Award, title: lang === 'tn' ? 'Go Siama ga Botshelo Jotlhe' : 'Lifetime Validity', desc: lang === 'tn' ? 'Tumelelo ya mofuta e fanwa ka botshelo jotlhe jwa mofuta/sekao se se rileng sa sedirisiwa.' : 'Type approval is granted for the lifetime of the specific version/model of the equipment.', color: '#6BBE4E' },
+                  { icon: Cpu, title: lang === 'tn' ? 'Netefatso ya IMEI' : 'IMEI Verification', desc: lang === 'tn' ? 'Mo didirisisweng tse di nang le SIM, bakopi ba tshwanetse go romela nomoro ya IMEI ya sampole e e tlhotlhomisitsweng mo di-database tsa GSMA.' : 'For SIM-enabled devices, applicants must submit a sample IMEI number checked against GSMA databases.', color: '#00A6CE' },
+                  { icon: FileText, title: lang === 'tn' ? 'Kamogelo ya ILAC' : 'ILAC Accreditation', desc: lang === 'tn' ? 'Dipego tsa diteko di tshwanetse go tswa mo laboratoreng e e amogetseng ke ILAC ya netefatso ya go obamela ga didirisiwa.' : 'Test reports must be from an ILAC-accredited laboratory for equipment compliance certification.', color: '#F7B731' },
                 ].map((item, i) => (
                   <div key={i} className="bg-bocra-off-white rounded-xl p-5 border border-gray-100">
                     <div className="w-10 h-10 rounded-lg flex items-center justify-center mb-3" style={{ background: `${item.color}15` }}>

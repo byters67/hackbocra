@@ -27,12 +27,12 @@ import ConsentCheckbox from '../../components/ui/ConsentCheckbox';
 import { useScrollReveal } from '../../hooks/useAnimations';
 import { useLanguage } from '../../lib/language';
 
-const REQUEST_TYPES = [
-  { value: 'access', label: 'Access my data', desc: 'Get a copy of all personal data BOCRA holds about you', icon: Eye },
-  { value: 'correction', label: 'Correct my data', desc: 'Fix inaccurate or incomplete information', icon: Edit3 },
-  { value: 'deletion', label: 'Delete my data', desc: 'Request erasure of your personal data', icon: Trash2 },
-  { value: 'restriction', label: 'Restrict processing', desc: 'Limit how BOCRA uses your data', icon: Lock },
-  { value: 'portability', label: 'Export my data', desc: 'Receive your data in a machine-readable format', icon: Download },
+const getREQUEST_TYPES = (lang) => [
+  { value: 'access', label: lang === 'tn' ? 'Fitlhelela data ya me' : 'Access my data', desc: lang === 'tn' ? 'Bona khopi ya data yotlhe ya botho e BOCRA e nang le yona ka ga gago' : 'Get a copy of all personal data BOCRA holds about you', icon: Eye },
+  { value: 'correction', label: lang === 'tn' ? 'Baakanya data ya me' : 'Correct my data', desc: lang === 'tn' ? 'Baakanya tshedimosetso e e sa nepagalang kgotsa e e sa felelang' : 'Fix inaccurate or incomplete information', icon: Edit3 },
+  { value: 'deletion', label: lang === 'tn' ? 'Phimola data ya me' : 'Delete my data', desc: lang === 'tn' ? 'Kopa go phimolwa ga data ya gago ya botho' : 'Request erasure of your personal data', icon: Trash2 },
+  { value: 'restriction', label: lang === 'tn' ? 'Kganela go dirwa' : 'Restrict processing', desc: lang === 'tn' ? 'Kganela tsela e BOCRA e dirisang data ya gago ka yona' : 'Limit how BOCRA uses your data', icon: Lock },
+  { value: 'portability', label: lang === 'tn' ? 'Romela data ya me' : 'Export my data', desc: lang === 'tn' ? 'Amogela data ya gago ka mokgwa o o balwang ke motšhine' : 'Receive your data in a machine-readable format', icon: Download },
   { value: 'withdraw_consent', label: 'Withdraw consent', desc: 'Revoke previously given consent', icon: XCircle },
 ];
 
@@ -55,7 +55,7 @@ const STATUS_CONFIG = {
 
 export default function DataRequestPage() {
   const { lang } = useLanguage();
-  const tn = lang === 'tn';
+  const REQUEST_TYPES = getREQUEST_TYPES(lang);
   const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const heroRef = useScrollReveal();
@@ -167,9 +167,9 @@ export default function DataRequestPage() {
       <div className="bg-bocra-off-white border-b border-gray-100">
         <div className="section-wrapper py-4">
           <nav className="text-sm text-bocra-slate/50 flex items-center gap-2">
-            <Link to="/" className="hover:text-bocra-blue">Home</Link>
+            <Link to="/" className="hover:text-bocra-blue">{lang === 'tn' ? 'Gae' : 'Home'}</Link>
             <ChevronRight size={14} />
-            <span className="text-bocra-slate font-medium">{tn ? 'Ditshwanelo Tsa Me Tsa Data' : 'My Data Rights'}</span>
+            <span className="text-bocra-slate font-medium">My Data Rights</span>
           </nav>
         </div>
       </div>
@@ -184,7 +184,7 @@ export default function DataRequestPage() {
             <div className="w-16 h-16 rounded-full bg-[#00458B]/10 flex items-center justify-center mx-auto mb-4">
               <Shield size={28} className="text-[#00458B]" />
             </div>
-            <h2 className="text-xl font-bold text-bocra-slate mb-2">{tn ? 'Tsena go Fitlhelela Ditshwanelo tsa Data' : 'Sign In to Access Data Rights'}</h2>
+            <h2 className="text-xl font-bold text-bocra-slate mb-2">Sign In to Access Data Rights</h2>
             <p className="text-sm text-bocra-slate/60 max-w-md mx-auto mb-6">
               To submit a Data Subject Access Request or view your previous requests, please sign in with your BOCRA account. If you don't have one, you can register through the ASMS-WebCP portal.
             </p>
@@ -238,7 +238,7 @@ export default function DataRequestPage() {
         {/* ─── VIEW: Request List ─── */}
         {view === 'list' && (
           <div className="space-y-4">
-            <h2 className="text-xl font-bold text-bocra-slate">{tn ? 'Dikopo Tsa Gago tsa Data' : 'Your Data Requests'}</h2>
+            <h2 className="text-xl font-bold text-bocra-slate">Your Data Requests</h2>
 
             {fetchError && (
               <div className="flex items-center gap-2 text-red-600 text-sm bg-red-50 border border-red-200 p-3 rounded-lg mb-4">
@@ -481,7 +481,7 @@ export default function DataRequestPage() {
             <div className="w-16 h-16 rounded-full bg-green-50 flex items-center justify-center mx-auto mb-4">
               <CheckCircle size={32} className="text-[#6BBE4E]" />
             </div>
-            <h2 className="text-2xl font-bold text-bocra-slate mb-2">Request Submitted</h2>
+            <h2 className="text-2xl font-bold text-bocra-slate mb-2">{lang === 'tn' ? 'Kopo e Rometse' : 'Request Submitted'}</h2>
             <p className="text-sm text-bocra-slate/50 max-w-md mx-auto mb-4">
               Your data request has been received. BOCRA will verify your identity and respond within <strong>30 days</strong> as required by the Data Protection Act, 2018.
             </p>

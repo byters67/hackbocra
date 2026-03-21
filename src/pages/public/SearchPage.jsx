@@ -105,8 +105,8 @@ const SEARCH_INDEX = [
   { title: 'News & Events', path: '/media/news-events', category: 'Media', type: 'Page', description: 'Latest news, public notices, tenders, regulatory updates, and media releases from BOCRA.' },
 ];
 
-const POPULAR_SEARCHES = [
-  { label: 'File a Complaint', query: 'complaint' },
+const getPopularSearches = (lang) => [
+  { label: lang === 'tn' ? 'Tlhagisa Ngongorego' : 'File a Complaint', query: 'complaint' },
   { label: 'Mascom', query: 'mascom' },
   { label: 'Cybersecurity', query: 'cybersecurity' },
   { label: 'Licence', query: 'licence' },
@@ -120,7 +120,7 @@ const TYPE_ORDER = { Page: 0, Document: 1, Operator: 2 };
 
 export default function SearchPage() {
   const { lang } = useLanguage();
-  const tn = lang === 'tn';
+  const POPULAR_SEARCHES = getPopularSearches(lang);
   const [searchParams] = useSearchParams();
   const [query, setQuery] = useState(searchParams.get('q') || '');
   const heroRef = useScrollReveal();
@@ -164,7 +164,7 @@ export default function SearchPage() {
       <div className="bg-bocra-off-white border-b border-gray-100">
         <div className="section-wrapper py-4">
           <nav className="text-sm text-bocra-slate/50 flex items-center gap-2">
-            <Link to="/" className="hover:text-bocra-blue transition-colors">Home</Link>
+            <Link to="/" className="hover:text-bocra-blue transition-colors">{lang === 'tn' ? 'Gae' : 'Home'}</Link>
             <ChevronRight size={14} />
             <span className="text-bocra-slate">Search</span>
           </nav>

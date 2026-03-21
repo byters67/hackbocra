@@ -96,6 +96,7 @@ const LICENCES = [
 
 /* ── Sidebar ── */
 function Sidebar({ slug, nav }) {
+  const { lang } = useLanguage();
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
   useEffect(() => {
@@ -109,17 +110,17 @@ function Sidebar({ slug, nav }) {
     <div className="lg:w-80 flex-shrink-0">
       <div className="lg:sticky lg:top-24 space-y-6">
         <div className="bg-[#001A3A] rounded-2xl p-5 sm:p-6 text-white shadow-xl">
-          <h3 className="text-lg sm:text-xl font-bold mb-4">Apply For A Licence</h3>
+          <h3 className="text-lg sm:text-xl font-bold mb-4">{lang === 'tn' ? 'Ikopela Laesense' : 'Apply For A Licence'}</h3>
           <div className="flex items-start gap-3 mb-5">
             <div className="w-11 h-11 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
               <Award className="w-5 h-5 text-[#00A6CE]" />
             </div>
-            <p className="text-sm text-white/80 leading-relaxed">Choose the type of licence you are applying for from the following list</p>
+            <p className="text-sm text-white/80 leading-relaxed">{lang === 'tn' ? 'Tlhopha mofuta wa laesense o o ikopelang yone go tswa mo lenaaneng le le latelang' : 'Choose the type of licence you are applying for from the following list'}</p>
           </div>
           <div ref={ref} className="relative">
             <button onClick={() => setOpen(!open)}
               className="w-full flex items-center justify-between bg-white/10 hover:bg-white/20 border border-white/20 rounded-xl px-4 py-3 text-sm transition-all duration-200">
-              <span className="text-white/90 truncate">{cur?.short || 'Choose a Licence'}</span>
+              <span className="text-white/90 truncate">{cur?.short || (lang === 'tn' ? 'Tlhopha Laesense' : 'Choose a Licence')}</span>
               <ChevronDown className={`w-4 h-4 text-white/60 transition-transform duration-200 flex-shrink-0 ml-2 ${open ? 'rotate-180' : ''}`} />
             </button>
             {open && (
@@ -142,9 +143,9 @@ function Sidebar({ slug, nav }) {
           </div>
         </div>
         <div className="bg-white rounded-2xl border border-gray-200 p-5 sm:p-6 shadow-sm">
-          <h3 className="text-lg font-bold text-[#00458B] mb-3">Complaints Process</h3>
+          <h3 className="text-lg font-bold text-[#00458B] mb-3">{lang === 'tn' ? 'Thulaganyo ya Dingongorego' : 'Complaints Process'}</h3>
           <p className="text-sm text-gray-600 leading-relaxed mb-4">BOCRA will investigate a consumer complaint against a service provider if there is sufficient evidence to establish.</p>
-          <Link to="/services/file-complaint" className="block w-full text-center bg-[#00A6CE] hover:bg-[#0090B5] text-white font-semibold py-3 px-4 rounded-xl transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg">File A Complaint</Link>
+          <Link to="/services/file-complaint" className="block w-full text-center bg-[#00A6CE] hover:bg-[#0090B5] text-white font-semibold py-3 px-4 rounded-xl transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg">{lang === 'tn' ? 'Tlhagisa Ngongorego' : 'File A Complaint'}</Link>
         </div>
       </div>
     </div>
@@ -173,6 +174,7 @@ function PdfCard({ url, name, size }) {
  * GRID VIEW — All 13 licence cards, consistent design, HD images
  * ══════════════════════════════════════════════════════════════════════ */
 function Grid({ nav }) {
+  const { lang } = useLanguage();
   const ref = useRef(null);
   useEffect(() => {
     if (!ref.current) return;
@@ -194,9 +196,9 @@ function Grid({ nav }) {
       <div className="bg-bocra-off-white border-b border-gray-100">
         <div className="section-wrapper py-4">
           <nav className="text-sm text-bocra-slate/50 flex items-center gap-2">
-            <Link to="/" className="hover:text-bocra-blue transition-colors">Home</Link>
+            <Link to="/" className="hover:text-bocra-blue transition-colors">{lang === 'tn' ? 'Gae' : 'Home'}</Link>
             <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18l6-6-6-6"/></svg></span>
-            <span className="text-bocra-slate font-medium">Licensing</span>
+            <span className="text-bocra-slate font-medium">{lang === 'tn' ? 'Dilaesense' : 'Licensing'}</span>
           </nav>
         </div>
       </div>
@@ -243,9 +245,9 @@ function Grid({ nav }) {
                 </div>
                 <div className="flex items-center justify-between mt-3">
                   {l.pdf ? (
-                    <span className="flex items-center gap-1.5 text-xs text-gray-500"><FileText className="w-3 h-3 text-green-500" />Form available</span>
+                    <span className="flex items-center gap-1.5 text-xs text-gray-500"><FileText className="w-3 h-3 text-green-500" />{lang === 'tn' ? 'Foromo e teng' : 'Form available'}</span>
                   ) : (
-                    <span className="flex items-center gap-1.5 text-xs text-gray-400"><AlertCircle className="w-3 h-3" />Contact BOCRA</span>
+                    <span className="flex items-center gap-1.5 text-xs text-gray-400"><AlertCircle className="w-3 h-3" />{lang === 'tn' ? 'Ikgolaganye le BOCRA' : 'Contact BOCRA'}</span>
                   )}
                   <span className="flex items-center gap-1 text-xs font-semibold opacity-0 group-hover:opacity-100 transition-all duration-200" style={{ color: c }}>
                     View <ChevronRight className="w-3 h-3" />
@@ -267,6 +269,7 @@ function Grid({ nav }) {
  * ══════════════════════════════════════════════════════════════════════ */
 /* ── Licence Application Form — Download PDF, fill, upload back ── */
 function LicenceApplicationForm({ licence }) {
+  const { lang } = useLanguage();
   const [form, setForm] = useState({ fullName: '', email: '', phone: '' });
   const [file, setFile] = useState(null);
   const [submitted, setSubmitted] = useState(false);
@@ -352,7 +355,7 @@ function LicenceApplicationForm({ licence }) {
     return (
       <div className="mt-6 sm:mt-8 p-6 sm:p-8 bg-green-50 rounded-2xl border border-green-200 text-center">
         <div className="w-14 h-14 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4"><CheckCircle className="w-7 h-7 text-green-600" /></div>
-        <h3 className="text-lg font-bold text-gray-900 mb-2">Application Submitted Successfully</h3>
+        <h3 className="text-lg font-bold text-gray-900 mb-2">{lang === 'tn' ? 'Kopo e Rometse ka Katlego' : 'Application Submitted Successfully'}</h3>
         <p className="text-sm text-gray-600 mb-3">Your {licence.title} application has been received by BOCRA. A confirmation will be sent to <strong>{form.email}</strong>.</p>
         <div className="inline-block px-5 py-2.5 bg-white rounded-lg text-lg font-mono font-bold text-[#00458B] border border-green-200 mb-4">{refNum}</div>
         <p className="text-xs text-gray-400">Save this reference number. BOCRA will review your application and respond within 10 business days.</p>
@@ -366,7 +369,7 @@ function LicenceApplicationForm({ licence }) {
       <div className="mt-6 sm:mt-8">
         <div className="p-6 sm:p-8 rounded-2xl border-2 border-[#00458B]/20 bg-[#00458B]/5 text-center">
           <Lock className="w-10 h-10 text-[#00458B] mx-auto mb-3" />
-          <h3 className="font-bold text-base text-[#00458B] mb-2">Registration Required</h3>
+          <h3 className="font-bold text-base text-[#00458B] mb-2">{lang === 'tn' ? 'Go Ikwadisa go a Tlhokega' : 'Registration Required'}</h3>
           <p className="text-sm text-gray-600 mb-4 max-w-md mx-auto">
             You must be registered and signed in to your BOCRA operator account before applying for a licence. This ensures your application is linked to your company profile.
           </p>
@@ -389,14 +392,14 @@ function LicenceApplicationForm({ licence }) {
             <Send className="w-5 h-5" style={{ color: licence.colour }} />
           </div>
           <div>
-            <h3 className="font-bold text-base text-[#00458B]">Submit Your Application</h3>
+            <h3 className="font-bold text-base text-[#00458B]">{lang === 'tn' ? 'Romela Kopo ya Gago' : 'Submit Your Application'}</h3>
             <p className="text-xs text-gray-500">Upload your completed {licence.short} application form</p>
           </div>
         </div>
 
         {/* Step instructions */}
         <div className="bg-white rounded-xl p-4 border border-gray-100 mb-4">
-          <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">How to apply</p>
+          <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">{lang === 'tn' ? 'Tsela ya go ikopela' : 'How to apply'}</p>
           <div className="space-y-2">
             <div className="flex items-start gap-3">
               <span className="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold flex-shrink-0" style={{ backgroundColor: licence.colour + '15', color: licence.colour }}>1</span>
@@ -416,20 +419,20 @@ function LicenceApplicationForm({ licence }) {
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Contact details */}
           <div className="bg-white rounded-xl p-4 border border-gray-100 space-y-3">
-            <p className="text-xs font-bold text-gray-400 uppercase tracking-widest flex items-center gap-2"><User className="w-3.5 h-3.5" /> Your Contact Details</p>
+            <p className="text-xs font-bold text-gray-400 uppercase tracking-widest flex items-center gap-2"><User className="w-3.5 h-3.5" /> {lang === 'tn' ? 'Dintlha tsa Kgolagano ya Gago' : 'Your Contact Details'}</p>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              <div><label className="text-xs font-medium text-gray-600 mb-1 block">Full Name *</label>
+              <div><label className="text-xs font-medium text-gray-600 mb-1 block">{lang === 'tn' ? 'Leina ka Botlalo' : 'Full Name'} *</label>
                 <input required type="text" value={form.fullName} onChange={e => setForm({ ...form, fullName: e.target.value })} className="w-full px-3 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:border-[#00A6CE] focus:ring-2 focus:ring-[#00A6CE]/10 outline-none" /></div>
-              <div><label className="text-xs font-medium text-gray-600 mb-1 block">Email Address *</label>
+              <div><label className="text-xs font-medium text-gray-600 mb-1 block">{lang === 'tn' ? 'Aterese ya Imeile' : 'Email Address'} *</label>
                 <input required type="email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} className="w-full px-3 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:border-[#00A6CE] outline-none" /></div>
-              <div><label className="text-xs font-medium text-gray-600 mb-1 block">Phone Number *</label>
+              <div><label className="text-xs font-medium text-gray-600 mb-1 block">{lang === 'tn' ? 'Nomoro ya Mogala' : 'Phone Number'} *</label>
                 <input required type="tel" value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })} placeholder="+267" className="w-full px-3 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:border-[#00A6CE] outline-none" /></div>
             </div>
           </div>
 
           {/* File upload */}
           <div className="bg-white rounded-xl p-4 border border-gray-100">
-            <p className="text-xs font-bold text-gray-400 uppercase tracking-widest flex items-center gap-2 mb-3"><FileText className="w-3.5 h-3.5" /> Completed Application Form</p>
+            <p className="text-xs font-bold text-gray-400 uppercase tracking-widest flex items-center gap-2 mb-3"><FileText className="w-3.5 h-3.5" /> {lang === 'tn' ? 'Foromo e e Tladitsweng ya Kopo' : 'Completed Application Form'}</p>
             <div
               onClick={() => fileRef.current?.click()}
               className={`border-2 border-dashed rounded-xl p-6 text-center cursor-pointer transition-all ${file ? 'border-green-300 bg-green-50' : 'border-gray-200 hover:border-[#00A6CE] hover:bg-[#00A6CE]/5'}`}>
@@ -445,7 +448,7 @@ function LicenceApplicationForm({ licence }) {
               ) : (
                 <>
                   <Download className="w-8 h-8 text-gray-300 mx-auto mb-2" />
-                  <p className="text-sm font-medium text-gray-500">Click to upload your completed application form</p>
+                  <p className="text-sm font-medium text-gray-500">{lang === 'tn' ? 'Tobetsa go tsenya foromo ya gago e e tladitsweng' : 'Click to upload your completed application form'}</p>
                   <p className="text-xs text-gray-400 mt-1">Accepted: PDF, Word, JPG, PNG — max 10MB</p>
                 </>
               )}
@@ -470,6 +473,7 @@ function LicenceApplicationForm({ licence }) {
 }
 
 function Detail({ licence: l, nav }) {
+  const { lang } = useLanguage();
   const ref = useRef(null);
   useEffect(() => {
     /* Don't scrollTo here — Layout already does it on pathname change */
@@ -490,7 +494,7 @@ function Detail({ licence: l, nav }) {
         <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 lg:p-8">
           <div className="flex items-center gap-2 mb-2">
             <div className="w-6 h-1 rounded-full" style={{ backgroundColor: l.colour }} />
-            <span className="text-xs text-white/60 uppercase tracking-wider font-medium">Licence</span>
+            <span className="text-xs text-white/60 uppercase tracking-wider font-medium">{lang === 'tn' ? 'Laesense' : 'Licence'}</span>
           </div>
           <h1 className="text-xl sm:text-2xl lg:text-4xl font-bold text-white drop-shadow-lg">{l.title}</h1>
         </div>
@@ -500,7 +504,7 @@ function Detail({ licence: l, nav }) {
       <button onClick={() => nav('/licensing')}
         className="flex items-center gap-2 text-sm text-[#00A6CE] hover:text-[#00458B] font-medium mb-6 transition-colors group">
         <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-        <span>Back to All Licences</span>
+        <span>{lang === 'tn' ? 'Boela kwa Dilaesenseng Tsotlhe' : 'Back to All Licences'}</span>
       </button>
 
       {/* Two columns — stacks on mobile */}
@@ -523,7 +527,7 @@ function Detail({ licence: l, nav }) {
               <div className="flex items-start gap-3">
                 <AlertCircle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
                 <div>
-                  <p className="text-sm font-semibold text-amber-800">Application Form Not Available Online</p>
+                  <p className="text-sm font-semibold text-amber-800">{lang === 'tn' ? 'Foromo ya Kopo ga e yo mo Inthaneteng' : 'Application Form Not Available Online'}</p>
                   <p className="text-sm text-amber-700 mt-1">Please contact BOCRA directly or visit the{' '}
                     <a href="https://op-web.bocra.org.bw/" target="_blank" rel="noopener noreferrer" className="underline font-medium hover:text-amber-900">BOCRA Portal</a>
                     {' '}for this licence application.</p>
@@ -545,7 +549,6 @@ function Detail({ licence: l, nav }) {
 /* ── Main Export ── */
 export default function LicensingHubPage() {
   const { lang } = useLanguage();
-  const tn = lang === 'tn';
   const { slug } = useParams();
   const nav = useNavigate();
   const l = slug ? LICENCES.find(x => x.slug === slug) : null;
@@ -553,7 +556,7 @@ export default function LicensingHubPage() {
   if (slug && !l) return (
     <div className="max-w-4xl mx-auto px-4 py-12 text-center">
       <AlertCircle className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-      <h1 className="text-2xl font-bold text-[#00458B] mb-2">Licence Not Found</h1>
+      <h1 className="text-2xl font-bold text-[#00458B] mb-2">{lang === 'tn' ? 'Laesense ga e a Bonwa' : 'Licence Not Found'}</h1>
       <button onClick={() => nav('/licensing')} className="inline-flex items-center gap-2 px-6 py-3 bg-[#00A6CE] text-white rounded-xl font-semibold hover:bg-[#0090B5] transition-colors mt-4">
         <ArrowLeft className="w-4 h-4" /> Back to All Licences
       </button>

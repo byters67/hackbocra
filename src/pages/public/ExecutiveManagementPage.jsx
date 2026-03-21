@@ -25,112 +25,112 @@ const C = {
 };
 
 /* ── Executive Management Data ── */
-const EXEC_MEMBERS = [
+const getExecMembers = (lang) => [
   {
     id: 'mokgware',
     name: 'Mr. Martin Mokgware',
-    role: 'Chief Executive',
-    department: 'Office of the Chief Executive',
+    role: lang === 'tn' ? 'Motlhankedi yo Mogolo' : 'Chief Executive',
+    department: lang === 'tn' ? 'Ofisi ya Motlhankedi yo Mogolo' : 'Office of the Chief Executive',
     photo: `${B}images/executive/Martin_mokgware.jpg`,
     colour: C.blue,
     icon: Star,
     featured: true,
     bio: [
-      'Mr. Martin Mokgware was appointed Chief Executive of BOCRA in December 2017, bringing over seventeen years of regulatory experience. He leads the Authority responsible for telecommunications and ICTs, broadcasting, and postal matters in Botswana.',
-      'Prior to his appointment, Mr. Mokgware served in executive positions at BOCRA for over a decade — as Director Market Development and Analysis, Director Broadband and Universal Service, and acting Deputy Chief Executive responsible for Operations and Strategy.',
-      'He was instrumental in the formulation and implementation of the Universal Access and Service Fund strategy, leading to the provision of public Wi-Fi hotspots across Botswana, the upgrade of telecommunications base stations from 2G to 3G technology, and the Schools Connectivity Project providing broadband internet to government primary schools in underserved districts.',
-      'Mr. Mokgware holds a Master\u2019s Degree in Transport Economics from the University of Leeds (UK), a Bachelor\u2019s Degree in Economics from the University of Botswana, and a Post Graduate Diploma in Telecommunications Regulation from the University of Westminster (UK).',
+      lang === 'tn' ? 'Rre Martin Mokgware o tlhomilwe jaaka Motlhankedi yo Mogolo wa BOCRA ka Sedimonthole 2017, a na le maitemogelo a go feta dingwaga di le 17 a taolo. O etelela pele Bothati bo bo ikarabelang ka megala le ICT, phasalatso, le merero ya poso mo Botswana.' : 'Mr. Martin Mokgware was appointed Chief Executive of BOCRA in December 2017, bringing over seventeen years of regulatory experience. He leads the Authority responsible for telecommunications and ICTs, broadcasting, and postal matters in Botswana.',
+      lang === 'tn' ? 'Pele ga go tlhongwa ga gagwe, Rre Mokgware o ne a bereka mo maemong a botsamaisi kwa BOCRA ka dingwaga tse di fetang lesome — jaaka Motlhankedi wa Tlhabololo ya Mmaraka le Tshekatsheko, Motlhankedi wa Inthanete e e Lebelo le Tirelo ya Botlhe, le Motlatsa Motlhankedi yo Mogolo yo o dirang wa Ditiro le Leano.' : 'Prior to his appointment, Mr. Mokgware served in executive positions at BOCRA for over a decade — as Director Market Development and Analysis, Director Broadband and Universal Service, and acting Deputy Chief Executive responsible for Operations and Strategy.',
+      lang === 'tn' ? 'O ne a le botlhokwa mo go dirweng le go diragatsiwa ga leano la Letlole la Tirelo ya Phitlhelelo ya Botlhe, le le isitseng kwa go fanweng ga mafelo a Wi-Fi a setšhaba mo Botswana yotlhe, go tlhabolola diteišene tsa megala go tswa go 2G go ya go 3G, le Porojeke ya Kgolagano ya Dikolo e e fanang ka inthanete ya lobelo le legolo kwa dikolong tsa puso tsa poraemari mo dikgaolong tse di sa fitisweng.' : 'He was instrumental in the formulation and implementation of the Universal Access and Service Fund strategy, leading to the provision of public Wi-Fi hotspots across Botswana, the upgrade of telecommunications base stations from 2G to 3G technology, and the Schools Connectivity Project providing broadband internet to government primary schools in underserved districts.',
+      lang === 'tn' ? 'Rre Mokgware o na le Dikerii ya Masetase ya Ikonomi ya Dipalangwa go tswa Yunibesithing ya Leeds (UK), Dikerii ya Botlhano ya Ikonomi go tswa Yunibesithing ya Botswana, le Diploma ya Morago ga Dikerii ya Taolo ya Megala go tswa Yunibesithing ya Westminster (UK).' : 'Mr. Mokgware holds a Master\u2019s Degree in Transport Economics from the University of Leeds (UK), a Bachelor\u2019s Degree in Economics from the University of Botswana, and a Post Graduate Diploma in Telecommunications Regulation from the University of Westminster (UK).',
     ],
   },
   {
     id: 'setshwane',
     name: 'Mr. Murphy Setshwane',
-    role: 'Director',
-    department: 'Business Development',
+    role: lang === 'tn' ? 'Motlhankedi' : 'Director',
+    department: lang === 'tn' ? 'Tlhabololo ya Kgwebo' : 'Business Development',
     photo: `${B}images/executive/Murphy_setshwane.jpg`,
     colour: C.cyan,
     icon: TrendingUp,
     bio: [
-      'Mr. Murphy Setshwane serves as Director of Business Development at BOCRA. He is responsible for driving market development, industry analysis, and strategic business initiatives that promote growth and competition in Botswana\u2019s communications sector.',
-      'His department oversees market research, economic analysis of the telecommunications industry, and the development of policies that encourage investment and innovation in the sector.',
+      lang === 'tn' ? 'Rre Murphy Setshwane o bereka jaaka Motlhankedi wa Tlhabololo ya Kgwebo kwa BOCRA. O ikarabela ka go tsamaisa tlhabololo ya mmaraka, tshekatsheko ya madirelo, le mananeo a leano a kgwebo a a rotloetsang kgolo le kgaisano mo Botswana\u2019s communications sector.' : 'Mr. Murphy Setshwane serves as Director of Business Development at BOCRA. He is responsible for driving market development, industry analysis, and business strategy programmes that promote growth and competition in Botswana\u2019s communications sector.',
+      lang === 'tn' ? 'Lefapha la gagwe le okamela patlisiso ya mmaraka, tshekatsheko ya ikonomi ya madirelo a megala, le tlhabololo ya dipholisi tse di rotloetsang matsolo le boitlhamedi mo lefapheng.' : 'His department oversees market research, economic analysis of the telecommunications industry, and the development of policies that encourage investment and innovation in the sector.',
     ],
   },
   {
     id: 'tladinyane',
     name: 'Mr. Peter Tladinyane',
-    role: 'Director',
-    department: 'Corporate Services',
+    role: lang === 'tn' ? 'Motlhankedi' : 'Director',
+    department: lang === 'tn' ? 'Ditirelo tsa Khomporasi' : 'Corporate Services',
     photo: `${B}images/executive/Peter_tladinyane.jpg`,
     colour: C.magenta,
     icon: Settings,
     bio: [
-      'Mr. Peter Tladinyane serves as Director of Corporate Services at BOCRA. He oversees the Authority\u2019s human resources, administration, and corporate governance functions.',
-      'His department is responsible for organisational development, talent management, and ensuring BOCRA maintains world-class operational standards in the delivery of its regulatory mandate.',
+      lang === 'tn' ? 'Rre Peter Tladinyane o bereka jaaka Motlhankedi wa Ditirelo tsa Khomporasi kwa BOCRA. O okamela Bothati\u2019s human resources, administration, and corporate governance functions.' : 'Mr. Peter Tladinyane serves as Director of Corporate Services at BOCRA. He oversees the Authority\u2019s human resources, administration, and corporate governance functions.',
+      lang === 'tn' ? 'Lefapha la gagwe le ikarabela ka tlhabololo ya mokgatlho, tsamaiso ya bokgoni, le go netefatsa gore BOCRA e boloka maemo a maemo a lefatshe mo go isiweng ga tiragatso ya yona ya taolo.' : 'His department is responsible for organisational development, talent management, and ensuring BOCRA maintains world-class operational standards in the delivery of its regulatory mandate.',
     ],
   },
   {
     id: 'mine',
     name: 'Ms. Bonny Mine',
-    role: 'Director',
-    department: 'Finance',
+    role: lang === 'tn' ? 'Motlhankedi' : 'Director',
+    department: lang === 'tn' ? 'Ditšhelete' : 'Finance',
     photo: `${B}images/executive/Bonnie_mine.jpg`,
     colour: C.yellow,
     icon: DollarSign,
     bio: [
-      'Ms. Bonny Mine serves as Director of Finance at BOCRA. She is responsible for the Authority\u2019s financial management, budgeting, procurement, and reporting functions.',
-      'Her department ensures sound financial governance, compliance with public sector accounting standards, and efficient management of BOCRA\u2019s resources to support the Authority\u2019s regulatory activities.',
+      lang === 'tn' ? 'Mme Bonny Mine o bereka jaaka Motlhankedi wa Ditšhelete kwa BOCRA. O ikarabela ka Bothati\u2019s financial management, budgeting, procurement, and reporting functions.' : 'Ms. Bonny Mine serves as Director of Finance at BOCRA. She is responsible for the Authority\u2019s financial management, budgeting, procurement, and reporting functions.',
+      lang === 'tn' ? 'Lefapha la gagwe le netefatsa taolo e e siameng ya ditšhelete, go obamela maemo a go bala ditšhelete a setšhaba, le tsamaiso e e nang le bokgoni ya metswedi ya BOCRA go tshegetsa ditiro tsa taolo tsa Bothati.' : 'Her department ensures sound financial governance, compliance with public sector accounting standards, and efficient management of BOCRA\u2019s resources to support the Authority\u2019s regulatory activities.',
     ],
   },
   {
     id: 'luke',
     name: 'Mr. Bathopi Luke',
-    role: 'Director',
-    department: 'Technical Services',
+    role: lang === 'tn' ? 'Motlhankedi' : 'Director',
+    department: lang === 'tn' ? 'Ditirelo tsa Setegeniki' : 'Technical Services',
     photo: `${B}images/executive/Bathopi_luke.jpg`,
     colour: C.green,
     icon: Cpu,
     bio: [
-      'Mr. Bathopi Luke serves as Director of Technical Services at BOCRA. He leads the technical division responsible for spectrum management, radio frequency planning, quality of service monitoring, and engineering standards.',
-      'His department plays a critical role in managing Botswana\u2019s radio frequency spectrum, type approval of telecommunications equipment, and ensuring network quality and coverage standards are met by operators across the country.',
+      lang === 'tn' ? 'Rre Bathopi Luke o bereka jaaka Motlhankedi wa Ditirelo tsa Setegeniki kwa BOCRA. O etelela pele lefapha la setegeniki le le ikarabelang ka tsamaiso ya sepeketeramo, peakanyo ya frikwensi ya radio, tlhokomelo ya boleng jwa tirelo, le maemo a boenjiniri.' : 'Mr. Bathopi Luke serves as Director of Technical Services at BOCRA. He leads the technical division responsible for spectrum management, radio frequency planning, quality of service monitoring, and engineering standards.',
+      lang === 'tn' ? 'Lefapha la gagwe le tshameka karolo e e botlhokwa mo tsamaisong ya sepeketeramo sa frikwensi ya radio ya Botswana, tumelelo ya mofuta wa didirisiwa tsa megala, le go netefatsa gore maemo a boleng jwa neteweke le phitlhelelo a fitlheletswe ke balaodi mo nageng yotlhe.' : 'His department plays a critical role in managing Botswana\u2019s radio frequency spectrum, type approval of telecommunications equipment, and ensuring network quality and coverage standards are met by operators across the country.',
     ],
   },
   {
     id: 'mmoshe',
     name: 'Ms. Tebogo Mmoshe',
-    role: 'Director',
-    department: 'Licensing',
+    role: lang === 'tn' ? 'Motlhankedi' : 'Director',
+    department: lang === 'tn' ? 'Dilaesense' : 'Licensing',
     photo: `${B}images/executive/Tebogo_mmoshe.jpg`,
     colour: C.cyan,
     icon: FileCheck,
     bio: [
-      'Ms. Tebogo Mmoshe serves as Director of Licensing at BOCRA. She is responsible for processing and issuing licences for telecommunications, broadcasting, postal, and radio communication services in Botswana.',
-      'Her department manages the full licensing lifecycle, ensures compliance with licensing conditions, and supports the development of the ICT licensing framework to keep pace with technological advancements in the communications sector.',
+      lang === 'tn' ? 'Mme Tebogo Mmoshe o bereka jaaka Motlhankedi wa Dilaesense kwa BOCRA. O ikarabela ka go dirisa le go ntsha dilaesense tsa megala, phasalatso, poso, le ditirelo tsa dikgolagano tsa radio mo Botswana.' : 'Ms. Tebogo Mmoshe serves as Director of Licensing at BOCRA. She is responsible for processing and issuing licences for telecommunications, broadcasting, postal, and radio communication services in Botswana.',
+      lang === 'tn' ? 'Lefapha la gagwe le tsamaisa tlhamo yotlhe ya dilaesense, le netefatsa go obamela ga maemo a dilaesense, le go tshegetsa tlhabololo ya thulaganyo ya dilaesense tsa ICT go tsamaelana le kgatelopele ya thekenoloji mo lefapheng la dikgolagano.' : 'Her department manages the full licensing lifecycle, ensures compliance with licensing conditions, and supports the development of the ICT licensing framework to keep pace with technological advancements in the communications sector.',
     ],
   },
   {
     id: 'ratladi',
     name: 'Ms. Maitseo Ratladi',
-    role: 'Director',
-    department: 'Broadband & Universal Service',
+    role: lang === 'tn' ? 'Motlhankedi' : 'Director',
+    department: lang === 'tn' ? 'Inthanete e e Lebelo le Tirelo ya Botlhe' : 'Broadband & Universal Service',
     photo: `${B}images/executive/Maitseo_ratladi.jpg`,
     colour: C.magenta,
     icon: Wifi,
     bio: [
-      'Ms. Maitseo Ratladi serves as Director of Broadband and Universal Service at BOCRA. She leads initiatives to expand broadband connectivity and ensure universal access to communications services across Botswana, including rural and underserved areas.',
-      'Her department administers the Universal Access and Service Fund (UASF), oversees broadband infrastructure development projects, and implements policies to bridge the digital divide and promote digital inclusion for all Batswana.',
+      lang === 'tn' ? 'Mme Maitseo Ratladi o bereka jaaka Motlhankedi wa Inthanete e e Lebelo le Tirelo ya Botlhe kwa BOCRA. O etelela pele mananeo a go atolosa kgolagano ya inthanete le go netefatsa phitlhelelo e e akaretsang ya ditirelo tsa dikgolagano mo Botswana yotlhe, go akaretsa mafelo a magae le a a sa fitisweng.' : 'Ms. Maitseo Ratladi serves as Director of Broadband and Universal Service at BOCRA. She leads initiatives to expand broadband connectivity and ensure universal access to communications services across Botswana, including rural and underserved areas.',
+      lang === 'tn' ? 'Lefapha la gagwe le tsamaisa Letlole la Tirelo ya Phitlhelelo ya Botlhe (UASF), le okamela diporojeke tsa tlhabololo ya mafaratlhatlha a inthanete, le go diragatsa dipholisi tsa go ritibatsa pharologanyo ya dijithale le go rotloetsa go akarediwa ga dijithale mo Batswana botlhe.' : 'Her department administers the Universal Access and Service Fund (UASF), oversees broadband infrastructure development projects, and implements policies to bridge the digital divide and promote digital inclusion for all Batswana.',
     ],
   },
   {
     id: 'isa-molwane',
     name: 'Ms. Joyce Isa-Molwane',
-    role: 'Legal, Compliance & Board Secretary',
-    department: 'Legal & Compliance',
+    role: lang === 'tn' ? 'Molao, Go Obamela le Mongodi wa Boto' : 'Legal, Compliance & Board Secretary',
+    department: lang === 'tn' ? 'Molao le Go Obamela' : 'Legal & Compliance',
     photo: `${B}images/executive/Joyce-Isa-molwane.jpg`,
     colour: C.yellow,
     icon: Scale,
     bio: [
-      'Ms. Joyce Isa-Molwane serves as the head of Legal, Compliance, and Board Secretary at BOCRA. She provides legal counsel to the Authority, oversees regulatory compliance, and serves as Secretary to the BOCRA Board of Directors.',
-      'Her department handles legal affairs, drafting of regulations, compliance monitoring, dispute resolution, and ensures BOCRA\u2019s activities are conducted within the legal and regulatory framework established by the Communications Regulatory Authority Act, 2012.',
+      lang === 'tn' ? 'Mme Joyce Isa-Molwane o bereka jaaka tlhogo ya Molao, Go Obamela, le Mongodi wa Boto kwa BOCRA. O fana ka kgakololo ya molao go Bothati, o okamela go obamela ga taolo, mme o bereka jaaka Mongodi wa Boto ya Batsamaisi ya BOCRA.' : 'Ms. Joyce Isa-Molwane serves as the head of Legal, Compliance, and Board Secretary at BOCRA. She provides legal counsel to the Authority, oversees regulatory compliance, and serves as Secretary to the BOCRA Board of Directors.',
+      lang === 'tn' ? 'Lefapha la gagwe le tshwara merero ya molao, go kwala melao, tlhokomelo ya go obamela, tharabololo ya dikganetsano, le go netefatsa gore ditiro tsa BOCRA di dirwa ka fa gare ga thulaganyo ya molao le taolo e e tlhomilweng ke Molao wa Bothati jwa Taolo ya Dikgolagano, 2012.' : 'Her department handles legal affairs, drafting of regulations, compliance monitoring, dispute resolution, and ensures BOCRA\u2019s activities are conducted within the legal and regulatory framework established by the Communications Regulatory Authority Act, 2012.',
     ],
   },
 ];
@@ -213,6 +213,7 @@ function ExecDetail({ member, onClose }) {
 
 /* ── Executive Card ── */
 function ExecCard({ member, index, onClick }) {
+  const { lang } = useLanguage();
   const cardRef = useRef(null);
   const Icon = member.icon;
 
@@ -258,7 +259,7 @@ function ExecCard({ member, index, onClick }) {
 
         <div className="mt-3 flex items-center justify-center gap-1.5 text-sm font-semibold opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0"
           style={{ color: member.colour }}>
-          <span>View Profile</span>
+          <span>{lang === 'tn' ? 'Bona Porofaele' : 'View Profile'}</span>
           <ChevronRight className="w-4 h-4" />
         </div>
       </div>
@@ -271,6 +272,7 @@ function ExecCard({ member, index, onClick }) {
 
 /* ── CE Featured Card (wide) ── */
 function CECard({ member, onClick }) {
+  const { lang } = useLanguage();
   const cardRef = useRef(null);
   const Icon = member.icon;
 
@@ -321,7 +323,7 @@ function CECard({ member, onClick }) {
           </p>
           <div className="mt-4 flex items-center gap-1.5 text-sm font-semibold opacity-60 group-hover:opacity-100 transition-all duration-300 justify-center sm:justify-start"
             style={{ color: member.colour }}>
-            <span>View Full Profile</span>
+            <span>{lang === 'tn' ? 'Bona Porofaele ka Botlalo' : 'View Full Profile'}</span>
             <ChevronRight className="w-4 h-4" />
           </div>
         </div>
@@ -339,7 +341,7 @@ function CECard({ member, onClick }) {
  * ══════════════════════════════════════════════════════════════════ */
 export default function ExecutiveManagementPage() {
   const { lang } = useLanguage();
-  const tn = lang === 'tn';
+  const EXEC_MEMBERS = getExecMembers(lang);
   const [selected, setSelected] = useState(null);
   const heroRef = useRef(null);
 
@@ -361,11 +363,11 @@ export default function ExecutiveManagementPage() {
       <div className="bg-bocra-off-white border-b border-gray-100">
         <div className="section-wrapper py-4">
           <nav className="text-sm text-bocra-slate/50 flex items-center gap-2">
-            <Link to="/" className="hover:text-bocra-blue transition-colors">Home</Link>
+            <Link to="/" className="hover:text-bocra-blue transition-colors">{lang === 'tn' ? 'Gae' : 'Home'}</Link>
             <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18l6-6-6-6"/></svg></span>
-            <Link to="/about/profile" className="hover:text-bocra-blue transition-colors">About</Link>
+            <Link to="/about/profile" className="hover:text-bocra-blue transition-colors">{lang === 'tn' ? 'Ka ga Rona' : 'About'}</Link>
             <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18l6-6-6-6"/></svg></span>
-            <span className="text-bocra-slate font-medium">{tn ? 'Botsamaisi jwa Setheo' : 'Executive Management'}</span>
+            <span className="text-bocra-slate font-medium">{lang === 'tn' ? 'Botsamaisi jwa Phethagatso' : 'Executive Management'}</span>
           </nav>
         </div>
       </div>
@@ -394,7 +396,7 @@ export default function ExecutiveManagementPage() {
           <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: `${C.cyan}15` }}>
             <Users className="w-4 h-4" style={{ color: C.cyan }} />
           </div>
-          <h2 className="text-lg sm:text-xl font-bold text-[#001A3A]">Department Directors</h2>
+          <h2 className="text-lg sm:text-xl font-bold text-[#001A3A]">{lang === 'tn' ? 'Batlhankedi ba Maphata' : 'Department Directors'}</h2>
           <div className="h-px flex-1 bg-gray-100" />
         </div>
 
@@ -411,7 +413,7 @@ export default function ExecutiveManagementPage() {
           <Link to="/about/profile"
             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold text-[#00458B] bg-[#00458B]/5 hover:bg-[#00458B]/10 transition-colors">
             <Users className="w-4 h-4" />
-            View Organisational Profile
+            {lang === 'tn' ? 'Bona Porofaele ya Mokgatlho' : 'View Organisational Profile'}
             <ChevronRight className="w-4 h-4" />
           </Link>
         </div>

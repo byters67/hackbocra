@@ -30,7 +30,7 @@ import ConsentCheckbox from '../../components/ui/ConsentCheckbox';
 
 import PageHero from '../../components/ui/PageHero';
 import { useLanguage } from '../../lib/language';
-const COMPLAINT_TYPES = [
+const getCOMPLAINT_TYPES = (lang) => [
   'Billing / Charging Issues',
   'Network Coverage / Signal Problems',
   'Internet Service Quality',
@@ -46,7 +46,7 @@ const COMPLAINT_TYPES = [
   'Other',
 ];
 
-const SERVICE_PROVIDERS = [
+const getSERVICE_PROVIDERS = (lang) => [
   'Mascom Wireless',
   'Botswana Telecommunications Corporation (BTC)',
   'Orange Botswana',
@@ -59,16 +59,18 @@ const SERVICE_PROVIDERS = [
   'Other',
 ];
 
-const STEPS = [
-  { icon: Phone, title: 'Contact Provider', description: 'First, raise your complaint directly with your service provider.' },
-  { icon: Clock, title: 'Wait for Resolution', description: 'Allow the provider reasonable time to resolve your issue.' },
-  { icon: FileText, title: 'Escalate to BOCRA', description: 'If unresolved, file a formal complaint with BOCRA using this form.' },
-  { icon: Shield, title: 'BOCRA Investigates', description: 'We investigate and aim to resolve complaints within 2 business days.' },
+const getSTEPS = (lang) => [
+  { icon: Phone, title: lang === 'tn' ? 'Ikgolaganye le Motlamedi' : 'Contact Provider', description: lang === 'tn' ? 'Sa ntlha, tlhagisa ngongorego ya gago ka tlhamalalo le motlamedi wa gago wa tirelo.' : 'First, raise your complaint directly with your service provider.' },
+  { icon: Clock, title: lang === 'tn' ? 'Emela Tharabololo' : 'Wait for Resolution', description: lang === 'tn' ? 'Letla motlamedi nako e e utlwalang go rarabolola bothata jwa gago.' : 'Allow the provider reasonable time to resolve your issue.' },
+  { icon: FileText, title: lang === 'tn' ? 'Fetisedisa kwa BOCRA' : 'Escalate to BOCRA', description: lang === 'tn' ? 'Fa e sa rarabololwa, tlhagisa ngongorego ya semmuso le BOCRA o dirisa foromo e.' : 'If unresolved, file a formal complaint with BOCRA using this form.' },
+  { icon: Shield, title: lang === 'tn' ? 'BOCRA e a Batlisisa' : 'BOCRA Investigates', description: lang === 'tn' ? 'Re batlisisa mme re ikaelela go rarabolola dingongorego mo malatsing a le 2 a tiriso.' : 'We investigate and aim to resolve complaints within 2 business days.' },
 ];
 
 export default function FileComplaintPage() {
   const { lang } = useLanguage();
-  const tn = lang === 'tn';
+  const STEPS = getSTEPS(lang);
+  const COMPLAINT_TYPES = getCOMPLAINT_TYPES(lang);
+  const SERVICE_PROVIDERS = getSERVICE_PROVIDERS(lang);
   const [step, setStep] = useState('info'); // 'info' | 'form' | 'success'
   const [form, setForm] = useState({
     name: '', company: '', phone: '', email: '',
@@ -85,13 +87,13 @@ export default function FileComplaintPage() {
 
   const validate = () => {
     const e = {};
-    if (!form.name.trim()) e.name = 'Name is required';
-    if (!form.email.trim()) e.email = 'Email is required';
+    if (!form.name.trim()) e.name = lang === 'tn' ? 'Leina le a tlhokega' : 'Name is required';
+    if (!form.email.trim()) e.email = lang === 'tn' ? 'Imeile e a tlhokega' : 'Email is required';
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email = 'Invalid email format';
     if (form.phone && !/^\+?\d{7,15}$/.test(form.phone.replace(/\s/g, ''))) e.phone = 'Invalid phone number';
     if (!form.provider) e.provider = 'Select a provider';
     if (!form.complaintType) e.complaintType = 'Select complaint type';
-    if (!form.description.trim()) e.description = 'Description is required';
+    if (!form.description.trim()) e.description = lang === 'tn' ? 'Tlhaloso e a tlhokega' : 'Description is required';
     else if (form.description.trim().length < 20) e.description = 'Please provide more detail (min 20 characters)';
     setErrors(e);
     return Object.keys(e).length === 0;
@@ -171,7 +173,7 @@ export default function FileComplaintPage() {
       <div className="bg-bocra-off-white border-b border-gray-100">
         <div className="section-wrapper py-4">
           <nav className="text-sm text-bocra-slate/50 flex items-center gap-2">
-            <Link to="/" className="hover:text-bocra-blue transition-colors">Home</Link>
+            <Link to="/" className="hover:text-bocra-blue transition-colors">{lang === 'tn' ? 'Gae' : 'Home'}</Link>
             <ChevronRight size={14} />
             <Link to="/services/file-complaint" className="hover:text-bocra-blue transition-colors">Services</Link>
             <ChevronRight size={14} />
@@ -211,7 +213,7 @@ export default function FileComplaintPage() {
           {step === 'success' ? (
             <div className="bg-white rounded-2xl p-12 text-center shadow-sm">
               <CheckCircle size={56} className="text-bocra-green mx-auto mb-4" />
-              <h2 className="text-3xl font-display text-bocra-slate mb-3">{tn ? 'Ngongorego e Rometse' : 'Complaint Submitted'}</h2>
+              <h2 className="text-3xl font-display text-bocra-slate mb-3">{lang === 'tn' ? 'Ngongorego e Rometse' : 'Complaint Submitted'}</h2>
               <p className="text-bocra-slate/60 mb-6">
                 Thank you for submitting your complaint. BOCRA will review it and respond 
                 within 2 business days. You will receive updates via email.
@@ -225,8 +227,8 @@ export default function FileComplaintPage() {
                   <FileText size={20} className="text-bocra-magenta" />
                 </div>
                 <div>
-                  <h2 className="text-xl font-semibold text-bocra-slate">Complaint Form</h2>
-                  <p className="text-sm text-bocra-slate/50">All fields marked with * are required</p>
+                  <h2 className="text-xl font-semibold text-bocra-slate">{lang === 'tn' ? 'Foromo ya Ngongorego' : 'Complaint Form'}</h2>
+                  <p className="text-sm text-bocra-slate/50">{lang === 'tn' ? 'Mafelo otlhe a a tshwailweng ka * a a tlhokega' : 'All fields marked with * are required'}</p>
                 </div>
               </div>
 
@@ -237,10 +239,10 @@ export default function FileComplaintPage() {
                     Your Information
                   </legend>
                   <div className="grid sm:grid-cols-2 gap-4">
-                    <div><Input label="Full Name *" value={form.name} onChange={(v) => updateForm('name', v)} placeholder="Your full name" />{errors.name && <p className="text-[10px] text-red-500 mt-0.5">{errors.name}</p>}</div>
-                    <div><Input label="Company / Organisation" value={form.company} onChange={(v) => updateForm('company', v)} placeholder="If applicable" /></div>
-                    <div><Input label="Phone Number" type="tel" value={form.phone} onChange={(v) => updateForm('phone', v)} placeholder="+267 ..." />{errors.phone && <p className="text-[10px] text-red-500 mt-0.5">{errors.phone}</p>}</div>
-                    <div><Input label="Email Address *" type="email" value={form.email} onChange={(v) => updateForm('email', v)} placeholder="your@email.com" />{errors.email && <p className="text-[10px] text-red-500 mt-0.5">{errors.email}</p>}</div>
+                    <div><Input label={lang === 'tn' ? 'Leina ka Botlalo *' : 'Full Name *'} value={form.name} onChange={(v) => updateForm('name', v)} placeholder="Your full name" />{errors.name && <p className="text-[10px] text-red-500 mt-0.5">{errors.name}</p>}</div>
+                    <div><Input label={lang === 'tn' ? 'Kompone / Mokgatlho' : 'Company / Organisation'} value={form.company} onChange={(v) => updateForm('company', v)} placeholder="If applicable" /></div>
+                    <div><Input label={lang === 'tn' ? 'Nomoro ya Mogala' : 'Phone Number'} type="tel" value={form.phone} onChange={(v) => updateForm('phone', v)} placeholder="+267 ..." />{errors.phone && <p className="text-[10px] text-red-500 mt-0.5">{errors.phone}</p>}</div>
+                    <div><Input label={lang === 'tn' ? 'Aterese ya Imeile *' : 'Email Address *'} type="email" value={form.email} onChange={(v) => updateForm('email', v)} placeholder="your@email.com" />{errors.email && <p className="text-[10px] text-red-500 mt-0.5">{errors.email}</p>}</div>
                   </div>
                 </fieldset>
 

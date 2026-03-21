@@ -475,6 +475,34 @@ const TRANSLATIONS = {
   'BOCRA Portal': 'Portale ya BOCRA',
   'Go to Operator Portal': 'Ya kwa Portaleng ya Modiri',
   'Back to Home': 'Boela kwa Legaeng',
+
+  // ═══════════════════════════════════════════════
+  // CONTENT PAGE — Section headings (used in HTML templates)
+  // ═══════════════════════════════════════════════
+  'Licensing Framework': 'Thulaganyo ya Dilaesense',
+  'Licensed Commercial Radio Stations': 'Diteišene tsa Radio tsa Kgwebo tse di nang le Laesense',
+  'Local Content Requirements': 'Ditlhokego tsa Diteng tsa Selegae',
+  'Online Broadcasting': 'Phasalatso ya mo Inthaneteng',
+  'Postal Services Regulation': 'Taolo ya Ditirelo tsa Poso',
+  'Market Structure': 'Popego ya Mmaraka',
+  'Governing Legislation': 'Melao e e Laolang',
+  'Major Licensing Categories': 'Mekgwa e Megolo ya Dilaesense',
+  'Apply for a Licence': 'Ikopela Laesense',
+  'Organisational Structure': 'Thulaganyo ya Setheo',
+  'How to Apply': 'Go Ikopela Jang',
+  'Speeches Archive': 'Dipuo tsa Kwa Morago',
+  'Recent Speeches': 'Dipuo tsa Bosheng',
+  'Media Enquiries': 'Dipotso tsa Bobegadikgang',
+  'Board of Directors': 'Boto ya Batsamaisi',
+  'Market Reforms': 'Diphetogo tsa Mmaraka',
+  'International Postal Cooperation': 'Tirisanommogo ya Poso ya Boditšhabatšhaba',
+  'Universal Postal Services': 'Ditirelo tsa Poso tsa Botlhe',
+  'Commercial Postal Services': 'Ditirelo tsa Poso tsa Kgwebo',
+  'Telecommunications Regulation in Botswana': 'Taolo ya Megala mo Botswana',
+  'Postal Sector': 'Lefapha la Poso',
+  'File a Postal Complaint': 'Tlhagisa Ngongorego ya Poso',
+  'Apply for a Licence': 'Ikopela Laesense',
+  'World Post Day Speeches': 'Dipuo tsa Letsatsi la Poso la Lefatshe',
 };
 
 export default TRANSLATIONS;

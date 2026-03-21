@@ -1,8 +1,5 @@
 /**
  * InternetPage.jsx — BOCRA Internet & ICT Mandate
- * 
- * Covers: .BW ccTLD management, BW-CIRT cybersecurity, Electronic Evidence,
- * Electronic Communications & Transactions.
  * Route: /mandate/internet
  */
 import { Link } from 'react-router-dom';
@@ -17,8 +14,14 @@ import { useLanguage } from '../../lib/language';
 
 const BASE = import.meta.env.BASE_URL || '/';
 
-/* ── BOCRA's .BW Role ── */
-const BW_ROLES = [
+const getBW_ROLES = (tn) => tn ? [
+  'Go dira jaaka moitseanape wa .BW country-code top-level domain',
+  'Go nna kgolagano ya tsamaiso le ya setegeniki ya .BW',
+  'Go tsamaisa .BW ccTLD le Second Level Domains tsa yona',
+  'Go boloka le go rotloetsa tirisano e e tsepameng ya .BW ccTLD',
+  'Go netefatsa tsamaiso e e sa tureng ya .BW ccTLD le di-sub-domain tsa yona',
+  'Go fana ka tirelo ya maina a .BW le go netefatsa gore database e sireletsegile',
+] : [
   'Act as a trustee for the .BW country-code top-level domain',
   'Become the .BW domain administrative contact as well as technical contact',
   'Administer the .BW ccTLD and its Second Level Domains',
@@ -27,12 +30,11 @@ const BW_ROLES = [
   'Provide name service for all .BW and ensure that the database is secure and stable',
 ];
 
-/* ── Sections ── */
-const SECTIONS = [
-  { id: 'cctld', label: '.BW Domain', icon: Globe, color: '#00A6CE' },
+const getSECTIONS = (tn) => [
+  { id: 'cctld', label: tn ? 'Lefelo la .BW' : '.BW Domain', icon: Globe, color: '#00A6CE' },
   { id: 'cirt', label: 'BW-CIRT', icon: Shield, color: '#C8237B' },
-  { id: 'evidence', label: 'Electronic Evidence', icon: Scale, color: '#F7B731' },
-  { id: 'ect', label: 'E-Transactions', icon: Key, color: '#6BBE4E' },
+  { id: 'evidence', label: tn ? 'Bosupi jwa Elektroniki' : 'Electronic Evidence', icon: Scale, color: '#F7B731' },
+  { id: 'ect', label: tn ? 'Ditsamaiso tsa Elektroniki' : 'E-Transactions', icon: Key, color: '#6BBE4E' },
 ];
 
 export default function InternetPage() {
@@ -40,6 +42,8 @@ export default function InternetPage() {
   const tn = lang === 'tn';
   const heroRef = useScrollReveal();
   const cardsRef = useStaggerReveal({ stagger: 0.1 });
+  const BW_ROLES = getBW_ROLES(tn);
+  const SECTIONS = getSECTIONS(tn);
 
   return (
     <div className="bg-white min-h-screen">
@@ -47,11 +51,11 @@ export default function InternetPage() {
       <div className="bg-bocra-off-white border-b border-gray-100">
         <div className="section-wrapper py-4">
           <nav className="text-sm text-bocra-slate/50 flex items-center gap-2">
-            <Link to="/" className="hover:text-bocra-blue transition-colors">Home</Link>
+            <Link to="/" className="hover:text-bocra-blue transition-colors">{tn ? 'Gae' : 'Home'}</Link>
             <ChevronRight size={14} />
-            <span className="text-bocra-slate/50">Mandate</span>
+            <span className="text-bocra-slate/50">{tn ? 'Tiragatso' : 'Mandate'}</span>
             <ChevronRight size={14} />
-            <span className="text-bocra-slate font-medium">Internet & ICT</span>
+            <span className="text-bocra-slate font-medium">{tn ? 'Inthanete le ICT' : 'Internet & ICT'}</span>
           </nav>
         </div>
       </div>
@@ -60,7 +64,8 @@ export default function InternetPage() {
       <PageHero
         category="MANDATE" categoryTn="TIRAGATSO"
         title="Internet & ICT" titleTn="Inthanete le ICT"
-        description="BOCRA's mandate encompasses management of the .BW country-code top-level domain, cybersecurity through BW-CIRT, electronic evidence certification, and regulation of electronic communications and transactions." descriptionTn="Tiragatso ya BOCRA e akaretsa taolo ya .BW, tshireletso ya saebo ka BW-CIRT, netefatso ya bosupi jwa elektroniki, le taolo ya dikgolagano tsa elektroniki."
+        description="BOCRA's mandate encompasses management of the .BW country-code top-level domain, cybersecurity through BW-CIRT, electronic evidence certification, and regulation of electronic communications and transactions."
+        descriptionTn="Tiragatso ya BOCRA e akaretsa taolo ya .BW, tshireletso ya saebo ka BW-CIRT, netefatso ya bosupi jwa elektroniki, le taolo ya dikgolagano tsa elektroniki."
         color="green"
       />
 
@@ -91,26 +96,26 @@ export default function InternetPage() {
                   <Globe size={20} className="text-[#00A6CE]" />
                 </div>
                 <div>
-                  <h2 className="text-xl font-bold text-bocra-slate">{tn ? 'Lefelo la Khoutu ya Naga la .BW' : '.BW Country-Code Top-Level Domain'}</h2>
+                  <h2 className="text-xl font-bold text-bocra-slate">{tn ? 'Lefelo la .BW la Naga' : '.BW Country-Code Top-Level Domain'}</h2>
                   <p className="text-[10px] text-gray-400 uppercase tracking-wide">{tn ? 'Taolo ya ccTLD' : 'ccTLD Management'}</p>
                 </div>
               </div>
 
               <div className="space-y-3 text-sm text-bocra-slate/70 leading-relaxed">
-                <p>
-                  Section 38(1) of the Communications and Regulatory Act No. 19 of 2012 (CRA) mandates Botswana Communications Regulatory Authority (BOCRA) to manage and operate the .BW ccTLD in an efficient and non-discriminatory manner to ensure fairness in the use and allocation of the .bw name space.
-                </p>
-                <p>
-                  Pursuant to this legal provision, a Technical Advisory Committee made up of the 'Local Internet Community' was established. This public-private partnership marked the initial step to facilitating the redelegation of the ccTLD from Botswana Telecommunications Corporation and the University of Botswana to BOCRA.
-                </p>
-                <p>
-                  BOCRA is mandated to manage the .BW as a national resource, in the interest of the public and the industry. BOCRA, as a communications regulator and with full government support, aims to elevate Botswana in the global Internet community.
-                </p>
+                <p>{tn
+                  ? 'Karolo 38(1) ya Molao wa Dikgolagano le Taolo No. 19 wa 2012 (CRA) o laela Bothati jwa Taolo ya Dikgolagano jwa Botswana (BOCRA) go tsamaisa le go dirisa .BW ccTLD ka tsela e e nang le bokgoni le e e sa kgetheng go netefatsa tekatekanyo mo tirisong le kabelong ya lefelo la maina la .bw.'
+                  : 'Section 38(1) of the Communications and Regulatory Act No. 19 of 2012 (CRA) mandates Botswana Communications Regulatory Authority (BOCRA) to manage and operate the .BW ccTLD in an efficient and non-discriminatory manner to ensure fairness in the use and allocation of the .bw name space.'}</p>
+                <p>{tn
+                  ? 'Go ya ka thulaganyo e ya molao, Komiti ya Kgakololo ya Setegeniki e e bopilweng ke "Setšhaba sa Inthanete sa Selegae" e tlhomilwe. Tirisano e ya setšhaba le poraefete e ne e le kgato ya ntlha go tsamaisa go fetisediwa ga ccTLD go tswa Botswana Telecommunications Corporation le Yunibesithi ya Botswana go ya go BOCRA.'
+                  : 'Pursuant to this legal provision, a Technical Advisory Committee made up of the \'Local Internet Community\' was established. This public-private partnership marked the initial step to facilitating the redelegation of the ccTLD from Botswana Telecommunications Corporation and the University of Botswana to BOCRA.'}</p>
+                <p>{tn
+                  ? 'BOCRA e laetswe go tsamaisa .BW jaaka metswedi ya naga, mo dikgatlhegelong tsa setšhaba le madirelo. BOCRA, jaaka molaodi wa dikgolagano e bile ka tshegetso e e feletseng ya puso, e ikaelela go godisa Botswana mo setšhabeng sa Inthanete sa lefatshe.'
+                  : 'BOCRA is mandated to manage the .BW as a national resource, in the interest of the public and the industry. BOCRA, as a communications regulator and with full government support, aims to elevate Botswana in the global Internet community.'}</p>
               </div>
 
               {/* BOCRA's Role */}
               <div className="mt-5 bg-white rounded-xl border border-gray-200 p-5">
-                <h3 className="text-sm font-bold text-bocra-slate mb-3">{tn ? 'Seabe sa BOCRA mo Taolong ya .BW' : "BOCRA's Role in .BW Management"}</h3>
+                <h3 className="text-sm font-bold text-bocra-slate mb-3">{tn ? 'Tiro ya BOCRA mo Tsamaisong ya .BW' : 'BOCRA\'s Role in .BW Management'}</h3>
                 <div className="space-y-2">
                   {BW_ROLES.map((role, i) => (
                     <div key={i} className="flex items-start gap-2.5">
@@ -127,16 +132,16 @@ export default function InternetPage() {
               <div className="bg-white rounded-xl border border-gray-200 p-5">
                 <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wide mb-3">{tn ? 'Kwadisa Lefelo la .BW' : 'Register a .BW Domain'}</h3>
                 <p className="text-xs text-bocra-slate/50 leading-relaxed mb-3">
-                  Search for domain availability and register through an accredited registrar.
+                  {tn ? 'Batla go nna teng ga lefelo mme o kwadise ka morejisteri yo o amogetsweng.' : 'Search for domain availability and register through an accredited registrar.'}
                 </p>
                 <Link to="/services/register-bw"
                   className="flex items-center gap-2 px-4 py-2.5 bg-[#00A6CE] text-white text-xs font-medium rounded-lg hover:bg-[#008DB0] transition-all w-full justify-center">
-                  <Globe size={14} /> Register .BW Domain
+                  <Globe size={14} /> {tn ? 'Kwadisa Lefelo la .BW' : 'Register .BW Domain'}
                 </Link>
               </div>
 
               <div className="bg-white rounded-xl border border-gray-200 p-5">
-                <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wide mb-3">{tn ? 'Dikgolosa tse di Teng' : 'Available Extensions'}</h3>
+                <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wide mb-3">{tn ? 'Dikgolosa tse di Leng Teng' : 'Available Extensions'}</h3>
                 <div className="flex flex-wrap gap-1.5">
                   {['.co.bw', '.org.bw', '.net.bw', '.ac.bw', '.gov.bw', '.me.bw', '.shop.bw', '.agric.bw'].map(ext => (
                     <span key={ext} className="px-2.5 py-1 bg-[#00A6CE]/8 text-[#00A6CE] text-xs font-bold rounded-lg">{ext}</span>
@@ -147,7 +152,7 @@ export default function InternetPage() {
               <div className="bg-white rounded-xl border border-gray-200 p-5">
                 <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wide mb-3">{tn ? 'Thulaganyo ya Molao' : 'Legal Framework'}</h3>
                 <p className="text-xs text-bocra-slate/50 leading-relaxed">
-                  Communications Regulatory Authority Act No. 19 of 2012, Section 38(1)
+                  {tn ? 'Molao wa Bothati jwa Taolo ya Dikgolagano No. 19 wa 2012, Karolo 38(1)' : 'Communications Regulatory Authority Act No. 19 of 2012, Section 38(1)'}
                 </p>
               </div>
             </div>
@@ -165,24 +170,24 @@ export default function InternetPage() {
                   <Shield size={20} className="text-[#C8237B]" />
                 </div>
                 <div>
-                  <h2 className="text-xl font-bold text-bocra-slate">{tn ? 'BW-CIRT — Setlhopha sa Karabo ya Tiragalo ya Khomphutha' : 'BW-CIRT — Computer Incident Response Team'}</h2>
+                  <h2 className="text-xl font-bold text-bocra-slate">{tn ? 'BW-CIRT — Setlhopha sa Karabo ya Ditiragalo tsa Khomphiutha' : 'BW-CIRT — Computer Incident Response Team'}</h2>
                   <p className="text-[10px] text-gray-400 uppercase tracking-wide">{tn ? 'Tshireletso ya Saebo ya Bosetšhaba' : 'National Cybersecurity'}</p>
                 </div>
               </div>
 
               <div className="space-y-3 text-sm text-bocra-slate/70 leading-relaxed">
-                <p>
-                  The Ministry of Transport and Communications (MTC) developed the National Cybersecurity Strategy in collaboration with all the relevant stakeholders from the Private Sector, relevant Ministries, Regulator, and Academia. The Commonwealth Telecommunications Organisation (CTO) assisted in the development with funding from the Foreign & Commonwealth Office (FCO) of the Government of the United Kingdom of Great Britain.
-                </p>
-                <p>
-                  The project team which developed the National Cybersecurity Strategy benefited from inputs and comments from the State Department of the United States of America (USA), through the technical consultant from MITRE and Carnegie Mellon University.
-                </p>
-                <p>
-                  The National Cybersecurity Strategy clarifies the roles of the various stakeholders and outlines various action plans to ensure that the country is cybersecurity secure. The Strategy recommends the establishment of a Computer Incident Response Team (CIRT) as a matter of urgency due to rising and complexity of cybersecurity threats and attacks.
-                </p>
-                <p>
-                  To ensure a secure cyberspace for Botswana, MTC requested BOCRA to establish a Communications Sector CIRT (COMM-CIRT) to ensure that the communication sector, both private and public, are secure. The COMM-CIRT also acts as cybersecurity focal point. COMM-CIRT will assume National cybersecurity responsibilities in the interim, while awaiting the establishment of National CIRT (BWCIRT).
-                </p>
+                <p>{tn
+                  ? 'Lefapha la Dipalangwa le Dikgolagano (MTC) le ne la tlhabolola Leano la Bosetšhaba la Tshireletso ya Saebo ka tirisano le baamegi botlhe ba ba maleba go tswa mo Lephateng la Poraefete, Mafapha a a maleba, Molaodi, le Thuto e e Kwa Godimo. Mokgatlho wa Dikgolagano wa Commonwealth (CTO) o ne a thusa mo tlhabololong ka matlole go tswa go Ofisi ya Foreign & Commonwealth ya Puso ya United Kingdom.'
+                  : 'The Ministry of Transport and Communications (MTC) developed the National Cybersecurity Strategy in collaboration with all the relevant stakeholders from the Private Sector, relevant Ministries, Regulator, and Academia. The Commonwealth Telecommunications Organisation (CTO) assisted in the development with funding from the Foreign & Commonwealth Office (FCO) of the Government of the United Kingdom of Great Britain.'}</p>
+                <p>{tn
+                  ? 'Setlhopha sa porojeke se se tlhabolotseng Leano la Bosetšhaba la Tshireletso ya Saebo se ungwetswe ke ditshwaelo go tswa Lefapheng la Naga la United States of America (USA), ka moeletsi wa setegeniki go tswa MITRE le Yunibesithi ya Carnegie Mellon.'
+                  : 'The project team which developed the National Cybersecurity Strategy benefited from inputs and comments from the State Department of the United States of America (USA), through the technical consultant from MITRE and Carnegie Mellon University.'}</p>
+                <p>{tn
+                  ? 'Leano la Bosetšhaba la Tshireletso ya Saebo le tlhalosa ditiro tsa baamegi ba ba farologaneng le go tlhalosa mananeo a a farologaneng a tiro go netefatsa gore naga e sireletsegile mo saebong. Leano le atlenegisa go tlhomiwa ga Setlhopha sa Karabo ya Ditiragalo tsa Khomphiutha (CIRT) ka bonako ka ntlha ya go oketsega le go raragana ga dikgoba le ditlhaselo tsa tshireletso ya saebo.'
+                  : 'The National Cybersecurity Strategy clarifies the roles of the various stakeholders and outlines various action plans to ensure that the country is cybersecurity secure. The Strategy recommends the establishment of a Computer Incident Response Team (CIRT) as a matter of urgency due to rising and complexity of cybersecurity threats and attacks.'}</p>
+                <p>{tn
+                  ? 'Go netefatsa lefelo la saebo le le sireletsegile la Botswana, MTC e ne ya kopa BOCRA go tlhoma CIRT ya Lefapha la Dikgolagano (COMM-CIRT) go netefatsa gore lefapha la dikgolagano, la poraefete le la setšhaba, le sireletsegile. COMM-CIRT gape e bereka jaaka ntlha ya togamaano ya tshireletso ya saebo.'
+                  : 'To ensure a secure cyberspace for Botswana, MTC requested BOCRA to establish a Communications Sector CIRT (COMM-CIRT) to ensure that the communication sector, both private and public, are secure. The COMM-CIRT also acts as cybersecurity focal point. COMM-CIRT will assume National cybersecurity responsibilities in the interim, while awaiting the establishment of National CIRT (BWCIRT).'}</p>
               </div>
             </div>
 
@@ -190,11 +195,11 @@ export default function InternetPage() {
               <div className="bg-white rounded-xl border border-gray-200 p-5">
                 <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wide mb-3">{tn ? 'Bega Tiragalo ya Saebo' : 'Report a Cyber Incident'}</h3>
                 <p className="text-xs text-bocra-slate/50 leading-relaxed mb-3">
-                  Report phishing, malware, fraud, data breaches, or hacking through our Cybersecurity Hub.
+                  {tn ? 'Bega go tsietsa, malware, boferefere, go tshologa ga data, kgotsa go thuba ka Setlhogo sa Tshireletso ya Saebo sa rona.' : 'Report phishing, malware, fraud, data breaches, or hacking through our Cybersecurity Hub.'}
                 </p>
                 <Link to="/cybersecurity"
                   className="flex items-center gap-2 px-4 py-2.5 bg-[#C8237B] text-white text-xs font-medium rounded-lg hover:bg-[#A01D64] transition-all w-full justify-center">
-                  <Shield size={14} /> Cybersecurity Hub
+                  <Shield size={14} /> {tn ? 'Setlhogo sa Tshireletso ya Saebo' : 'Cybersecurity Hub'}
                 </Link>
               </div>
 
@@ -212,10 +217,10 @@ export default function InternetPage() {
               <div className="bg-[#C8237B]/5 rounded-xl border border-[#C8237B]/10 p-4">
                 <h3 className="text-xs font-bold text-[#C8237B] mb-2">{tn ? 'Balekane ba Botlhokwa' : 'Key Partners'}</h3>
                 <div className="space-y-1.5 text-xs text-bocra-slate/60">
-                  <p>Ministry of Transport and Communications</p>
-                  <p>Commonwealth Telecommunications Organisation</p>
-                  <p>UK Foreign & Commonwealth Office</p>
-                  <p>US State Department / MITRE / Carnegie Mellon</p>
+                  <p>{tn ? 'Lefapha la Dipalangwa le Dikgolagano' : 'Ministry of Transport and Communications'}</p>
+                  <p>{tn ? 'Mokgatlho wa Dikgolagano wa Commonwealth' : 'Commonwealth Telecommunications Organisation'}</p>
+                  <p>{tn ? 'Ofisi ya Foreign & Commonwealth ya UK' : 'UK Foreign & Commonwealth Office'}</p>
+                  <p>{tn ? 'Lefapha la Naga la US / MITRE / Carnegie Mellon' : 'US State Department / MITRE / Carnegie Mellon'}</p>
                 </div>
               </div>
             </div>
@@ -234,34 +239,34 @@ export default function InternetPage() {
                 </div>
                 <div>
                   <h2 className="text-xl font-bold text-bocra-slate">{tn ? 'Bosupi jwa Elektroniki' : 'Electronic Evidence'}</h2>
-                  <p className="text-[10px] text-gray-400 uppercase tracking-wide">Electronic Records (Evidence) Act No. 13 of 2014</p>
+                  <p className="text-[10px] text-gray-400 uppercase tracking-wide">{tn ? 'Molao wa Direkoto tsa Elektroniki (Bosupi) No. 13 wa 2014' : 'Electronic Records (Evidence) Act No. 13 of 2014'}</p>
                 </div>
               </div>
 
               <div className="space-y-3 text-sm text-bocra-slate/70 leading-relaxed">
-                <p>
-                  The Electronic Records (Evidence) Act No. 13 of 2014 allows for the admissibility and authentication of electronic records as evidence in legal proceedings and admissibility, in evidence, of electronic records as original records.
-                </p>
-                <p>
-                  Section 5 of the Act provides that nothing in the rules of evidence shall apply to deny admissibility of an electronic record as evidence because it is an electronic record.
-                </p>
-                <p>
-                  Section 6(2) of the Act designates BOCRA as the <strong>Certifying Authority</strong> and requires BOCRA to establish an approved process for the production of electronic documents and also certify electronic records systems for purpose of integrity.
-                </p>
-                <p>
-                  The Electronic Records (Evidence) Regulations of 2016 establish an approved process for the certification of electronic systems. Unless otherwise provided in any other written law, where an electronic record is tendered as evidence, such an electronic record shall be admissible if it is relevant and if it is produced in accordance with this approved process.
-                </p>
+                <p>{tn
+                  ? 'Molao wa Direkoto tsa Elektroniki (Bosupi) No. 13 wa 2014 o letla go amogelwa le go netefatsa ga direkoto tsa elektroniki jaaka bosupi mo ditsamaisong tsa molao le go amogelwa, mo bosuping, ga direkoto tsa elektroniki jaaka direkoto tsa tshimologo.'
+                  : 'The Electronic Records (Evidence) Act No. 13 of 2014 allows for the admissibility and authentication of electronic records as evidence in legal proceedings and admissibility, in evidence, of electronic records as original records.'}</p>
+                <p>{tn
+                  ? 'Karolo 5 ya Molao e raya gore ga go sepe mo melaong ya bosupi se se tla dirisiwang go gana go amogelwa ga rekoto ya elektroniki jaaka bosupi ka ntlha ya gore ke rekoto ya elektroniki.'
+                  : 'Section 5 of the Act provides that nothing in the rules of evidence shall apply to deny admissibility of an electronic record as evidence because it is an electronic record.'}</p>
+                <p>{tn
+                  ? 'Karolo 6(2) ya Molao e tlhoma BOCRA jaaka Bothati jwa Netefatso mme e tlhoka BOCRA go tlhoma tsamaiso e e amogetsweng ya go tlhagisa dikwalo tsa elektroniki le go netefatsa ditsamaiso tsa direkoto tsa elektroniki ka maikaelelo a botshepegi.'
+                  : 'Section 6(2) of the Act designates BOCRA as the Certifying Authority and requires BOCRA to establish an approved process for the production of electronic documents and also certify electronic records systems for purpose of integrity.'}</p>
+                <p>{tn
+                  ? 'Melao ya Direkoto tsa Elektroniki (Bosupi) ya 2016 e tlhoma tsamaiso e e amogetsweng ya netefatso ya ditsamaiso tsa elektroniki. Ntle le fa go beilwe sengwe mo molaong o mongwe, fa rekoto ya elektroniki e tlhagisediwa jaaka bosupi, rekoto eo e tla amogelwa fa e maleba le fa e tlhagisitswe go ya ka tsamaiso e e amogetsweng.'
+                  : 'The Electronic Records (Evidence) Regulations of 2016 establish an approved process for the certification of electronic systems. Unless otherwise provided in any other written law, where an electronic record is tendered as evidence, such an electronic record shall be admissible if it is relevant and if it is produced in accordance with this approved process.'}</p>
               </div>
             </div>
 
             <div className="space-y-4">
               <div className="bg-white rounded-xl border border-gray-200 p-5">
-                <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wide mb-3">{lang === 'tn' ? 'Ditsenya' : 'Downloads'}</h3>
+                <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wide mb-3">{tn ? 'Ditsenya' : 'Downloads'}</h3>
                 <div className="space-y-2">
                   {[
-                    { label: 'Certifying Agents Application Form', file: 'certifying_Agent_Application_Form.pdf', type: 'PDF' },
-                    { label: 'Guide for Certifying Agents', file: 'Guide for Certfiying Agents.pdf', type: 'PDF' },
-                    { label: 'Electronic Evidence Regulations (Draft)', file: 'Draft_Electronic_Records_(Evidence)_Regulations-8May201.docx', type: 'DOCX' },
+                    { label: tn ? 'Foromo ya Kopo ya Badirisi ba Netefatso' : 'Certifying Agents Application Form', file: 'certifying_Agent_Application_Form.pdf', type: 'PDF' },
+                    { label: tn ? 'Kaedi ya Badirisi ba Netefatso' : 'Guide for Certifying Agents', file: 'Guide for Certfiying Agents.pdf', type: 'PDF' },
+                    { label: tn ? 'Melao ya Bosupi jwa Elektroniki (Setlhogo)' : 'Electronic Evidence Regulations (Draft)', file: 'Draft_Electronic_Records_(Evidence)_Regulations-8May201.docx', type: 'DOCX' },
                   ].map(doc => (
                     <a key={doc.label} href={`${BASE}documents/internet/${doc.file}`} target="_blank" rel="noopener noreferrer"
                       className="flex items-center gap-2.5 p-2.5 bg-gray-50 rounded-lg hover:bg-[#F7B731]/5 hover:border-[#F7B731]/20 transition-all group">
@@ -274,9 +279,11 @@ export default function InternetPage() {
               </div>
 
               <div className="bg-[#F7B731]/5 rounded-xl border border-[#F7B731]/10 p-4">
-                <h3 className="text-xs font-bold text-[#F7B731] mb-2">{tn ? 'Seabe sa BOCRA' : "BOCRA's Role"}</h3>
+                <h3 className="text-xs font-bold text-[#F7B731] mb-2">{tn ? 'Tiro ya BOCRA' : 'BOCRA\'s Role'}</h3>
                 <p className="text-xs text-bocra-slate/60 leading-relaxed">
-                  Designated as the Certifying Authority under Section 6(2) of the Act. Responsible for establishing approved processes and certifying electronic records systems.
+                  {tn
+                    ? 'E tlhomilwe jaaka Bothati jwa Netefatso ka fa tlase ga Karolo 6(2) ya Molao. E ikarabela ka go tlhoma ditsamaiso tse di amogetsweng le go netefatsa ditsamaiso tsa direkoto tsa elektroniki.'
+                    : 'Designated as the Certifying Authority under Section 6(2) of the Act. Responsible for establishing approved processes and certifying electronic records systems.'}
                 </p>
               </div>
             </div>
@@ -294,24 +301,24 @@ export default function InternetPage() {
                   <Key size={20} className="text-[#6BBE4E]" />
                 </div>
                 <div>
-                  <h2 className="text-xl font-bold text-bocra-slate">{tn ? 'Dikgolagano le Ditiragatso tsa Elektroniki' : 'Electronic Communications & Transactions'}</h2>
-                  <p className="text-[10px] text-gray-400 uppercase tracking-wide">ECT Act No. 14 of 2014</p>
+                  <h2 className="text-xl font-bold text-bocra-slate">{tn ? 'Dikgolagano le Ditsamaiso tsa Elektroniki' : 'Electronic Communications & Transactions'}</h2>
+                  <p className="text-[10px] text-gray-400 uppercase tracking-wide">{tn ? 'Molao wa ECT No. 14 wa 2014' : 'ECT Act No. 14 of 2014'}</p>
                 </div>
               </div>
 
               <div className="space-y-3 text-sm text-bocra-slate/70 leading-relaxed">
-                <p>
-                  Under the Electronic Communications and Transactions Act, the Authority has the responsibility of accrediting Secure Electronic Signature Service Providers. The Electronic Communications and Transactions Act No. 14 of 2014 (the Act) came into force on 1st April 2016 with the passing of secondary legislation (Regulations).
-                </p>
-                <p>
-                  The Act makes BOCRA responsible for accrediting and managing Certificate Authorities (CA), developing technical standards, handling legal and policy issues and appointing a pool of Auditors from which interested CAs can choose during the auditing process.
-                </p>
+                <p>{tn
+                  ? 'Ka fa tlase ga Molao wa Dikgolagano le Ditsamaiso tsa Elektroniki, Bothati bo na le maikarabelo a go amogela Batlamedi ba Tirelo ya Tshaeno e e Sireletsegile ya Elektroniki. Molao wa Dikgolagano le Ditsamaiso tsa Elektroniki No. 14 wa 2014 o ne wa simolola go dira ka la 1 Moranang 2016 ka go fetiswa ga melao ya bobedi (Melao).'
+                  : 'Under the Electronic Communications and Transactions Act, the Authority has the responsibility of accrediting Secure Electronic Signature Service Providers. The Electronic Communications and Transactions Act No. 14 of 2014 (the Act) came into force on 1st April 2016 with the passing of secondary legislation (Regulations).'}</p>
+                <p>{tn
+                  ? 'Molao o dira BOCRA maikarabelo a go amogela le go tsamaisa Certificate Authorities (CA), go tlhabolola maemo a setegeniki, go tshwara merero ya molao le pholisi le go tlhoma letlole la Basekaseki bao di-CA tse di nang le kgatlhego di ka tlhophang go tswa mo go bone ka nako ya tsamaiso ya go sekasekiwa.'
+                  : 'The Act makes BOCRA responsible for accrediting and managing Certificate Authorities (CA), developing technical standards, handling legal and policy issues and appointing a pool of Auditors from which interested CAs can choose during the auditing process.'}</p>
               </div>
 
               {/* Accredited CA */}
               <div className="mt-5 bg-white rounded-xl border border-gray-200 p-5">
                 <h3 className="text-sm font-bold text-bocra-slate mb-3 flex items-center gap-2">
-                  <Award size={15} className="text-[#6BBE4E]" /> Accredited Certificate Authorities
+                  <Award size={15} className="text-[#6BBE4E]" /> {tn ? 'Certificate Authorities tse di Amogetsweng' : 'Accredited Certificate Authorities'}
                 </h3>
                 <div className="flex items-start gap-3 p-4 bg-[#6BBE4E]/5 rounded-lg border border-[#6BBE4E]/10">
                   <div className="w-9 h-9 rounded-lg bg-[#6BBE4E]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
@@ -319,10 +326,10 @@ export default function InternetPage() {
                   </div>
                   <div>
                     <p className="text-sm font-bold text-bocra-slate">LAWtrust</p>
-                    <p className="text-[10px] text-gray-400 mb-2">Accredited Secure Electronic Signature Service Provider</p>
+                    <p className="text-[10px] text-gray-400 mb-2">{tn ? 'Motlamedi wa Tirelo ya Tshaeno e e Sireletsegile ya Elektroniki yo o Amogetsweng' : 'Accredited Secure Electronic Signature Service Provider'}</p>
                     <div className="space-y-1 text-xs text-bocra-slate/60">
                       <p>85 Regency Drive, Route 21 Corporate Office Park, Centurion, South Africa</p>
-                      <p>Contact: <strong>Shawn Pilusa</strong> (Business Development Manager)</p>
+                      <p>{tn ? 'Kgolagano' : 'Contact'}: <strong>Shawn Pilusa</strong> ({tn ? 'Motsamaisi wa Tlhabololo ya Kgwebo' : 'Business Development Manager'})</p>
                       <div className="flex flex-wrap gap-x-3 gap-y-1 mt-1">
                         <a href="mailto:info@lawtrust.co.za" className="text-[#6BBE4E] hover:underline">info@lawtrust.co.za</a>
                         <a href="tel:+27126769240" className="text-[#6BBE4E] hover:underline">+27 12 676 9240</a>
@@ -339,10 +346,10 @@ export default function InternetPage() {
                 <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wide mb-3">{tn ? 'Ditsenya' : 'Downloads'}</h3>
                 <div className="space-y-2">
                   {[
-                    { label: 'Accreditation Procedure', file: 'Accreditation Procedure - rev 1 (002) (1).pdf', type: 'PDF' },
-                    { label: 'ACS Standards (August 2017)', file: 'ACS Standards - August 2017.pdf', type: 'PDF' },
-                    { label: 'ACS Checklist', file: 'ACS-checklist.pdf', type: 'PDF' },
-                    { label: 'ECT Act Regulations 2016', file: 'Electronic Communications and Transactions Act Regulations 2016.pdf', type: 'PDF' },
+                    { label: tn ? 'Tsamaiso ya Go Amogela' : 'Accreditation Procedure', file: 'Accreditation Procedure - rev 1 (002) (1).pdf', type: 'PDF' },
+                    { label: tn ? 'Maemo a ACS (Phatwe 2017)' : 'ACS Standards (August 2017)', file: 'ACS Standards - August 2017.pdf', type: 'PDF' },
+                    { label: tn ? 'Lenaane la ACS' : 'ACS Checklist', file: 'ACS-checklist.pdf', type: 'PDF' },
+                    { label: tn ? 'Melao ya Molao wa ECT 2016' : 'ECT Act Regulations 2016', file: 'Electronic Communications and Transactions Act Regulations 2016.pdf', type: 'PDF' },
                   ].map(doc => (
                     <a key={doc.label} href={`${BASE}documents/internet/${doc.file}`} target="_blank" rel="noopener noreferrer"
                       className="flex items-center gap-2.5 p-2.5 bg-gray-50 rounded-lg hover:bg-[#6BBE4E]/5 transition-all group">
@@ -355,15 +362,21 @@ export default function InternetPage() {
               </div>
 
               <div className="bg-[#6BBE4E]/5 rounded-xl border border-[#6BBE4E]/10 p-4">
-                <h3 className="text-xs font-bold text-[#6BBE4E] mb-2">{tn ? 'Maikarabelo a BOCRA' : "BOCRA's Responsibilities"}</h3>
+                <h3 className="text-xs font-bold text-[#6BBE4E] mb-2">{tn ? 'Maikarabelo a BOCRA' : 'BOCRA\'s Responsibilities'}</h3>
                 <div className="space-y-1.5">
-                  {[
+                  {(tn ? [
+                    'Go amogela Batlamedi ba Tirelo ya Tshaeno e e Sireletsegile ya Elektroniki',
+                    'Go tsamaisa Certificate Authorities (CA)',
+                    'Go tlhabolola maemo a setegeniki',
+                    'Go tshwara merero ya molao le pholisi',
+                    'Go tlhoma letlole la basekaseki ba go sekaseka di-CA',
+                  ] : [
                     'Accredit Secure Electronic Signature Service Providers',
                     'Manage Certificate Authorities (CA)',
                     'Develop technical standards',
                     'Handle legal and policy issues',
                     'Appoint auditor pool for CA auditing',
-                  ].map((item, i) => (
+                  ]).map((item, i) => (
                     <div key={i} className="flex items-start gap-2">
                       <CheckCircle size={11} className="text-[#6BBE4E] mt-0.5 flex-shrink-0" />
                       <p className="text-[11px] text-bocra-slate/60">{item}</p>
@@ -379,13 +392,13 @@ export default function InternetPage() {
       {/* Related Pages */}
       <section className="py-8 bg-bocra-off-white">
         <div className="section-wrapper max-w-5xl">
-          <h3 className="text-sm font-bold text-bocra-slate mb-4">{lang === 'tn' ? 'Ditsebe Tse di Amanang' : 'Related Pages'}</h3>
+          <h3 className="text-sm font-bold text-bocra-slate mb-4">{tn ? 'Ditsebe Tse di Amanang' : 'Related Pages'}</h3>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             {[
-              { label: 'Register .BW Domain', path: '/services/register-bw', icon: Globe, color: '#00A6CE' },
-              { label: 'Cybersecurity Hub', path: '/cybersecurity', icon: Shield, color: '#C8237B' },
-              { label: 'Data Protection', path: '/portal/data-request', icon: Lock, color: '#F7B731' },
-              { label: 'Telecommunications', path: '/mandate/telecommunications', icon: Wifi, color: '#6BBE4E' },
+              { label: tn ? 'Kwadisa Lefelo la .BW' : 'Register .BW Domain', path: '/services/register-bw', icon: Globe, color: '#00A6CE' },
+              { label: tn ? 'Setlhogo sa Tshireletso ya Saebo' : 'Cybersecurity Hub', path: '/cybersecurity', icon: Shield, color: '#C8237B' },
+              { label: tn ? 'Tshireletso ya Data' : 'Data Protection', path: '/portal/data-request', icon: Lock, color: '#F7B731' },
+              { label: tn ? 'Megala' : 'Telecommunications', path: '/mandate/telecommunications', icon: Wifi, color: '#6BBE4E' },
             ].map(link => (
               <Link key={link.path} to={link.path}
                 className="flex items-center gap-3 p-4 bg-white rounded-xl border border-gray-200 hover:shadow-md transition-all group">
@@ -399,7 +412,6 @@ export default function InternetPage() {
         </div>
       </section>
 
-      {/* Colour bar */}
       <div className="flex h-1">
         <div className="flex-1 bg-[#00A6CE]" /><div className="flex-1 bg-[#C8237B]" />
         <div className="flex-1 bg-[#F7B731]" /><div className="flex-1 bg-[#6BBE4E]" />

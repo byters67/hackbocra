@@ -26,16 +26,21 @@ const C = {
 const DOT_COLOURS = [C.cyan, C.magenta, C.yellow, C.green];
 
 /* ── Board Members Data ── */
-const BOARD_MEMBERS = [
+const getBoardMembers = (lang) => [
   {
     id: 'basutli',
     name: 'Dr. Bokamoso Basutli, PhD',
-    role: 'Chairperson',
-    roleTag: 'Board Chairperson',
+    role: lang === 'tn' ? 'Modulasetilo' : 'Chairperson',
+    roleTag: lang === 'tn' ? 'Modulasetilo wa Boto' : 'Board Chairperson',
     photo: `${B}images/board/Dr__Bokamoso_Basutli__-_Chairperson.jpg`,
     colour: C.cyan,
     featured: true,
-    bio: [
+    bio: lang === 'tn' ? [
+      'Ngaka Bokamoso Basutli ke Moenjiniri wa Porofešene le Leloko le Legolo la Setlamo sa IEEE. Ga jaana ke Tlhogo ya Lefapha la Boenjiniri jwa Tsamaiso ya Motlakase le Dikgolagano kwa BIUST, kwa a eteletseng pele go isiwa ga dimojule tsa Dikgolagano tsa Satellite, Tshoboko ya Digitale ya Signal, le Botlhale jwa Maitirelo (AI).',
+      'Ngaka Basutli o bereka jaaka leloko la Setlhopa sa Dipatlisiso tsa SPNS. E ne e le Mmatlisisi-Mogolo le motlhami wa porojeke ya BotswanaSat-1, lenaneo la ntlha la satellite la Botswana.',
+      'Pele ga go tsena mo yunibesithing, Ngaka Basutli o ne a bereka jaaka Moenjiniri wa Tlhamo le moragonyana Moenjiniri-Mogolo kwa ST Electronics. Morago o ne a bereka jaaka Moenjiniri yo Mogolo wa Megala kwa CAAB.',
+      'O bone PhD ya gagwe mo Boenjiniiring jwa Elektroniki, Motlakase, le Tsamaiso go tswa Yunibesithing ya Loughborough, United Kingdom.',
+    ] : [
       'Dr. Bokamoso Basutli is a Professional Engineer and Senior Member of the Institute of Electrical and Electronics Engineers (IEEE). He is currently the Head of the Department of Electrical and Communications Systems Engineering at the Botswana International University of Science and Technology (BIUST), where he leads the delivery and coordination of Satellite Communications, Digital Signal Processing, and Artificial Intelligence (AI) modules. He is IEEE CertifAIEd Assessor, focusing on the ethical implications of Autonomous Intelligent Systems (AIS).',
       'Dr. Basutli serves as a member of the Signal Processing, Networking, and Systems Research (SPNS) Group. He was the Principal Investigator (PI) and originator of the BotswanaSat-1 project, Botswana\u2019s pioneering satellite initiative.',
       'Before joining academia, Dr. Basutli served as an Installation Engineer and later Lead Engineer with Singapore Technologies Electronics (Info-Software Systems). He then worked as a Senior Telecommunications Engineer with the Civil Aviation Authority of Botswana (CAAB). Dr. Basutli has served as the Chairperson, and Vice-Chairperson of the IEEE Botswana Sub-section.',
@@ -45,12 +50,16 @@ const BOARD_MEMBERS = [
   {
     id: 'pusumane',
     name: 'Mr. Moabi Pusumane',
-    role: 'Vice Chairperson',
-    roleTag: 'Vice Chairperson',
+    role: lang === 'tn' ? 'Motlatsa Modulasetilo' : 'Vice Chairperson',
+    roleTag: lang === 'tn' ? 'Motlatsa Modulasetilo' : 'Vice Chairperson',
     photo: `${B}images/board/Mr__Moabi_Pusumane__-_Vice_Chairperson.jpg`,
     colour: C.magenta,
     featured: true,
-    bio: [
+    bio: lang === 'tn' ? [
+      'Moabi Pusumane ke moeteledipele yo o maatla yo o nang le maitemogelo a go feta dingwaga di le 15 mo megala, tsamaiso ya diporojeke, botlhale jwa mmaraka, le boeteledipele jwa kgwebo. Ga jaana o bereka jaaka Motlhankedi wa Kgwebo kwa Coca-Cola Beverages Botswana.',
+      'Moabi o itshetlegile mo go direng le go diragatsa maano a kgwebo a lobaka lo loleele a a theilweng mo kitso e e tseneletseng ya mmaraka. Boeteledipele jwa gagwe bo tlisitse kgolo ya lotseno ya dipalo tse pedi ka CAGR ya dingwaga tse 5.',
+      'Ditiro tsa gagwe tse di botlhokwa di akaretsa go simolodisa lenaneo la Schweppes Mixology le le ileng la amogelwa mo Aforika yotlhe; go tlisa boitlhamedi jwa ditlhagisiwa ka nako ya COVID-19; le go etelela pele Coca-Cola Beverages Botswana go thopa Semore sa Aforika sa Botlhale jwa Bareki sa 2023.',
+    ] : [
       'Moabi Pusumane is a dynamic and results-driven executive with over 15 years of cross-functional experience in telecommunications, project management, market intelligence, route to market, and commercial leadership. Currently serving as Commercial Director at Coca-Cola Beverages Botswana, with responsibilities that include driving sustainable revenue growth, portfolio innovation, and market expansion.',
       'Moabi specialises in crafting and executing long-term commercial strategies rooted in deep market insights and consumer behavior analysis. His leadership has delivered a 5-year CAGR double digit revenue growth, alongside award-winning marketing campaigns and operational excellence initiatives.',
       'His key achievements include the successful launch of the Schweppes Mixology campaign, which was later adopted across Africa; driving portfolio innovation during the COVID-19 pandemic with the successful introduction of the 1.5L pack; and leading Coca-Cola Beverages Botswana to win the 2023 Africa Customer Excellence Award.',
@@ -59,11 +68,15 @@ const BOARD_MEMBERS = [
   {
     id: 'phuthego',
     name: 'Ms. Montle Phuthego',
-    role: 'Board Member',
-    roleTag: 'Board Member',
+    role: lang === 'tn' ? 'Leloko la Boto' : 'Board Member',
+    roleTag: lang === 'tn' ? 'Leloko la Boto' : 'Board Member',
     photo: `${B}images/board/Ms__Montle_Phuthego_-_Member.jpg`,
     colour: C.yellow,
-    bio: [
+    bio: lang === 'tn' ? [
+      'Montle Phuthego ke moitseanape wa tlhabololo ya kgwebo, kgwebisano le matsolo yo o nang le Dikerii ya Masetase ya Saense mo Ikonoming go tswa Yunibesithing ya Warwick. O na le maitemogelo a magolo mo dipatlisisong tsa ikonomi, tlhabololo ya kgwebo, le matsolo, a a kopanetsweng le maitemogelo a dingwaga tse di fetang 20 mo maemong a botsamaisi.',
+      'O berekile mo di-boto di le mmalwa — SPEDU, Letlole La Rona le Sechaba Brewery Holdings. Ga jaana ke Motlhankedi wa Naga wa TechnoServe, mokgatlho wa boditšhabatšhaba o o sa direng lotseno o o tlisang ditharabololo tsa kgwebo.',
+      'Mo dingwageng tse 5 tse di fetileng, o eteleletse pele lenaneo la Tokafala Enterprise and Youth Development, le le amileng matshelo a le mantsi.',
+    ] : [
       'Montle Phuthego is a seasoned business development, trade and investment expert who holds a Master of Science Degree in Economics from the University of Warwick in the United Kingdom. She has substantial experience in economic research, business development, trade and investment, coupled with a strong enterprise and experience gained from several executive positions spanning over 20 years, including being the founding Caretaker Chief Executive Officer at SPEDU, Deputy Managing Director at Botswana Development Corporation and other senior executive positions at Botswana Investment and Trade Centre and the Citizen Entrepreneurial Development Agency.',
       'She has previously served on a number of Boards \u2014 SPEDU, Letlole La Rona and Sechaba Brewery Holdings, in the process leading some Board sub-committees. Montle is currently the Country Director for TechnoServe, an international non-profit organisation delivering business solutions that build and strengthen businesses across various sectors. She strongly believes in the power of entrepreneurship and innovation to accelerate inclusive development.',
       'Over the past 5 years, she has led the Tokafala Enterprise and Youth Development programme, delivering impact and touching many lives.',
@@ -72,11 +85,15 @@ const BOARD_MEMBERS = [
   {
     id: 'seleka',
     name: 'Ms. Alta Dimpho Seleka',
-    role: 'Board Member',
-    roleTag: 'Board Member',
+    role: lang === 'tn' ? 'Leloko la Boto' : 'Board Member',
+    roleTag: lang === 'tn' ? 'Leloko la Boto' : 'Board Member',
     photo: `${B}images/board/Ms__Alta_Dimpho_Seleka_-_Member.jpg`,
     colour: C.green,
-    bio: [
+    bio: lang === 'tn' ? [
+      'Alta Dimpho Seleka ke moporofešenale wa ditšhelete yo o tlotlegang yo o nang le maitemogelo a go feta dingwaga tse pedi tsa boeteledipele jo bogolo mo tsamaisong ya ditšhelete tsa setšhaba. Ke Leloko le Legolo la ACCA (UK), BICA, le leloko la CIPFA (UK).',
+      'Jaaka Khomišenara e e Dirang ya Ditšhelete le Tsamaiso kwa BURS, Alta o tsamaisa lotseno lwa lekgetho la dipilione le ditshenyegelo tsa khomporasi. O netefatsa go obamela ga IPSAS, IFRS, GAAP, le IAS.',
+      'Ditlamorago tsa gagwe di bonala mo diphetogong tse dikgolo tsa ditšhelete tsa Botswana: go dirisa tsamaiso ya dituelo ka otomethiki, go kopanya mafaratlhatlha a lekgetho la elektroniki, le go okamela ntlafatso ya mafaratlhatlha kwa mafelong a komelelo a botlhokwa.',
+    ] : [
       'Alta Dimpho Seleka is a distinguished finance professional with over two decades of senior leadership in public financial management and fiscal governance. She is a Fellow of both the Association of Chartered Certified Accountants (FCCA-UK) and the Botswana Institute of Chartered Accountants (FCA-BICA), and a member of the Chartered Institute of Public Finance and Accountancy (CIPFA-UK) and the Association of Accounting Technicians (AAT).',
       'As Acting Commissioner for Finance and Administration at the Botswana Unified Revenue Service (BURS), Alta manages multibillion-pula tax revenues and corporate expenditure. Her mandate extends beyond financial reporting and audit oversight to include shared services, procurement, and the human resources functions of the Finance and Administration Division. She has anchored BURS\u2019 compliance with International Public Sector Accounting Standards (IPSAS), International Financial Reporting Standards (IFRS), Generally Accepted Accounting Principles (GAAP), and International Auditing Standards (IAS), while steering modernisation initiatives that strengthen transparency, efficiency, and accountability.',
       'Her impact is visible in some of Botswana\u2019s most ambitious financial reforms: automating the national payments system, integrating electronic tax collection platforms, developing public finance policies aligned with global practice, and overseeing infrastructure upgrades at strategic border posts.',
@@ -85,11 +102,15 @@ const BOARD_MEMBERS = [
   {
     id: 'george',
     name: 'Ms. Lebogang George',
-    role: 'Board Member',
-    roleTag: 'Board Member',
+    role: lang === 'tn' ? 'Leloko la Boto' : 'Board Member',
+    roleTag: lang === 'tn' ? 'Leloko la Boto' : 'Board Member',
     photo: `${B}images/board/Ms_Lebogang_George_-_Member.jpg`,
     colour: C.cyan,
-    bio: [
+    bio: lang === 'tn' ? [
+      'Lebogang George ke Molekane kwa JLK MCL, le ramolao yo o amogetsweng mo Dikgotlatshekelong Tse Dikgolo tsa Botswana. O na le maitemogelo a magolo mo molaong wa kgwebo, molao wa theko, molao wa ICT, taolo ya IT, le molao wa tshireletso ya data mo Botswana, Aforika Borwa, le EU.',
+      'Ke moeteledipele wa megopolo yo o nang le diphatlalatso mo tshireletsong ya data mme o laleditsweng go bua mo dikopanong tse dintsi tsa tshireletso ya data le AI.',
+      'Lebogang o dutse mo di-boto tse di farologaneng, go akaretsa Komiti ya Phethagatso ya Women in Mining Botswana jaaka Mongodi. Nngwe ya ditiro tse a di ratang thata ke kamano ya gagwe ya botshelo jotlhe le Harvard Law School.',
+    ] : [
       'Lebogang George is a Partner at JLK MCL, and an attorney admitted to the High Courts of Botswana. She has extensive experience in commercial law, procurement law, ICT law, IT governance, and data protection & privacy law in Botswana, South Africa, and the EU. She specialises in drafting and negotiating complex software agreements, commercial agreements and advising clients on compliance and governance matters. Lebogang has a strong track record of developing data strategies, providing data protection and corporate governance training, compliance and corporate commercial law. Her expertise covers the Botswana Data Protection Act, South Africa\u2019s Protection of Personal Information Act and the European General Data Protection Regulation.',
       'She is a thought leader with publications in data protection and has been invited to speak at numerous conferences on data protection and AI.',
       'She also actively contributes to public education and awareness through webinars. Lebogang sits on various boards and board committees, including the Women in Mining Botswana Executive Committee as Secretary, the Association of Women in Mining in Africa Governance, Legal and Compliance Sub-Committee. One of her proudest achievements is her lifetime association with Harvard Law School, where she is a recipient of the Law & Logic Certificate from Harvard Law School and the European University Institute.',
@@ -98,11 +119,15 @@ const BOARD_MEMBERS = [
   {
     id: 'kgafela',
     name: 'Mr. Ronald Kgafela, CODP',
-    role: 'Board Member',
-    roleTag: 'Board Member',
+    role: lang === 'tn' ? 'Leloko la Boto' : 'Board Member',
+    roleTag: lang === 'tn' ? 'Leloko la Boto' : 'Board Member',
     photo: `${B}images/board/Mr__Ronald_Kgafela_-_Member.jpg`,
     colour: C.magenta,
-    bio: [
+    bio: lang === 'tn' ? [
+      'Ronald Kgafela ke moeteledipele wa Badiredi yo o nang le maitemogelo a go feta dingwaga di le 20 mo Badireding, Tlhabololo ya Mokgatlho, Dikamano tsa Khiro, Phetogo, le Diphetogo. Ke Mokatisi wa Porofešene wa Kgwebo (PBC), Modirisani yo o Kwadisitsweng wa Tlhabololo ya Mokgatlho (CODP), le Moeletsi yo o Netefaditsweng wa Tlhabololo ya Mokgatlho (ODCC).',
+      'O na le Masetase ya Saense mo Tsamaisong ya Togamaano (University of Derby), Dikerii ya Tsamaiso mo Tsamaisong ya Badiredi (North-West University), le Diploma ya Morago ga Dikerii ya Molao wa Khiro (University of Johannesburg).',
+      'Tiro ya ga Ronald e akaretsa madirelo a le mantsi, go akaretsa ditirelo tsa setšhaba, tlhagiso, meepo, kago, thekiso, boeletsi, le pereko. Ga jaana o bereka jaaka Tlhogo ya Badiredi kwa NBFIRA.',
+    ] : [
       'Ronald Kgafela is a seasoned Human Capital leader with over 20 years of experience spanning Human Resources, Organisational Development, Employment Relations, Change, and Transformation. He is a Certified Professional Business Coach (PBC), a Chartered Organisational Development Practitioner (CODP\u2122), and an Organisational Development Certified Consultant (ODCC) with GIODN.',
       'He holds a Master of Science in Strategic Management (University of Derby), a Bachelor of Administration in Human Resource Management (North-West University), and a Postgraduate Diploma in Labour Law (University of Johannesburg). He further completed the Senior Managers Development Programme (SMDP) at Stellenbosch University.',
       'Ronald\u2019s career spans multiple industries, including utilities, manufacturing, mining, construction, retail, consulting, and banking. He held senior roles such as Head of Organisational Development, Country HR Manager, HR Business Partner, and Acting HR Director at FNBB, and currently serves as Head of HR at NBFIRA.',
@@ -112,11 +137,15 @@ const BOARD_MEMBERS = [
   {
     id: 'ramojela',
     name: 'Dr. Kennedy Ramojela',
-    role: 'Board Member',
-    roleTag: 'Board Member',
+    role: lang === 'tn' ? 'Leloko la Boto' : 'Board Member',
+    roleTag: lang === 'tn' ? 'Leloko la Boto' : 'Board Member',
     photo: `${B}images/board/Dr__Kennedy_Ramojela_-_Member.jpg`,
     colour: C.yellow,
-    bio: [
+    bio: lang === 'tn' ? [
+      'Ngaka Kennedy Ramojela o na le PhD mo Bobegadikgang le Dikgolagano go tswa Yunibesithing ya RMIT, Melbourne, Australia. O dirile Masetase ya Filosefi mo filiming le phasalatsong go tswa Yunibesithing ya Southampton, UK. Gape o na le Masetase ya Bokgoni jwa Bobegadikgang go tswa Emerson College, Boston, USA le Dikerii ya Botlhano ya Phasalatso le Tlhagiso ya Thelebišene go tswa Columbia College Chicago, USA.',
+      'Ke modirisani wa Bobegadikgang le Dikgolagano le motlhankedi yo mogolo yo o ikaeletseng mo tsamaisong, ditiro le leano. O na le maitemogelo a go feta dingwaga tse pedi mo mekgatlhong ya bobegadikgang, boitlhamedi le thekenoloji.',
+      'Ga jaana o bereka jaaka Morutabana wa Bobegadikgang le Dikgolagano kwa Yunibesithing ya Botswana. O na le maitemogelo mo thekenolojing ya dijithale, bobegadikgang jwa dijithale, phasalatso, filimi, thelebišene le dipatlisiso.',
+    ] : [
       'Dr. Kennedy Ramojela holds a PhD in Media and Communications from Royal Melbourne Institute of Technology (RMIT) University, Melbourne, Australia. He did Master of Philosophy in film and broadcasting from the University of Southampton, UK. Dr. Ramojela also holds Master of Media Arts from Emerson College, Boston, USA and Bachelor of Arts in Broadcasting and Television Production from Columbia College Chicago, USA.',
       'He is a Media and Communications practitioner and a senior executive with a keen focus on management, operations and strategy. He is highly skilled in strategic planning, project management and leadership and has over two decades of experience across media, creatives and technology organisations such as University of Botswana media studies, Kanamemoy Media, Children\u2019s television and radio workshops, Spotlook newspaper, and Mokopele Express news publishing.',
       'Currently serving as a Media and Communications lecturer at the University of Botswana, Dr. Ramojela oversees and lecturers in all digital media courses in the Department of Media Studies. He has experience in digital technology, digital media, broadcasting, film, television and research. He implemented agile methodologies that aligned media studies programmes with the industry needs in the process saving the Government of Botswana money from sending students outside the country for media studies programmes.',
@@ -370,6 +399,7 @@ function MemberDetail({ member, onClose }) {
 
 /* ── Board Member Card ── */
 function MemberCard({ member, index, onClick }) {
+  const { lang } = useLanguage();
   const cardRef = useRef(null);
 
   useEffect(() => {
@@ -436,7 +466,7 @@ function MemberCard({ member, index, onClick }) {
         {/* CTA */}
         <div className="mt-4 flex items-center justify-center gap-1.5 text-sm font-semibold opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0"
           style={{ color: member.colour }}>
-          <span>View Profile</span>
+          <span>{lang === 'tn' ? 'Bona Porofaele' : 'View Profile'}</span>
           <ChevronRight className="w-4 h-4" />
         </div>
       </div>
@@ -454,7 +484,7 @@ function MemberCard({ member, index, onClick }) {
  * ══════════════════════════════════════════════════════════════════ */
 export default function BoardOfDirectorsPage() {
   const { lang } = useLanguage();
-  const tn = lang === 'tn';
+  const BOARD_MEMBERS = getBoardMembers(lang);
   const [selected, setSelected] = useState(null);
   const heroRef = useRef(null);
 
@@ -477,7 +507,7 @@ export default function BoardOfDirectorsPage() {
       <div className="bg-bocra-off-white border-b border-gray-100">
         <div className="section-wrapper py-4">
           <nav className="text-sm text-bocra-slate/50 flex items-center gap-2">
-            <Link to="/" className="hover:text-bocra-blue transition-colors">Home</Link>
+            <Link to="/" className="hover:text-bocra-blue transition-colors">{lang === 'tn' ? 'Gae' : 'Home'}</Link>
             <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18l6-6-6-6"/></svg></span>
             <Link to="/about/profile" className="hover:text-bocra-blue transition-colors">About</Link>
             <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18l6-6-6-6"/></svg></span>
@@ -498,7 +528,7 @@ export default function BoardOfDirectorsPage() {
           <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: `${C.cyan}15` }}>
             <Award className="w-4 h-4" style={{ color: C.cyan }} />
           </div>
-          <h2 className="text-lg sm:text-xl font-bold text-[#001A3A]">{tn ? 'Botsamaisi' : 'Leadership'}</h2>
+          <h2 className="text-lg sm:text-xl font-bold text-[#001A3A]">{lang === 'tn' ? 'Botsamaisi' : 'Leadership'}</h2>
           <div className="h-px flex-1 bg-gray-100" />
         </div>
 
@@ -515,7 +545,7 @@ export default function BoardOfDirectorsPage() {
           <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: `${C.magenta}15` }}>
             <Briefcase className="w-4 h-4" style={{ color: C.magenta }} />
           </div>
-          <h2 className="text-lg sm:text-xl font-bold text-[#001A3A]">{tn ? 'Maloko a Lekgotla' : 'Board Members'}</h2>
+          <h2 className="text-lg sm:text-xl font-bold text-[#001A3A]">{lang === 'tn' ? 'Maloko a Boto' : 'Board Members'}</h2>
           <div className="h-px flex-1 bg-gray-100" />
         </div>
 

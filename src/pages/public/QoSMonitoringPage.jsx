@@ -40,7 +40,6 @@ const KPI_KEYS = Object.keys(KPI_INFO);
 
 export default function QoSMonitoringPage() {
   const { lang } = useLanguage();
-  const tn = lang === 'tn';
   const [op, setOp] = useState('mascom');
   const [kpi, setKpi] = useState('call_success_rate');
   const [tab, setTab] = useState('overview');
@@ -160,7 +159,7 @@ export default function QoSMonitoringPage() {
 
   return (
     <div className="bg-white">
-      <div className="bg-bocra-off-white border-b border-gray-100"><div className="section-wrapper py-4"><nav className="text-sm text-bocra-slate/50 flex items-center gap-2"><Link to="/" className="hover:text-bocra-blue transition-colors">Home</Link><ChevronRight size={14}/><span className="text-bocra-slate">QoS Monitoring</span></nav></div></div>
+      <div className="bg-bocra-off-white border-b border-gray-100"><div className="section-wrapper py-4"><nav className="text-sm text-bocra-slate/50 flex items-center gap-2"><Link to="/" className="hover:text-bocra-blue transition-colors">{lang === 'tn' ? 'Gae' : 'Home'}</Link><ChevronRight size={14}/><span className="text-bocra-slate">{lang === 'tn' ? 'Tlhokomelo ya Boleng' : 'QoS Monitoring'}</span></nav></div></div>
 
       
       {/* Hero */}
@@ -207,7 +206,7 @@ export default function QoSMonitoringPage() {
                     <div className="grid grid-cols-3 gap-2">
                       <div><p className="text-lg font-bold text-bocra-slate">{d.csr}%</p><p className="text-[9px] text-gray-400">Call Success</p></div>
                       <div><p className="text-lg font-bold text-bocra-slate">{d.tp}</p><p className="text-[9px] text-gray-400">Mbps</p></div>
-                      <div><p className="text-lg font-bold text-bocra-slate">{d.up}%</p><p className="text-[9px] text-gray-400">{tn ? 'Nako ya go Bereka' : 'Uptime'}</p></div>
+                      <div><p className="text-lg font-bold text-bocra-slate">{d.up}%</p><p className="text-[9px] text-gray-400">Uptime</p></div>
                     </div>
                   </button>
                 );
@@ -290,7 +289,7 @@ export default function QoSMonitoringPage() {
           <section className="py-4"><div className="section-wrapper">
             <AiInsightBar insights={aiInsights} loading={aiLoading} onRefresh={() => { setAiCache(p => ({...p, [tab]: null})); generateAiInsights(tab); }} />
             <div className="bg-white rounded-xl border border-gray-200 p-5 mb-4">
-              <h3 className="text-sm font-bold text-bocra-slate mb-1">LTE Download Throughput by Region</h3>
+              <h3 className="text-sm font-bold text-bocra-slate mb-1">{lang === 'tn' ? 'Lobelo la LTE ka Kgaolo' : 'LTE Download Throughput by Region'}</h3>
               <p className="text-xs text-gray-400 mb-4">Average 4G download speeds (Mbps) across Botswana</p>
               <ResponsiveContainer width="100%" height={320}><BarChart data={regionalData} layout="vertical" margin={{left:10}}><CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0"/><XAxis type="number" tick={{fontSize:10}} unit=" Mbps"/><YAxis type="category" dataKey="region" tick={{fontSize:10}} width={90}/><Tooltip contentStyle={{borderRadius:'8px',fontSize:'12px'}}/><Legend wrapperStyle={{fontSize:'11px'}}/>
                 <Bar dataKey="mascom" name="Mascom" fill="#E21836" radius={[0,4,4,0]} barSize={8}/>

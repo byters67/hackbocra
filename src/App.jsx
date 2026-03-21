@@ -61,6 +61,7 @@ import TendersPage from './pages/public/TendersPage';
 import ChiefExecutivePage from './pages/public/ChiefExecutivePage';
 import OrganogramPage from './pages/public/OrganogramPage';
 import DataRequestPage from './pages/public/DataRequestPage';
+import CareersPage from './pages/public/CareersPage';
 
 export default function App() {
   const [ready, setReady] = useState(!!sessionStorage.getItem('bocra-splash'));
@@ -104,7 +105,7 @@ export default function App() {
                   <Route path="/about/organogram" element={<OrganogramPage />} />
                   <Route path="/about/board" element={<BoardOfDirectorsPage />} />
                   <Route path="/about/executive-management" element={<ExecutiveManagementPage />} />
-                  <Route path="/about/careers" element={<ContentPage />} />
+                  <Route path="/about/careers" element={<CareersPage />} />
                   <Route path="/mandate/legislation" element={<LegislationPage />} />
                   <Route path="/mandate/telecommunications" element={<TelecommunicationsPage />} />
                   <Route path="/mandate/broadcasting" element={<BroadcastingPage />} />
