@@ -480,7 +480,7 @@ export default function DataRequestPage() {
             <div className="w-16 h-16 rounded-full bg-green-50 flex items-center justify-center mx-auto mb-4">
               <CheckCircle size={32} className="text-[#6BBE4E]" />
             </div>
-            <h2 className="text-2xl font-bold text-bocra-slate mb-2">Request Submitted</h2>
+            <h2 className="text-2xl font-bold text-bocra-slate mb-2">{lang === 'tn' ? 'Kopo e Rometse' : 'Request Submitted'}</h2>
             <p className="text-sm text-bocra-slate/50 max-w-md mx-auto mb-4">
               Your data request has been received. BOCRA will verify your identity and respond within <strong>30 days</strong> as required by the Data Protection Act, 2018.
             </p>

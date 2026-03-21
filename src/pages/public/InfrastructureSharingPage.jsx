@@ -13,7 +13,7 @@ export default function InfrastructureSharingPage() {
   const cardsRef = useStaggerReveal({ stagger: 0.1 });
   return (
     <div className="bg-white min-h-screen">
-      <div className="bg-bocra-off-white border-b border-gray-100"><div className="section-wrapper py-4"><nav className="text-sm text-bocra-slate/50 flex items-center gap-2"><Link to="/" className="hover:text-bocra-blue">Home</Link><ChevronRight size={14} /><span className="text-bocra-slate/50">Projects</span><ChevronRight size={14} /><span className="text-bocra-slate font-medium">Infrastructure Sharing</span></nav></div></div>
+      <div className="bg-bocra-off-white border-b border-gray-100"><div className="section-wrapper py-4"><nav className="text-sm text-bocra-slate/50 flex items-center gap-2"><Link to="/" className="hover:text-bocra-blue">Home</Link><ChevronRight size={14} /><span className="text-bocra-slate/50">Projects</span><ChevronRight size={14} /><span className="text-bocra-slate font-medium">{lang === 'tn' ? 'Karoganyo ya Mafaratlhatlha' : 'Infrastructure Sharing'}</span></nav></div></div>
       <PageHero category="PROJECTS" categoryTn="DITSHWANELO" title="Infrastructure Sharing" titleTn="Karoganyo ya Mafaratlhatlha" description="Promoting efficient use of telecommunications infrastructure through sharing arrangements — reducing duplication, lowering costs, and expanding coverage across Botswana." descriptionTn="Go rotloetsa tiriso e e nonofileng ya mafaratlhatlha a megala ka go arolelana — go fokotsa go boelediwa, go fokotsa ditshenyegelo, le go atolosa khumo ya ditirelo." color="cyan" />
 
       <section className="py-10">

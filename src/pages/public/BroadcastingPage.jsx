@@ -134,7 +134,7 @@ export default function BroadcastingPage() {
                           {station.online && (
                             <div className="flex items-center gap-2 text-xs text-[#6BBE4E]">
                               <Globe size={11} />
-                              <span>Online streaming worldwide</span>
+                              <span>{lang === 'tn' ? 'Go bona mo inthaneteng lefatshe lotlhe' : 'Online streaming worldwide'}</span>
                             </div>
                           )}
                         </div>
@@ -262,7 +262,7 @@ export default function BroadcastingPage() {
 
               {/* Broadcasting Code */}
               <div className="bg-white rounded-xl border border-gray-200 p-5">
-                <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wide mb-3">Broadcasting Code of Conduct</h3>
+                <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wide mb-3">{lang === 'tn' ? 'Molao wa Maitsholo wa Phasalatso' : 'Broadcasting Code of Conduct'}</h3>
                 <p className="text-xs text-bocra-slate/50 leading-relaxed mb-3">
                   BOCRA has published a Broadcasting Code of Conduct that sets standards for content, advertising, and ethical broadcasting practices.
                 </p>
@@ -273,7 +273,7 @@ export default function BroadcastingPage() {
 
               {/* Contact */}
               <div className="bg-bocra-off-white rounded-xl p-4">
-                <p className="text-[10px] text-gray-400 uppercase font-medium mb-2">Broadcasting Enquiries</p>
+                <p className="text-[10px] text-gray-400 uppercase font-medium mb-2">{lang === 'tn' ? 'Dipotso tsa Phasalatso' : 'Broadcasting Enquiries'}</p>
                 <p className="text-xs text-bocra-slate/60 leading-relaxed mb-2">
                   For enquiries about broadcasting licences, content requirements, or regulatory compliance.
                 </p>

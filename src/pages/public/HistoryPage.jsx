@@ -10,10 +10,10 @@ import { useScrollReveal, useStaggerReveal } from '../../hooks/useAnimations';
 
 import PageHero from '../../components/ui/PageHero';
 import { useLanguage } from '../../lib/language';
-const TIMELINE = [
+const getTimeline = (lang) => [
   {
     year: '1997',
-    title: 'BTA Established',
+    title: lang === 'tn' ? 'BTA e Tlhomilwe' : 'BTA Established',
     events: [
       'Botswana Telecommunications Authority (BTA) created under the Telecommunications Act, 1996',
       'BTA begins regulating telecommunications sector',
@@ -21,7 +21,7 @@ const TIMELINE = [
   },
   {
     year: '1998-1999',
-    title: 'Mobile & Internet Licences',
+    title: lang === 'tn' ? 'Dilaesense tsa Mogala le Inthanete' : 'Mobile & Internet Licences',
     events: [
       'Mobile operator licences awarded to Mascom Wireless and Vista Cellular (now Orange Botswana)',
       'BTA awarded the first Internet Service Providers\u2019 (ISPs) licences',
@@ -29,7 +29,7 @@ const TIMELINE = [
   },
   {
     year: '2001',
-    title: 'Numbering & Spectrum',
+    title: lang === 'tn' ? 'Dinomoro le Sepeketeramo' : 'Numbering & Spectrum',
     events: [
       'Implementation of the new seven-digit numbering plan for Botswana',
       'Numbering policy established',
@@ -37,7 +37,7 @@ const TIMELINE = [
   },
   {
     year: '2003',
-    title: 'Interconnection Framework',
+    title: lang === 'tn' ? 'Thulaganyo ya Kgolagano ya Dineteweke' : 'Interconnection Framework',
     events: [
       'BTC was granted a fifteen (15) year operating licence',
       'BOCRA issued Interconnection Guidelines',
@@ -46,7 +46,7 @@ const TIMELINE = [
   },
   {
     year: '2004-2006',
-    title: 'Market Studies & VoIP',
+    title: lang === 'tn' ? 'Dipatlisiso tsa Mmaraka le VoIP' : 'Market Studies & VoIP',
     events: [
       'Study on the Pricing of Telecommunications Services in Botswana',
       'Market study leading to VoIP liberalisation',
@@ -56,7 +56,7 @@ const TIMELINE = [
   },
   {
     year: '2007',
-    title: 'Service-Neutral Licensing',
+    title: lang === 'tn' ? 'Dilaesense tse di sa Kgetheng Tirelo' : 'Service-Neutral Licensing',
     events: [
       'Introduction of service-neutral licensing regime',
       'BTC launches beMOBILE service under new framework',
@@ -65,7 +65,7 @@ const TIMELINE = [
   },
   {
     year: '2008',
-    title: 'ITU Recognition',
+    title: lang === 'tn' ? 'Kamogelo ya ITU' : 'ITU Recognition',
     events: [
       'The International Telecommunication Union (ITU) conducted a study on BOCRA and declared it a best practice model for regulators and policy-makers to emulate',
       'ITU Secretary General Mr. Yoshio Utsumi officially opened the BOCRA Office',
@@ -73,7 +73,7 @@ const TIMELINE = [
   },
   {
     year: '2009',
-    title: 'National Roaming & Own Office',
+    title: lang === 'tn' ? 'Tiriso ya Lefatshe le Ofisi ya Bone' : 'National Roaming & Own Office',
     events: [
       'National Roaming was suspended',
       'BOCRA moved into its own building (the current office at Plot 50671 Independence Avenue)',
@@ -81,7 +81,7 @@ const TIMELINE = [
   },
   {
     year: '2012',
-    title: 'CRA Act Enacted',
+    title: lang === 'tn' ? 'Molao wa CRA o Dirilwe' : 'CRA Act Enacted',
     events: [
       'Communications Regulatory Authority Act 2012 (CRA Act) enacted by Parliament',
       'Created legal framework for converged regulator covering telecoms, broadcasting, postal, and internet',
@@ -91,7 +91,7 @@ const TIMELINE = [
   },
   {
     year: '2013',
-    title: 'BOCRA Established',
+    title: lang === 'tn' ? 'BOCRA e Tlhomilwe' : 'BOCRA Established',
     highlight: true,
     events: [
       'Botswana Communications Regulatory Authority (BOCRA) officially established on 1 April 2013',
@@ -102,7 +102,7 @@ const TIMELINE = [
   },
   {
     year: '2014',
-    title: 'Digital Legislation',
+    title: lang === 'tn' ? 'Melao ya Dijithale' : 'Digital Legislation',
     events: [
       'Electronic Records (Evidence) Act No. 13 of 2014 enacted',
       'Electronic Communications and Transactions Act, 2014 enacted',
@@ -111,7 +111,7 @@ const TIMELINE = [
   },
   {
     year: '2015',
-    title: 'Licensing Framework Review',
+    title: lang === 'tn' ? 'Tshekatsheko ya Thulaganyo ya Dilaesense' : 'Licensing Framework Review',
     events: [
       'Comprehensive review of ICT licensing framework and pricing principles',
       'Introduction of NFP, SAP, CSP licensing categories',
@@ -121,7 +121,7 @@ const TIMELINE = [
   },
   {
     year: '2024',
-    title: 'Data Protection',
+    title: lang === 'tn' ? 'Tshireletso ya Data' : 'Data Protection',
     events: [
       'Botswana Data Protection Act, 2024 (BDPA) enacted',
       'BOCRA Strategic Plan 2024-2029 published with collaboration as key objective',
@@ -129,7 +129,7 @@ const TIMELINE = [
   },
   {
     year: '2025',
-    title: 'Modern Framework',
+    title: lang === 'tn' ? 'Thulaganyo ya Seša' : 'Modern Framework',
     events: [
       'Digital Services Act, 2025 enacted',
       'Cybersecurity Act, 2025 enacted',
@@ -140,6 +140,7 @@ const TIMELINE = [
 
 export default function HistoryPage() {
   const { lang } = useLanguage();
+  const TIMELINE = getTimeline(lang);
   const heroRef = useScrollReveal();
   const timelineRef = useStaggerReveal({ stagger: 0.08 });
 

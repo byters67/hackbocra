@@ -301,7 +301,7 @@ function RegisterForm({ setView, signUp }) {
               {loading ? 'Creating Account...' : 'Create Account'}
             </button>
 
-            <p className="text-xs text-center text-gray-400">Already have an account? <button type="button" onClick={() => setView('login')} className="text-[#00458B] font-medium hover:underline">Sign In</button></p>
+            <p className="text-xs text-center text-gray-400">Already have an account? <button type="button" onClick={() => setView('login')} className="text-[#00458B] font-medium hover:underline">{lang === 'tn' ? 'Tsena' : 'Sign In'}</button></p>
           </form>
         </div>
       </div>
@@ -386,7 +386,7 @@ function OperatorDashboard({ operator, user, signOut, setView }) {
         <div className="flex gap-2">{profilePic&&<button onClick={removePfp} className="px-3 py-2 text-xs text-red-500 border border-red-200 rounded-xl hover:bg-red-50">Remove Photo</button>}<button onClick={()=>setEditing(!editing)} className="px-4 py-2 text-xs font-medium text-[#00458B] border border-[#00458B]/20 rounded-xl hover:bg-[#00458B]/5">{editing?'Cancel':'Edit Profile'}</button></div>
       </div>
       {editing&&<div className="mt-5 pt-5 border-t border-gray-100"><div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        <div><label className="text-[10px] text-gray-400 uppercase font-medium">Full Name</label><input value={profileForm.full_name} onChange={e=>setProfileForm(f=>({...f,full_name:e.target.value}))} className="mt-1 w-full px-3 py-2 border border-gray-200 rounded-lg text-sm"/></div>
+        <div><label className="text-[10px] text-gray-400 uppercase font-medium">{lang === 'tn' ? 'Leina ka Botlalo' : 'Full Name'}</label><input value={profileForm.full_name} onChange={e=>setProfileForm(f=>({...f,full_name:e.target.value}))} className="mt-1 w-full px-3 py-2 border border-gray-200 rounded-lg text-sm"/></div>
         <div><label className="text-[10px] text-gray-400 uppercase font-medium">Organisation</label><input value={profileForm.organization} onChange={e=>setProfileForm(f=>({...f,organization:e.target.value}))} className="mt-1 w-full px-3 py-2 border border-gray-200 rounded-lg text-sm"/></div>
         <div><label className="text-[10px] text-gray-400 uppercase font-medium">Phone</label><input value={profileForm.phone} onChange={e=>setProfileForm(f=>({...f,phone:e.target.value}))} className="mt-1 w-full px-3 py-2 border border-gray-200 rounded-lg text-sm"/></div>
         <div><label className="text-[10px] text-gray-400 uppercase font-medium">Sector</label><input value={profileForm.sector} onChange={e=>setProfileForm(f=>({...f,sector:e.target.value}))} className="mt-1 w-full px-3 py-2 border border-gray-200 rounded-lg text-sm"/></div>

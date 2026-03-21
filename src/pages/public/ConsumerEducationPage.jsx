@@ -73,7 +73,7 @@ export default function ConsumerEducationPage() {
       <section className="py-10">
         <div className="section-wrapper max-w-5xl">
           <h2 className="text-xl font-bold text-bocra-slate text-center mb-2">{lang === 'tn' ? 'Ditshwanelo Tsa Gago Tsa Bodirisi' : 'Your Consumer Rights'}</h2>
-          <p className="text-sm text-bocra-slate/40 text-center mb-8">Every consumer of communications services in Botswana is entitled to these rights</p>
+          <p className="text-sm text-bocra-slate/40 text-center mb-8">{lang === 'tn' ? 'Modirisi mongwe le mongwe wa ditirelo tsa dikgolagano mo Botswana o na le ditshwanelo tse' : 'Every consumer of communications services in Botswana is entitled to these rights'}</p>
           <div ref={rightsRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {RIGHTS.map(right => (
               <div key={right.title} className="bg-white rounded-xl border border-gray-200 p-5 hover:shadow-md transition-all">
@@ -92,7 +92,7 @@ export default function ConsumerEducationPage() {
       <section className="py-8 bg-bocra-off-white">
         <div className="section-wrapper max-w-5xl">
           <h2 className="text-xl font-bold text-bocra-slate text-center mb-2">{lang === 'tn' ? 'Mathata a a Tlwaelegileng a Badirisi' : 'Common Consumer Issues'}</h2>
-          <p className="text-sm text-bocra-slate/40 text-center mb-8">These are the most frequent complaints BOCRA receives from consumers</p>
+          <p className="text-sm text-bocra-slate/40 text-center mb-8">{lang === 'tn' ? 'Tse ke dingongorego tse di tlwaelegileng thata tse BOCRA e di amogelang go tswa go badirisi' : 'These are the most frequent complaints BOCRA receives from consumers'}</p>
           <div ref={issuesRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {COMMON_ISSUES.map(issue => (
               <div key={issue.title} className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-md transition-all">
@@ -117,7 +117,7 @@ export default function ConsumerEducationPage() {
       <section className="py-10">
         <div className="section-wrapper max-w-4xl">
           <h2 className="text-xl font-bold text-bocra-slate text-center mb-2">{lang === 'tn' ? 'Go Tlhagisa Ngongorego Jang' : 'How to File a Complaint'}</h2>
-          <p className="text-sm text-bocra-slate/40 text-center mb-8">Follow these steps if you have an issue with your service provider</p>
+          <p className="text-sm text-bocra-slate/40 text-center mb-8">{lang === 'tn' ? 'Latela dikgato tse fa o na le bothata le motlamedi wa gago wa tirelo' : 'Follow these steps if you have an issue with your service provider'}</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {STEPS.map((s, i) => (
               <div key={s.step} className="relative">

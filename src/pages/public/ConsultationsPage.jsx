@@ -156,7 +156,7 @@ export default function ConsultationsPage() {
 
   return (
     <div className="bg-white min-h-screen">
-      <div className="bg-bocra-off-white border-b border-gray-100"><div className="section-wrapper py-4"><nav className="text-sm text-bocra-slate/50 flex items-center gap-2"><Link to="/" className="hover:text-bocra-blue transition-colors">Home</Link><ChevronRight size={14} /><span className="text-bocra-slate font-medium">Public Consultations</span></nav></div></div>
+      <div className="bg-bocra-off-white border-b border-gray-100"><div className="section-wrapper py-4"><nav className="text-sm text-bocra-slate/50 flex items-center gap-2"><Link to="/" className="hover:text-bocra-blue transition-colors">Home</Link><ChevronRight size={14} /><span className="text-bocra-slate font-medium">{lang === 'tn' ? 'Ditheriso tsa Setšhaba' : 'Public Consultations'}</span></nav></div></div>
 
       <section className="px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6 pb-0">
         <div className="relative py-12 sm:py-16 px-5 sm:px-8 lg:px-10 rounded-2xl overflow-hidden bg-gradient-to-br from-[#00458B] to-[#001A3A]">
@@ -164,7 +164,7 @@ export default function ConsultationsPage() {
           <div className="absolute bottom-0 left-0 w-36 sm:w-48 h-36 sm:h-48 bg-white/10 rounded-full translate-y-1/2 -translate-x-1/2" />
           <div ref={heroRef} className="relative max-w-3xl mx-auto text-center">
             <div className="flex items-center justify-center gap-2 mb-3"><div className="w-1.5 h-6 rounded-full bg-[#00A6CE]" /><span className="text-xs text-[#00A6CE] uppercase tracking-widest font-medium">PARTICIPATE</span></div>
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white">Public Consultations</h1>
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white">{lang === 'tn' ? 'Ditheriso tsa Setšhaba' : 'Public Consultations'}</h1>
             <p className="text-white/60 mt-3 text-sm sm:text-base max-w-xl mx-auto">Have your say on proposed regulations and policies. BOCRA invites stakeholders and the public to review and comment on draft regulatory instruments.</p>
           </div>
         </div>

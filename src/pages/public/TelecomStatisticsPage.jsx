@@ -104,7 +104,7 @@ export default function TelecomStatisticsPage() {
           <nav className="text-sm text-bocra-slate/50 flex items-center gap-2">
             <Link to="/" className="hover:text-bocra-blue transition-colors">{lang === 'tn' ? 'Gae' : 'Home'}</Link>
             <ChevronRight size={14} />
-            <span className="text-bocra-slate">Telecom Statistics</span>
+            <span className="text-bocra-slate">{lang === 'tn' ? 'Dipalopalo tsa Megala' : 'Telecom Statistics'}</span>
           </nav>
         </div>
       </div>

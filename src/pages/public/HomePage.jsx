@@ -46,11 +46,11 @@ const getStats = (lang) => [
   { value: 3, suffix: '', label: lang === 'tn' ? 'Balaodi ba Neteweke' : 'Network Operators', icon: Building },
 ];
 
-const NEWS = [
-  { date: 'Feb 2024', cat: 'Tender', title: 'Supply and Delivery of ICT Equipment', excerpt: 'Invitation to tender for the supply and delivery of ICT equipment to support BOCRA operations.' },
-  { date: 'Jan 2024', cat: 'Tender', title: 'BOCRA Public Tender Notice', excerpt: 'General procurement notice inviting qualified bidders for Authority service requirements.' },
-  { date: 'Dec 2023', cat: 'Notice', title: 'BOCRA Public Advertisement', excerpt: 'Official advertisement outlining regulatory updates and stakeholder communications.' },
-  { date: 'Jun 2021', cat: 'Media Release', title: 'Broadband Price Reduction Approved', excerpt: 'BOCRA approved up to 40% reduction in BTC fixed broadband prices effective June 2021.' },
+const getNews = (lang) => [
+  { date: 'Feb 2024', cat: lang === 'tn' ? 'Tendara' : 'Tender', title: lang === 'tn' ? 'Go Tlhagisa le go Isa Didirisiwa tsa ICT' : 'Supply and Delivery of ICT Equipment', excerpt: lang === 'tn' ? 'Taletso ya tendara ya go tlhagisa le go isa didirisiwa tsa ICT go tshegetsa ditiro tsa BOCRA.' : 'Invitation to tender for the supply and delivery of ICT equipment to support BOCRA operations.' },
+  { date: 'Jan 2024', cat: lang === 'tn' ? 'Tendara' : 'Tender', title: lang === 'tn' ? 'Kitsiso ya Tendara ya Setšhaba ya BOCRA' : 'BOCRA Public Tender Notice', excerpt: lang === 'tn' ? 'Kitsiso ya go reka e e laletsang batho ba ba tshwanelang go tsenya ditendara tsa ditlhokego tsa ditirelo tsa Bothati.' : 'General procurement notice inviting qualified bidders for Authority service requirements.' },
+  { date: 'Dec 2023', cat: lang === 'tn' ? 'Kitsiso' : 'Notice', title: lang === 'tn' ? 'Papatso ya Setšhaba ya BOCRA' : 'BOCRA Public Advertisement', excerpt: lang === 'tn' ? 'Papatso ya semmuso e e tlhalosang diphetogo tsa taolo le dikgolagano le baamegi.' : 'Official advertisement outlining regulatory updates and stakeholder communications.' },
+  { date: 'Jun 2021', cat: lang === 'tn' ? 'Pegelo ya Bobegadikgang' : 'Media Release', title: lang === 'tn' ? 'Phokotso ya Ditlhwatlhwa tsa Inthanete e Amogetse' : 'Broadband Price Reduction Approved', excerpt: lang === 'tn' ? 'BOCRA e amogetse phokotso ya go ya go 40% ya ditlhwatlhwa tsa inthanete ya BTC go simolola Seetebosigo 2021.' : 'BOCRA approved up to 40% reduction in BTC fixed broadband prices effective June 2021.' },
 ];
 
 export default function HomePage() {
@@ -58,6 +58,7 @@ export default function HomePage() {
   const SECTORS = getSectors(lang);
   const SERVICES = getServices(lang);
   const STATS = getStats(lang);
+  const NEWS = getNews(lang);
   const heroRef = useRef(null);
   const sectorsRef = useStaggerReveal({ stagger: 0.15 });
   const servicesRef = useStaggerReveal({ stagger: 0.08 });
@@ -113,7 +114,7 @@ export default function HomePage() {
 
             <div className="flex flex-col sm:flex-row gap-3 mt-4 sm:mt-6">
               <Link to="/about/profile" className="h-btn inline-flex items-center justify-center gap-2 px-6 sm:px-7 py-3 sm:py-3.5 bg-white text-bocra-blue font-bold rounded-xl hover:bg-gray-100 transition-all">
-                Discover BOCRA <ArrowRight size={16} />
+                {lang === 'tn' ? 'Ithute ka BOCRA' : 'Discover BOCRA'} <ArrowRight size={16} />
               </Link>
               <Link to="/services/file-complaint" className="h-btn inline-flex items-center justify-center gap-2 px-6 sm:px-7 py-3 sm:py-3.5 border-2 border-white/30 text-white font-semibold rounded-xl hover:bg-white/10 transition-all">
                 File a Complaint
@@ -126,7 +127,7 @@ export default function HomePage() {
       {/* ═══ SECTORS ═══ */}
       <section className="py-10 sm:py-10 bg-white">
         <div className="section-wrapper">
-          <SectionHead label="{lang === 'tn' ? 'Se Re Se Laolang' : 'What We Regulate'}" title="{lang === 'tn' ? 'Maphata a le Manè, Pono e le Nngwe' : 'Four Sectors, One Vision'}" />
+          <SectionHead label={lang === 'tn' ? 'Se Re Se Laolang' : 'What We Regulate'} title={lang === 'tn' ? 'Maphata a le Manè, Pono e le Nngwe' : 'Four Sectors, One Vision'} />
           <div ref={sectorsRef} className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory sm:snap-none sm:pb-0 sm:grid sm:grid-cols-2 lg:grid-cols-4 sm:gap-5 mt-8 -mx-4 px-4 sm:mx-0 sm:px-0" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' }}>
             {SECTORS.map((s) => {
               const Icon = s.icon;
@@ -154,7 +155,7 @@ export default function HomePage() {
       {/* ═══ SERVICES ═══ */}
       <section className="py-10 sm:py-10 bg-gray-50">
         <div className="section-wrapper">
-          <SectionHead label="Citizen Services" title="How Can We Help You?" />
+          <SectionHead label={lang === 'tn' ? 'Ditirelo tsa Baagi' : 'Citizen Services'} title={lang === 'tn' ? 'Re ka go Thusa Jang?' : 'How Can We Help You?'} />
           <div ref={servicesRef} className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory sm:snap-none sm:pb-0 sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-5 mt-8 -mx-4 px-4 sm:mx-0 sm:px-0" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' }}>
             {SERVICES.map((s) => {
               const Icon = s.icon;
@@ -189,8 +190,8 @@ export default function HomePage() {
         <div className="absolute inset-0 bg-bocra-blue/90" />
         <div className="section-wrapper relative z-10">
           <div className="text-center mb-8">
-            <span className="inline-block px-4 py-1.5 bg-white/10 rounded-full text-sm font-medium text-white/80 mb-4">Telecom Statistics</span>
-            <h2 className="text-3xl md:text-4xl font-extrabold text-white">Botswana by the Numbers</h2>
+            <span className="inline-block px-4 py-1.5 bg-white/10 rounded-full text-sm font-medium text-white/80 mb-4">{lang === 'tn' ? 'Dipalopalo tsa Megala' : 'Telecom Statistics'}</span>
+            <h2 className="text-3xl md:text-4xl font-extrabold text-white">{lang === 'tn' ? 'Botswana ka Dipalo' : 'Botswana by the Numbers'}</h2>
           </div>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
             {STATS.map((s) => <StatCard key={s.label} {...s} />)}
@@ -208,8 +209,8 @@ export default function HomePage() {
         <div className="section-wrapper">
           <div className="flex items-end justify-between mb-8">
             <div>
-              <span className="inline-block px-4 py-1.5 bg-bocra-blue/5 rounded-full text-sm font-medium text-bocra-blue mb-4">Latest Updates</span>
-              <h2 className="text-3xl md:text-4xl font-extrabold text-bocra-slate">News & Events</h2>
+              <span className="inline-block px-4 py-1.5 bg-bocra-blue/5 rounded-full text-sm font-medium text-bocra-blue mb-4">{lang === 'tn' ? 'Diphetogo tsa Bosheng' : 'Latest Updates'}</span>
+              <h2 className="text-3xl md:text-4xl font-extrabold text-bocra-slate">{lang === 'tn' ? 'Dikgang le Ditiragalo' : 'News & Events'}</h2>
             </div>
             <Link to="/media/news-events" className="hidden sm:inline-flex items-center gap-2 text-sm font-semibold text-bocra-blue hover:gap-3 transition-all">
               All News <ArrowRight size={14} />
@@ -242,8 +243,8 @@ export default function HomePage() {
           <div className="group relative rounded-3xl p-10 md:p-12 text-white overflow-hidden bg-bocra-magenta hover:shadow-2xl hover:shadow-bocra-magenta/20 hover:-translate-y-1 transition-all duration-300 cursor-pointer">
             <div className="absolute top-0 right-0 w-40 h-40 bg-white/5 rounded-full blur-2xl translate-x-1/3 -translate-y-1/3 group-hover:scale-150 transition-transform duration-500" />
             <AlertCircle size={32} className="mb-4 opacity-80 group-hover:scale-110 transition-transform" />
-            <h3 className="text-2xl md:text-3xl font-extrabold">Have a Complaint?</h3>
-            <p className="text-white/70 mt-2 mb-6 max-w-md">Report issues with your telecom, broadcasting, or postal provider.</p>
+            <h3 className="text-2xl md:text-3xl font-extrabold">{lang === 'tn' ? 'A o na le Ngongorego?' : 'Have a Complaint?'}</h3>
+            <p className="text-white/70 mt-2 mb-6 max-w-md">{lang === 'tn' ? 'Bega mathata a motlamedi wa gago wa megala, phasalatso, kgotsa poso.' : 'Report issues with your telecom, broadcasting, or postal provider.'}</p>
             <Link to="/services/file-complaint" className="inline-flex items-center gap-2 px-6 py-3 bg-white text-bocra-magenta font-bold rounded-xl hover:shadow-lg hover:gap-3 transition-all">
               File Now <ArrowRight size={16} />
             </Link>
@@ -251,8 +252,8 @@ export default function HomePage() {
           <div className="group relative rounded-3xl p-10 md:p-12 text-white overflow-hidden bg-bocra-blue hover:shadow-2xl hover:shadow-bocra-blue/20 hover:-translate-y-1 transition-all duration-300 cursor-pointer">
             <div className="absolute top-0 right-0 w-40 h-40 bg-white/5 rounded-full blur-2xl translate-x-1/3 -translate-y-1/3 group-hover:scale-150 transition-transform duration-500" />
             <FileText size={32} className="mb-4 opacity-80 group-hover:scale-110 transition-transform" />
-            <h3 className="text-2xl md:text-3xl font-extrabold">Need a Licence?</h3>
-            <p className="text-white/70 mt-2 mb-6 max-w-md">Apply for telecom, broadcasting, or postal service licences.</p>
+            <h3 className="text-2xl md:text-3xl font-extrabold">{lang === 'tn' ? 'A o Tlhoka Laesense?' : 'Need a Licence?'}</h3>
+            <p className="text-white/70 mt-2 mb-6 max-w-md">{lang === 'tn' ? 'Ikopela dilaesense tsa megala, phasalatso, kgotsa ditirelo tsa poso.' : 'Apply for telecom, broadcasting, or postal service licences.'}</p>
             <Link to="/licensing" className="inline-flex items-center gap-2 px-6 py-3 bg-white text-bocra-blue font-bold rounded-xl hover:shadow-lg hover:gap-3 transition-all">
               Learn More <ArrowRight size={16} />
             </Link>

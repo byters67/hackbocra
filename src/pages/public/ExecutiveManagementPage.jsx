@@ -25,11 +25,11 @@ const C = {
 };
 
 /* ── Executive Management Data ── */
-const EXEC_MEMBERS = [
+const getExecMembers = (lang) => [
   {
     id: 'mokgware',
     name: 'Mr. Martin Mokgware',
-    role: 'Chief Executive',
+    role: lang === 'tn' ? 'Motlhankedi yo Mogolo' : 'Chief Executive',
     department: 'Office of the Chief Executive',
     photo: `${B}images/executive/Martin_mokgware.jpg`,
     colour: C.blue,
@@ -45,7 +45,7 @@ const EXEC_MEMBERS = [
   {
     id: 'setshwane',
     name: 'Mr. Murphy Setshwane',
-    role: 'Director',
+    role: lang === 'tn' ? 'Motlhankedi' : 'Director',
     department: 'Business Development',
     photo: `${B}images/executive/Murphy_setshwane.jpg`,
     colour: C.cyan,
@@ -58,7 +58,7 @@ const EXEC_MEMBERS = [
   {
     id: 'tladinyane',
     name: 'Mr. Peter Tladinyane',
-    role: 'Director',
+    role: lang === 'tn' ? 'Motlhankedi' : 'Director',
     department: 'Corporate Services',
     photo: `${B}images/executive/Peter_tladinyane.jpg`,
     colour: C.magenta,
@@ -71,7 +71,7 @@ const EXEC_MEMBERS = [
   {
     id: 'mine',
     name: 'Ms. Bonny Mine',
-    role: 'Director',
+    role: lang === 'tn' ? 'Motlhankedi' : 'Director',
     department: 'Finance',
     photo: `${B}images/executive/Bonnie_mine.jpg`,
     colour: C.yellow,
@@ -84,7 +84,7 @@ const EXEC_MEMBERS = [
   {
     id: 'luke',
     name: 'Mr. Bathopi Luke',
-    role: 'Director',
+    role: lang === 'tn' ? 'Motlhankedi' : 'Director',
     department: 'Technical Services',
     photo: `${B}images/executive/Bathopi_luke.jpg`,
     colour: C.green,
@@ -97,7 +97,7 @@ const EXEC_MEMBERS = [
   {
     id: 'mmoshe',
     name: 'Ms. Tebogo Mmoshe',
-    role: 'Director',
+    role: lang === 'tn' ? 'Motlhankedi' : 'Director',
     department: 'Licensing',
     photo: `${B}images/executive/Tebogo_mmoshe.jpg`,
     colour: C.cyan,
@@ -110,7 +110,7 @@ const EXEC_MEMBERS = [
   {
     id: 'ratladi',
     name: 'Ms. Maitseo Ratladi',
-    role: 'Director',
+    role: lang === 'tn' ? 'Motlhankedi' : 'Director',
     department: 'Broadband & Universal Service',
     photo: `${B}images/executive/Maitseo_ratladi.jpg`,
     colour: C.magenta,
@@ -258,7 +258,7 @@ function ExecCard({ member, index, onClick }) {
 
         <div className="mt-3 flex items-center justify-center gap-1.5 text-sm font-semibold opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0"
           style={{ color: member.colour }}>
-          <span>View Profile</span>
+          <span>{lang === 'tn' ? 'Bona Porofaele' : 'View Profile'}</span>
           <ChevronRight className="w-4 h-4" />
         </div>
       </div>
@@ -321,7 +321,7 @@ function CECard({ member, onClick }) {
           </p>
           <div className="mt-4 flex items-center gap-1.5 text-sm font-semibold opacity-60 group-hover:opacity-100 transition-all duration-300 justify-center sm:justify-start"
             style={{ color: member.colour }}>
-            <span>View Full Profile</span>
+            <span>{lang === 'tn' ? 'Bona Porofaele ka Botlalo' : 'View Full Profile'}</span>
             <ChevronRight className="w-4 h-4" />
           </div>
         </div>
@@ -339,6 +339,7 @@ function CECard({ member, onClick }) {
  * ══════════════════════════════════════════════════════════════════ */
 export default function ExecutiveManagementPage() {
   const { lang } = useLanguage();
+  const EXEC_MEMBERS = getExecMembers(lang);
   const [selected, setSelected] = useState(null);
   const heroRef = useRef(null);
 
@@ -364,7 +365,7 @@ export default function ExecutiveManagementPage() {
             <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18l6-6-6-6"/></svg></span>
             <Link to="/about/profile" className="hover:text-bocra-blue transition-colors">About</Link>
             <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18l6-6-6-6"/></svg></span>
-            <span className="text-bocra-slate font-medium">Executive Management</span>
+            <span className="text-bocra-slate font-medium">{lang === 'tn' ? 'Botsamaisi jwa Phethagatso' : 'Executive Management'}</span>
           </nav>
         </div>
       </div>
@@ -393,7 +394,7 @@ export default function ExecutiveManagementPage() {
           <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: `${C.cyan}15` }}>
             <Users className="w-4 h-4" style={{ color: C.cyan }} />
           </div>
-          <h2 className="text-lg sm:text-xl font-bold text-[#001A3A]">Department Directors</h2>
+          <h2 className="text-lg sm:text-xl font-bold text-[#001A3A]">{lang === 'tn' ? 'Batlhankedi ba Maphata' : 'Department Directors'}</h2>
           <div className="h-px flex-1 bg-gray-100" />
         </div>
 
