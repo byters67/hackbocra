@@ -107,9 +107,9 @@ export default function ChatWidget() {
 
   return (
     <>
-      {/* Chat button — bottom right, above on desktop, stacked on mobile */}
-      <div className="fixed bottom-24 sm:bottom-24 right-4 sm:right-6 z-[95] flex items-end gap-2">
-        {/* Tooltip — shows on hover (desktop) or not at all on mobile */}
+      {/* Chat button — bottom right */}
+      <div className="fixed bottom-20 sm:bottom-24 right-4 sm:right-6 z-[95] flex items-end gap-2">
+        {/* Tooltip — shows on hover (desktop only) */}
         {!open && hovered && (
           <div className="hidden sm:block bg-white rounded-xl shadow-lg border border-gray-200 px-4 py-2.5 max-w-[210px] mb-1">
             <p className="text-xs font-medium text-[#00458B]">BOCRA AI Assistant</p>
@@ -134,8 +134,7 @@ export default function ChatWidget() {
       {/* Chat Panel */}
       {open && (
         <div
-          className="fixed bottom-[140px] sm:bottom-[140px] right-4 sm:right-6 z-[95] w-[calc(100vw-2rem)] sm:w-96 bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-gray-200"
-          style={{ maxHeight: "min(65vh, 480px)" }}
+          className="fixed bottom-[5.5rem] sm:bottom-[140px] right-3 sm:right-6 z-[95] w-[calc(100vw-1.5rem)] sm:w-96 max-h-[calc(100dvh-7rem)] sm:max-h-[480px] bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-gray-200"
         >
           {/* Header */}
           <div className="bg-[#00458B] text-white px-4 py-3 flex items-center justify-between shrink-0">
@@ -148,14 +147,23 @@ export default function ChatWidget() {
                 <span className="text-[9px] text-white/50 ml-2">AI-Powered</span>
               </div>
             </div>
-            <button
-              onClick={clearChat}
-              className="text-white/70 hover:text-white transition-colors"
-              aria-label="Clear chat"
-              title="Start new conversation"
-            >
-              <RotateCcw size={14} />
-            </button>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={clearChat}
+                className="text-white/70 hover:text-white transition-colors"
+                aria-label="Clear chat"
+                title="Start new conversation"
+              >
+                <RotateCcw size={14} />
+              </button>
+              <button
+                onClick={() => setOpen(false)}
+                className="sm:hidden text-white/70 hover:text-white transition-colors"
+                aria-label="Close chat"
+              >
+                <X size={16} />
+              </button>
+            </div>
           </div>
 
           {/* Messages */}

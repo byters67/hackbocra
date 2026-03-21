@@ -201,7 +201,7 @@ export function useTextReveal() {
  * @param {string} suffix - Optional suffix (e.g., '+', '%', 'M')
  * @returns {React.RefObject}
  */
-export function useCountUp(target, suffix = '') {
+export function useCountUp(target, suffix = '', compact = false) {
   const ref = useRef(null);
 
   useEffect(() => {
@@ -209,6 +209,15 @@ export function useCountUp(target, suffix = '') {
     if (!el) return;
 
     const obj = { value: 0 };
+
+    const formatValue = (val) => {
+      const rounded = Math.round(val);
+      if (compact) {
+        if (rounded >= 1000000) return (rounded / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
+        if (rounded >= 1000) return Math.round(rounded / 1000) + 'k';
+      }
+      return rounded.toLocaleString();
+    };
 
     const animation = gsap.to(obj, {
       value: target,
@@ -220,7 +229,7 @@ export function useCountUp(target, suffix = '') {
         toggleActions: 'play none none none', // play once, never reverse
       },
       onUpdate: () => {
-        el.textContent = Math.round(obj.value).toLocaleString() + suffix;
+        el.textContent = formatValue(obj.value) + suffix;
       },
     });
 
@@ -228,7 +237,7 @@ export function useCountUp(target, suffix = '') {
       animation.scrollTrigger?.kill();
       animation.kill();
     };
-  }, [target, suffix]);
+  }, [target, suffix, compact]);
 
   return ref;
 }

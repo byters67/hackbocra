@@ -612,9 +612,9 @@ function StatusPill({ status }) {
 
 function InfoField({ label, value }) {
   return (
-    <div>
+    <div className="min-w-0">
       <p className="text-[10px] font-medium text-gray-400 uppercase tracking-wide">{label}</p>
-      <p className="text-sm text-gray-900 mt-0.5">{value || '\u2014'}</p>
+      <p className="text-sm text-gray-900 mt-0.5 break-words">{value || '\u2014'}</p>
     </div>
   );
 }

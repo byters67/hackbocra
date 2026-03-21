@@ -173,6 +173,8 @@ function CompanySearch() {
 }
 
 function RegisterForm({ setView, signUp }) {
+  const { lang } = useLanguage();
+  const tn = lang === 'tn';
   const [form, setForm] = useState({ company: '', firstName: '', lastName: '', idType: 'omang', nationalId: '', email: '', phone: '', password: '', confirmPassword: '', address: '' });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -311,6 +313,8 @@ function RegisterForm({ setView, signUp }) {
 }
 
 function LoginForm({ setView, signIn }) {
+  const { lang } = useLanguage();
+  const tn = lang === 'tn';
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [show, setShow] = useState(false);
@@ -361,6 +365,8 @@ function LoginForm({ setView, signIn }) {
 }
 
 function OperatorDashboard({ operator, user, signOut, setView }) {
+  const { lang } = useLanguage();
+  const tn = lang === 'tn';
   const profile = operator; // this is from profiles table
   const name = profile?.full_name || user?.user_metadata?.full_name || user?.email || 'Operator';
   const [applications, setApplications] = useState([]);

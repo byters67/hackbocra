@@ -78,6 +78,7 @@ const REVIEW_COOLDOWN_MS = 60 * 1000; // 1 minute between re-runs
 // V-07 remediation: localhost origins only included when ENVIRONMENT env var is set to 'development'
 const PRODUCTION_ORIGINS = [
   'https://hackathonteamproject.github.io',
+  'https://byters67.github.io',
 ];
 const DEV_ORIGINS = [
   'http://localhost:5173',
