@@ -17,6 +17,7 @@ import { Outlet, Navigate } from 'react-router-dom';
 import { useAuth } from '../../lib/auth';
 import { supabase } from '../../lib/supabase';
 import AdminSidebar from '../../components/admin/AdminSidebar';
+import { useLanguage } from '../../lib/language';
 
 export default function AdminLayout() {
   // Auth bypass strictly for local development only — stripped from production builds by Vite
@@ -26,6 +27,7 @@ export default function AdminLayout() {
     && window.location.hostname === 'localhost';
 
   const { user, loading: authLoading, signOut } = useAuth();
+  const { lang } = useLanguage();
   const [profile, setProfile] = useState(DEV_BYPASS_AUTH ? { id: 'demo', full_name: 'Demo Admin', role: 'admin' } : null);
   const [profileLoading, setProfileLoading] = useState(DEV_BYPASS_AUTH ? false : true);
   const [profileError, setProfileError] = useState(null);
