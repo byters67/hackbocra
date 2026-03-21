@@ -63,7 +63,7 @@ const PAGE_CONTENT = {
       <h2>Telecommunications Regulation in Botswana</h2>
       <p>The telecommunications sector in Botswana has undergone significant transformation since the 1995 Telecommunications Policy, which opened the market to competition. BOCRA regulates three Primary Telecommunications Operators (PTOs): Botswana Telecommunications Corporation (BTC), Mascom Wireless, and Orange Botswana.</p>
 
-      <h3>{'Licensing Framework'}</h3>
+      <h3>{lang === 'tn' ? 'Thulaganyo ya Dilaesense' : 'Licensing Framework'}</h3>
       <p>The licensing framework includes Network Facility Provider (NFP) licences, Service Application Provider (SAP) licences, and Content Service Provider (CSP) licences. Value Added Network Services (VANS) have been liberalised, and VoIP services are permitted under the current regulatory framework.</p>
 
       <h3>Market Reforms</h3>
@@ -106,7 +106,7 @@ const PAGE_CONTENT = {
       <h2>Broadcasting Regulation</h2>
       <p>The CRA Act mandates BOCRA to regulate all broadcasting, subscription management services and re-broadcasting activities save for state broadcasting. BOCRA regulates commercial radio and television broadcasting in Botswana.</p>
 
-      <h3>{'Licensed Commercial Radio Stations'}</h3>
+      <h3>{lang === 'tn' ? 'Diteišene tsa Radio tsa Kgwebo tse di nang le Laesense' : 'Licensed Commercial Radio Stations'}</h3>
       <ul>
         <li><strong>Yarona FM</strong> \u2014 Available in most major towns and villages in Botswana, also accessible worldwide via online broadcasting</li>
         <li><strong>Duma FM</strong> \u2014 Available in most major towns and villages, with online broadcasting for worldwide access</li>
@@ -118,10 +118,10 @@ const PAGE_CONTENT = {
         <li><strong>eBotswana TV</strong> \u2014 Currently available in Gaborone and surrounding villages within a 60km radius through terrestrial broadcasting. Plans to introduce satellite broadcast service for national coverage.</li>
       </ul>
 
-      <h3>{'Local Content Requirements'}</h3>
+      <h3>{lang === 'tn' ? 'Ditlhokego tsa Diteng tsa Selegae' : 'Local Content Requirements'}</h3>
       <p>Broadcasters are required to promote music tracks by local artists. Broadcasters\u2019 licences specify a certain percentage of local content to be complied with, promoting Botswana culture, talent, and perspectives in the media landscape.</p>
 
-      <h3>{'Online Broadcasting'}</h3>
+      <h3>{lang === 'tn' ? 'Phasalatso ya mo Inthaneteng' : 'Online Broadcasting'}</h3>
       <p>Commercial radio stations have extended access to their services through online broadcasting transmission, making them accessible worldwide. This extends BOCRA\u2019s regulatory mandate into digital broadcasting platforms.</p>
     `,
     title_tn: 'Phasalatso',
@@ -154,12 +154,12 @@ const PAGE_CONTENT = {
     breadcrumb: ['Mandate', 'Postal'],
     accent: 'bocra-yellow',
     content: `
-      <h2>{'Postal Services Regulation'}</h2>
+      <h2>{lang === 'tn' ? 'Taolo ya Ditirelo tsa Poso' : 'Postal Services Regulation'}</h2>
       <p>The CRA Act, 2012 ushered in a new dawn of regulation for the postal sector as BOCRA assumed the mandate of supervising the provision of postal services in Botswana. The CRA Act prohibits any person from providing postal services without a valid licence issued by BOCRA.</p>
 
       <p>The Authority is mandated to ensure that there is provision of safe, reliable, efficient and affordable postal services throughout Botswana.</p>
 
-      <h3>{'Market Structure'}</h3>
+      <h3>{lang === 'tn' ? 'Popego ya Mmaraka' : 'Market Structure'}</h3>
       <p>The postal sector is divided into two main categories:</p>
       <ul>
         <li><strong>Universal Postal Services</strong> \u2014 Provided by the Designated Postal Operator (DPO), ensuring nationwide mail delivery coverage</li>
@@ -260,7 +260,7 @@ const PAGE_CONTENT = {
     breadcrumb: ['Mandate', 'Legislation'],
     accent: 'bocra-blue',
     content: `
-      <h2>{'Governing Legislation'}</h2>
+      <h2>{lang === 'tn' ? 'Melao e e Laolang' : 'Governing Legislation'}</h2>
       <p>The Botswana Communications Regulatory Authority (BOCRA) is an independent communications regulatory authority established through the Communications Regulatory Authority Act 2012 (CRA) on 1 April 2013 with the mandate to regulate the communications sector in Botswana comprising Telecommunications, Internet and Information and Communications Technologies (ICTs), Radio communications, Broadcasting, Postal services and related matters.</p>
 
       <p>BOCRA also has a mandate under the Electronic Records (Evidence) Act No 13 of 2014. That Act deals with the admissibility of electronic evidence in court, to establish an approved process for the production of electronic documents and also certify electronic records systems for purposes of integrity.</p>
@@ -304,7 +304,7 @@ const PAGE_CONTENT = {
       <h2>Licensing Framework</h2>
       <p>BOCRA is mandated by Section 6(h) of the CRA Act to process applications for and issue licences, permits, permissions, concessions and authorities for regulated sectors being telecommunications, Internet, radio communications, broadcasting and postal.</p>
 
-      <h3>{'Major Licensing Categories'}</h3>
+      <h3>{lang === 'tn' ? 'Mekgwa e Megolo ya Dilaesense' : 'Major Licensing Categories'}</h3>
       <ul>
         <li><strong>Network Facilities Provider (NFP)</strong> \u2014 Licensees own, operate or provide any form of physical infrastructure used principally for carrying services, applications and content.</li>
         <li><strong>Service Application Provider (SAP)</strong> \u2014 Licensees provide telecommunications services to end users using network facilities provided by NFP licensees.</li>
@@ -317,7 +317,7 @@ const PAGE_CONTENT = {
         <li><strong>Commercial Postal Operator (CPO)</strong> \u2014 Provides for postal operators which provide value-added services</li>
       </ul>
 
-      <h3>{'Apply for a Licence'}</h3>
+      <h3>{lang === 'tn' ? 'Ikopela Laesense' : 'Apply for a Licence'}</h3>
       <p>Choose the type of licence you are applying for from the following list:</p>
       <ul>
         <li>Aircraft Radio Station Licence</li>
@@ -362,7 +362,7 @@ const PAGE_CONTENT = {
     breadcrumb: ['About', 'Board of Directors'],
     accent: 'bocra-blue',
     content: `
-      <h2>{'Board of Directors'}</h2>
+      <h2>{lang === 'tn' ? 'Lekgotla la Batlhankedi' : 'Board of Directors'}</h2>
       <p>The BOCRA Board provides strategic oversight and governance for the authority.</p>
       <ul>
         <li><strong>Dr. Bokamoso Basutli, PhD</strong> \u2014 Board Chairperson</li>
@@ -716,7 +716,7 @@ const PAGE_CONTENT = {
     breadcrumb: ['About', 'Organogram'],
     accent: 'bocra-blue',
     content: `
-      <h2>{'Organisational Structure'}</h2>
+      <h2>{lang === 'tn' ? 'Thulaganyo ya Setheo' : 'Organisational Structure'}</h2>
       <p>BOCRA is structured into the following departments under the leadership of the Chief Executive:</p>
       <ul>
         <li><strong>Compliance &amp; Monitoring</strong> \u2014 Ensuring licensee compliance with regulations</li>
@@ -979,7 +979,7 @@ const PAGE_CONTENT = {
       <p>BOCRA publishes tenders for goods and services required to fulfil its regulatory mandate. All tenders are conducted in accordance with the Public Procurement Act.</p>
       <h3>Current Opportunities</h3>
       <p>Expression of Interest: Supplier Database 2026/27 \u2014 BOCRA invites qualified suppliers to register for inclusion in the Authority\u2019s supplier database for the upcoming financial year.</p>
-      <h3>{'How to Apply'}</h3>
+      <h3>{lang === 'tn' ? 'Go Ikopela Jang' : 'How to Apply'}</h3>
       <p>Tender documents are available from BOCRA offices at Plot 50671 Independence Avenue, Gaborone. Completed submissions must be deposited in the tender box at BOCRA\u2019s reception by the stated deadline.</p>
       <p>For procurement enquiries, contact the Finance Department at <a href="tel:+2673957755" style="color:#00A6CE;text-decoration:underline;">+267 395 7755</a> or email <a href="mailto:info@bocra.org.bw" style="color:#00A6CE;text-decoration:underline;">info@bocra.org.bw</a>.</p>
     `,
@@ -1042,9 +1042,9 @@ const PAGE_CONTENT = {
     breadcrumb: ['Media', 'Speeches'],
     accent: 'bocra-blue',
     content: `
-      <h2>{'Speeches Archive'}</h2>
+      <h2>{lang === 'tn' ? 'Dipuo tsa Kwa Morago' : 'Speeches Archive'}</h2>
       <p>Speeches by the BOCRA Chief Executive and senior leadership at regulatory events, conferences, and public engagements.</p>
-      <h3>{'Recent Speeches'}</h3>
+      <h3>{lang === 'tn' ? 'Dipuo tsa Bosheng' : 'Recent Speeches'}</h3>
       <ul>
         <li>Breakfast with Broadcasters \u2014 CE Martin Mokgware</li>
         <li>MOU Signing Ceremonies \u2014 Regional regulatory cooperation</li>
@@ -1072,7 +1072,7 @@ const PAGE_CONTENT = {
         <li>Support peer engagement with regional regulators</li>
         <li>Publish regulatory decisions and consultation outcomes</li>
       </ul>
-      <h3>{'Media Enquiries'}</h3>
+      <h3>{lang === 'tn' ? 'Dipotso tsa Bobegadikgang' : 'Media Enquiries'}</h3>
       <p>For press enquiries and media requests, contact the Corporate Communications department at <a href="mailto:info@bocra.org.bw" style="color:#00A6CE;text-decoration:underline;">info@bocra.org.bw</a> or <a href="tel:+2673957755" style="color:#00A6CE;text-decoration:underline;">+267 395 7755</a>.</p>
     `,
   },

@@ -19,7 +19,6 @@ const LAWS = [
 
 export default function LegislationPage() {
   const { lang } = useLanguage();
-  const tn = lang === 'tn';
   const cardsRef = useStaggerReveal({ stagger: 0.08 });
   return (
     <div className="bg-white min-h-screen">

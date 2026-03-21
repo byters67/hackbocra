@@ -40,7 +40,6 @@ const OBJECTIVES = [
 
 export default function OrganogramPage() {
   const { lang } = useLanguage();
-  const tn = lang === 'tn';
   const [expanded, setExpanded] = useState(null);
   const treeRef = useRef(null);
   const boardRef = useRef(null);
@@ -201,7 +200,7 @@ export default function OrganogramPage() {
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-bold text-bocra-slate truncate group-hover:text-[#00458B] transition-colors">{dept.name}</p>
-                        <p className="text-[10px] text-bocra-slate/30">{tn ? 'Mokaedi' : 'Director'}</p>
+                        <p className="text-[10px] text-bocra-slate/30">Director</p>
                       </div>
                       <ChevronDown size={14} className={`text-gray-300 transition-all duration-300 flex-shrink-0 ${isExp ? 'rotate-180 text-gray-500' : 'group-hover:text-gray-400'}`} />
                     </div>

@@ -140,7 +140,6 @@ const TIMELINE = [
 
 export default function HistoryPage() {
   const { lang } = useLanguage();
-  const tn = lang === 'tn';
   const heroRef = useScrollReveal();
   const timelineRef = useStaggerReveal({ stagger: 0.08 });
 
@@ -149,11 +148,11 @@ export default function HistoryPage() {
       <div className="bg-bocra-off-white border-b border-gray-100">
         <div className="section-wrapper py-4">
           <nav className="text-sm text-bocra-slate/50 flex items-center gap-2">
-            <Link to="/" className="hover:text-bocra-blue transition-colors">Home</Link>
+            <Link to="/" className="hover:text-bocra-blue transition-colors">{lang === 'tn' ? 'Gae' : 'Home'}</Link>
             <ChevronRight size={14} />
-            <Link to="/about/profile" className="hover:text-bocra-blue transition-colors">About</Link>
+            <Link to="/about/profile" className="hover:text-bocra-blue transition-colors">{lang === 'tn' ? 'Ka ga Rona' : 'About'}</Link>
             <ChevronRight size={14} />
-            <span className="text-bocra-slate font-medium">History</span>
+            <span className="text-bocra-slate font-medium">{lang === 'tn' ? 'Histori' : 'History'}</span>
           </nav>
         </div>
       </div>
@@ -179,8 +178,8 @@ export default function HistoryPage() {
       <section className="py-14 bg-bocra-blue-dark">
         <div className="section-wrapper max-w-3xl flex flex-col sm:flex-row items-center justify-between gap-6">
           <div>
-            <h3 className="text-xl font-bold text-white">Learn more about BOCRA</h3>
-            <p className="text-white/50 text-sm mt-1">Explore our leadership, structure, and mandate</p>
+            <h3 className="text-xl font-bold text-white">{lang === 'tn' ? 'Ithute go feta ka BOCRA' : 'Learn more about BOCRA'}</h3>
+            <p className="text-white/50 text-sm mt-1">{lang === 'tn' ? 'Sekaseka botsamaisi, thulaganyo, le tiragatso ya rona' : 'Explore our leadership, structure, and mandate'}</p>
           </div>
           <div className="flex gap-3">
             <Link to="/about/profile" className="px-5 py-2.5 bg-white text-bocra-blue font-bold text-sm rounded-xl hover:bg-gray-100 transition-all">

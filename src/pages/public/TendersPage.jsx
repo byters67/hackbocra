@@ -19,7 +19,7 @@ const STATUS_STYLE = {
   open: { bg: 'bg-green-50', text: 'text-green-700', border: 'border-green-200', label: 'Open' },
   closed: { bg: 'bg-gray-100', text: 'text-gray-500', border: 'border-gray-200', label: 'Closed' },
   awarded: { bg: 'bg-blue-50', text: 'text-blue-700', border: 'border-blue-200', label: 'Awarded' },
-  adjudicated: { bg: 'bg-[#F7B731]/10', text: 'text-[#F7B731]', border: 'border-[#F7B731]/20', label: 'Adjudicated' },
+  adjudicated: { bg: 'bg-[#F7B731]/10', text: 'text-[#F7B731]', border: 'border-[#F7B731]/20', label: lang === 'tn' ? 'Tse di Atlholetsweng' : 'Adjudicated' },
 };
 
 const TENDERS = [
@@ -106,7 +106,6 @@ const ITT_SECTIONS = [
 
 export default function TendersPage() {
   const { lang } = useLanguage();
-  const tn = lang === 'tn';
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('All');
   const [filterCategory, setFilterCategory] = useState('All');
@@ -168,10 +167,10 @@ export default function TendersPage() {
             </div>
             <select value={filterStatus} onChange={e => setFilterStatus(e.target.value)}
               className="px-3 py-2.5 border border-gray-200 rounded-lg text-xs bg-white">
-              <option value="All">{tn ? 'Maemo Otlhe' : 'All Status'}</option>
-              <option value="open">{tn ? 'Tse di Butsweng' : 'Open'}</option>
+              <option value="All">All Status</option>
+              <option value="open">Open</option>
               <option value="adjudicated">{lang === 'tn' ? 'Tse di Atlholetsweng' : 'Adjudicated'}</option>
-              <option value="closed">{tn ? 'Tse di Tswaletsweng' : 'Closed'}</option>
+              <option value="closed">Closed</option>
             </select>
             <select value={filterCategory} onChange={e => setFilterCategory(e.target.value)}
               className="px-3 py-2.5 border border-gray-200 rounded-lg text-xs bg-white">
@@ -216,7 +215,7 @@ export default function TendersPage() {
                         <div className="mt-4 pt-4 border-t border-gray-100 space-y-3">
                           {tender.awardedTo && (
                             <div className="bg-[#F7B731]/5 rounded-lg p-3 border border-[#F7B731]/10">
-                              <p className="text-xs font-bold text-bocra-slate mb-1">{tn ? 'Tshwetso ya Katlholo' : 'Adjudication Decision'}</p>
+                              <p className="text-xs font-bold text-bocra-slate mb-1">Adjudication Decision</p>
                               <div className="space-y-1 text-xs text-bocra-slate/60">
                                 <p><strong>Awarded to:</strong> {tender.awardedTo}</p>
                                 <p><strong>Amount:</strong> {tender.amount}</p>
@@ -298,7 +297,7 @@ export default function TendersPage() {
 
               <Link to="/media/news-events" className="flex items-center gap-3 p-4 bg-white rounded-xl border border-gray-200 hover:shadow-md transition-all group">
                 <ShoppingBag size={18} className="text-[#6BBE4E]" />
-                <div><p className="text-xs font-bold text-bocra-slate">{tn ? 'Dikgang le Dikitsiso tsa Setšhaba' : 'News & Public Notices'}</p><p className="text-[10px] text-gray-400">{tn ? 'Dikitsiso tsa theko tsa bosheng' : 'Latest procurement announcements'}</p></div>
+                <div><p className="text-xs font-bold text-bocra-slate">News & Public Notices</p><p className="text-[10px] text-gray-400">Latest procurement announcements</p></div>
               </Link>
             </div>
           </div>

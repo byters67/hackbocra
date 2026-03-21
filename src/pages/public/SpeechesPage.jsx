@@ -80,7 +80,6 @@ const YEARS = [...new Set(SPEECHES.map(s => s.year))].sort((a, b) => b - a);
 
 export default function SpeechesPage() {
   const { lang } = useLanguage();
-  const tn = lang === 'tn';
   const [searchTerm, setSearchTerm] = useState('');
   const [filterCategory, setFilterCategory] = useState('All');
   const [filterYear, setFilterYear] = useState('');
@@ -155,9 +154,9 @@ export default function SpeechesPage() {
             </div>
             <select value={sortBy} onChange={e => setSortBy(e.target.value)}
               className="px-3 py-2 border border-gray-200 rounded-lg text-xs text-gray-600 bg-white">
-              <option value="newest">{tn ? 'Tsa Bosheng Pele' : 'Newest First'}</option>
-              <option value="oldest">{tn ? 'Tsa Bogologolo Pele' : 'Oldest First'}</option>
-              <option value="speaker">{tn ? 'Ka Mmui' : 'By Speaker'}</option>
+              <option value="newest">Newest First</option>
+              <option value="oldest">Oldest First</option>
+              <option value="speaker">By Speaker</option>
             </select>
           </div>
         </div>
@@ -172,7 +171,7 @@ export default function SpeechesPage() {
               {/* Categories */}
               <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
                 <div className="p-3 border-b border-gray-100">
-                  <p className="text-[10px] text-gray-400 uppercase font-medium">{tn ? 'Mekgwa' : 'Categories'}</p>
+                  <p className="text-[10px] text-gray-400 uppercase font-medium">Categories</p>
                 </div>
                 <div className="p-2">
                   {Object.entries(CATEGORIES).map(([name, cfg]) => {
@@ -193,7 +192,7 @@ export default function SpeechesPage() {
 
               {/* Year filter */}
               <div className="bg-white rounded-xl border border-gray-200 p-4">
-                <p className="text-[10px] text-gray-400 uppercase font-medium mb-2">{tn ? 'Sefa ka Ngwaga' : 'Filter by Year'}</p>
+                <p className="text-[10px] text-gray-400 uppercase font-medium mb-2">Filter by Year</p>
                 <div className="flex flex-wrap gap-1.5">
                   <button onClick={() => setFilterYear('')}
                     className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${!filterYear ? 'bg-[#00458B] text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}>

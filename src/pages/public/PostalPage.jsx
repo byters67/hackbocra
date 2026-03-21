@@ -10,7 +10,6 @@ import { useLanguage } from '../../lib/language';
 
 export default function PostalPage() {
   const { lang } = useLanguage();
-  const tn = lang === 'tn';
   const cardsRef = useStaggerReveal({ stagger: 0.1 });
   return (
     <div className="bg-white min-h-screen">
@@ -35,20 +34,20 @@ export default function PostalPage() {
                 <div ref={cardsRef} className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="bg-white rounded-xl border border-gray-200 p-5 hover:shadow-md transition-all">
                     <div className="w-10 h-10 rounded-xl bg-[#F7B731]/10 flex items-center justify-center mb-3"><Mail size={20} className="text-[#F7B731]" /></div>
-                    <h4 className="text-sm font-bold text-bocra-slate mb-1">{tn ? 'Ditirelo tsa Poso tsa Botlhe' : 'Universal Postal Services'}</h4>
+                    <h4 className="text-sm font-bold text-bocra-slate mb-1">Universal Postal Services</h4>
                     <p className="text-xs text-bocra-slate/60 leading-relaxed">Provided by the Designated Postal Operator (DPO) — Botswana Post. Ensures nationwide mail delivery coverage including rural and remote areas.</p>
                     <div className="mt-3 flex items-center gap-2 p-2 bg-[#F7B731]/5 rounded-lg">
                       <Building size={13} className="text-[#F7B731]" />
-                      <span className="text-[11px] font-medium text-bocra-slate">{tn ? 'Botswana Post — Molaodi wa Poso o o Tlhophilweng' : 'Botswana Post — Designated Postal Operator'}</span>
+                      <span className="text-[11px] font-medium text-bocra-slate">Botswana Post — Designated Postal Operator</span>
                     </div>
                   </div>
                   <div className="bg-white rounded-xl border border-gray-200 p-5 hover:shadow-md transition-all">
                     <div className="w-10 h-10 rounded-xl bg-[#C8237B]/10 flex items-center justify-center mb-3"><Truck size={20} className="text-[#C8237B]" /></div>
-                    <h4 className="text-sm font-bold text-bocra-slate mb-1">{tn ? 'Ditirelo tsa Poso tsa Kgwebo' : 'Commercial Postal Services'}</h4>
+                    <h4 className="text-sm font-bold text-bocra-slate mb-1">Commercial Postal Services</h4>
                     <p className="text-xs text-bocra-slate/60 leading-relaxed">Courier and value-added services provided by licensed Commercial Postal Operators (CPOs). Includes express delivery, parcel services, and logistics.</p>
                     <div className="mt-3 flex items-center gap-2 p-2 bg-[#C8237B]/5 rounded-lg">
                       <Users size={13} className="text-[#C8237B]" />
-                      <span className="text-[11px] font-medium text-bocra-slate">{tn ? 'Di-CPO tse Dintsi tse di nang le Laesense' : 'Multiple Licensed CPOs'}</span>
+                      <span className="text-[11px] font-medium text-bocra-slate">Multiple Licensed CPOs</span>
                     </div>
                   </div>
                 </div>
@@ -56,7 +55,7 @@ export default function PostalPage() {
 
               {/* BOCRA's Role */}
               <div className="bg-[#F7B731]/5 rounded-xl border border-[#F7B731]/10 p-5">
-                <h3 className="text-sm font-bold text-bocra-slate mb-3">{lang === 'tn' ? 'Tiragatso ya BOCRA ya Poso' : "BOCRA's Postal Mandate"}</h3>
+                <h3 className="text-sm font-bold text-bocra-slate mb-3">{lang === 'tn' ? 'Tiragatso ya BOCRA ya Poso' : 'BOCRA's Postal Mandate'}</h3>
                 <div className="space-y-2">
                   {[
                     'License and regulate all postal service providers in Botswana',
@@ -77,7 +76,7 @@ export default function PostalPage() {
                 <div className="flex items-start gap-3">
                   <div className="w-10 h-10 rounded-xl bg-[#00A6CE]/10 flex items-center justify-center flex-shrink-0"><Globe size={18} className="text-[#00A6CE]" /></div>
                   <div>
-                    <h3 className="text-sm font-bold text-bocra-slate mb-1">{tn ? 'Tirisano ya Poso ya Boditšhabatšhaba' : 'International Postal Cooperation'}</h3>
+                    <h3 className="text-sm font-bold text-bocra-slate mb-1">International Postal Cooperation</h3>
                     <p className="text-xs text-bocra-slate/60 leading-relaxed">Botswana participates in the Universal Postal Union (UPU) and celebrates World Post Day annually. BOCRA works with international partners to improve cross-border postal services and modernise the postal sector.</p>
                   </div>
                 </div>
@@ -104,15 +103,15 @@ export default function PostalPage() {
               </div>
 
               <Link to="/services/file-complaint" className="flex items-center gap-3 p-4 bg-[#C8237B] rounded-xl text-white hover:bg-[#A01D64] transition-all">
-                <Shield size={20} /><div><p className="text-sm font-bold">{lang === 'tn' ? 'Tlhagisa Ngongorego ya Poso' : 'File a Postal Complaint'}</p><p className="text-[10px] text-white/60">{tn ? 'Bega mathata a phitlhelelo kgotsa a tirelo' : 'Report delivery issues or service problems'}</p></div><ArrowRight size={16} className="ml-auto" />
+                <Shield size={20} /><div><p className="text-sm font-bold">{lang === 'tn' ? 'Tlhagisa Ngongorego ya Poso' : 'File a Postal Complaint'}</p><p className="text-[10px] text-white/60">Report delivery issues or service problems</p></div><ArrowRight size={16} className="ml-auto" />
               </Link>
 
               <Link to="/licensing" className="flex items-center gap-3 p-4 bg-white rounded-xl border border-gray-200 hover:shadow-md transition-all">
-                <Award size={18} className="text-[#6BBE4E]" /><div><p className="text-xs font-bold text-bocra-slate">{lang === 'tn' ? 'Ikopela Laesense' : 'Apply for a Licence'}</p><p className="text-[10px] text-gray-400">{tn ? 'Dilaesense tsa molaodi wa poso' : 'Postal operator licensing'}</p></div>
+                <Award size={18} className="text-[#6BBE4E]" /><div><p className="text-xs font-bold text-bocra-slate">{lang === 'tn' ? 'Ikopela Laesense' : 'Apply for a Licence'}</p><p className="text-[10px] text-gray-400">Postal operator licensing</p></div>
               </Link>
 
               <Link to="/media/speeches" className="flex items-center gap-3 p-4 bg-white rounded-xl border border-gray-200 hover:shadow-md transition-all">
-                <Globe size={18} className="text-[#00A6CE]" /><div><p className="text-xs font-bold text-bocra-slate">{tn ? 'Dipuo tsa Letsatsi la Poso la Lefatshe' : 'World Post Day Speeches'}</p><p className="text-[10px] text-gray-400">{tn ? 'Bona polokelo ya dipuo' : 'View speech archive'}</p></div>
+                <Globe size={18} className="text-[#00A6CE]" /><div><p className="text-xs font-bold text-bocra-slate">World Post Day Speeches</p><p className="text-[10px] text-gray-400">View speech archive</p></div>
               </Link>
             </div>
           </div>

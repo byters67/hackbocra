@@ -42,7 +42,6 @@ const STEPS = [
 
 export default function ConsumerEducationPage() {
   const { lang } = useLanguage();
-  const tn = lang === 'tn';
   const heroRef = useScrollReveal();
   const rightsRef = useStaggerReveal({ stagger: 0.08 });
   const issuesRef = useStaggerReveal({ stagger: 0.08 });

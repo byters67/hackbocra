@@ -10,7 +10,6 @@ import { useLanguage } from '../../lib/language';
 
 export default function InfrastructureSharingPage() {
   const { lang } = useLanguage();
-  const tn = lang === 'tn';
   const cardsRef = useStaggerReveal({ stagger: 0.1 });
   return (
     <div className="bg-white min-h-screen">
@@ -89,15 +88,15 @@ export default function InfrastructureSharingPage() {
               </div>
 
               <Link to="/mandate/telecommunications" className="flex items-center gap-3 p-4 bg-white rounded-xl border border-gray-200 hover:shadow-md transition-all">
-                <Wifi size={18} className="text-[#00A6CE]" /><div><p className="text-xs font-bold text-bocra-slate">{tn ? 'Megala le Tlhaeletsano' : 'Telecommunications'}</p><p className="text-[10px] text-gray-400">Regulatory framework</p></div>
+                <Wifi size={18} className="text-[#00A6CE]" /><div><p className="text-xs font-bold text-bocra-slate">Telecommunications</p><p className="text-[10px] text-gray-400">Regulatory framework</p></div>
               </Link>
 
               <Link to="/services/qos-monitoring" className="flex items-center gap-3 p-4 bg-white rounded-xl border border-gray-200 hover:shadow-md transition-all">
-                <BarChart3 size={18} className="text-[#6BBE4E]" /><div><p className="text-xs font-bold text-bocra-slate">{tn ? 'Tlhokomelo ya Boleng' : 'QoS Monitoring'}</p><p className="text-[10px] text-gray-400">Network performance data</p></div>
+                <BarChart3 size={18} className="text-[#6BBE4E]" /><div><p className="text-xs font-bold text-bocra-slate">QoS Monitoring</p><p className="text-[10px] text-gray-400">Network performance data</p></div>
               </Link>
 
               <div className="bg-bocra-off-white rounded-xl p-4">
-                <p className="text-[10px] text-gray-400 uppercase font-medium mb-2">{tn ? 'Dipotso' : 'Enquiries'}</p>
+                <p className="text-[10px] text-gray-400 uppercase font-medium mb-2">Enquiries</p>
                 <a href="mailto:info@bocra.org.bw" className="text-xs text-[#00458B] hover:underline">info@bocra.org.bw</a><br />
                 <a href="tel:+2673957755" className="text-xs text-[#00458B] hover:underline">+267 395 7755</a>
               </div>

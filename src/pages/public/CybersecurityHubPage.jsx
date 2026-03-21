@@ -198,7 +198,6 @@ function QuizCard({ tip, index }) {
 
 export default function CybersecurityHubPage() {
   const { lang } = useLanguage();
-  const tn = lang === 'tn';
   const heroRef = useScrollReveal();
   const statsRef = useStaggerReveal({ stagger: 0.1 });
 
@@ -228,9 +227,9 @@ export default function CybersecurityHubPage() {
       <div className="bg-bocra-off-white border-b border-gray-100">
         <div className="section-wrapper py-4">
           <nav className="text-sm text-bocra-slate/50 flex items-center gap-2">
-            <Link to="/" className="hover:text-bocra-blue transition-colors">Home</Link>
+            <Link to="/" className="hover:text-bocra-blue transition-colors">{lang === 'tn' ? 'Gae' : 'Home'}</Link>
             <ChevronRight size={14} />
-            <span className="text-bocra-slate">{tn ? 'Lefelo la Tshireletso ya Saebo' : 'Cybersecurity Hub'}</span>
+            <span className="text-bocra-slate">Cybersecurity Hub</span>
           </nav>
         </div>
       </div>
@@ -278,7 +277,7 @@ export default function CybersecurityHubPage() {
               <Fingerprint size={22} className="text-[#C8237B]" />
             </div>
             <div>
-              <h2 className="text-xl sm:text-2xl font-bold text-bocra-slate">Report a Cyber Incident</h2>
+              <h2 className="text-xl sm:text-2xl font-bold text-bocra-slate">{lang === 'tn' ? 'Bega Tiragalo ya Saebo' : 'Report a Cyber Incident'}</h2>
               <p className="text-sm text-bocra-slate/50">Your report is confidential and will be reviewed by the National CSIRT.</p>
             </div>
           </div>
@@ -344,7 +343,7 @@ export default function CybersecurityHubPage() {
                 <div><label className="text-sm font-medium text-bocra-slate mb-1.5 block">Your Name</label><input type="text" value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} className="w-full px-4 py-3 bg-bocra-off-white border border-gray-200 rounded-xl text-sm focus:border-bocra-blue outline-none" /></div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div><label className="text-sm font-medium text-bocra-slate mb-1.5 block">Email Address</label><input type="email" value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} className="w-full px-4 py-3 bg-bocra-off-white border border-gray-200 rounded-xl text-sm focus:border-bocra-blue outline-none" /></div>
-                  <div><label className="text-sm font-medium text-bocra-slate mb-1.5 block">Phone Number</label><input type="tel" placeholder="+267" value={formData.phone} onChange={e => setFormData({ ...formData, phone: e.target.value })} className="w-full px-4 py-3 bg-bocra-off-white border border-gray-200 rounded-xl text-sm focus:border-bocra-blue outline-none" /></div>
+                  <div><label className="text-sm font-medium text-bocra-slate mb-1.5 block">{lang === 'tn' ? 'Nomoro ya Mogala' : 'Phone Number'}</label><input type="tel" placeholder="+267" value={formData.phone} onChange={e => setFormData({ ...formData, phone: e.target.value })} className="w-full px-4 py-3 bg-bocra-off-white border border-gray-200 rounded-xl text-sm focus:border-bocra-blue outline-none" /></div>
                 </div>
               </div>}
               <ConsentCheckbox
@@ -390,7 +389,7 @@ export default function CybersecurityHubPage() {
               <p className="text-xs text-bocra-slate/30 mb-6">Keep this number. For urgent incidents, expect a response within 4 hours.</p>
               <div className="flex justify-center gap-3">
                 <button onClick={() => { setFormStep(0); setSelectedType(null); setFormData({ description: '', date: '', urgency: 'medium', name: '', email: '', phone: '', anonymous: false }); setIncidentConsent(false); setSubmittedRef(''); setIncidentError(''); }}
-                  className="px-5 py-2.5 border border-gray-200 text-bocra-slate text-sm rounded-xl hover:border-gray-300">Report Another Incident</button>
+                  className="px-5 py-2.5 border border-gray-200 text-bocra-slate text-sm rounded-xl hover:border-gray-300">{lang === 'tn' ? 'Bega Tiragalo e Nngwe' : 'Report Another Incident'}</button>
               </div>
             </div>
           )}
@@ -432,7 +431,7 @@ export default function CybersecurityHubPage() {
                 <Activity size={22} className="text-[#EA580C]" />
               </div>
               <div>
-                <h2 className="text-xl sm:text-2xl font-bold text-bocra-slate">{tn ? 'Ditlhagiso tsa Tshireletso tsa Nako ya Jaanong' : 'Live Security Alerts'}</h2>
+                <h2 className="text-xl sm:text-2xl font-bold text-bocra-slate">Live Security Alerts</h2>
                 <p className="text-sm text-bocra-slate/50">Real vulnerabilities from the NIST National Vulnerability Database{lastRefresh && <span className="text-bocra-slate/30"> · Updated {lastRefresh.toLocaleTimeString()}</span>}</p>
               </div>
             </div>

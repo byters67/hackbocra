@@ -37,7 +37,6 @@ const SECTIONS = [
 
 export default function InternetPage() {
   const { lang } = useLanguage();
-  const tn = lang === 'tn';
   const heroRef = useScrollReveal();
   const cardsRef = useStaggerReveal({ stagger: 0.1 });
 
@@ -91,8 +90,8 @@ export default function InternetPage() {
                   <Globe size={20} className="text-[#00A6CE]" />
                 </div>
                 <div>
-                  <h2 className="text-xl font-bold text-bocra-slate">{tn ? 'Lefelo la Khoutu ya Naga la .BW' : '.BW Country-Code Top-Level Domain'}</h2>
-                  <p className="text-[10px] text-gray-400 uppercase tracking-wide">{tn ? 'Taolo ya ccTLD' : 'ccTLD Management'}</p>
+                  <h2 className="text-xl font-bold text-bocra-slate">.BW Country-Code Top-Level Domain</h2>
+                  <p className="text-[10px] text-gray-400 uppercase tracking-wide">ccTLD Management</p>
                 </div>
               </div>
 
@@ -110,7 +109,7 @@ export default function InternetPage() {
 
               {/* BOCRA's Role */}
               <div className="mt-5 bg-white rounded-xl border border-gray-200 p-5">
-                <h3 className="text-sm font-bold text-bocra-slate mb-3">{tn ? 'Seabe sa BOCRA mo Taolong ya .BW' : "BOCRA's Role in .BW Management"}</h3>
+                <h3 className="text-sm font-bold text-bocra-slate mb-3">BOCRA's Role in .BW Management</h3>
                 <div className="space-y-2">
                   {BW_ROLES.map((role, i) => (
                     <div key={i} className="flex items-start gap-2.5">
@@ -125,7 +124,7 @@ export default function InternetPage() {
             {/* Sidebar */}
             <div className="space-y-4">
               <div className="bg-white rounded-xl border border-gray-200 p-5">
-                <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wide mb-3">{tn ? 'Kwadisa Lefelo la .BW' : 'Register a .BW Domain'}</h3>
+                <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wide mb-3">Register a .BW Domain</h3>
                 <p className="text-xs text-bocra-slate/50 leading-relaxed mb-3">
                   Search for domain availability and register through an accredited registrar.
                 </p>
@@ -136,7 +135,7 @@ export default function InternetPage() {
               </div>
 
               <div className="bg-white rounded-xl border border-gray-200 p-5">
-                <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wide mb-3">{tn ? 'Dikgolosa tse di Teng' : 'Available Extensions'}</h3>
+                <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wide mb-3">Available Extensions</h3>
                 <div className="flex flex-wrap gap-1.5">
                   {['.co.bw', '.org.bw', '.net.bw', '.ac.bw', '.gov.bw', '.me.bw', '.shop.bw', '.agric.bw'].map(ext => (
                     <span key={ext} className="px-2.5 py-1 bg-[#00A6CE]/8 text-[#00A6CE] text-xs font-bold rounded-lg">{ext}</span>
@@ -145,7 +144,7 @@ export default function InternetPage() {
               </div>
 
               <div className="bg-white rounded-xl border border-gray-200 p-5">
-                <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wide mb-3">{tn ? 'Thulaganyo ya Molao' : 'Legal Framework'}</h3>
+                <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wide mb-3">Legal Framework</h3>
                 <p className="text-xs text-bocra-slate/50 leading-relaxed">
                   Communications Regulatory Authority Act No. 19 of 2012, Section 38(1)
                 </p>
@@ -165,8 +164,8 @@ export default function InternetPage() {
                   <Shield size={20} className="text-[#C8237B]" />
                 </div>
                 <div>
-                  <h2 className="text-xl font-bold text-bocra-slate">{tn ? 'BW-CIRT — Setlhopha sa Karabo ya Tiragalo ya Khomphutha' : 'BW-CIRT — Computer Incident Response Team'}</h2>
-                  <p className="text-[10px] text-gray-400 uppercase tracking-wide">{tn ? 'Tshireletso ya Saebo ya Bosetšhaba' : 'National Cybersecurity'}</p>
+                  <h2 className="text-xl font-bold text-bocra-slate">BW-CIRT — Computer Incident Response Team</h2>
+                  <p className="text-[10px] text-gray-400 uppercase tracking-wide">National Cybersecurity</p>
                 </div>
               </div>
 
@@ -188,7 +187,7 @@ export default function InternetPage() {
 
             <div className="space-y-4">
               <div className="bg-white rounded-xl border border-gray-200 p-5">
-                <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wide mb-3">{tn ? 'Bega Tiragalo ya Saebo' : 'Report a Cyber Incident'}</h3>
+                <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wide mb-3">Report a Cyber Incident</h3>
                 <p className="text-xs text-bocra-slate/50 leading-relaxed mb-3">
                   Report phishing, malware, fraud, data breaches, or hacking through our Cybersecurity Hub.
                 </p>
@@ -204,13 +203,13 @@ export default function InternetPage() {
                   <ExternalLink size={16} className="text-[#C8237B]" />
                 </div>
                 <div>
-                  <p className="text-xs font-bold text-bocra-slate group-hover:text-[#C8237B]">{tn ? 'Webosaete ya Semmuso ya BW-CIRT' : 'BW-CIRT Official Website'}</p>
+                  <p className="text-xs font-bold text-bocra-slate group-hover:text-[#C8237B]">BW-CIRT Official Website</p>
                   <p className="text-[10px] text-gray-400">www.cirt.org.bw</p>
                 </div>
               </a>
 
               <div className="bg-[#C8237B]/5 rounded-xl border border-[#C8237B]/10 p-4">
-                <h3 className="text-xs font-bold text-[#C8237B] mb-2">{tn ? 'Balekane ba Botlhokwa' : 'Key Partners'}</h3>
+                <h3 className="text-xs font-bold text-[#C8237B] mb-2">Key Partners</h3>
                 <div className="space-y-1.5 text-xs text-bocra-slate/60">
                   <p>Ministry of Transport and Communications</p>
                   <p>Commonwealth Telecommunications Organisation</p>
@@ -233,7 +232,7 @@ export default function InternetPage() {
                   <Scale size={20} className="text-[#F7B731]" />
                 </div>
                 <div>
-                  <h2 className="text-xl font-bold text-bocra-slate">{tn ? 'Bosupi jwa Elektroniki' : 'Electronic Evidence'}</h2>
+                  <h2 className="text-xl font-bold text-bocra-slate">Electronic Evidence</h2>
                   <p className="text-[10px] text-gray-400 uppercase tracking-wide">Electronic Records (Evidence) Act No. 13 of 2014</p>
                 </div>
               </div>
@@ -274,7 +273,7 @@ export default function InternetPage() {
               </div>
 
               <div className="bg-[#F7B731]/5 rounded-xl border border-[#F7B731]/10 p-4">
-                <h3 className="text-xs font-bold text-[#F7B731] mb-2">{tn ? 'Seabe sa BOCRA' : "BOCRA's Role"}</h3>
+                <h3 className="text-xs font-bold text-[#F7B731] mb-2">BOCRA's Role</h3>
                 <p className="text-xs text-bocra-slate/60 leading-relaxed">
                   Designated as the Certifying Authority under Section 6(2) of the Act. Responsible for establishing approved processes and certifying electronic records systems.
                 </p>
@@ -294,7 +293,7 @@ export default function InternetPage() {
                   <Key size={20} className="text-[#6BBE4E]" />
                 </div>
                 <div>
-                  <h2 className="text-xl font-bold text-bocra-slate">{tn ? 'Dikgolagano le Ditiragatso tsa Elektroniki' : 'Electronic Communications & Transactions'}</h2>
+                  <h2 className="text-xl font-bold text-bocra-slate">Electronic Communications & Transactions</h2>
                   <p className="text-[10px] text-gray-400 uppercase tracking-wide">ECT Act No. 14 of 2014</p>
                 </div>
               </div>
@@ -336,7 +335,7 @@ export default function InternetPage() {
 
             <div className="space-y-4">
               <div className="bg-white rounded-xl border border-gray-200 p-5">
-                <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wide mb-3">{tn ? 'Ditsenya' : 'Downloads'}</h3>
+                <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wide mb-3">Downloads</h3>
                 <div className="space-y-2">
                   {[
                     { label: 'Accreditation Procedure', file: 'Accreditation Procedure - rev 1 (002) (1).pdf', type: 'PDF' },
@@ -355,7 +354,7 @@ export default function InternetPage() {
               </div>
 
               <div className="bg-[#6BBE4E]/5 rounded-xl border border-[#6BBE4E]/10 p-4">
-                <h3 className="text-xs font-bold text-[#6BBE4E] mb-2">{tn ? 'Maikarabelo a BOCRA' : "BOCRA's Responsibilities"}</h3>
+                <h3 className="text-xs font-bold text-[#6BBE4E] mb-2">BOCRA's Responsibilities</h3>
                 <div className="space-y-1.5">
                   {[
                     'Accredit Secure Electronic Signature Service Providers',

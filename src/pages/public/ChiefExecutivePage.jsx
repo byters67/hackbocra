@@ -22,7 +22,6 @@ const PRIORITIES = [
 
 export default function ChiefExecutivePage() {
   const { lang } = useLanguage();
-  const tn = lang === 'tn';
   const heroRef = useScrollReveal();
 
   return (
@@ -175,14 +174,14 @@ export default function ChiefExecutivePage() {
                 <BookOpen size={20} />
                 <div>
                   <p className="text-sm font-bold">{lang === 'tn' ? 'Dipuo tsa Mokaedi Mogolo' : 'CE Speeches'}</p>
-                  <p className="text-[10px] text-white/50">{tn ? 'Bona polokelo ya dipuo' : 'View the speech archive'}</p>
+                  <p className="text-[10px] text-white/50">View the speech archive</p>
                 </div>
                 <ArrowRight size={16} className="ml-auto" />
               </Link>
 
               {/* Contact */}
               <div className="bg-bocra-off-white rounded-xl p-4">
-                <p className="text-[10px] text-gray-400 uppercase font-medium mb-2">{tn ? 'Ofisi ya Mokaedi Mogolo' : 'Office of the CE'}</p>
+                <p className="text-[10px] text-gray-400 uppercase font-medium mb-2">Office of the CE</p>
                 <div className="space-y-1.5">
                   <a href="mailto:info@bocra.org.bw" className="flex items-center gap-2 text-xs text-[#00458B] hover:underline">
                     <Mail size={11} className="text-[#00A6CE]" /> info@bocra.org.bw

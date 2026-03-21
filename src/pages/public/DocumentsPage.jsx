@@ -322,7 +322,6 @@ const getYears = () => { const y = [...new Set(DOCUMENTS.map(d => d.year))].sort
 
 export default function DocumentsPage() {
   const { lang } = useLanguage();
-  const tn = lang === 'tn';
   const [category, setCategory] = useState('All');
   const [search, setSearch] = useState('');
   const [year, setYear] = useState('All Years');
@@ -358,7 +357,7 @@ export default function DocumentsPage() {
 
   return (
     <div className="bg-white">
-      <div className="bg-bocra-off-white border-b border-gray-100"><div className="section-wrapper py-4"><nav className="text-sm text-bocra-slate/50 flex items-center gap-2"><Link to="/" className="hover:text-bocra-blue transition-colors">Home</Link><ChevronRight size={14} /><span className="text-bocra-slate">{tn ? 'Dikwalo le Melao' : 'Documents & Legislation'}</span></nav></div></div>
+      <div className="bg-bocra-off-white border-b border-gray-100"><div className="section-wrapper py-4"><nav className="text-sm text-bocra-slate/50 flex items-center gap-2"><Link to="/" className="hover:text-bocra-blue transition-colors">{lang === 'tn' ? 'Gae' : 'Home'}</Link><ChevronRight size={14} /><span className="text-bocra-slate">Documents & Legislation</span></nav></div></div>
       {/* Hero */}
       <PageHero category="RESOURCES" categoryTn="DITHULAGANYO" title="Documents & Legislation" titleTn="Dikwalo le Melao" description="Access BOCRA regulatory documents, draft legislation, consultation papers, and published guidelines." descriptionTn="Fitlhelela dikwalo tsa taolo tsa BOCRA, melao e e sa ntseng e dirwa, dipampiri tsa therisano, le ditaelo tse di gatisitsweng." color="yellow" />
 
@@ -374,13 +373,13 @@ export default function DocumentsPage() {
               <div className="hidden sm:flex border border-gray-200 rounded-xl overflow-hidden"><button onClick={() => setViewMode('list')} className={`p-2.5 ${viewMode === 'list' ? 'bg-bocra-blue text-white' : 'bg-bocra-off-white text-bocra-slate/40'}`}><List size={16} /></button><button onClick={() => setViewMode('grid')} className={`p-2.5 ${viewMode === 'grid' ? 'bg-bocra-blue text-white' : 'bg-bocra-off-white text-bocra-slate/40'}`}><Grid size={16} /></button></div>
             </div>
           </div>
-          {(category !== 'All' || year !== 'All Years' || search) && <div className="flex flex-wrap items-center gap-2 mt-3"><span className="text-xs text-bocra-slate/40">Filters:</span>{category !== 'All' && <span className="inline-flex items-center gap-1 px-2.5 py-1 text-xs rounded-full text-white" style={{ backgroundColor: CATEGORY_CONFIG[category]?.color }}>{category}<button onClick={() => setCategory('All')}><X size={12} /></button></span>}{year !== 'All Years' && <span className="inline-flex items-center gap-1 px-2.5 py-1 text-xs rounded-full bg-gray-200 text-bocra-slate">{year}<button onClick={() => setYear('All Years')}><X size={12} /></button></span>}{search && <span className="inline-flex items-center gap-1 px-2.5 py-1 text-xs rounded-full bg-gray-200 text-bocra-slate">"{search}"<button onClick={() => setSearch('')}><X size={12} /></button></span>}<button onClick={() => { setCategory('All'); setYear('All Years'); setSearch(''); }} className="text-xs text-bocra-blue hover:underline">Clear all</button></div>}
+          {(category !== 'All' || year !== 'All Years' || search) && <div className="flex flex-wrap items-center gap-2 mt-3"><span className="text-xs text-bocra-slate/40">Filters:</span>{category !== 'All' && <span className="inline-flex items-center gap-1 px-2.5 py-1 text-xs rounded-full text-white" style={{ backgroundColor: CATEGORY_CONFIG[category]?.color }}>{category}<button onClick={() => setCategory('All')}><X size={12} /></button></span>}{year !== 'All Years' && <span className="inline-flex items-center gap-1 px-2.5 py-1 text-xs rounded-full bg-gray-200 text-bocra-slate">{year}<button onClick={() => setYear('All Years')}><X size={12} /></button></span>}{search && <span className="inline-flex items-center gap-1 px-2.5 py-1 text-xs rounded-full bg-gray-200 text-bocra-slate">"{search}"<button onClick={() => setSearch('')}><X size={12} /></button></span>}<button onClick={() => { setCategory('All'); setYear('All Years'); setSearch(''); }} className="text-xs text-bocra-blue hover:underline">{lang === 'tn' ? 'Tlosa tsotlhe' : 'Clear all'}</button></div>}
         </div>
       </div>
 
       <section className="py-6 sm:py-8"><div className="section-wrapper">
         <div className="lg:hidden mb-4">
-          <button onClick={() => setShowMobileCats(!showMobileCats)} className="flex items-center gap-2 text-sm font-medium text-bocra-slate mb-3"><Filter size={16} />Browse by Category<ChevronRight size={16} className={`transition-transform ${showMobileCats ? 'rotate-90' : ''}`} /></button>
+          <button onClick={() => setShowMobileCats(!showMobileCats)} className="flex items-center gap-2 text-sm font-medium text-bocra-slate mb-3"><Filter size={16} />{lang === 'tn' ? 'Batla ka Karolo' : 'Browse by Category'}<ChevronRight size={16} className={`transition-transform ${showMobileCats ? 'rotate-90' : ''}`} /></button>
           {showMobileCats && <div className="flex flex-wrap gap-2 mb-4">{CATEGORIES.map(cat => { const config = CATEGORY_CONFIG[cat]; const active = category === cat; return (<button key={cat} onClick={() => { setCategory(cat); setShowMobileCats(false); }} className={`px-3 py-1.5 text-xs rounded-full font-medium transition-all border ${active ? 'text-white border-transparent' : 'text-bocra-slate/60 border-gray-200 bg-white'}`} style={active ? { backgroundColor: config?.color || '#00A6CE' } : {}}>{cat} ({categoryCounts[cat] || 0})</button>); })}</div>}
         </div>
 
@@ -402,13 +401,13 @@ export default function DocumentsPage() {
             <div ref={listRef} className="pb-2"><p className="text-sm text-bocra-slate/50">{filtered.length} document{filtered.length !== 1 ? 's' : ''}{category !== 'All' && <span className="text-bocra-slate/30"> — {CATEGORY_CONFIG[category]?.desc}</span>}</p></div>
 
             {filtered.length === 0 ? (
-              <div className="text-center py-12"><FileText size={48} className="mx-auto text-bocra-slate/20 mb-4" /><h3 className="text-lg font-medium text-bocra-slate/40">No documents found</h3><p className="text-sm text-bocra-slate/30 mt-1">Try adjusting your search or filters</p></div>
+              <div className="text-center py-12"><FileText size={48} className="mx-auto text-bocra-slate/20 mb-4" /><h3 className="text-lg font-medium text-bocra-slate/40">{lang === 'tn' ? 'Ga go na dikwalo tse di bonweng' : 'No documents found'}</h3><p className="text-sm text-bocra-slate/30 mt-1">{lang === 'tn' ? 'Leka go fetola dipatlisiso kgotsa disefa' : 'Try adjusting your search or filters'}</p></div>
             ) : viewMode === 'grid' ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 pb-8">{filtered.map((doc, i) => { const config = CATEGORY_CONFIG[doc.category]; return (
                 <button key={i} onClick={() => handleDownload(doc.file)} className="bg-white rounded-xl p-5 text-left hover:shadow-lg transition-all group border border-gray-100 hover:border-gray-200 relative overflow-hidden">
                   <div className="absolute top-0 left-0 w-full h-1 rounded-t-xl" style={{ backgroundColor: config?.color }} />
                   <div className="flex items-start gap-3"><div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0" style={{ backgroundColor: `${config?.color}15` }}><FileText size={18} style={{ color: config?.color }} /></div><div className="flex-1 min-w-0"><h3 className="font-medium text-sm text-bocra-slate group-hover:text-bocra-blue transition-colors line-clamp-2 leading-snug">{doc.title}</h3><div className="flex items-center gap-2 mt-2"><span className="text-[10px] px-2 py-0.5 rounded-full font-medium text-white" style={{ backgroundColor: config?.color }}>{doc.category}</span><span className="text-xs text-bocra-slate/40">{doc.year}</span></div></div></div>
-                  <div className="mt-3 flex items-center gap-1 text-xs text-bocra-blue opacity-0 group-hover:opacity-100 transition-opacity"><Download size={12} /> Download PDF</div>
+                  <div className="mt-3 flex items-center gap-1 text-xs text-bocra-blue opacity-0 group-hover:opacity-100 transition-opacity"><Download size={12} /> {lang === 'tn' ? 'Tsenya PDF' : 'Download PDF'}</div>
                 </button>
               ); })}</div>
             ) : (

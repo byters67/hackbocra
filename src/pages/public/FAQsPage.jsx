@@ -21,7 +21,7 @@ const FAQS = [
       {
         q: 'What is BOCRA?',
         a: 'BOCRA is the Botswana Communications Regulatory Authority, established on 1 April 2013 under the Communications Regulatory Authority Act 2012. It regulates telecommunications, broadcasting, internet, and postal services in Botswana to ensure accessible, affordable, and quality communications for all.',
-        links: [{ label: 'About BOCRA', path: '/about/profile' }],
+        links: [{ label: lang === 'tn' ? 'Ka ga BOCRA' : 'About BOCRA', path: '/about/profile' }],
       },
       {
         q: 'Where is BOCRA located?',
@@ -53,7 +53,7 @@ const FAQS = [
       {
         q: 'How do I file a complaint?',
         a: 'You can file a complaint using our online complaint form, by calling +267 395 7755, or by emailing info@bocra.org.bw. We recommend first raising the issue with your service provider directly. If unresolved, BOCRA will investigate and mediate.',
-        links: [{ label: 'File a Complaint', path: '/services/file-complaint' }],
+        links: [{ label: lang === 'tn' ? 'Tlhagisa Ngongorego' : 'File a Complaint', path: '/services/file-complaint' }],
       },
       {
         q: 'What types of complaints does BOCRA handle?',
@@ -190,7 +190,6 @@ function FAQItem({ item, isOpen, toggle, color }) {
 
 export default function FAQsPage() {
   const { lang } = useLanguage();
-  const tn = lang === 'tn';
   const [openItems, setOpenItems] = useState(new Set(['General-0']));
   const [activeCategory, setActiveCategory] = useState('all');
   const [search, setSearch] = useState('');
@@ -253,7 +252,7 @@ export default function FAQsPage() {
                 }`}
               >
                 <HelpCircle size={16} className={activeCategory === 'all' ? 'text-[#00458B]' : 'text-gray-400'} />
-                <span className="flex-1 text-left">{tn ? 'Dipotso Tsotlhe' : 'All Questions'}</span>
+                <span className="flex-1 text-left">All Questions</span>
                 <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${activeCategory === 'all' ? 'bg-[#00458B] text-white' : 'bg-gray-100 text-gray-400'}`}>{totalCount}</span>
               </button>
               {FAQS.map(cat => {
