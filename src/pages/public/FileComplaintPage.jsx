@@ -30,7 +30,21 @@ import ConsentCheckbox from '../../components/ui/ConsentCheckbox';
 
 import PageHero from '../../components/ui/PageHero';
 import { useLanguage } from '../../lib/language';
-const getCOMPLAINT_TYPES = (lang) => [
+const getCOMPLAINT_TYPES = (lang) => lang === 'tn' ? [
+  'Mathata a Dituelo / Go Lefisiwa',
+  'Phitlhelelo ya Neteweke / Mathata a Letshwao',
+  'Boleng jwa Tirelo ya Inthanete',
+  'Go Palelwa ga Didirisiwa',
+  'Go Diega ga Motlamedi wa Tirelo',
+  'Mathata a Kgokagano',
+  'Diteng tsa Phasalatso',
+  'Tirelo ya Poso',
+  'Kwadiso ya Lefelo (.bw)',
+  'Potso ya Laesense',
+  'Tshitswako ya Sepeketeramo / Frikwensi',
+  'Go Tlolwa ga Ditshwanelo tsa Badirisi',
+  'Tse Dingwe',
+] : [
   'Billing / Charging Issues',
   'Network Coverage / Signal Problems',
   'Internet Service Quality',
@@ -89,12 +103,12 @@ export default function FileComplaintPage() {
     const e = {};
     if (!form.name.trim()) e.name = lang === 'tn' ? 'Leina le a tlhokega' : 'Name is required';
     if (!form.email.trim()) e.email = lang === 'tn' ? 'Imeile e a tlhokega' : 'Email is required';
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email = 'Invalid email format';
-    if (form.phone && !/^\+?\d{7,15}$/.test(form.phone.replace(/\s/g, ''))) e.phone = 'Invalid phone number';
-    if (!form.provider) e.provider = 'Select a provider';
-    if (!form.complaintType) e.complaintType = 'Select complaint type';
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email = lang === 'tn' ? 'Mokgwa wa imeile o o fosagetseng' : 'Invalid email format';
+    if (form.phone && !/^\+?\d{7,15}$/.test(form.phone.replace(/\s/g, ''))) e.phone = lang === 'tn' ? 'Nomoro ya mogala e fosagetseng' : 'Invalid phone number';
+    if (!form.provider) e.provider = lang === 'tn' ? 'Tlhopha motlamedi' : 'Select a provider';
+    if (!form.complaintType) e.complaintType = lang === 'tn' ? 'Tlhopha mofuta wa ngongorego' : 'Select complaint type';
     if (!form.description.trim()) e.description = lang === 'tn' ? 'Tlhaloso e a tlhokega' : 'Description is required';
-    else if (form.description.trim().length < 20) e.description = 'Please provide more detail (min 20 characters)';
+    else if (form.description.trim().length < 20) e.description = lang === 'tn' ? 'Tsweetswee fana ka dintlha tse di oketsegileng' : 'Please provide more detail (min 20 characters)';
     setErrors(e);
     return Object.keys(e).length === 0;
   };
@@ -157,10 +171,9 @@ export default function FileComplaintPage() {
       }
 
       setStep('success');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch (err) {
       // ─── SECURITY: Never expose raw errors (F06 remediation) ───
-      setErrors(prev => ({ ...prev, form: 'Something went wrong. Please try again or contact us by phone.' }));
+      setErrors(prev => ({ ...prev, form: lang === 'tn' ? 'Sengwe se ile sa fosa. Tsweetswee leka gape kgotsa ikgolaganye le rona ka mogala.' : 'Something went wrong. Please try again or contact us by phone.' }));
     }
     setLoading(false);
   };
@@ -175,7 +188,7 @@ export default function FileComplaintPage() {
           <nav className="text-sm text-bocra-slate/50 flex items-center gap-2">
             <Link to="/" className="hover:text-bocra-blue transition-colors">{lang === 'tn' ? 'Gae' : 'Home'}</Link>
             <ChevronRight size={14} />
-            <Link to="/services/file-complaint" className="hover:text-bocra-blue transition-colors">Services</Link>
+            <Link to="/services/file-complaint" className="hover:text-bocra-blue transition-colors">{lang === 'tn' ? 'Ditirelo' : 'Services'}</Link>
             <ChevronRight size={14} />
             <span className="text-bocra-slate">{lang === 'tn' ? 'Tlhagisa Ngongorego' : 'File a Complaint'}</span>
           </nav>
@@ -188,7 +201,7 @@ export default function FileComplaintPage() {
       {/* Complaint process steps */}
       <section className="py-10 bg-white">
         <div className="section-wrapper">
-          <h2 className="text-2xl font-display text-bocra-slate mb-8 text-center">How the Process Works</h2>
+          <h2 className="text-xl font-bold text-[#001A3A] mb-8 text-center">{lang === 'tn' ? 'Tsamaiso e Bereka Jang' : 'How the Process Works'}</h2>
           <div ref={stepsRef} className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {STEPS.map((s, i) => {
               const Icon = s.icon;
@@ -213,12 +226,11 @@ export default function FileComplaintPage() {
           {step === 'success' ? (
             <div className="bg-white rounded-2xl p-12 text-center shadow-sm">
               <CheckCircle size={56} className="text-bocra-green mx-auto mb-4" />
-              <h2 className="text-3xl font-display text-bocra-slate mb-3">{lang === 'tn' ? 'Ngongorego e Rometse' : 'Complaint Submitted'}</h2>
+              <h2 className="text-xl font-bold text-[#001A3A] mb-3">{lang === 'tn' ? 'Ngongorego e Rometse' : 'Complaint Submitted'}</h2>
               <p className="text-bocra-slate/60 mb-6">
-                Thank you for submitting your complaint. BOCRA will review it and respond 
-                within 2 business days. You will receive updates via email.
+                {lang === 'tn' ? 'Re a leboga go romela ngongorego ya gago. BOCRA e tla e sekaseka mme e arabe mo malatsing a le 2 a tiriso. O tla amogela diphetogo ka imeile.' : 'Thank you for submitting your complaint. BOCRA will review it and respond within 2 business days. You will receive updates via email.'}
               </p>
-              <Link to="/" className="btn-primary">Return to Home</Link>
+              <Link to="/" className="btn-primary">{lang === 'tn' ? 'Boela Gae' : 'Return to Home'}</Link>
             </div>
           ) : (
             <div className="bg-white rounded-2xl p-8 md:p-10 shadow-sm">
@@ -235,9 +247,7 @@ export default function FileComplaintPage() {
               <form onSubmit={handleSubmit} className="space-y-6">
                 {/* Personal details */}
                 <fieldset>
-                  <legend className="text-sm font-semibold text-bocra-slate/80 uppercase tracking-wider mb-4">
-                    Your Information
-                  </legend>
+                  <legend className="text-sm font-semibold text-bocra-slate/80 uppercase tracking-wider mb-4">{lang === 'tn' ? 'Tshedimosetso ya Gago' : 'Your Information'}</legend>
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div><Input label={lang === 'tn' ? 'Leina ka Botlalo *' : 'Full Name *'} value={form.name} onChange={(v) => updateForm('name', v)} placeholder="Your full name" />{errors.name && <p className="text-[10px] text-red-500 mt-0.5">{errors.name}</p>}</div>
                     <div><Input label={lang === 'tn' ? 'Kompone / Mokgatlho' : 'Company / Organisation'} value={form.company} onChange={(v) => updateForm('company', v)} placeholder="If applicable" /></div>
@@ -248,19 +258,17 @@ export default function FileComplaintPage() {
 
                 {/* Complaint details */}
                 <fieldset>
-                  <legend className="text-sm font-semibold text-bocra-slate/80 uppercase tracking-wider mb-4">
-                    Complaint Details
-                  </legend>
+                  <legend className="text-sm font-semibold text-bocra-slate/80 uppercase tracking-wider mb-4">{lang === 'tn' ? 'Dintlha tsa Ngongorego' : 'Complaint Details'}</legend>
                   <div className="space-y-4">
-                    <div><Select label="Service Provider *" value={form.provider} onChange={(v) => updateForm('provider', v)} options={SERVICE_PROVIDERS} />{errors.provider && <p className="text-[10px] text-red-500 mt-0.5">{errors.provider}</p>}</div>
-                    <div><Select label="Type of Complaint *" value={form.complaintType} onChange={(v) => updateForm('complaintType', v)} options={COMPLAINT_TYPES} />{errors.complaintType && <p className="text-[10px] text-red-500 mt-0.5">{errors.complaintType}</p>}</div>
+                    <div><Select label={lang === 'tn' ? 'Motlamedi wa Tirelo *' : 'Service Provider *'} value={form.provider} onChange={(v) => updateForm('provider', v)} options={SERVICE_PROVIDERS} />{errors.provider && <p className="text-[10px] text-red-500 mt-0.5">{errors.provider}</p>}</div>
+                    <div><Select label={lang === 'tn' ? 'Mofuta wa Ngongorego *' : 'Type of Complaint *'} value={form.complaintType} onChange={(v) => updateForm('complaintType', v)} options={COMPLAINT_TYPES} />{errors.complaintType && <p className="text-[10px] text-red-500 mt-0.5">{errors.complaintType}</p>}</div>
                     <div>
-                      <label className="block text-sm font-medium text-bocra-slate mb-1.5">Describe Your Complaint *</label>
+                      <label className="block text-sm font-medium text-bocra-slate mb-1.5">{lang === 'tn' ? 'Tlhalosa Ngongorego ya Gago *' : 'Describe Your Complaint *'}</label>
                       <textarea
                         value={form.description}
                         onChange={(e) => updateForm('description', e.target.value)}
                         rows={6}
-                        placeholder="Please provide as much detail as possible about your complaint, including dates, times, and any reference numbers from the service provider..."
+                        placeholder={lang === 'tn' ? 'Tsweetswee fana ka dintlha tse dintsi ka ga ngongorego ya gago, go akaretsa ditlha, dinako, le dinomoro dipe tsa tshupetso go tswa go motlamedi wa tirelo...' : 'Please provide as much detail as possible about your complaint, including dates, times, and any reference numbers from the service provider...'}
                         className={`w-full px-4 py-3 bg-bocra-off-white border rounded-xl text-bocra-slate placeholder:text-bocra-slate/30 focus:border-bocra-blue focus:ring-2 focus:ring-bocra-blue/10 outline-none transition-all resize-none ${errors.description ? 'border-red-300' : 'border-gray-200'}`}
                       />
                       {errors.description && <p className="text-[10px] text-red-500 mt-0.5">{errors.description}</p>}
@@ -273,15 +281,15 @@ export default function FileComplaintPage() {
                         className="mt-1 w-4 h-4 rounded border-gray-300 text-bocra-blue focus:ring-bocra-blue"
                       />
                       <span className="text-sm text-bocra-slate/70">
-                        I have previously raised this complaint with my service provider
+                        {lang === 'tn' ? 'Ke setse ke tlhagisitse ngongorego e le motlamedi wa me wa tirelo' : 'I have previously raised this complaint with my service provider'}
                       </span>
                     </label>
                     {form.previousComplaint && (
                       <Input
-                        label="Provider Reference Number"
+                        label={lang === 'tn' ? 'Nomoro ya Tshupetso ya Motlamedi' : 'Provider Reference Number'}
                         value={form.referenceNumber}
                         onChange={(v) => updateForm('referenceNumber', v)}
-                        placeholder="Reference number from your provider"
+                        placeholder={lang === 'tn' ? 'Nomoro ya tshupetso go tswa go motlamedi wa gago' : 'Reference number from your provider'}
                       />
                     )}
                   </div>
@@ -296,7 +304,7 @@ export default function FileComplaintPage() {
                 {errors.form && <p className="text-sm text-red-600 bg-red-50 p-3 rounded-lg">{errors.form}</p>}
 
                 <button type="submit" disabled={loading || !consent} className="btn-primary w-full justify-center text-lg py-4 disabled:opacity-60">
-                  {loading ? 'Submitting...' : 'Submit Complaint'}
+                  {loading ? (lang === 'tn' ? 'E a romela...' : 'Submitting...') : (lang === 'tn' ? 'Romela Ngongorego' : 'Submit Complaint')}
                   <Send size={18} />
                 </button>
               </form>
@@ -325,6 +333,7 @@ function Input({ label, type = 'text', value, onChange, required, placeholder })
 }
 
 function Select({ label, value, onChange, options, required }) {
+  const { lang } = useLanguage();
   return (
     <div>
       <label className="block text-sm font-medium text-bocra-slate mb-1.5">{label}</label>
@@ -334,7 +343,7 @@ function Select({ label, value, onChange, options, required }) {
         required={required}
         className="w-full px-4 py-3 bg-bocra-off-white border border-gray-200 rounded-xl text-bocra-slate focus:border-bocra-blue focus:ring-2 focus:ring-bocra-blue/10 outline-none transition-all appearance-none"
       >
-        <option value="">Select an option...</option>
+        <option value="">{lang === 'tn' ? 'Tlhopha...' : 'Select an option...'}</option>
         {options.map((opt) => (
           <option key={opt} value={opt}>{opt}</option>
         ))}
