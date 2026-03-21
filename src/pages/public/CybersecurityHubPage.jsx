@@ -233,7 +233,7 @@ export default function CybersecurityHubPage() {
           <nav className="text-sm text-bocra-slate/50 flex items-center gap-2">
             <Link to="/" className="hover:text-bocra-blue transition-colors">{lang === 'tn' ? 'Gae' : 'Home'}</Link>
             <ChevronRight size={14} />
-            <span className="text-bocra-slate">Cybersecurity Hub</span>
+            <span className="text-bocra-slate">{lang === 'tn' ? 'Lefelo la Tshireletso ya Saebo' : 'Cybersecurity Hub'}</span>
           </nav>
         </div>
       </div>
@@ -248,10 +248,10 @@ export default function CybersecurityHubPage() {
         <div className="section-wrapper">
           <div ref={statsRef} className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             {[
-              { value: '49.17', label: 'Botswana Cyber Security Score', sub: 'NCSI 2025 (out of 100)', icon: Shield, color: '#00A6CE' },
-              { value: '74th', label: 'Global Ranking', sub: 'Out of 176 countries', icon: Globe, color: '#C8237B' },
-              { value: '80%', label: 'Policy Development', sub: 'Laws and regulations', icon: CheckCircle, color: '#6BBE4E' },
-              { value: alertsLoading ? '...' : String(alerts.length), label: 'Active Alerts', sub: 'From NIST NVD (7 days)', icon: Activity, color: '#F7B731' },
+              { value: '49.17', label: lang === 'tn' ? 'Maemo a Tshireletso ya Saebo a Botswana' : 'Botswana Cyber Security Score', sub: lang === 'tn' ? 'NCSI 2025 (go tswa go 100)' : 'NCSI 2025 (out of 100)', icon: Shield, color: '#00A6CE' },
+              { value: '74th', label: lang === 'tn' ? 'Maemo a Lefatshe' : 'Global Ranking', sub: lang === 'tn' ? 'Go tswa dinageng di le 176' : 'Out of 176 countries', icon: Globe, color: '#C8237B' },
+              { value: '80%', label: lang === 'tn' ? 'Tlhabololo ya Dipholisi' : 'Policy Development', sub: lang === 'tn' ? 'Melao le ditaolo' : 'Laws and regulations', icon: CheckCircle, color: '#6BBE4E' },
+              { value: alertsLoading ? '...' : String(alerts.length), label: lang === 'tn' ? 'Ditlhagiso tse di Dirang' : 'Active Alerts', sub: lang === 'tn' ? 'Go tswa NIST NVD (malatsi a le 7)' : 'From NIST NVD (7 days)', icon: Activity, color: '#F7B731' },
             ].map((stat, i) => {
               const Icon = stat.icon;
               return (
@@ -282,12 +282,12 @@ export default function CybersecurityHubPage() {
             </div>
             <div>
               <h2 className="text-xl sm:text-2xl font-bold text-bocra-slate">{lang === 'tn' ? 'Bega Tiragalo ya Saebo' : 'Report a Cyber Incident'}</h2>
-              <p className="text-sm text-bocra-slate/50">Your report is confidential and will be reviewed by the National CSIRT.</p>
+              <p className="text-sm text-bocra-slate/50">{lang === 'tn' ? 'Pego ya gago e sephiri mme e tla sekasekwa ke CSIRT ya Bosetšhaba.' : 'Your report is confidential and will be reviewed by the National CSIRT.'}</p>
             </div>
           </div>
           {/* Steps */}
           <div className="flex items-center gap-1 sm:gap-2 mb-6">
-            {['What happened?', 'Tell us more', 'Your details', 'Done'].map((step, i) => (
+            {(lang === 'tn' ? ['Go diragetse eng?', 'Re bolelele go feta', 'Dintlha tsa gago', 'Go Fedile'] : ['What happened?', 'Tell us more', 'Your details', 'Done']).map((step, i) => (
               <div key={step} className="flex items-center gap-1 sm:gap-2">
                 <div className={'w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold ' + (i < formStep ? 'bg-[#6BBE4E] text-white' : i === formStep ? 'bg-bocra-blue text-white' : 'bg-gray-200 text-bocra-slate/30')}>
                   {i < formStep ? <CheckCircle size={14} /> : i + 1}
@@ -318,21 +318,21 @@ export default function CybersecurityHubPage() {
           {formStep === 1 && (
             <div className="bg-white rounded-xl border border-gray-200 p-6 space-y-4">
               <div>
-                <label className="text-sm font-semibold text-bocra-slate mb-2 block">What happened? Please describe in your own words:</label>
+                <label className="text-sm font-semibold text-bocra-slate mb-2 block">{lang === 'tn' ? 'Go diragetse eng? Tsweetswee tlhalosa ka mafoko a gago:' : 'What happened? Please describe in your own words:'}</label>
                 <textarea rows={4} value={formData.description} onChange={e => setFormData({ ...formData, description: e.target.value })}
-                  placeholder="For example: I received an SMS that looked like it was from my bank asking me to click a link and enter my PIN..." className="w-full px-4 py-3 bg-bocra-off-white border border-gray-200 rounded-xl text-sm focus:border-bocra-blue focus:ring-2 focus:ring-bocra-blue/10 outline-none resize-none" />
+                  placeholder={lang === 'tn' ? 'Ka sekai: Ke amogetse SMS e e lebegang e tswa mo bankeng ya me e nkopang go tobetsa linki le go tsenya PIN ya me...' : 'For example: I received an SMS that looked like it was from my bank asking me to click a link and enter my PIN...'} className="w-full px-4 py-3 bg-bocra-off-white border border-gray-200 rounded-xl text-sm focus:border-bocra-blue focus:ring-2 focus:ring-bocra-blue/10 outline-none resize-none" />
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div><label className="text-sm font-medium text-bocra-slate mb-1.5 block">When did it happen?</label>
+                <div><label className="text-sm font-medium text-bocra-slate mb-1.5 block">{lang === 'tn' ? 'E diragetse leng?' : 'When did it happen?'}</label>
                   <input type="date" value={formData.date} onChange={e => setFormData({ ...formData, date: e.target.value })} className="w-full px-4 py-3 bg-bocra-off-white border border-gray-200 rounded-xl text-sm focus:border-bocra-blue outline-none" /></div>
-                <div><label className="text-sm font-medium text-bocra-slate mb-1.5 block">How urgent is this?</label>
+                <div><label className="text-sm font-medium text-bocra-slate mb-1.5 block">{lang === 'tn' ? 'Go potlaka go le kae?' : 'How urgent is this?'}</label>
                   <select value={formData.urgency} onChange={e => setFormData({ ...formData, urgency: e.target.value })} className="w-full px-4 py-3 bg-bocra-off-white border border-gray-200 rounded-xl text-sm focus:border-bocra-blue outline-none">
-                    <option value="low">Not urgent — just want to report it</option><option value="medium">Somewhat urgent — I need help soon</option><option value="high">Very urgent — I am losing money or data</option><option value="critical">Emergency — attack is happening right now</option>
+                    <option value="low">{lang === 'tn' ? 'Ga go potlake — ke batla fela go e bega' : 'Not urgent — just want to report it'}</option><option value="medium">{lang === 'tn' ? 'E potlaka go le gonnye — ke tlhoka thuso ka bonako' : 'Somewhat urgent — I need help soon'}</option><option value="high">{lang === 'tn' ? 'E potlaka thata — ke latlhegelwa ke madi kgotsa data' : 'Very urgent — I am losing money or data'}</option><option value="critical">{lang === 'tn' ? 'Maemo a tshoganyetso — tlhaselo e diragala jaanong' : 'Emergency — attack is happening right now'}</option>
                   </select></div>
               </div>
               <div className="flex justify-between pt-2">
-                <button onClick={() => setFormStep(0)} className="text-sm text-bocra-slate/40 hover:text-bocra-slate">Back</button>
-                <button onClick={() => setFormStep(2)} disabled={!formData.description} className="px-6 py-2.5 bg-bocra-blue text-white font-medium text-sm rounded-xl hover:bg-bocra-blue/90 disabled:opacity-30 flex items-center gap-2">Next <ArrowRight size={14} /></button>
+                <button onClick={() => setFormStep(0)} className="text-sm text-bocra-slate/40 hover:text-bocra-slate">{lang === 'tn' ? 'Morago' : 'Back'}</button>
+                <button onClick={() => setFormStep(2)} disabled={!formData.description} className="px-6 py-2.5 bg-bocra-blue text-white font-medium text-sm rounded-xl hover:bg-bocra-blue/90 disabled:opacity-30 flex items-center gap-2">{lang === 'tn' ? 'E e Latelang' : 'Next'} <ArrowRight size={14} /></button>
               </div>
             </div>
           )}
@@ -341,12 +341,12 @@ export default function CybersecurityHubPage() {
             <div className="bg-white rounded-xl border border-gray-200 p-6 space-y-4">
               <label className="flex items-center gap-3 p-4 bg-bocra-off-white rounded-xl cursor-pointer border border-gray-100">
                 <input type="checkbox" checked={formData.anonymous} onChange={e => setFormData({ ...formData, anonymous: e.target.checked })} className="w-5 h-5 rounded" />
-                <div><p className="text-sm font-semibold text-bocra-slate">I want to report anonymously</p><p className="text-xs text-bocra-slate/40">We will not be able to contact you with updates</p></div>
+                <div><p className="text-sm font-semibold text-bocra-slate">{lang === 'tn' ? 'Ke batla go bega ke sa itsiweng' : 'I want to report anonymously'}</p><p className="text-xs text-bocra-slate/40">{lang === 'tn' ? 'Re ka se kgone go go ikgolaganya ka diphetogo' : 'We will not be able to contact you with updates'}</p></div>
               </label>
               {!formData.anonymous && <div className="space-y-3">
-                <div><label className="text-sm font-medium text-bocra-slate mb-1.5 block">Your Name</label><input type="text" value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} className="w-full px-4 py-3 bg-bocra-off-white border border-gray-200 rounded-xl text-sm focus:border-bocra-blue outline-none" /></div>
+                <div><label className="text-sm font-medium text-bocra-slate mb-1.5 block">{lang === 'tn' ? 'Leina la Gago' : 'Your Name'}</label><input type="text" value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} className="w-full px-4 py-3 bg-bocra-off-white border border-gray-200 rounded-xl text-sm focus:border-bocra-blue outline-none" /></div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div><label className="text-sm font-medium text-bocra-slate mb-1.5 block">Email Address</label><input type="email" value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} className="w-full px-4 py-3 bg-bocra-off-white border border-gray-200 rounded-xl text-sm focus:border-bocra-blue outline-none" /></div>
+                  <div><label className="text-sm font-medium text-bocra-slate mb-1.5 block">{lang === 'tn' ? 'Aterese ya Imeile' : 'Email Address'}</label><input type="email" value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} className="w-full px-4 py-3 bg-bocra-off-white border border-gray-200 rounded-xl text-sm focus:border-bocra-blue outline-none" /></div>
                   <div><label className="text-sm font-medium text-bocra-slate mb-1.5 block">{lang === 'tn' ? 'Nomoro ya Mogala' : 'Phone Number'}</label><input type="tel" placeholder="+267" value={formData.phone} onChange={e => setFormData({ ...formData, phone: e.target.value })} className="w-full px-4 py-3 bg-bocra-off-white border border-gray-200 rounded-xl text-sm focus:border-bocra-blue outline-none" /></div>
                 </div>
               </div>}
@@ -407,10 +407,10 @@ export default function CybersecurityHubPage() {
           {formStep === 3 && (
             <div className="bg-white rounded-xl border border-green-200 p-8 text-center">
               <div className="w-16 h-16 rounded-full bg-green-50 flex items-center justify-center mx-auto mb-4"><CheckCircle size={32} className="text-[#6BBE4E]" /></div>
-              <h3 className="text-xl font-bold text-bocra-slate mb-2">Thank You — Your Report Was Submitted</h3>
-              <p className="text-sm text-bocra-slate/50 max-w-md mx-auto mb-3">The Botswana National CSIRT team has received your report and will review it. Here is your reference number:</p>
+              <h3 className="text-xl font-bold text-bocra-slate mb-2">{lang === 'tn' ? 'Re a Leboga — Pego ya Gago e Rometse' : 'Thank You — Your Report Was Submitted'}</h3>
+              <p className="text-sm text-bocra-slate/50 max-w-md mx-auto mb-3">{lang === 'tn' ? 'Setlhopha sa CSIRT ya Bosetšhaba sa Botswana se amogetse pego ya gago mme se tla e sekaseka. Nomoro ya gago ya tshupetso ke e:' : 'The Botswana National CSIRT team has received your report and will review it. Here is your reference number:'}</p>
               <div className="inline-block px-5 py-2.5 bg-bocra-off-white rounded-lg text-lg font-mono font-bold text-bocra-blue mb-4">{submittedRef}</div>
-              <p className="text-xs text-bocra-slate/30 mb-6">Keep this number. For urgent incidents, expect a response within 4 hours.</p>
+              <p className="text-xs text-bocra-slate/30 mb-6">{lang === 'tn' ? 'Boloka nomoro e. Bakeng sa ditiragalo tse di potlakang, solofela karabo mo diureng di le 4.' : 'Keep this number. For urgent incidents, expect a response within 4 hours.'}</p>
               <div className="flex justify-center gap-3">
                 <button onClick={() => { setFormStep(0); setSelectedType(null); setFormData({ description: '', date: '', urgency: 'medium', name: '', email: '', phone: '', anonymous: false }); setIncidentConsent(false); setSubmittedRef(''); setIncidentError(''); }}
                   className="px-5 py-2.5 border border-gray-200 text-bocra-slate text-sm rounded-xl hover:border-gray-300">{lang === 'tn' ? 'Bega Tiragalo e Nngwe' : 'Report Another Incident'}</button>
@@ -428,18 +428,18 @@ export default function CybersecurityHubPage() {
               <Award size={22} className="text-[#6BBE4E]" />
             </div>
             <div>
-              <h2 className="text-xl sm:text-2xl font-bold text-bocra-slate">Cyber Safety Academy</h2>
-              <p className="text-sm text-bocra-slate/50">Read each tip, then test what you learned with a quick quiz</p>
+              <h2 className="text-xl sm:text-2xl font-bold text-bocra-slate">{lang === 'tn' ? 'Akatemi ya Polokego ya Saebo' : 'Cyber Safety Academy'}</h2>
+              <p className="text-sm text-bocra-slate/50">{lang === 'tn' ? 'Bala keletso nngwe le nngwe, mme o itlhatlhobe ka potso e e bonako' : 'Read each tip, then test what you learned with a quick quiz'}</p>
             </div>
           </div>
-          <p className="text-xs text-bocra-slate/30 mb-6 ml-14">Tap "Test What You Learned" on any card to try the quiz</p>
+          <p className="text-xs text-bocra-slate/30 mb-6 ml-14">{lang === 'tn' ? 'Tobetsa "Itlhatlhobe" mo khateng efe kgotsa efe go leka potso' : 'Tap "Test What You Learned" on any card to try the quiz'}</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {visibleTips.map((tip, i) => <QuizCard key={i} tip={tip} index={i} />)}
           </div>
           {SAFETY_TIPS.length > 4 && (
             <button onClick={() => setShowAllTips(!showAllTips)}
               className="mt-6 w-full py-3 text-sm text-bocra-blue font-medium hover:bg-bocra-blue/5 border border-gray-200 hover:border-bocra-blue/30 rounded-xl transition-all flex items-center justify-center gap-2">
-              {showAllTips ? 'Show Less' : 'View All ' + SAFETY_TIPS.length + ' Safety Tips & Quizzes'}
+              {showAllTips ? (lang === 'tn' ? 'Bontsha Bonnye' : 'Show Less') : (lang === 'tn' ? 'Bona Tsotlhe ' + SAFETY_TIPS.length + ' Dikeletso le Dipotso' : 'View All ' + SAFETY_TIPS.length + ' Safety Tips & Quizzes')}
               <ChevronDown size={14} className={'transition-transform ' + (showAllTips ? 'rotate-180' : '')} />
             </button>
           )}
@@ -455,8 +455,8 @@ export default function CybersecurityHubPage() {
                 <Activity size={22} className="text-[#EA580C]" />
               </div>
               <div>
-                <h2 className="text-xl sm:text-2xl font-bold text-bocra-slate">Live Security Alerts</h2>
-                <p className="text-sm text-bocra-slate/50">Real vulnerabilities from the NIST National Vulnerability Database{lastRefresh && <span className="text-bocra-slate/30"> · Updated {lastRefresh.toLocaleTimeString()}</span>}</p>
+                <h2 className="text-xl sm:text-2xl font-bold text-bocra-slate">{lang === 'tn' ? 'Ditlhagiso tsa Tshireletso tsa Nako ya Jaanong' : 'Live Security Alerts'}</h2>
+                <p className="text-sm text-bocra-slate/50">{lang === 'tn' ? 'Dikotsi tsa mmatota go tswa NIST National Vulnerability Database' : 'Real vulnerabilities from the NIST National Vulnerability Database'}{lastRefresh && <span className="text-bocra-slate/30"> · {lang === 'tn' ? 'E ntšhwafaditswe' : 'Updated'} {lastRefresh.toLocaleTimeString()}</span>}</p>
               </div>
             </div>
             <button onClick={refresh} disabled={alertsLoading} className={'p-2.5 rounded-xl border border-gray-200 hover:border-gray-300 transition-all ' + (alertsLoading ? 'animate-spin' : '')} title="Refresh">
@@ -478,7 +478,7 @@ export default function CybersecurityHubPage() {
           {alertsLoading ? (
             <div className="space-y-2">{[...Array(4)].map((_, i) => (
               <div key={i} className="bg-white border border-gray-100 rounded-xl p-5 animate-pulse"><div className="flex gap-3"><div className="w-3 h-3 mt-1 rounded-full bg-gray-200" /><div className="flex-1 space-y-2"><div className="w-1/3 h-4 bg-gray-100 rounded" /><div className="w-full h-3 bg-gray-50 rounded" /></div></div></div>
-            ))}<p className="text-center text-xs text-bocra-slate/30 py-2">Loading live vulnerability data...</p></div>
+            ))}<p className="text-center text-xs text-bocra-slate/30 py-2">{lang === 'tn' ? 'E laisa data ya dikotsi tsa nako ya jaanong...' : 'Loading live vulnerability data...'}</p></div>
           ) : (
             <div className="space-y-2">
               {visible.map(alert => { const s = SEV_STYLE[alert.severity] || SEV_STYLE.MEDIUM; return (
@@ -496,7 +496,7 @@ export default function CybersecurityHubPage() {
                       <p className="text-sm text-bocra-slate/60 leading-relaxed line-clamp-2 group-hover:text-bocra-slate/80">{alert.desc}</p>
                       <div className="flex items-center gap-2 mt-1.5">
                         <span className="text-[10px] text-bocra-slate/25 bg-gray-50 px-2 py-0.5 rounded">{alert.sector}</span>
-                        <span className="text-[10px] text-bocra-blue/50 flex items-center gap-1">View on NVD <ExternalLink size={8} /></span>
+                        <span className="text-[10px] text-bocra-blue/50 flex items-center gap-1">{lang === 'tn' ? 'Bona mo NVD' : 'View on NVD'} <ExternalLink size={8} /></span>
                       </div>
                     </div>
                   </div>
@@ -505,7 +505,7 @@ export default function CybersecurityHubPage() {
             </div>
           )}
           {filtered.length > 5 && <button onClick={() => setShowAllAlerts(!showAllAlerts)} className="mt-4 w-full py-3 text-sm text-bocra-blue font-medium hover:bg-white border border-gray-200 rounded-xl transition-all flex items-center justify-center gap-2">
-            {showAllAlerts ? 'Show Less' : 'View All ' + filtered.length + ' Alerts'} <ChevronDown size={14} className={'transition-transform ' + (showAllAlerts ? 'rotate-180' : '')} />
+            {showAllAlerts ? (lang === 'tn' ? 'Bontsha Bonnye' : 'Show Less') : lang === 'tn' ? 'Bona Tsotlhe ' + filtered.length + ' Ditlhagiso' : 'View All ' + filtered.length + ' Alerts'} <ChevronDown size={14} className={'transition-transform ' + (showAllAlerts ? 'rotate-180' : '')} />
           </button>}
         </div>
       </section>
@@ -513,12 +513,12 @@ export default function CybersecurityHubPage() {
       {/* ═══ PARTNERS ═══ */}
       <section className="py-8">
         <div className="section-wrapper max-w-3xl mx-auto">
-          <h2 className="text-xl font-bold text-bocra-slate text-center mb-1">Cybersecurity Partners</h2>
-          <p className="text-sm text-bocra-slate/40 text-center mb-6">BOCRA works with international partners to protect Botswana online</p>
+          <h2 className="text-xl font-bold text-bocra-slate text-center mb-1">{lang === 'tn' ? 'Balekane ba Tshireletso ya Saebo' : 'Cybersecurity Partners'}</h2>
+          <p className="text-sm text-bocra-slate/40 text-center mb-6">{lang === 'tn' ? 'BOCRA e bereka le balekane ba boditšhabatšhaba go sireletsa Botswana mo inthaneteng' : 'BOCRA works with international partners to protect Botswana online'}</p>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-            {[{ name: 'Cyble Inc.', desc: 'AI-powered threat intelligence. Partnership signed November 2025.', icon: Globe, color: '#00A6CE' },
-              { name: 'Group-IB', desc: 'Cybercrime investigation and digital forensics. Partnership signed September 2025.', icon: Shield, color: '#C8237B' },
-              { name: 'Botswana CSIRT', desc: 'National Computer Security Incident Response Team — first responders to cyber attacks.', icon: Server, color: '#F7B731' },
+            {[{ name: 'Cyble Inc.', desc: lang === 'tn' ? 'Botlhale jwa dikotsi jo bo tsamaisiwang ke AI. Tumalano e saenilwe Ngwanatsele 2025.' : 'AI-powered threat intelligence. Partnership signed November 2025.', icon: Globe, color: '#00A6CE' },
+              { name: 'Group-IB', desc: lang === 'tn' ? 'Patlisiso ya bosenyi jwa saebo le forensiki ya dijithale. Tumalano e saenilwe Lwetse 2025.' : 'Cybercrime investigation and digital forensics. Partnership signed September 2025.', icon: Shield, color: '#C8237B' },
+              { name: 'Botswana CSIRT', desc: lang === 'tn' ? 'Setlhopha sa Bosetšhaba sa Karabo ya Ditiragalo tsa Tshireletso ya Khomphutha — ba ntlha ba ba arabang ditlhaselo tsa saebo.' : 'National Computer Security Incident Response Team — first responders to cyber attacks.', icon: Server, color: '#F7B731' },
             ].map(p => (<div key={p.name} className="bg-white border border-gray-100 rounded-xl p-5 text-center hover:shadow-md transition-all">
               <div className="w-12 h-12 rounded-full mx-auto mb-3 flex items-center justify-center" style={{ backgroundColor: p.color + '10' }}><p.icon size={22} style={{ color: p.color }} /></div>
               <h3 className="font-bold text-sm text-bocra-slate">{p.name}</h3>
@@ -527,8 +527,8 @@ export default function CybersecurityHubPage() {
           </div>
           {/* Legislation */}
           <div className="bg-bocra-off-white rounded-xl p-5">
-            <h3 className="text-sm font-bold text-bocra-slate/50 mb-3 flex items-center gap-2"><FileText size={16} /> Laws That Protect You Online</h3>
-            <div className="space-y-2">{['Cybersecurity Act, 2025 — Makes cyber attacks a crime in Botswana', 'Data Protection Act, 2018 — Protects your personal information', 'Cybercrime Act, 2018 — Defines computer crimes and penalties', 'Electronic Communications Act, 2014 — Regulates digital transactions'].map((law, i) => (
+            <h3 className="text-sm font-bold text-bocra-slate/50 mb-3 flex items-center gap-2"><FileText size={16} />{lang === 'tn' ? ' Melao e e Go Sireletsang mo Inthaneteng' : ' Laws That Protect You Online'}</h3>
+            <div className="space-y-2">{[lang === 'tn' ? 'Molao wa Tshireletso ya Saebo, 2025 — O dira ditlhaselo tsa saebo bosenyi mo Botswana' : 'Cybersecurity Act, 2025 — Makes cyber attacks a crime in Botswana', lang === 'tn' ? 'Molao wa Tshireletso ya Data, 2018 — O sireletsa tshedimosetso ya gago ya botho' : 'Data Protection Act, 2018 — Protects your personal information', lang === 'tn' ? 'Molao wa Bosenyi jwa Saebo, 2018 — O tlhalosa bosenyi jwa khomphutha le dikotlhao' : 'Cybercrime Act, 2018 — Defines computer crimes and penalties', lang === 'tn' ? 'Molao wa Dikgolagano tsa Elektroniki, 2014 — O laola ditsamaiso tsa dijithale' : 'Electronic Communications Act, 2014 — Regulates digital transactions'].map((law, i) => (
               <Link key={i} to="/documents/drafts" className="flex items-center justify-between p-3 bg-white rounded-lg hover:shadow-sm transition-all group">
                 <span className="text-sm text-bocra-slate/60 group-hover:text-bocra-blue">{law}</span>
                 <ArrowRight size={14} className="text-bocra-slate/20 group-hover:text-bocra-blue flex-shrink-0" />
@@ -543,8 +543,8 @@ export default function CybersecurityHubPage() {
           <div className="flex items-center gap-3 text-center sm:text-left">
             <Phone size={20} className="text-white/60 hidden sm:block" />
             <div>
-              <p className="text-sm font-bold text-white">Are you experiencing a cyber attack right now?</p>
-              <p className="text-xs text-white/40">Call the BOCRA National CSIRT team directly for immediate help</p>
+              <p className="text-sm font-bold text-white">{lang === 'tn' ? 'A o itemogela tlhaselo ya saebo jaanong?' : 'Are you experiencing a cyber attack right now?'}</p>
+              <p className="text-xs text-white/40">{lang === 'tn' ? 'Leletsa setlhopha sa CSIRT sa Bosetšhaba sa BOCRA ka tlhamalalo go bona thuso ka bonako' : 'Call the BOCRA National CSIRT team directly for immediate help'}</p>
             </div>
           </div>
           <div className="flex items-center gap-3">

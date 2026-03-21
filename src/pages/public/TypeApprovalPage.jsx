@@ -46,14 +46,14 @@ const getID_TYPES = (lang) => [
 ];
 
 const getCOMPLAINT_CATEGORIES = (lang) => [
-  'Type Approval Application Delay',
-  'Certificate Issue',
-  'Device Verification Problem',
-  'IMEI Check Failure',
-  'Documentation Requirements',
-  'Fee Payment Issue',
-  'Technical Standards Query',
-  'Other',
+  (lang === 'tn' ? 'Go Diega ga Kopo ya Tumelelo ya Mofuta' : 'Type Approval Application Delay'),
+  (lang === 'tn' ? 'Bothata jwa Setifikeiti' : 'Certificate Issue'),
+  (lang === 'tn' ? 'Bothata jwa Netefatso ya Sedirisiwa' : 'Device Verification Problem'),
+  (lang === 'tn' ? 'Go Palelwa ga Tlhatlhobo ya IMEI' : 'IMEI Check Failure'),
+  (lang === 'tn' ? 'Ditlhokego tsa Dikwalo' : 'Documentation Requirements'),
+  (lang === 'tn' ? 'Bothata jwa Tuelo ya Dituelo' : 'Fee Payment Issue'),
+  (lang === 'tn' ? 'Potso ya Maemo a Setegeniki' : 'Technical Standards Query'),
+  (lang === 'tn' ? 'Tse Dingwe' : 'Other'),
 ];
 
 const BASE = import.meta.env.BASE_URL || '/';
@@ -97,7 +97,7 @@ export default function TypeApprovalPage() {
               {lang === 'tn' ? 'Ditirelo' : 'Services'}
             </Link>
             <ChevronRight size={14} />
-            <span className="text-bocra-slate font-medium">Type Approval</span>
+            <span className="text-bocra-slate font-medium">{lang === 'tn' ? 'Tumelelo ya Mofuta' : 'Type Approval'}</span>
           </nav>
         </div>
       </div>
@@ -157,13 +157,13 @@ export default function TypeApprovalPage() {
               </h2>
               <div className="space-y-4 text-sm text-bocra-slate/70 leading-relaxed">
                 <p>
-                  BOCRA is mandated by Section 84 of the CRA Act to Type Approve communications equipment that may be connected, used or operated to provide broadcasting or telecommunications services in Botswana. In addition, BOCRA is mandated to ensure consumer protection.
+                  {lang === 'tn' ? 'BOCRA e laetswe ke Karolo 84 ya Molao wa CRA go Amogela ka Mofuta didirisiwa tsa dikgolagano tse di ka golaganngwang, dirisiwang kgotsa dirisiwang go fana ka ditirelo tsa phasalatso kgotsa megala mo Botswana. Go feta moo, BOCRA e laetswe go netefatsa tshireletso ya badirisi.' : 'BOCRA is mandated by Section 84 of the CRA Act to Type Approve communications equipment that may be connected, used or operated to provide broadcasting or telecommunications services in Botswana. In addition, BOCRA is mandated to ensure consumer protection.'}
                 </p>
                 <p>
-                  The purpose of the Type Approval procedure is to ensure that all radio communication and telecommunication equipment used in Botswana comply with international standards applicable as a member of the ITU Region 1. Type approval also ensures that no substandard equipment which may represent health and safety hazards to consumers is used in Botswana.
+                  {lang === 'tn' ? 'Maikaelelo a tsamaiso ya Tumelelo ya Mofuta ke go netefatsa gore didirisiwa tsotlhe tsa dikgolagano tsa radio le megala tse di dirisiwang mo Botswana di obamela maemo a boditšhabatšhaba a a dirisiwang jaaka leloko la ITU Region 1. Tumelelo ya mofuta gape e netefatsa gore ga go na didirisiwa tse di sa siamang tse di ka bontshang dikotsi tsa boitekanelo le polokego go badirisi tse di dirisiwang mo Botswana.' : 'The purpose of the Type Approval procedure is to ensure that all radio communication and telecommunication equipment used in Botswana comply with international standards applicable as a member of the ITU Region 1. Type approval also ensures that no substandard equipment which may represent health and safety hazards to consumers is used in Botswana.'}
                 </p>
                 <p>
-                  Type Approval serves to protect consumers from products that are not compatible with the local telecommunications network, and ensures that the operating frequency of all radio communication equipment is in conformity with the Botswana frequency spectrum allocation plan to avoid causing harmful interference to essential services.
+                  {lang === 'tn' ? 'Tumelelo ya Mofuta e direla go sireletsa badirisi go tswa go ditlhagisiwa tse di sa tsamaelaneng le neteweke ya selegae ya megala, le go netefatsa gore frikwensi ya go bereka ya didirisiwa tsotlhe tsa dikgolagano tsa radio e obamela leano la kabelo ya sepeketeramo sa frikwensi ya Botswana go efoga go baka tshitswako e e kotsi mo ditirelong tse di botlhokwa.' : 'Type Approval serves to protect consumers from products that are not compatible with the local telecommunications network, and ensures that the operating frequency of all radio communication equipment is in conformity with the Botswana frequency spectrum allocation plan to avoid causing harmful interference to essential services.'}
                 </p>
               </div>
 
@@ -187,16 +187,20 @@ export default function TypeApprovalPage() {
 
               {/* Ensuring Quality & Safety */}
               <div className="mt-8">
-                <h3 className="text-lg font-bold text-bocra-slate mb-3">Ensuring Quality and Safety</h3>
+                <h3 className="text-lg font-bold text-bocra-slate mb-3">{lang === 'tn' ? 'Go Netefatsa Boleng le Polokego' : 'Ensuring Quality and Safety'}</h3>
                 <p className="text-sm text-bocra-slate/70 leading-relaxed mb-4">
-                  Through Type Approval of Radio Telecommunications Terminal Equipment (RTTE) and Telecommunications Terminal Equipment (TTE), BOCRA ensures the integrity and reliability of the nation's communication infrastructure. All such devices must adhere to:
+                  {lang === 'tn' ? 'Ka Tumelelo ya Mofuta ya Didirisiwa tsa Radio tsa Megala (RTTE) le Didirisiwa tsa Megala (TTE), BOCRA e netefatsa botshepegi le go ikanyega ga mafaratlhatlha a dikgolagano a naga. Didirisiwa tsotlhe tse di tshwanang di tshwanetse go obamela:' : 'Through Type Approval of Radio Telecommunications Terminal Equipment (RTTE) and Telecommunications Terminal Equipment (TTE), BOCRA ensures the integrity and reliability of the nation\'s communication infrastructure. All such devices must adhere to:'}
                 </p>
                 <div className="space-y-3">
-                  {[
+                  {(lang === 'tn' ? [
+                    { title: 'Leano la Frikwensi la Bosetšhaba', desc: 'Didirisiwa di tshwanetse go bereka ka fa gare ga dikabelo tsa frikwensi tse di tlhalosiwang ke Leano la Frikwensi la Bosetšhaba la Botswana go efoga tshitswako.' },
+                    { title: 'Maemo a Boitekanelo le Polokego', desc: 'Didirisiwa di tshwanetse go fitlhelela ditaelo tse di gagametseng tsa boitekanelo le polokego go thibela kotsi go badirisi le go netefatsa tiriso e e babalesegileng.' },
+                    { title: 'Go Obamela ga Electromagnetic (EMC)', desc: 'Didirisiwa di tshwanetse go obamela maemo a EMC go netefatsa gore ga di ntshe EMI e ntsi mme di kgona go emelelana le maemo a a utlwalang a EMI.' },
+                  ] : [
                     { title: 'National Frequency Plan', desc: 'Equipment must operate within frequency allocations specified by Botswana\'s National Frequency Plan to avoid interference.' },
                     { title: 'Health & Safety Standards', desc: 'Devices must meet strict health and safety guidelines to prevent harm to users and ensure safe operation.' },
                     { title: 'Electromagnetic Conformity (EMC)', desc: 'Equipment must comply with EMC standards to ensure it does not emit excessive EMI and is immune to reasonable EMI levels.' },
-                  ].map((item, i) => (
+                  ]).map((item, i) => (
                     <div key={i} className="flex items-start gap-3 p-3 bg-white border border-gray-100 rounded-xl">
                       <div className="w-1.5 h-1.5 rounded-full bg-[#00A6CE] mt-1.5 flex-shrink-0" />
                       <div>
@@ -210,9 +214,9 @@ export default function TypeApprovalPage() {
 
               {/* Combating Counterfeit */}
               <div className="mt-8">
-                <h3 className="text-lg font-bold text-bocra-slate mb-3">Combating Counterfeit Devices</h3>
+                <h3 className="text-lg font-bold text-bocra-slate mb-3">{lang === 'tn' ? 'Go Lwantsha Didirisiwa tsa Maaka' : 'Combating Counterfeit Devices'}</h3>
                 <p className="text-sm text-bocra-slate/70 leading-relaxed">
-                  BOCRA has implemented a Device Verification Module (DVM) for SIM-enabled devices to combat the proliferation of counterfeit devices, which pose significant risks to network integrity and user safety. The DVM allows users to verify the authenticity of their devices by checking their International Mobile Equipment Identity (IMEI) numbers against a central database of approved devices.
+                  {lang === 'tn' ? 'BOCRA e diragaditse Module ya Netefatso ya Didirisiwa (DVM) ya didirisiwa tse di nang le SIM go lwantsha go ata ga didirisiwa tsa maaka, tse di tlisang dikotsi tse dikgolo mo botshepegeng jwa neteweke le polokegong ya badirisi. DVM e letla badirisi go netefatsa nnete ya didirisiwa tsa bone ka go tlhola dinomoro tsa bone tsa IMEI kgatlhanong le database e kgolo ya didirisiwa tse di amogetsweng.' : 'BOCRA has implemented a Device Verification Module (DVM) for SIM-enabled devices to combat the proliferation of counterfeit devices, which pose significant risks to network integrity and user safety. The DVM allows users to verify the authenticity of their devices by checking their International Mobile Equipment Identity (IMEI) numbers against a central database of approved devices.'}
                 </p>
               </div>
             </div>
@@ -255,7 +259,7 @@ export default function TypeApprovalPage() {
                           <p className="text-sm font-semibold text-bocra-slate group-hover:text-[#00458B]">
                             Sign In
                           </p>
-                          <p className="text-[10px] text-gray-400">Access your account</p>
+                          <p className="text-[10px] text-gray-400">{lang === 'tn' ? 'Fitlhelela akhaonto ya gago' : 'Access your account'}</p>
                         </div>
                       </button>
                       <Link to="/services/asms-webcp"
@@ -267,7 +271,7 @@ export default function TypeApprovalPage() {
                           <p className="text-sm font-semibold text-bocra-slate group-hover:text-[#6BBE4E]">
                             Create Account
                           </p>
-                          <p className="text-[10px] text-gray-400">Register via ASMS-WebCP Portal</p>
+                          <p className="text-[10px] text-gray-400">{lang === 'tn' ? 'Kwadisa ka Potala ya ASMS-WebCP' : 'Register via ASMS-WebCP Portal'}</p>
                         </div>
                       </Link>
                     </>
@@ -284,7 +288,7 @@ export default function TypeApprovalPage() {
                   <a href={`${BASE}documents/type-approval/Type Approval Application.pdf`} target="_blank" rel="noopener noreferrer"
                     className="flex items-center gap-3 p-3 rounded-xl bg-bocra-off-white hover:bg-gray-100 transition-all group">
                     <FileCheck size={16} className="text-[#00A6CE] flex-shrink-0" />
-                    <span className="text-xs font-medium text-bocra-slate group-hover:text-[#00458B] flex-1">Type Approval Application Form</span>
+                    <span className="text-xs font-medium text-bocra-slate group-hover:text-[#00458B] flex-1">{lang === 'tn' ? 'Foromo ya Kopo ya Tumelelo ya Mofuta' : 'Type Approval Application Form'}</span>
                     <Download size={14} className="text-gray-300 group-hover:text-[#00A6CE]" />
                   </a>
                 </div>
@@ -292,14 +296,19 @@ export default function TypeApprovalPage() {
 
               {/* Application Process */}
               <div className="bg-white rounded-2xl border border-gray-200 p-5">
-                <h3 className="text-sm font-bold text-bocra-slate mb-3">Application Process</h3>
+                <h3 className="text-sm font-bold text-bocra-slate mb-3">{lang === 'tn' ? 'Tsamaiso ya Kopo' : 'Application Process'}</h3>
                 <div className="space-y-3">
-                  {[
+                  {(lang === 'tn' ? [
+                    { step: '1', text: 'Romela dikwalo go akaretsa dipego tsa diteko go tswa laboratoreng e e amogetseng ke ILAC' },
+                    { step: '2', text: 'Kwadisa didirisiwa mo Tsamaisong ya Tumelelo ya Mofuta ya BOCRA' },
+                    { step: '3', text: 'BOCRA e sekaseka kopo le dikwalo tsa go obamela' },
+                    { step: '4', text: 'Duela dituelo fa Setifikeiti sa Tumelelo ya Mofuta se ntshiwa' },
+                  ] : [
                     { step: '1', text: 'Submit documentation including test reports from ILAC-accredited laboratory' },
                     { step: '2', text: 'Register equipment on the BOCRA Type Approval System' },
                     { step: '3', text: 'BOCRA reviews application and compliance documentation' },
                     { step: '4', text: 'Pay fees upon issuance of Type Approval Certificate' },
-                  ].map((item, i) => (
+                  ]).map((item, i) => (
                     <div key={i} className="flex items-start gap-3">
                       <div className="w-6 h-6 rounded-full bg-[#00A6CE]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
                         <span className="text-[10px] font-bold text-[#00A6CE]">{item.step}</span>
@@ -338,25 +347,25 @@ export default function TypeApprovalPage() {
       {/* Key Regulations */}
       <section className="py-8 bg-bocra-off-white">
         <div className="section-wrapper max-w-6xl">
-          <h2 className="text-lg font-bold text-bocra-slate mb-4">Key Regulations</h2>
+          <h2 className="text-lg font-bold text-bocra-slate mb-4">{lang === 'tn' ? 'Melao e e Botlhokwa' : 'Key Regulations'}</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="bg-white rounded-xl p-5 border border-gray-100">
               <div className="flex items-center gap-3 mb-2">
                 <div className="w-8 h-8 rounded-lg bg-[#00458B]/10 flex items-center justify-center">
                   <FileText size={16} className="text-[#00458B]" />
                 </div>
-                <h3 className="text-sm font-bold text-bocra-slate">CRA Act 2012</h3>
+                <h3 className="text-sm font-bold text-bocra-slate">{lang === 'tn' ? 'Molao wa CRA wa 2012' : 'CRA Act 2012'}</h3>
               </div>
-              <p className="text-xs text-bocra-slate/60">Provides the mandate for BOCRA to regulate communication equipment under Sections 84 and 85.</p>
+              <p className="text-xs text-bocra-slate/60">{lang === 'tn' ? 'O fana ka tiragatso go BOCRA go laola didirisiwa tsa dikgolagano ka fa tlase ga Dikarolo 84 le 85.' : 'Provides the mandate for BOCRA to regulate communication equipment under Sections 84 and 85.'}</p>
             </div>
             <div className="bg-white rounded-xl p-5 border border-gray-100">
               <div className="flex items-center gap-3 mb-2">
                 <div className="w-8 h-8 rounded-lg bg-[#00A6CE]/10 flex items-center justify-center">
                   <Smartphone size={16} className="text-[#00A6CE]" />
                 </div>
-                <h3 className="text-sm font-bold text-bocra-slate">SIM-Enabled Device Guidelines 2020</h3>
+                <h3 className="text-sm font-bold text-bocra-slate">{lang === 'tn' ? 'Ditaelo tsa Didirisiwa tse di nang le SIM tsa 2020' : 'SIM-Enabled Device Guidelines 2020'}</h3>
               </div>
-              <p className="text-xs text-bocra-slate/60">Type Approval Verification Guidelines for SIM-enabled devices including IMEI verification requirements.</p>
+              <p className="text-xs text-bocra-slate/60">{lang === 'tn' ? 'Ditaelo tsa Netefatso ya Tumelelo ya Mofuta bakeng sa didirisiwa tse di nang le SIM go akaretsa ditlhokego tsa netefatso ya IMEI.' : 'Type Approval Verification Guidelines for SIM-enabled devices including IMEI verification requirements.'}</p>
             </div>
           </div>
         </div>
@@ -428,11 +437,11 @@ function TypeApprovalSearch({ setView, lang }) {
       <div className="bg-bocra-off-white border-b border-gray-100">
         <div className="section-wrapper py-4">
           <nav className="text-sm text-bocra-slate/50 flex items-center gap-2">
-            <Link to="/" className="hover:text-bocra-blue">Home</Link>
+            <Link to="/" className="hover:text-bocra-blue">{lang === 'tn' ? 'Gae' : 'Home'}</Link>
             <ChevronRight size={14} />
             <button onClick={() => setView('landing')} className="hover:text-bocra-blue">Type Approval</button>
             <ChevronRight size={14} />
-            <span className="text-bocra-slate font-medium">Search</span>
+            <span className="text-bocra-slate font-medium">{lang === 'tn' ? 'Batla' : 'Search'}</span>
           </nav>
         </div>
       </div>
@@ -442,8 +451,8 @@ function TypeApprovalSearch({ setView, lang }) {
           <div className="absolute top-0 right-0 w-48 sm:w-64 h-48 sm:h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2" />
           <div className="absolute bottom-0 left-0 w-36 sm:w-48 h-36 sm:h-48 bg-white/10 rounded-full translate-y-1/2 -translate-x-1/2" />
           <div className="relative max-w-2xl mx-auto text-center">
-            <h1 className="text-2xl sm:text-3xl font-bold text-white">Type Approval Search</h1>
-            <p className="text-white/50 mt-2 text-sm">Search for type approved devices by device name, model, make, or certificate number.</p>
+            <h1 className="text-2xl sm:text-3xl font-bold text-white">{lang === 'tn' ? 'Batla Tumelelo ya Mofuta' : 'Type Approval Search'}</h1>
+            <p className="text-white/50 mt-2 text-sm">{lang === 'tn' ? 'Batla didirisiwa tse di amogetsweng ka leina la sedirisiwa, sekao, modiri, kgotsa nomoro ya setifikeiti.' : 'Search for type approved devices by device name, model, make, or certificate number.'}</p>
             <div className="mt-6 relative">
               <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-white/30" />
               <input type="text" value={query} onChange={e => setQuery(e.target.value)}
@@ -472,27 +481,27 @@ function TypeApprovalSearch({ setView, lang }) {
             </div>
             <select value={sortBy} onChange={e => setSortBy(e.target.value)}
               className="px-3 py-1.5 border border-gray-200 rounded-lg text-xs text-gray-600 bg-white">
-              <option value="date">Newest First</option>
-              <option value="name">Name A-Z</option>
-              <option value="make">Manufacturer A-Z</option>
+              <option value="date">{lang === 'tn' ? 'Tsa Bosheng Pele' : 'Newest First'}</option>
+              <option value="name">{lang === 'tn' ? 'Leina A-Z' : 'Name A-Z'}</option>
+              <option value="make">{lang === 'tn' ? 'Modiri A-Z' : 'Manufacturer A-Z'}</option>
             </select>
           </div>
 
           {/* Results count */}
           <p className="text-xs text-bocra-slate/40 mb-4">
-            {loading ? 'Searching...' : `${totalCount} approved device${totalCount !== 1 ? 's' : ''} found`}
+            {loading ? (lang === 'tn' ? 'E a batla...' : 'Searching...') : `${totalCount} ${lang === 'tn' ? 'didirisiwa tse di amogetsweng di bonwe' : `approved device${totalCount !== 1 ? 's' : ''} found`}`}
           </p>
 
           {/* Loading */}
           {loading ? (
             <div className="py-12 text-center">
               <div className="w-8 h-8 border-4 border-[#00A6CE]/20 border-t-[#00A6CE] rounded-full animate-spin mx-auto" />
-              <p className="text-xs text-gray-400 mt-3">Searching BOCRA database...</p>
+              <p className="text-xs text-gray-400 mt-3">{lang === 'tn' ? 'E batla mo database ya BOCRA...' : 'Searching BOCRA database...'}</p>
             </div>
           ) : devices.length === 0 ? (
             <div className="py-12 text-center">
               <Search size={32} className="text-gray-200 mx-auto mb-3" />
-              <p className="text-sm text-gray-400">No devices found matching your search</p>
+              <p className="text-sm text-gray-400">{lang === 'tn' ? 'Ga go na didirisiwa tse di bonweng tse di tsamaelanang le patlo ya gago' : 'No devices found matching your search'}</p>
             </div>
           ) : (
             <div className="space-y-2">
@@ -580,8 +589,8 @@ function LoginForm({ setView, signIn, lang }) {
         <div className="bg-white rounded-2xl overflow-hidden shadow-2xl">
           <div className="bg-gradient-to-br from-[#00458B] to-[#003366] p-6 text-center">
             <Shield size={28} className="text-[#00A6CE] mx-auto mb-2" />
-            <h2 className="text-xl font-bold text-white">Sign In to Your Account</h2>
-            <p className="text-white/50 text-xs mt-1">Access the Type Approval Portal</p>
+            <h2 className="text-xl font-bold text-white">{lang === 'tn' ? 'Tsena mo Akhaontong ya Gago' : 'Sign In to Your Account'}</h2>
+            <p className="text-white/50 text-xs mt-1">{lang === 'tn' ? 'Fitlhelela Potala ya Tumelelo ya Mofuta' : 'Access the Type Approval Portal'}</p>
           </div>
           <form onSubmit={handleSubmit} className="p-6 space-y-4">
             {error && <div className="p-3 bg-red-50 border border-red-200 rounded-xl text-sm text-red-600">{error}</div>}
@@ -606,11 +615,11 @@ function LoginForm({ setView, signIn, lang }) {
             </div>
             <button type="submit" disabled={loading}
               className="w-full py-3 bg-[#00458B] text-white font-semibold rounded-xl hover:bg-[#003366] disabled:opacity-50 transition-all text-sm flex items-center justify-center gap-2">
-              {loading ? 'Signing In...' : 'Sign In'} {!loading && <ArrowRight size={14} />}
+              {loading ? (lang === 'tn' ? 'E a tsena...' : 'Signing In...') : (lang === 'tn' ? 'Tsena' : 'Sign In')} {!loading && <ArrowRight size={14} />}
             </button>
             <p className="text-xs text-center text-gray-400">
-              Don't have an account?{' '}
-              <a href="/hackbocra/services/asms-webcp" className="text-[#6BBE4E] font-medium hover:underline">Register at ASMS-WebCP</a>
+              {lang === 'tn' ? 'Ga o na akhaonto?' : "Don't have an account?"}{' '}
+              <a href="/hackbocra/services/asms-webcp" className="text-[#6BBE4E] font-medium hover:underline">{lang === 'tn' ? 'Ikwadise kwa ASMS-WebCP' : 'Register at ASMS-WebCP'}</a>
             </p>
           </form>
         </div>
@@ -668,8 +677,8 @@ function TypeApprovalDashboard({ operator, user, signOut, setView, lang }) {
         <div className="section-wrapper py-3 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Shield size={18} className="text-[#00A6CE]" />
-            <span className="text-sm font-bold">Type Approval Portal</span>
-            <span className="text-xs text-white/40 hidden sm:inline">SIMS Customer Portal</span>
+            <span className="text-sm font-bold">{lang === 'tn' ? 'Potala ya Tumelelo ya Mofuta' : 'Type Approval Portal'}</span>
+            <span className="text-xs text-white/40 hidden sm:inline">{lang === 'tn' ? 'Potala ya Bareki ya SIMS' : 'SIMS Customer Portal'}</span>
           </div>
           <div className="flex items-center gap-3">
             <div className="w-7 h-7 rounded-full bg-[#00A6CE] flex items-center justify-center text-white text-xs font-bold">{ini}</div>
@@ -688,7 +697,7 @@ function TypeApprovalDashboard({ operator, user, signOut, setView, lang }) {
             <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#00458B] to-[#00A6CE] flex items-center justify-center text-white text-xl font-bold">{ini}</div>
             <div className="flex-1">
               <h1 className="text-xl font-bold text-bocra-slate">{name}</h1>
-              <p className="text-sm text-gray-500">{profile?.organization || 'Type Approval Applicant'}</p>
+              <p className="text-sm text-gray-500">{profile?.organization || (lang === 'tn' ? 'Mokopi wa Tumelelo ya Mofuta' : 'Type Approval Applicant')}</p>
               <div className="flex items-center gap-3 mt-1">
                 {profile?.role && <span className="text-xs font-mono text-[#00A6CE] bg-[#00A6CE]/10 px-2 py-0.5 rounded">{profile.role}</span>}
                 {profile?.sector && <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-green-100 text-green-700">{profile.sector}</span>}
@@ -699,7 +708,7 @@ function TypeApprovalDashboard({ operator, user, signOut, setView, lang }) {
 
         {/* Tabs */}
         <div className="flex gap-2 mb-5">
-          {[['overview', 'Overview'], ['applications', 'Applications'], ['complaints', 'Complaints']].map(([k, v]) => (
+          {[['overview', lang === 'tn' ? 'Kakaretso' : 'Overview'], ['applications', lang === 'tn' ? 'Dikopo' : 'Applications'], ['complaints', lang === 'tn' ? 'Dingongorego' : 'Complaints']].map(([k, v]) => (
             <button key={k} onClick={() => setActiveTab(k)}
               className={`px-4 py-2 rounded-xl text-xs font-medium transition-all ${activeTab === k ? 'bg-[#00458B] text-white' : 'bg-white text-gray-600 border border-gray-200'}`}>
               {v}{k === 'applications' && applications.length > 0 ? ` (${applications.length})` : ''}{k === 'complaints' && complaints.length > 0 ? ` (${complaints.length})` : ''}
@@ -713,19 +722,19 @@ function TypeApprovalDashboard({ operator, user, signOut, setView, lang }) {
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
               <div className="bg-white rounded-xl border border-gray-200 p-4">
                 <p className="text-2xl font-bold text-bocra-slate">{applications.length}</p>
-                <p className="text-xs text-gray-400">Applications</p>
+                <p className="text-xs text-gray-400">{lang === 'tn' ? 'Dikopo' : 'Applications'}</p>
               </div>
               <div className="bg-white rounded-xl border border-gray-200 p-4">
                 <p className="text-2xl font-bold text-[#6BBE4E]">{applications.filter(a => a.status === 'approved').length}</p>
-                <p className="text-xs text-gray-400">Approved</p>
+                <p className="text-xs text-gray-400">{lang === 'tn' ? 'Di Amogetswe' : 'Approved'}</p>
               </div>
               <div className="bg-white rounded-xl border border-gray-200 p-4">
                 <p className="text-2xl font-bold text-[#F7B731]">{applications.filter(a => a.status === 'pending').length}</p>
-                <p className="text-xs text-gray-400">Pending</p>
+                <p className="text-xs text-gray-400">{lang === 'tn' ? 'Di Emetse' : 'Pending'}</p>
               </div>
               <div className="bg-white rounded-xl border border-gray-200 p-4">
                 <p className="text-2xl font-bold text-bocra-slate">{complaints.length}</p>
-                <p className="text-xs text-gray-400">Enquiries</p>
+                <p className="text-xs text-gray-400">{lang === 'tn' ? 'Dipotso' : 'Enquiries'}</p>
               </div>
             </div>
 
@@ -735,8 +744,8 @@ function TypeApprovalDashboard({ operator, user, signOut, setView, lang }) {
                   <Search size={22} className="text-[#00A6CE]" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-sm text-bocra-slate group-hover:text-[#00A6CE]">Search Devices</h3>
-                  <p className="text-[10px] text-gray-400">Browse approved equipment</p>
+                  <h3 className="font-bold text-sm text-bocra-slate group-hover:text-[#00A6CE]">{lang === 'tn' ? 'Batla Didirisiwa' : 'Search Devices'}</h3>
+                  <p className="text-[10px] text-gray-400">{lang === 'tn' ? 'Sekaseka didirisiwa tse di amogetsweng' : 'Browse approved equipment'}</p>
                 </div>
               </button>
               <a href={`${BASE}documents/type-approval/Type Approval Application.pdf`} target="_blank" rel="noopener noreferrer"
@@ -745,8 +754,8 @@ function TypeApprovalDashboard({ operator, user, signOut, setView, lang }) {
                   <FileCheck size={22} className="text-[#6BBE4E]" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-sm text-bocra-slate group-hover:text-[#6BBE4E]">Application Form</h3>
-                  <p className="text-[10px] text-gray-400">Download PDF form</p>
+                  <h3 className="font-bold text-sm text-bocra-slate group-hover:text-[#6BBE4E]">{lang === 'tn' ? 'Foromo ya Kopo' : 'Application Form'}</h3>
+                  <p className="text-[10px] text-gray-400">{lang === 'tn' ? 'Tsenya foromo ya PDF' : 'Download PDF form'}</p>
                 </div>
               </a>
               <button onClick={() => setView('complaints')} className="bg-white border border-gray-200 rounded-xl p-5 hover:shadow-lg hover:border-[#C8237B] transition-all group flex items-center gap-4 text-left">
@@ -754,8 +763,8 @@ function TypeApprovalDashboard({ operator, user, signOut, setView, lang }) {
                   <MessageSquare size={22} className="text-[#C8237B]" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-sm text-bocra-slate group-hover:text-[#C8237B]">File Enquiry</h3>
-                  <p className="text-[10px] text-gray-400">Submit complaint or question</p>
+                  <h3 className="font-bold text-sm text-bocra-slate group-hover:text-[#C8237B]">{lang === 'tn' ? 'Tlhagisa Potso' : 'File Enquiry'}</h3>
+                  <p className="text-[10px] text-gray-400">{lang === 'tn' ? 'Romela ngongorego kgotsa potso' : 'Submit complaint or question'}</p>
                 </div>
               </button>
             </div>
@@ -765,7 +774,7 @@ function TypeApprovalDashboard({ operator, user, signOut, setView, lang }) {
         {/* Applications Tab */}
         {activeTab === 'applications' && (
           <div className="bg-white rounded-xl border border-gray-200 p-6">
-            <h2 className="text-sm font-bold text-bocra-slate mb-4">My Type Approval Applications</h2>
+            <h2 className="text-sm font-bold text-bocra-slate mb-4">{lang === 'tn' ? 'Dikopo Tsa Me tsa Tumelelo ya Mofuta' : 'My Type Approval Applications'}</h2>
             {loading ? (
               <div className="py-8 text-center">
                 <div className="w-8 h-8 border-4 border-[#00A6CE]/20 border-t-[#00A6CE] rounded-full animate-spin mx-auto" />
@@ -773,8 +782,8 @@ function TypeApprovalDashboard({ operator, user, signOut, setView, lang }) {
             ) : applications.length === 0 ? (
               <div className="py-8 text-center">
                 <FileCheck size={32} className="text-gray-200 mx-auto mb-2" />
-                <p className="text-sm text-gray-400">No applications yet</p>
-                <p className="text-xs text-gray-300 mt-1">Download the application form to submit your first type approval request</p>
+                <p className="text-sm text-gray-400">{lang === 'tn' ? 'Ga go na dikopo ka nako eno' : 'No applications yet'}</p>
+                <p className="text-xs text-gray-300 mt-1">{lang === 'tn' ? 'Tsenya foromo ya kopo go romela kopo ya gago ya ntlha ya tumelelo ya mofuta' : 'Download the application form to submit your first type approval request'}</p>
               </div>
             ) : (
               <div className="space-y-2">
@@ -802,7 +811,7 @@ function TypeApprovalDashboard({ operator, user, signOut, setView, lang }) {
         {activeTab === 'complaints' && (
           <div className="bg-white rounded-xl border border-gray-200 p-6">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-sm font-bold text-bocra-slate">My Enquiries & Complaints</h2>
+              <h2 className="text-sm font-bold text-bocra-slate">{lang === 'tn' ? 'Dipotso le Dingongorego Tsa Me' : 'My Enquiries & Complaints'}</h2>
               <button onClick={() => setView('complaints')} className="text-xs text-[#C8237B] hover:underline">+ New Enquiry</button>
             </div>
             {loading ? (
@@ -812,7 +821,7 @@ function TypeApprovalDashboard({ operator, user, signOut, setView, lang }) {
             ) : complaints.length === 0 ? (
               <div className="py-8 text-center">
                 <MessageSquare size={32} className="text-gray-200 mx-auto mb-2" />
-                <p className="text-sm text-gray-400">No enquiries</p>
+                <p className="text-sm text-gray-400">{lang === 'tn' ? 'Ga go na dipotso' : 'No enquiries'}</p>
               </div>
             ) : (
               <div className="space-y-2">
@@ -822,7 +831,7 @@ function TypeApprovalDashboard({ operator, user, signOut, setView, lang }) {
                       <MessageSquare size={18} className="text-[#C8237B]" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-bocra-slate truncate">{c.ai_summary || c.complaint_type || 'Enquiry'}</p>
+                      <p className="text-sm font-medium text-bocra-slate truncate">{c.ai_summary || c.complaint_type || (lang === 'tn' ? 'Potso' : 'Enquiry')}</p>
                       <span className="text-[10px] text-gray-400">{new Date(c.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
                     </div>
                     <span className={`text-[10px] font-bold px-2.5 py-1 rounded-full ${SC[c.status] || 'bg-gray-100 text-gray-600'}`}>{c.status}</span>
@@ -948,7 +957,7 @@ function ComplaintsSection({ setView, lang }) {
             <ChevronRight size={14} />
             <button onClick={() => setView('landing')} className="hover:text-bocra-blue">Type Approval</button>
             <ChevronRight size={14} />
-            <span className="text-bocra-slate font-medium">Complaints & Enquiries</span>
+            <span className="text-bocra-slate font-medium">{lang === 'tn' ? 'Dingongorego le Dipotso' : 'Complaints & Enquiries'}</span>
           </nav>
         </div>
       </div>
@@ -978,15 +987,15 @@ function ComplaintsSection({ setView, lang }) {
                 <div className="w-14 h-14 rounded-full bg-[#6BBE4E]/10 flex items-center justify-center mx-auto mb-3">
                   <CheckCircle size={28} className="text-[#6BBE4E]" />
                 </div>
-                <h2 className="text-lg font-bold text-bocra-slate mb-2">Enquiry Submitted</h2>
-                <p className="text-sm text-gray-500">We will review your enquiry and respond to the email address provided.</p>
+                <h2 className="text-lg font-bold text-bocra-slate mb-2">{lang === 'tn' ? 'Potso e Rometse' : 'Enquiry Submitted'}</h2>
+                <p className="text-sm text-gray-500">{lang === 'tn' ? 'Re tla sekaseka potso ya gago mme re arabe mo atereseng ya imeile e e filweng.' : 'We will review your enquiry and respond to the email address provided.'}</p>
                 <button onClick={() => { setSubmitted(false); setForm({ email: '', fullName: '', phone: '', category: '', description: '' }); }}
-                  className="mt-4 px-5 py-2 text-sm text-[#00458B] border border-[#00458B]/20 rounded-xl hover:bg-[#00458B]/5">Submit Another</button>
+                  className="mt-4 px-5 py-2 text-sm text-[#00458B] border border-[#00458B]/20 rounded-xl hover:bg-[#00458B]/5">{lang === 'tn' ? 'Romela E Nngwe' : 'Submit Another'}</button>
               </div>
             ) : (
               <div className="bg-white rounded-xl border border-gray-200 p-6">
-                <h2 className="text-lg font-bold text-bocra-slate mb-1">Complaints and Enquiries</h2>
-                <p className="text-sm text-gray-400 mb-6">Please fill in the below details to register a complaint with us regarding our services.</p>
+                <h2 className="text-lg font-bold text-bocra-slate mb-1">{lang === 'tn' ? 'Dingongorego le Dipotso' : 'Complaints and Enquiries'}</h2>
+                <p className="text-sm text-gray-400 mb-6">{lang === 'tn' ? 'Tsweetswee tlatsa dintlha tse di fa tlase go kwadisa ngongorego le rona ka ga ditirelo tsa rona.' : 'Please fill in the below details to register a complaint with us regarding our services.'}</p>
                 {complaintError && <p className="text-sm text-red-600 bg-red-50 p-3 rounded-lg mb-4">{complaintError}</p>}
                 <form onSubmit={handleSubmitComplaint} className="space-y-4">
                   <div>
@@ -1024,8 +1033,8 @@ function ComplaintsSection({ setView, lang }) {
           {/* Check Status */}
           {tab === 'check' && (
             <div className="bg-white rounded-xl border border-gray-200 p-6">
-              <h2 className="text-lg font-bold text-bocra-slate mb-1">Check Complaint Status</h2>
-              <p className="text-sm text-gray-400 mb-6">To view the status of your complaint, provide us with the details below.</p>
+              <h2 className="text-lg font-bold text-bocra-slate mb-1">{lang === 'tn' ? 'Tlhola Maemo a Ngongorego' : 'Check Complaint Status'}</h2>
+              <p className="text-sm text-gray-400 mb-6">{lang === 'tn' ? 'Go bona maemo a ngongorego ya gago, re fe dintlha tse di fa tlase.' : 'To view the status of your complaint, provide us with the details below.'}</p>
               <form onSubmit={handleCheckStatus} className="space-y-4">
                 <div>
                   <input type="email" value={checkEmail} onChange={e => setCheckEmail(e.target.value)} required
@@ -1045,7 +1054,7 @@ function ComplaintsSection({ setView, lang }) {
                 <div className="mt-6">
                   {checkResults.length === 0 ? (
                     <div className="py-6 text-center">
-                      <p className="text-sm text-gray-400">No complaints found for this email address</p>
+                      <p className="text-sm text-gray-400">{lang === 'tn' ? 'Ga go na dingongorego tse di bonweng bakeng sa aterese e ya imeile' : 'No complaints found for this email address'}</p>
                     </div>
                   ) : (
                     <div className="space-y-2">

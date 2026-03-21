@@ -28,18 +28,20 @@ const OPS = {
 const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 const REGIONS_LIST = ['National','Gaborone','Francistown','Maun','Kasane','Selebi Phikwe','Palapye','Mahalapye'];
 const MARKET = [{name:'Mascom',value:45,color:'#E21836'},{name:'BTC',value:30,color:'#2E7D32'},{name:'Orange',value:25,color:'#FF6600'}];
-const KPI_INFO = {
-  call_success_rate:{k:'csr',label:'Call Success Rate',unit:'%',icon:Phone,desc:'Percentage of voice calls successfully connected',target:'≥ 95%'},
-  dropped_call_rate:{k:'dcr',label:'Dropped Call Rate',unit:'%',icon:AlertTriangle,desc:'Percentage of calls disconnected unexpectedly',target:'≤ 2%'},
-  throughput:{k:'tp',label:'LTE Throughput',unit:'Mbps',icon:Zap,desc:'Average 4G download speed',target:'≥ 10 Mbps'},
-  uptime:{k:'up',label:'Network Uptime',unit:'%',icon:Activity,desc:'Percentage of time network is operational',target:'≥ 99%'},
-  latency:{k:'lat',label:'Latency',unit:'ms',icon:Clock,desc:'Average round-trip delay time',target:'≤ 50ms'},
-  sms_delivery:{k:'sms',label:'SMS Delivery',unit:'%',icon:Globe,desc:'Percentage of SMS delivered successfully',target:'≥ 98%'},
-};
-const KPI_KEYS = Object.keys(KPI_INFO);
+const getKPI_INFO = (lang) => ({
+  call_success_rate:{k:'csr',label:lang==='tn'?'Pholo ya Megala':'Call Success Rate',unit:'%',icon:Phone,desc:lang==='tn'?'Phesente ya megala ya lentswe e e golaganeng ka katlego':'Percentage of voice calls successfully connected',target:'≥ 95%'},
+  dropped_call_rate:{k:'dcr',label:lang==='tn'?'Megala e e Welang':'Dropped Call Rate',unit:'%',icon:AlertTriangle,desc:lang==='tn'?'Phesente ya megala e e kgaoganeng ka tshoganyetso':'Percentage of calls disconnected unexpectedly',target:'≤ 2%'},
+  throughput:{k:'tp',label:lang==='tn'?'Lobelo la LTE':'LTE Throughput',unit:'Mbps',icon:Zap,desc:lang==='tn'?'Lobelo lo lo kalediwang la go tsenya la 4G':'Average 4G download speed',target:'≥ 10 Mbps'},
+  uptime:{k:'up',label:lang==='tn'?'Nako ya go Bereka ga Neteweke':'Network Uptime',unit:'%',icon:Activity,desc:lang==='tn'?'Phesente ya nako e neteweke e berekang':'Percentage of time network is operational',target:'≥ 99%'},
+  latency:{k:'lat',label:lang==='tn'?'Go Diega':'Latency',unit:'ms',icon:Clock,desc:lang==='tn'?'Nako e e kalediwang ya go diega ga tsela ya go ya le go boa':'Average round-trip delay time',target:'≤ 50ms'},
+  sms_delivery:{k:'sms',label:lang==='tn'?'Go Isiwa ga SMS':'SMS Delivery',unit:'%',icon:Globe,desc:lang==='tn'?'Phesente ya SMS tse di isitsweng ka katlego':'Percentage of SMS delivered successfully',target:'≥ 98%'},
+});
+const KPI_KEYS_STATIC = ['call_success_rate','dropped_call_rate','throughput','uptime','latency','sms_delivery'];
 
 export default function QoSMonitoringPage() {
   const { lang } = useLanguage();
+  const KPI_INFO = getKPI_INFO(lang);
+  const KPI_KEYS = KPI_KEYS_STATIC;
   const [op, setOp] = useState('mascom');
   const [kpi, setKpi] = useState('call_success_rate');
   const [tab, setTab] = useState('overview');
@@ -169,7 +171,7 @@ export default function QoSMonitoringPage() {
       {/* Tabs + Operator */}
       <section className="py-4"><div className="section-wrapper flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div className="flex gap-2">
-          {[['overview','Overview'],['compare','Compare Operators'],['regional','Regional']].map(([k,v])=>(
+          {[['overview',lang==='tn'?'Kakaretso':'Overview'],['compare',lang==='tn'?'Bapisa Balaodi':'Compare Operators'],['regional',lang==='tn'?'Ka Kgaolo':'Regional']].map(([k,v])=>(
             <button key={k} onClick={()=>setTab(k)} className={`px-4 py-2 rounded-xl text-xs font-medium whitespace-nowrap transition-all ${tab===k?'bg-[#00458B] text-white':'bg-gray-100 text-gray-600'}`}>{v}</button>
           ))}
         </div>
@@ -184,7 +186,7 @@ export default function QoSMonitoringPage() {
 
       {noData ? (
         <section className="py-12"><div className="section-wrapper text-center">
-          <BarChart3 size={48} className="mx-auto mb-4 text-gray-200"/><p className="text-gray-500 mb-2">No QoS data yet</p><p className="text-sm text-gray-400">Admin staff can submit reports from Admin Portal → QoS Reports</p>
+          <BarChart3 size={48} className="mx-auto mb-4 text-gray-200"/><p className="text-gray-500 mb-2">{lang==='tn'?'Ga go na data ya QoS ka nako eno':'No QoS data yet'}</p><p className="text-sm text-gray-400">{lang==='tn'?'Badiredi ba Admin ba ka romela dipego go tswa Admin Portal → Dipego tsa QoS':'Admin staff can submit reports from Admin Portal → QoS Reports'}</p>
         </div></section>
       ) : (<>
         {tab === 'overview' && (
@@ -204,9 +206,9 @@ export default function QoSMonitoringPage() {
                       <div><p className="text-sm font-bold" style={{color:v.color}}>{v.name}</p><p className="text-[10px] text-gray-400">2G/3G/4G LTE</p></div>
                     </div>
                     <div className="grid grid-cols-3 gap-2">
-                      <div><p className="text-lg font-bold text-bocra-slate">{d.csr}%</p><p className="text-[9px] text-gray-400">Call Success</p></div>
+                      <div><p className="text-lg font-bold text-bocra-slate">{d.csr}%</p><p className="text-[9px] text-gray-400">{lang==='tn'?'Pholo ya Mogala':'Call Success'}</p></div>
                       <div><p className="text-lg font-bold text-bocra-slate">{d.tp}</p><p className="text-[9px] text-gray-400">Mbps</p></div>
-                      <div><p className="text-lg font-bold text-bocra-slate">{d.up}%</p><p className="text-[9px] text-gray-400">Uptime</p></div>
+                      <div><p className="text-lg font-bold text-bocra-slate">{d.up}%</p><p className="text-[9px] text-gray-400">{lang==='tn'?'Nako ya Tiriso':'Uptime'}</p></div>
                     </div>
                   </button>
                 );
@@ -224,7 +226,7 @@ export default function QoSMonitoringPage() {
                     <Icon size={16} className="text-gray-400 mb-2"/>
                     <p className="text-xl font-bold text-bocra-slate">{val}<span className="text-xs text-gray-400 font-normal ml-0.5">{info.unit}</span></p>
                     <p className="text-[10px] text-gray-400 mt-0.5">{info.label}</p>
-                    <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-full mt-1 inline-block ${isGood?'bg-green-100 text-green-700':'bg-red-100 text-red-700'}`}>{isGood?'Pass':'Below Target'}</span>
+                    <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-full mt-1 inline-block ${isGood?'bg-green-100 text-green-700':'bg-red-100 text-red-700'}`}>{isGood?(lang==='tn'?'E Fetile':'Pass'):(lang==='tn'?'Ka fa Tlase ga Sepheo':'Below Target')}</span>
                   </button>
                 );
               })}
@@ -246,12 +248,12 @@ export default function QoSMonitoringPage() {
             {/* Market share + Radar */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
               <div className="bg-white rounded-xl border border-gray-200 p-5">
-                <h3 className="text-sm font-bold text-bocra-slate mb-4">Mobile Market Share</h3>
+                <h3 className="text-sm font-bold text-bocra-slate mb-4">{lang==='tn'?'Karolo ya Mmaraka ya Mogala':'Mobile Market Share'}</h3>
                 <ResponsiveContainer width="100%" height={200}><PieChart><Pie data={MARKET} cx="50%" cy="50%" innerRadius={50} outerRadius={80} paddingAngle={3} dataKey="value">{MARKET.map((m,i)=><Cell key={i} fill={m.color}/>)}</Pie><Tooltip contentStyle={{borderRadius:'8px',fontSize:'12px'}}/></PieChart></ResponsiveContainer>
                 <div className="flex justify-center gap-4 mt-2">{MARKET.map(m=>(<span key={m.name} className="flex items-center gap-1.5 text-[10px] text-gray-500"><img src={OPS[m.name.toLowerCase()]?.logo || OPS.mascom.logo} alt="" className="w-3.5 h-3.5 rounded object-cover"/>{m.name} ({m.value}%)</span>))}</div>
               </div>
               <div className="bg-white rounded-xl border border-gray-200 p-5">
-                <h3 className="text-sm font-bold text-bocra-slate mb-4">Operator Performance Comparison</h3>
+                <h3 className="text-sm font-bold text-bocra-slate mb-4">{lang==='tn'?'Papiso ya Tiragatso ya Balaodi':'Operator Performance Comparison'}</h3>
                 <ResponsiveContainer width="100%" height={220}><RadarChart data={[
                   {k:'CSR',m:gaugeVals.mascom?.csr||0,b:gaugeVals.btc?.csr||0,o:gaugeVals.orange?.csr||0},
                   {k:'Uptime',m:gaugeVals.mascom?.up||0,b:gaugeVals.btc?.up||0,o:gaugeVals.orange?.up||0},
@@ -274,7 +276,7 @@ export default function QoSMonitoringPage() {
             <AiInsightBar insights={aiInsights} loading={aiLoading} onRefresh={() => { setAiCache(p => ({...p, [tab]: null})); generateAiInsights(tab); }} />
             <div className="flex flex-wrap gap-2 mb-4">{KPI_KEYS.map(k=>(<button key={k} onClick={()=>setKpi(k)} className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-all ${kpi===k?'bg-[#00458B] text-white border-[#00458B]':'bg-white text-gray-600 border-gray-200'}`}>{KPI_INFO[k].label}</button>))}</div>
             <div className="bg-white rounded-xl border border-gray-200 p-5">
-              <h3 className="text-sm font-bold text-bocra-slate mb-1">{kInfo.label} — All Operators</h3>
+              <h3 className="text-sm font-bold text-bocra-slate mb-1">{kInfo.label} — {lang==='tn'?'Balaodi Botlhe':'All Operators'}</h3>
               <p className="text-xs text-gray-400 mb-4">Target: {kInfo.target}</p>
               <ResponsiveContainer width="100%" height={320}><LineChart data={compData}><CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0"/><XAxis dataKey="m" tick={{fontSize:11}}/><YAxis tick={{fontSize:11}}/><Tooltip contentStyle={{borderRadius:'8px',fontSize:'12px'}}/><Legend wrapperStyle={{fontSize:'11px'}}/>
                 <Line type="monotone" dataKey="Mascom" stroke="#E21836" strokeWidth={2} dot={{r:3}}/>
@@ -290,7 +292,7 @@ export default function QoSMonitoringPage() {
             <AiInsightBar insights={aiInsights} loading={aiLoading} onRefresh={() => { setAiCache(p => ({...p, [tab]: null})); generateAiInsights(tab); }} />
             <div className="bg-white rounded-xl border border-gray-200 p-5 mb-4">
               <h3 className="text-sm font-bold text-bocra-slate mb-1">{lang === 'tn' ? 'Lobelo la LTE ka Kgaolo' : 'LTE Download Throughput by Region'}</h3>
-              <p className="text-xs text-gray-400 mb-4">Average 4G download speeds (Mbps) across Botswana</p>
+              <p className="text-xs text-gray-400 mb-4">{lang==='tn'?'Malobelo a kalediwang a go tsenya a 4G (Mbps) mo Botswana':'Average 4G download speeds (Mbps) across Botswana'}</p>
               <ResponsiveContainer width="100%" height={320}><BarChart data={regionalData} layout="vertical" margin={{left:10}}><CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0"/><XAxis type="number" tick={{fontSize:10}} unit=" Mbps"/><YAxis type="category" dataKey="region" tick={{fontSize:10}} width={90}/><Tooltip contentStyle={{borderRadius:'8px',fontSize:'12px'}}/><Legend wrapperStyle={{fontSize:'11px'}}/>
                 <Bar dataKey="mascom" name="Mascom" fill="#E21836" radius={[0,4,4,0]} barSize={8}/>
                 <Bar dataKey="btc" name="BTC" fill="#2E7D32" radius={[0,4,4,0]} barSize={8}/>
@@ -302,9 +304,9 @@ export default function QoSMonitoringPage() {
                 <div key={k} className="bg-white rounded-xl border border-gray-200 p-4">
                   <div className="flex items-center gap-2 mb-3"><img src={v.logo} alt={v.short} className="w-6 h-6 rounded object-cover"/><span className="text-sm font-bold" style={{color:v.color}}>{v.short}</span></div>
                   <div className="space-y-2">
-                    <div className="flex items-center justify-between"><span className="text-xs text-gray-400">Best</span><span className="text-xs font-medium text-green-600 flex items-center gap-1"><TrendingUp size={10}/>{best.region} ({best[k]} Mbps)</span></div>
-                    <div className="flex items-center justify-between"><span className="text-xs text-gray-400">Weakest</span><span className="text-xs font-medium text-red-600 flex items-center gap-1"><TrendingDown size={10}/>{worst.region} ({worst[k]} Mbps)</span></div>
-                    <div className="flex items-center justify-between"><span className="text-xs text-gray-400">National Avg</span><span className="text-xs font-bold text-bocra-slate">{avg} Mbps</span></div>
+                    <div className="flex items-center justify-between"><span className="text-xs text-gray-400">{lang==='tn'?'E e Gaisang':'Best'}</span><span className="text-xs font-medium text-green-600 flex items-center gap-1"><TrendingUp size={10}/>{best.region} ({best[k]} Mbps)</span></div>
+                    <div className="flex items-center justify-between"><span className="text-xs text-gray-400">{lang==='tn'?'E e Bokoa':'Weakest'}</span><span className="text-xs font-medium text-red-600 flex items-center gap-1"><TrendingDown size={10}/>{worst.region} ({worst[k]} Mbps)</span></div>
+                    <div className="flex items-center justify-between"><span className="text-xs text-gray-400">{lang==='tn'?'Kalekanyo ya Naga':'National Avg'}</span><span className="text-xs font-bold text-bocra-slate">{avg} Mbps</span></div>
                   </div>
                 </div>
               );})}
@@ -314,7 +316,7 @@ export default function QoSMonitoringPage() {
       </>)}
 
       <section className="py-6 bg-bocra-off-white mt-4"><div className="section-wrapper max-w-3xl mx-auto text-center">
-        <p className="text-xs text-bocra-slate/30">Data from operator monthly reports · Based on BOCRA QoS & QoE Guidelines 2019</p>
+        <p className="text-xs text-bocra-slate/30">{lang==='tn'?'Data go tswa dipegong tsa kgwedi le kgwedi tsa balaodi · Go ikaegile ka Ditaelo tsa BOCRA tsa QoS & QoE tsa 2019':'Data from operator monthly reports · Based on BOCRA QoS & QoE Guidelines 2019'}</p>
       </div></section>
       <div className="flex h-1"><div className="flex-1 bg-[#00A6CE]"/><div className="flex-1 bg-[#C8237B]"/><div className="flex-1 bg-[#F7B731]"/><div className="flex-1 bg-[#6BBE4E]"/></div>
     </div>
@@ -322,16 +324,17 @@ export default function QoSMonitoringPage() {
 }
 
 function AiInsightBar({ insights, loading, onRefresh }) {
+  const { lang } = useLanguage();
   return (
     <div className="bg-gradient-to-r from-[#001A3A] to-[#00458B] rounded-xl p-4 mb-4">
       <div className="flex items-center justify-between mb-2">
-        <h3 className="text-xs font-bold text-white flex items-center gap-1.5"><Brain size={14} className="text-[#00A6CE]"/> AI Analysis</h3>
+        <h3 className="text-xs font-bold text-white flex items-center gap-1.5"><Brain size={14} className="text-[#00A6CE]"/>{lang==='tn'?'Tshekatsheko ya AI':'AI Analysis'}</h3>
         <button onClick={onRefresh} disabled={loading} className="flex items-center gap-1 px-2 py-1 bg-white/10 rounded-lg text-[9px] text-white/60 hover:bg-white/20 disabled:opacity-50 transition-all">
-          <RefreshCw size={9} className={loading ? 'animate-spin' : ''}/> {loading ? 'Analysing...' : 'Refresh'}
+          <RefreshCw size={9} className={loading ? 'animate-spin' : ''}/> {loading ? (lang==='tn'?'E a sekaseka...':'Analysing...') : (lang==='tn'?'Ntšhwafatsa':'Refresh')}
         </button>
       </div>
       {loading ? (
-        <div className="flex items-center gap-2 py-3"><div className="w-4 h-4 border-2 border-[#00A6CE]/30 border-t-[#00A6CE] rounded-full animate-spin"/><p className="text-[10px] text-white/40">Analysing performance data...</p></div>
+        <div className="flex items-center gap-2 py-3"><div className="w-4 h-4 border-2 border-[#00A6CE]/30 border-t-[#00A6CE] rounded-full animate-spin"/><p className="text-[10px] text-white/40">{lang==='tn'?'E sekaseka data ya tiragatso...':'Analysing performance data...'}</p></div>
       ) : Array.isArray(insights) && insights.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
           {insights.map((item, i) => (
@@ -342,7 +345,7 @@ function AiInsightBar({ insights, loading, onRefresh }) {
           ))}
         </div>
       ) : (
-        <p className="text-[10px] text-white/25 py-1">AI insights will appear automatically...</p>
+        <p className="text-[10px] text-white/25 py-1">{lang==='tn'?'Ditshwaelo tsa AI di tla bonala ka botsona...':'AI insights will appear automatically...'}</p>
       )}
     </div>
   );
