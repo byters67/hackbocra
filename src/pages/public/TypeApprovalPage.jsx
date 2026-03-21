@@ -188,14 +188,18 @@ export default function TypeApprovalPage() {
               <div className="mt-8">
                 <h3 className="text-lg font-bold text-bocra-slate mb-3">{lang === 'tn' ? 'Go Netefatsa Boleng le Polokego' : 'Ensuring Quality and Safety'}</h3>
                 <p className="text-sm text-bocra-slate/70 leading-relaxed mb-4">
-                  Through Type Approval of Radio Telecommunications Terminal Equipment (RTTE) and Telecommunications Terminal Equipment (TTE), BOCRA ensures the integrity and reliability of the nation's communication infrastructure. All such devices must adhere to:
+                  {lang === 'tn' ? 'Ka Tumelelo ya Mofuta ya Didirisiwa tsa Radio tsa Megala (RTTE) le Didirisiwa tsa Megala (TTE), BOCRA e netefatsa botshepegi le go ikanyega ga mafaratlhatlha a dikgolagano a naga. Didirisiwa tsotlhe tse di tshwanang di tshwanetse go obamela:' : 'Through Type Approval of Radio Telecommunications Terminal Equipment (RTTE) and Telecommunications Terminal Equipment (TTE), BOCRA ensures the integrity and reliability of the nation\'s communication infrastructure. All such devices must adhere to:'}
                 </p>
                 <div className="space-y-3">
-                  {[
+                  {(lang === 'tn' ? [
+                    { title: 'Leano la Frikwensi la Bosetšhaba', desc: 'Didirisiwa di tshwanetse go bereka ka fa gare ga dikabelo tsa frikwensi tse di tlhalosiwang ke Leano la Frikwensi la Bosetšhaba la Botswana go efoga tshitswako.' },
+                    { title: 'Maemo a Boitekanelo le Polokego', desc: 'Didirisiwa di tshwanetse go fitlhelela ditaelo tse di gagametseng tsa boitekanelo le polokego go thibela kotsi go badirisi le go netefatsa tiriso e e babalesegileng.' },
+                    { title: 'Go Obamela ga Electromagnetic (EMC)', desc: 'Didirisiwa di tshwanetse go obamela maemo a EMC go netefatsa gore ga di ntshe EMI e ntsi mme di kgona go emelelana le maemo a a utlwalang a EMI.' },
+                  ] : [
                     { title: 'National Frequency Plan', desc: 'Equipment must operate within frequency allocations specified by Botswana\'s National Frequency Plan to avoid interference.' },
                     { title: 'Health & Safety Standards', desc: 'Devices must meet strict health and safety guidelines to prevent harm to users and ensure safe operation.' },
                     { title: 'Electromagnetic Conformity (EMC)', desc: 'Equipment must comply with EMC standards to ensure it does not emit excessive EMI and is immune to reasonable EMI levels.' },
-                  ].map((item, i) => (
+                  ]).map((item, i) => (
                     <div key={i} className="flex items-start gap-3 p-3 bg-white border border-gray-100 rounded-xl">
                       <div className="w-1.5 h-1.5 rounded-full bg-[#00A6CE] mt-1.5 flex-shrink-0" />
                       <div>
@@ -211,7 +215,7 @@ export default function TypeApprovalPage() {
               <div className="mt-8">
                 <h3 className="text-lg font-bold text-bocra-slate mb-3">{lang === 'tn' ? 'Go Lwantsha Didirisiwa tsa Maaka' : 'Combating Counterfeit Devices'}</h3>
                 <p className="text-sm text-bocra-slate/70 leading-relaxed">
-                  BOCRA has implemented a Device Verification Module (DVM) for SIM-enabled devices to combat the proliferation of counterfeit devices, which pose significant risks to network integrity and user safety. The DVM allows users to verify the authenticity of their devices by checking their International Mobile Equipment Identity (IMEI) numbers against a central database of approved devices.
+                  {lang === 'tn' ? 'BOCRA e diragaditse Module ya Netefatso ya Didirisiwa (DVM) ya didirisiwa tse di nang le SIM go lwantsha go ata ga didirisiwa tsa maaka, tse di tlisang dikotsi tse dikgolo mo botshepegeng jwa neteweke le polokegong ya badirisi. DVM e letla badirisi go netefatsa nnete ya didirisiwa tsa bone ka go tlhola dinomoro tsa bone tsa IMEI kgatlhanong le database e kgolo ya didirisiwa tse di amogetsweng.' : 'BOCRA has implemented a Device Verification Module (DVM) for SIM-enabled devices to combat the proliferation of counterfeit devices, which pose significant risks to network integrity and user safety. The DVM allows users to verify the authenticity of their devices by checking their International Mobile Equipment Identity (IMEI) numbers against a central database of approved devices.'}
                 </p>
               </div>
             </div>
