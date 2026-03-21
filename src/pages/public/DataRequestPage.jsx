@@ -22,6 +22,7 @@ import {
 import PageHero from '../../components/ui/PageHero';
 import { useAuth } from '../../lib/auth';
 import { supabase } from '../../lib/supabase';
+import { useRecaptcha } from '../../hooks/useRecaptcha';
 import { sanitizeInput, sanitizeError } from '../../lib/security';
 import ConsentCheckbox from '../../components/ui/ConsentCheckbox';
 import { useScrollReveal } from '../../hooks/useAnimations';
@@ -59,6 +60,7 @@ export default function DataRequestPage() {
   const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const heroRef = useScrollReveal();
+  const { executeRecaptcha } = useRecaptcha();
 
   const [view, setView] = useState('list'); // 'list' | 'form' | 'success'
   const [requests, setRequests] = useState([]);
@@ -109,6 +111,13 @@ export default function DataRequestPage() {
 
     setSubmitting(true);
     setError('');
+
+    const recaptchaToken = await executeRecaptcha('submit_data_request');
+    if (!recaptchaToken) {
+      setError(lang === 'tn' ? 'Tsweetswee leka gape (tshireletso ya saete).' : 'Security check failed. Please wait and try again.');
+      setSubmitting(false);
+      return;
+    }
 
     const ref = 'DPA-' + new Date().getFullYear() + '-' + crypto.randomUUID().slice(0, 8).toUpperCase();
 

@@ -21,8 +21,7 @@ import {
   ChevronRight, AlertCircle, CheckCircle, Send,
   FileText, Clock, Shield, Phone, HelpCircle
 } from 'lucide-react';
-import { supabase } from '../../lib/supabase';
-import { checkRateLimit } from '../../lib/supabase';
+import { checkRateLimit, supabaseUrl_, supabaseAnonKey_ } from '../../lib/supabase';
 import { useRecaptcha } from '../../hooks/useRecaptcha';
 import { sanitizeInput, sanitizeError, validateEmail, validatePhone } from '../../lib/security';
 import { useScrollReveal, useStaggerReveal } from '../../hooks/useAnimations';
@@ -104,12 +103,17 @@ export default function FileComplaintPage() {
     if (!validate()) return;
     setLoading(true);
 
-    // ─── SECURITY: reCAPTCHA v3 verification ───
+    // ─── SECURITY: reCAPTCHA v3 (token verified server-side via submit-form) ───
     const recaptchaToken = await executeRecaptcha('submit_complaint');
     if (!recaptchaToken) {
-      console.warn('[BOCRA] reCAPTCHA failed — proceeding without token');
+      setErrors(prev => ({
+        ...prev,
+        form: lang === 'tn' ? 'Tsweetswee leka gape. Fa bothata bo tswelela, eba o na le inthanete.' : 'Security verification failed. Please wait a moment and try again.',
+      }));
+      setLoading(false);
+      return;
     }
-    
+
     // ─── SECURITY: Rate limiting (F01 remediation) ───
     if (!checkRateLimit('complaint-submit')) {
       alert('Too many submissions. Please wait a moment and try again.');
@@ -125,35 +129,37 @@ export default function FileComplaintPage() {
     }
 
     try {
-      // ─── SECURITY: Sanitize all inputs before sending (F06 remediation) ───
-      const { data: inserted, error: insertErr } = await supabase.from('complaints').insert([{
-        name: sanitizeInput(form.name, 200),
-        company: sanitizeInput(form.company, 200),
-        phone: sanitizeInput(form.phone, 20),
-        email: sanitizeInput(form.email, 200),
-        provider: sanitizeInput(form.provider, 200),
-        complaint_type: sanitizeInput(form.complaintType, 200),
-        description: sanitizeInput(form.description, 5000),
-        previous_complaint: !!form.previousComplaint,
-        reference_number: sanitizeInput(form.referenceNumber, 100),
-        status: 'pending',
-        consent_given_at: new Date().toISOString(),
-      }]).select('id').single();
-      if (insertErr) throw insertErr;
-
-      // ─── AI AUTO-CATEGORISATION — runs in background, doesn't block user ───
-      if (inserted?.id) {
-        // Fire and forget — don't await, user sees success immediately
-        (async () => {
-          try {
-            const res = await fetch('https://cyalwtuladeexxfsbrcs.supabase.co/functions/v1/classify-complaint', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN5YWx3dHVsYWRlZXh4ZnNicmNzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM1MjM2NTYsImV4cCI6MjA4OTA5OTY1Nn0.rvH-J2O9sttpRFYLSo28BogTwBhwFD2Ei_QuMbnrHUk' },
-              body: JSON.stringify({ complaint_id: inserted.id, provider: form.provider, complaint_type: form.complaintType, description: form.description }),
-            });
-            if (!res.ok) console.warn('[BOCRA] AI classification failed:', res.status);
-          } catch { /* AI classification is non-critical */ }
-        })();
+      const res = await fetch(`${supabaseUrl_}/functions/v1/submit-form`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${supabaseAnonKey_}`,
+          apikey: supabaseAnonKey_,
+        },
+        body: JSON.stringify({
+          form_type: 'complaint',
+          recaptcha_token: recaptchaToken,
+          fields: {
+            name: sanitizeInput(form.name, 200),
+            company: sanitizeInput(form.company, 200),
+            phone: sanitizeInput(form.phone, 20),
+            email: sanitizeInput(form.email, 200),
+            provider: sanitizeInput(form.provider, 200),
+            complaint_type: sanitizeInput(form.complaintType, 200),
+            description: sanitizeInput(form.description, 5000),
+            previous_complaint: !!form.previousComplaint,
+            reference_number: sanitizeInput(form.referenceNumber, 100),
+          },
+        }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data.success) {
+        setErrors(prev => ({
+          ...prev,
+          form: typeof data.error === 'string' ? data.error : (lang === 'tn' ? 'Go na le phoso. Tsweetswee leka gape.' : 'Something went wrong. Please try again or contact us by phone.'),
+        }));
+        setLoading(false);
+        return;
       }
 
       setStep('success');

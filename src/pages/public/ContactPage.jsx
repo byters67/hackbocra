@@ -2,7 +2,8 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import ConsentCheckbox from '../../components/ui/ConsentCheckbox';
 import { MapPin, Phone, Mail, Clock, Send, ChevronRight, CheckCircle, ExternalLink } from 'lucide-react';
-import { supabase } from '../../lib/supabase';
+import { supabaseUrl_, supabaseAnonKey_ } from '../../lib/supabase';
+import { useRecaptcha } from '../../hooks/useRecaptcha';
 import { useScrollReveal } from '../../hooks/useAnimations';
 import PageHero from '../../components/ui/PageHero';
 import { useLanguage } from '../../lib/language';
@@ -16,6 +17,7 @@ export default function ContactPage() {
   const [errors, setErrors] = useState({});
   const heroRef = useScrollReveal();
   const formRef = useScrollReveal({ y: 40 });
+  const { executeRecaptcha } = useRecaptcha();
   const u = (k, v) => { setForm(f => ({ ...f, [k]: v })); setErrors(e => ({ ...e, [k]: '' })); };
 
   const T = {
@@ -49,6 +51,7 @@ export default function ContactPage() {
     messageReq: lang === 'tn' ? 'Molaetsa o a tlhokega' : 'Message is required',
     moreDetail: lang === 'tn' ? 'Tsweetswee fana ka dintlha tse di oketsegileng' : 'Please provide more detail',
     formErr: lang === 'tn' ? 'Go na le phoso. Tsweetswee leka gape kgotsa ikgolaganye le rona ka mogala.' : 'Something went wrong. Please try again or contact us by phone.',
+    recaptchaErr: lang === 'tn' ? 'Tsweetswee leka gape. Fa bothata bo tswelela, eba o na le inthanete.' : 'Security check failed. Please wait a moment and try again.',
     mapTitle: lang === 'tn' ? 'Lefelo la BOCRA' : 'BOCRA Location',
   };
 
@@ -67,15 +70,37 @@ export default function ContactPage() {
   const handleSubmit = async (e) => {
     e.preventDefault(); if (!validate()) return; setLoading(true);
     try {
-      const { error: insertErr } = await supabase.from('contact_submissions').insert([{
-        name: form.name,
-        email: form.email,
-        phone: form.phone,
-        subject: form.subject,
-        message: form.message,
-        consent_given_at: new Date().toISOString(),
-      }]);
-      if (insertErr) throw insertErr;
+      const recaptchaToken = await executeRecaptcha('submit_contact');
+      if (!recaptchaToken) {
+        setErrors(prev => ({ ...prev, form: T.recaptchaErr }));
+        setLoading(false);
+        return;
+      }
+      const res = await fetch(`${supabaseUrl_}/functions/v1/submit-form`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${supabaseAnonKey_}`,
+          apikey: supabaseAnonKey_,
+        },
+        body: JSON.stringify({
+          form_type: 'contact',
+          recaptcha_token: recaptchaToken,
+          fields: {
+            name: form.name.trim(),
+            email: form.email.trim(),
+            phone: form.phone.trim(),
+            subject: form.subject.trim(),
+            message: form.message.trim(),
+          },
+        }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data.success) {
+        setErrors(prev => ({ ...prev, form: data.error || T.formErr }));
+        setLoading(false);
+        return;
+      }
       setSubmitted(true);
     } catch (err) {
       console.error('[BOCRA] Contact form error:', err);

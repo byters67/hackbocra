@@ -17,6 +17,7 @@ import PageTransition from '../animations/PageTransition';
 import AccessibilityWidget from '../ui/AccessibilityWidget';
 import CookieConsent from '../ui/CookieConsent';
 import ChatWidget from '../ui/ChatWidget';
+import RecaptchaBadge from '../ui/RecaptchaBadge';
 
 export default function Layout() {
   return (
@@ -29,16 +30,17 @@ export default function Layout() {
       </a>
 
       <Header />
-      
+
       <main id="main-content" className="flex-1 pt-16 lg:pt-[120px]">
         <PageTransition>
           <Outlet />
         </PageTransition>
       </main>
-      
+
       <Footer />
       <AccessibilityWidget />
       <ChatWidget />
+      <RecaptchaBadge />
       <CookieConsent />
     </div>
   );

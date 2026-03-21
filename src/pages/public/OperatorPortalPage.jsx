@@ -209,7 +209,12 @@ function RegisterForm({ setView, signUp }) {
     if (!validate()) return;
     setLoading(true);
 
-    await executeRecaptcha('operator_register');
+    const recaptchaToken = await executeRecaptcha('operator_register');
+    if (!recaptchaToken) {
+      setError('Security check failed. Please wait and try again.');
+      setLoading(false);
+      return;
+    }
 
     const { data: authData, error: authErr } = await signUp(form.email, form.password, form.firstName + ' ' + form.lastName);
     if (authErr) { setError(authErr.message); setLoading(false); return; }
@@ -315,7 +320,7 @@ function RegisterForm({ setView, signUp }) {
 
 function LoginForm({ setView, signIn }) {
   const { lang } = useLanguage();
-  const tn = lang === 'tn';
+  const { executeRecaptcha } = useRecaptcha();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [show, setShow] = useState(false);
@@ -328,6 +333,12 @@ function LoginForm({ setView, signIn }) {
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { setError('Please enter a valid email'); return; }
     if (!password) { setError('Password is required'); return; }
     setLoading(true);
+    const token = await executeRecaptcha('operator_login');
+    if (!token) {
+      setError(lang === 'tn' ? 'Tshireletso e paletse. Leka gape.' : 'Security check failed. Please wait and try again.');
+      setLoading(false);
+      return;
+    }
     const { error } = await signIn(email, password);
     if (error) {
       if (error.message.includes('Invalid login')) setError('Incorrect email or password.');

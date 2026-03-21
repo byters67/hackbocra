@@ -10,6 +10,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Mail, Lock, ArrowRight, ArrowLeft, Eye, EyeOff } from 'lucide-react';
 import { useAuth } from '../../lib/auth';
+import { useRecaptcha } from '../../hooks/useRecaptcha';
 import BocraLogo from '../../components/ui/BocraLogo';
 
 export default function LoginPage() {
@@ -20,6 +21,7 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const { signIn } = useAuth();
   const navigate = useNavigate();
+  const { executeRecaptcha } = useRecaptcha();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,7 +30,14 @@ export default function LoginPage() {
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { setError('Invalid email format'); return; }
     if (!password) { setError('Password is required'); return; }
     setLoading(true);
-    
+
+    const token = await executeRecaptcha('admin_portal_login');
+    if (!token) {
+      setError('Security check failed. Please wait and try again.');
+      setLoading(false);
+      return;
+    }
+
     const { error } = await signIn(email, password);
     if (error) {
       if (error.message.includes('Invalid login')) setError('Incorrect email or password. Please try again.');

@@ -24,7 +24,8 @@ import {
 } from 'lucide-react';
 import { useScrollReveal } from '../../hooks/useAnimations';
 import { useAuth } from '../../lib/auth';
-import { supabase } from '../../lib/supabase';
+import { supabase, supabaseUrl_, supabaseAnonKey_ } from '../../lib/supabase';
+import { useRecaptcha } from '../../hooks/useRecaptcha';
 import { useLanguage } from '../../lib/language';
 
 /* ─── DEVICE CATEGORIES & ICONS (data comes from Supabase) ─── */
@@ -542,6 +543,7 @@ function TypeApprovalSearch({ setView, lang }) {
 /*                  LOGIN FORM                      */
 /* ═════════════════════════════════════════════════ */
 function LoginForm({ setView, signIn, lang }) {
+  const { executeRecaptcha } = useRecaptcha();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [show, setShow] = useState(false);
@@ -554,6 +556,12 @@ function LoginForm({ setView, signIn, lang }) {
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { setError('Please enter a valid email'); return; }
     if (!password) { setError('Password is required'); return; }
     setLoading(true);
+    const token = await executeRecaptcha('type_approval_login');
+    if (!token) {
+      setError('Security check failed. Please wait and try again.');
+      setLoading(false);
+      return;
+    }
     const { error } = await signIn(email, password);
     if (error) {
       if (error.message.includes('Invalid login')) setError('Incorrect email or password.');
@@ -849,10 +857,12 @@ function TypeApprovalDashboard({ operator, user, signOut, setView, lang }) {
 /*          COMPLAINTS & ENQUIRIES                  */
 /* ═════════════════════════════════════════════════ */
 function ComplaintsSection({ setView, lang }) {
+  const { executeRecaptcha } = useRecaptcha();
   const [tab, setTab] = useState('create'); // create | check
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [form, setForm] = useState({ email: '', fullName: '', phone: '', category: '', description: '' });
+  const [complaintError, setComplaintError] = useState('');
   const [checkEmail, setCheckEmail] = useState('');
   const [checkRef, setCheckRef] = useState('');
   const [checkResults, setCheckResults] = useState(null);
@@ -861,21 +871,52 @@ function ComplaintsSection({ setView, lang }) {
   const handleSubmitComplaint = async (e) => {
     e.preventDefault();
     if (!form.email || !form.fullName || !form.category || !form.description) return;
+    if (form.description.trim().length < 20) {
+      setComplaintError('Please provide at least 20 characters in the description.');
+      return;
+    }
+    setComplaintError('');
     setLoading(true);
     try {
-      await supabase.from('complaints').insert({
-        name: form.fullName,
-        email: form.email,
-        phone: form.phone,
-        provider: 'Type Approval',
-        complaint_type: form.category,
-        description: form.description,
-        status: 'pending',
-        consent_given_at: new Date().toISOString(),
+      const recaptchaToken = await executeRecaptcha('submit_complaint');
+      if (!recaptchaToken) {
+        setComplaintError('Security check failed. Please wait and try again.');
+        setLoading(false);
+        return;
+      }
+      const res = await fetch(`${supabaseUrl_}/functions/v1/submit-form`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${supabaseAnonKey_}`,
+          apikey: supabaseAnonKey_,
+        },
+        body: JSON.stringify({
+          form_type: 'complaint',
+          recaptcha_token: recaptchaToken,
+          fields: {
+            name: form.fullName,
+            company: '',
+            phone: form.phone || '',
+            email: form.email,
+            provider: 'Type Approval',
+            complaint_type: form.category,
+            description: form.description,
+            previous_complaint: false,
+            reference_number: '',
+          },
+        }),
       });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data.success) {
+        setComplaintError(typeof data.error === 'string' ? data.error : 'Something went wrong. Please try again.');
+        setLoading(false);
+        return;
+      }
       setSubmitted(true);
     } catch (err) {
       console.error(err);
+      setComplaintError('Something went wrong. Please try again.');
     }
     setLoading(false);
   };
@@ -946,6 +987,7 @@ function ComplaintsSection({ setView, lang }) {
               <div className="bg-white rounded-xl border border-gray-200 p-6">
                 <h2 className="text-lg font-bold text-bocra-slate mb-1">Complaints and Enquiries</h2>
                 <p className="text-sm text-gray-400 mb-6">Please fill in the below details to register a complaint with us regarding our services.</p>
+                {complaintError && <p className="text-sm text-red-600 bg-red-50 p-3 rounded-lg mb-4">{complaintError}</p>}
                 <form onSubmit={handleSubmitComplaint} className="space-y-4">
                   <div>
                     <input type="email" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} required

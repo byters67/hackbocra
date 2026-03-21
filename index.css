@@ -358,8 +358,7 @@
   font-size: 0.95rem;
 }
 
-/* Hide Google reCAPTCHA v3 badge — we show our own notice in the footer instead.
-   This is allowed by Google's terms as long as the required text is visible. */
+/* Hide default Google reCAPTCHA badge (custom badge in RecaptchaBadge.jsx) */
 .grecaptcha-badge {
   visibility: hidden !important;
 }

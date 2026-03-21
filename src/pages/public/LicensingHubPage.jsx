@@ -323,6 +323,12 @@ function LicenceApplicationForm({ licence }) {
     e.preventDefault();
     setSubmitting(true);
     setSubmitError(null);
+    const token = await executeRecaptcha('submit_licence_application');
+    if (!token) {
+      setSubmitError(lang === 'tn' ? 'Tsweetswee leka gape (tshireletso ya saete).' : 'Security check failed. Please wait and try again.');
+      setSubmitting(false);
+      return;
+    }
     const ref = 'LIC-' + licence.slug.toUpperCase().slice(0, 4) + '-' + new Date().getFullYear() + '-' + String(Math.floor(Math.random() * 9000 + 1000));
     try {
       const { error } = await supabase.from('licence_applications').insert([{
