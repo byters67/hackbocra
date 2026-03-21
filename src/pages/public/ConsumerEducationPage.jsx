@@ -97,7 +97,7 @@ export default function ConsumerEducationPage() {
           <h2 className="text-xl font-bold text-bocra-slate text-center mb-2">{lang === 'tn' ? 'Mathata a a Tlwaelegileng a Badirisi' : 'Common Consumer Issues'}</h2>
           <p className="text-sm text-bocra-slate/40 text-center mb-8">{lang === 'tn' ? 'Tse ke dingongorego tse di tlwaelegileng thata tse BOCRA e di amogelang go tswa go badirisi' : 'These are the most frequent complaints BOCRA receives from consumers'}</p>
           <div ref={issuesRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {COMMON_ISSUES.map(issue => (
+            {COMMON_COMPLAINTS.map(issue => (
               <div key={issue.title} className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-md transition-all">
                 <div className="h-1.5" style={{ background: issue.color }} />
                 <div className="p-4">

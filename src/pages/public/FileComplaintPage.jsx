@@ -69,6 +69,8 @@ const getSTEPS = (lang) => [
 export default function FileComplaintPage() {
   const { lang } = useLanguage();
   const STEPS = getSTEPS(lang);
+  const COMPLAINT_TYPES = getCOMPLAINT_TYPES(lang);
+  const SERVICE_PROVIDERS = getSERVICE_PROVIDERS(lang);
   const [step, setStep] = useState('info'); // 'info' | 'form' | 'success'
   const [form, setForm] = useState({
     name: '', company: '', phone: '', email: '',
