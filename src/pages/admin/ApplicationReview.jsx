@@ -8,7 +8,7 @@
  */
 
 import { useState, useEffect } from 'react';
-import { supabase } from '../../lib/supabase';
+import { supabase, supabaseAnonKey_ } from '../../lib/supabase';
 import {
   CheckCircle,
   XCircle,
@@ -257,6 +257,7 @@ export default function ApplicationReview({ applicationId, onStatusChange }) {
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${session.access_token}`,
+            apikey: supabaseAnonKey_,
           },
           body: JSON.stringify({ application_id: applicationId }),
         }
