@@ -317,12 +317,13 @@ const DOCUMENTS = [
   { title: 'Campus Radio Broadcasters Notice', file: 'Public_Notice_Campus_Radio_Broadcasters.pdf', category: 'Broadcasting', year: '2024' },
 ];
 
-const CATEGORIES = ['All', ...Object.keys(CATEGORY_CONFIG)];
+const CATEGORIES_STATIC = ['All', 'Legislation', 'Annual Reports', 'Guidelines & Standards', 'Licensing', 'Technical Specifications', 'Consultation Papers', 'Measurement Reports', 'Broadband & Internet', 'Spectrum & Frequency', 'Consumer Protection', 'Rulings & Disputes', 'Forms & Applications', 'Numbering Plan', 'Research & Publications', 'Policy', 'EMF & Health', 'Broadcasting'];
 const getYears = () => { const y = [...new Set(DOCUMENTS.map(d => d.year))].sort((a, b) => b.localeCompare(a)); return ['All Years', ...y]; };
 
 export default function DocumentsPage() {
   const { lang } = useLanguage();
   const CATEGORY_CONFIG = getCATEGORY_CONFIG(lang);
+  const CATEGORIES = CATEGORIES_STATIC;
   const [category, setCategory] = useState('All');
   const [search, setSearch] = useState('');
   const [year, setYear] = useState('All Years');
