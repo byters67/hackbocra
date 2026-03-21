@@ -324,6 +324,7 @@ export default function QoSMonitoringPage() {
 }
 
 function AiInsightBar({ insights, loading, onRefresh }) {
+  const { lang } = useLanguage();
   return (
     <div className="bg-gradient-to-r from-[#001A3A] to-[#00458B] rounded-xl p-4 mb-4">
       <div className="flex items-center justify-between mb-2">
