@@ -18,15 +18,15 @@ import { useLanguage } from '../../lib/language';
 gsap.registerPlugin(ScrollTrigger);
 
 const getDEPARTMENTS = (lang) => [
-  { name: lang === 'tn' ? 'Go Obamela le Tlhokomelo' : 'Compliance & Monitoring', icon: Shield, color: '#00A6CE', desc: lang === 'tn' ? 'Go obamela ga ba ba nang le dilaesense, ditlhatlhobo, tiragatso' : 'Licensee compliance, inspections, enforcement', functions: ['Licence compliance monitoring', 'Regulatory inspections', 'Consumer complaint investigation', 'Enforcement actions'] },
-  { name: lang === 'tn' ? 'Ditirelo tsa Setegeniki' : 'Technical Services', icon: Radio, color: '#C8237B', desc: lang === 'tn' ? 'Sepeketeramo, tumelelo ya mofuta, tlhokomelo ya boleng' : 'Spectrum, type approval, QoS monitoring', functions: ['Spectrum management & planning', 'Type approval certification', 'QoS monitoring & reporting', 'Technical standards'] },
-  { name: lang === 'tn' ? 'Dilaesense' : 'Licensing', icon: Award, color: '#6BBE4E', desc: lang === 'tn' ? 'Dikopo tsa dilaesense, diphetogo, rejisteri' : 'Licence applications, renewals, registry', functions: ['Application processing', 'Licence renewals', 'Operator registry', 'Fee administration'] },
-  { name: lang === 'tn' ? 'Inthanete e e Lebelo le Tirelo ya Botlhe' : 'Broadband & Universal Service', icon: Wifi, color: '#F7B731', desc: lang === 'tn' ? 'UASF, go atolosa inthanete, phitlhelelo ya magae' : 'UASF, broadband expansion, rural coverage', functions: ['UASF projects', 'Broadband strategy', 'Rural connectivity', 'Digital inclusion'] },
-  { name: lang === 'tn' ? 'Tlhabololo ya Kgwebo' : 'Business Development', icon: BarChart3, color: '#7C3AED', desc: lang === 'tn' ? 'Leano, patlisiso, tshekatsheko ya mmaraka' : 'Strategy, research, market analysis', functions: ['Strategic planning', 'Market analysis', 'Stakeholder engagement', 'Industry benchmarking'] },
-  { name: 'Corporate Communications', icon: Globe, color: '#0891B2', desc: 'Public affairs, media, consumer education', functions: ['Media relations', 'Consumer education', 'Digital presence', 'Public consultations'] },
-  { name: 'Legal & Board Secretary', icon: Scale, color: '#DC2626', desc: 'Legal affairs, governance, disputes', functions: ['Legal advisory', 'Board secretariat', 'Dispute resolution', 'Compliance framework'] },
-  { name: 'Finance', icon: FileText, color: '#059669', desc: 'Financial management, procurement', functions: ['Financial reporting', 'Budget control', 'Procurement & tenders', 'Revenue management'] },
-  { name: 'Corporate Support', icon: Building, color: '#64748B', desc: 'HR, administration, IT, facilities', functions: ['Human resources', 'ICT infrastructure', 'Facilities', 'Training & development'] },
+  { name: lang === 'tn' ? 'Go Obamela le Tlhokomelo' : 'Compliance & Monitoring', icon: Shield, color: '#00A6CE', desc: lang === 'tn' ? 'Go obamela ga ba ba nang le dilaesense, ditlhatlhobo, tiragatso' : 'Licensee compliance, inspections, enforcement', functions: lang === 'tn' ? ['Tlhokomelo ya go obamela ga dilaesense', 'Ditlhatlhobo tsa taolo', 'Dipatlisiso tsa dingongorego tsa badirisi', 'Dikgato tsa tiragatso'] : ['Licence compliance monitoring', 'Regulatory inspections', 'Consumer complaint investigation', 'Enforcement actions'] },
+  { name: lang === 'tn' ? 'Ditirelo tsa Setegeniki' : 'Technical Services', icon: Radio, color: '#C8237B', desc: lang === 'tn' ? 'Sepeketeramo, tumelelo ya mofuta, tlhokomelo ya boleng' : 'Spectrum, type approval, QoS monitoring', functions: lang === 'tn' ? ['Tsamaiso le peakanyo ya sepeketeramo', 'Netefatso ya tumelelo ya mofuta', 'Tlhokomelo le pegelo ya boleng jwa tirelo', 'Maemo a setegeniki'] : ['Spectrum management & planning', 'Type approval certification', 'QoS monitoring & reporting', 'Technical standards'] },
+  { name: lang === 'tn' ? 'Dilaesense' : 'Licensing', icon: Award, color: '#6BBE4E', desc: lang === 'tn' ? 'Dikopo tsa dilaesense, diphetogo, rejisteri' : 'Licence applications, renewals, registry', functions: lang === 'tn' ? ['Go dirisa dikopo', 'Diphetogo tsa dilaesense', 'Rejisteri ya balaodi', 'Tsamaiso ya dituelo'] : ['Application processing', 'Licence renewals', 'Operator registry', 'Fee administration'] },
+  { name: lang === 'tn' ? 'Inthanete e e Lebelo le Tirelo ya Botlhe' : 'Broadband & Universal Service', icon: Wifi, color: '#F7B731', desc: lang === 'tn' ? 'UASF, go atolosa inthanete, phitlhelelo ya magae' : 'UASF, broadband expansion, rural coverage', functions: lang === 'tn' ? ['Diporojeke tsa UASF', 'Leano la inthanete ya lobelo', 'Kgolagano ya magae', 'Go akarediwa ga dijithale'] : ['UASF projects', 'Broadband strategy', 'Rural connectivity', 'Digital inclusion'] },
+  { name: lang === 'tn' ? 'Tlhabololo ya Kgwebo' : 'Business Development', icon: BarChart3, color: '#7C3AED', desc: lang === 'tn' ? 'Leano, patlisiso, tshekatsheko ya mmaraka' : 'Strategy, research, market analysis', functions: lang === 'tn' ? ['Peakanyo ya leano', 'Tshekatsheko ya mmaraka', 'Go ikgolaganya le baamegi', 'Go bapisa le lefapha'] : ['Strategic planning', 'Market analysis', 'Stakeholder engagement', 'Industry benchmarking'] },
+  { name: lang === 'tn' ? 'Dikgolagano tsa Khomporasi' : 'Corporate Communications', icon: Globe, color: '#0891B2', desc: lang === 'tn' ? 'Merero ya setšhaba, bobegadikgang, thuto ya badirisi' : 'Public affairs, media, consumer education', functions: lang === 'tn' ? ['Dikamano le bobegadikgang', 'Thuto ya badirisi', 'Maemo a dijithale', 'Ditherisano tsa setšhaba'] : ['Media relations', 'Consumer education', 'Digital presence', 'Public consultations'] },
+  { name: lang === 'tn' ? 'Molao le Mongodi wa Boto' : 'Legal & Board Secretary', icon: Scale, color: '#DC2626', desc: lang === 'tn' ? 'Merero ya molao, puso, dikganetsano' : 'Legal affairs, governance, disputes', functions: lang === 'tn' ? ['Kgakololo ya molao', 'Mongodi wa boto', 'Tharabololo ya dikganetsano', 'Thulaganyo ya go obamela'] : ['Legal advisory', 'Board secretariat', 'Dispute resolution', 'Compliance framework'] },
+  { name: lang === 'tn' ? 'Ditšhelete' : 'Finance', icon: FileText, color: '#059669', desc: lang === 'tn' ? 'Tsamaiso ya ditšhelete, theko' : 'Financial management, procurement', functions: lang === 'tn' ? ['Pegelo ya ditšhelete', 'Taolo ya tekanyetso', 'Theko le ditendara', 'Tsamaiso ya lotseno'] : ['Financial reporting', 'Budget control', 'Procurement & tenders', 'Revenue management'] },
+  { name: lang === 'tn' ? 'Tshegetso ya Khomporasi' : 'Corporate Support', icon: Building, color: '#64748B', desc: lang === 'tn' ? 'Badiredi, tsamaiso, IT, mafelo' : 'HR, administration, IT, facilities', functions: lang === 'tn' ? ['Badiredi', 'Mafaratlhatlha a ICT', 'Mafelo', 'Katiso le tlhabololo'] : ['Human resources', 'ICT infrastructure', 'Facilities', 'Training & development'] },
 ];
 
 const getOBJECTIVES = (lang) => [
@@ -35,7 +35,7 @@ const getOBJECTIVES = (lang) => [
   { title: lang === 'tn' ? 'Tshireletso ya Badirisi' : 'Consumer Protection', icon: Shield, color: '#C8237B' },
   { title: lang === 'tn' ? 'Tokafatso ya Metswedi' : 'Resource Optimisation', icon: Radio, color: '#F7B731' },
   { title: lang === 'tn' ? 'Tlhabololo ya Bokgoni' : 'Talent Development', icon: Users, color: '#7C3AED' },
-  { title: 'Stakeholder Engagement', icon: Globe, color: '#00458B' },
+  { title: lang === 'tn' ? 'Go Ikgolaganya le Baamegi' : 'Stakeholder Engagement', icon: Globe, color: '#00458B' },
 ];
 
 export default function OrganogramPage() {
@@ -154,7 +154,7 @@ export default function OrganogramPage() {
                 <div className="w-14 h-14 rounded-full bg-white/10 flex items-center justify-center mx-auto mb-3 group-hover:bg-white/20 transition-colors duration-300 group-hover:scale-110">
                   <Briefcase size={24} className="text-[#00A6CE]" />
                 </div>
-                <p className="text-lg font-bold tracking-tight">Mr. Martin Mokgware</p>
+                <p className="text-lg font-bold tracking-tight">{lang === 'tn' ? 'Rre Martin Mokgware' : 'Mr. Martin Mokgware'}</p>
                 <p className="text-xs text-white/40 mt-0.5">{lang === 'tn' ? 'Mokaedi Mogolo' : 'Chief Executive'}</p>
                 <div className="flex justify-center gap-1.5 mt-3">
                   {['#00A6CE','#C8237B','#F7B731','#6BBE4E'].map(c => (
@@ -202,7 +202,7 @@ export default function OrganogramPage() {
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-bold text-bocra-slate truncate group-hover:text-[#00458B] transition-colors">{dept.name}</p>
-                        <p className="text-[10px] text-bocra-slate/30">Director</p>
+                        <p className="text-[10px] text-bocra-slate/30">{lang === 'tn' ? 'Motlhankedi' : 'Director'}</p>
                       </div>
                       <ChevronDown size={14} className={`text-gray-300 transition-all duration-300 flex-shrink-0 ${isExp ? 'rotate-180 text-gray-500' : 'group-hover:text-gray-400'}`} />
                     </div>
@@ -252,7 +252,7 @@ export default function OrganogramPage() {
             {[
               { label: lang === 'tn' ? 'Mokaedi Mogolo' : 'Chief Executive', path: '/about/chief-executive', icon: Briefcase, color: '#00458B' },
               { label: lang === 'tn' ? 'Lekgotla la Batlhankedi' : 'Board of Directors', path: '/about/board', icon: Users, color: '#00A6CE' },
-              { label: 'Executive Management', path: '/about/executive-management', icon: Award, color: '#C8237B' },
+              { label: lang === 'tn' ? 'Botsamaisi jwa Phethagatso' : 'Executive Management', path: '/about/executive-management', icon: Award, color: '#C8237B' },
               { label: lang === 'tn' ? 'Ka ga BOCRA' : 'About BOCRA', path: '/about/profile', icon: BookOpen, color: '#6BBE4E' },
             ].map(link => (
               <Link key={link.path} to={link.path} className="flex items-center gap-3 p-3 bg-white rounded-xl border border-gray-100 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 group">
