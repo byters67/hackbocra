@@ -69,9 +69,9 @@ const MARKET_SHARE = [
 ];
 
 const getStatCards = (lang) => [
-  { icon: Phone, label: 'Mobile Subscriptions', value: 4710000, suffix: '', color: 'bocra-blue' },
-  { icon: CreditCard, label: 'Mobile Money Users', value: 2100000, suffix: '', color: 'bocra-cyan' },
-  { icon: Wifi, label: 'Broadband Subscribers', value: 922000, suffix: '', color: 'bocra-green' },
+  { icon: Phone, label: lang === 'tn' ? 'Disamasetshene tsa Mogala' : 'Mobile Subscriptions', value: 4710000, suffix: '', color: 'bocra-blue' },
+  { icon: CreditCard, label: lang === 'tn' ? 'Badirisi ba Madi a Mogala' : 'Mobile Money Users', value: 2100000, suffix: '', color: 'bocra-cyan' },
+  { icon: Wifi, label: lang === 'tn' ? 'Basamasetshene ba Inthanete ya Lobelo' : 'Broadband Subscribers', value: 922000, suffix: '', color: 'bocra-green' },
   { icon: Radio, label: lang === 'tn' ? 'Balaodi ba ba nang le Dilaesense' : 'Licensed Operators', value: 3, suffix: '', color: 'bocra-magenta' },
 ];
 
@@ -129,10 +129,10 @@ export default function TelecomStatisticsPage() {
           {/* Tab navigation */}
           <div className="flex gap-2 mb-8 overflow-x-auto pb-2 -mx-2 px-2 scrollbar-hide">
             {[
-              { key: 'mobile', label: 'Mobile Subscriptions' },
-              { key: 'money', label: 'Mobile Money' },
-              { key: 'broadband', label: 'Broadband' },
-              { key: 'market', label: 'Market Share' },
+              { key: 'mobile', label: lang === 'tn' ? 'Disamasetshene tsa Mogala' : 'Mobile Subscriptions' },
+              { key: 'money', label: lang === 'tn' ? 'Madi a Mogala' : 'Mobile Money' },
+              { key: 'broadband', label: lang === 'tn' ? 'Inthanete ya Lobelo' : 'Broadband' },
+              { key: 'market', label: lang === 'tn' ? 'Karolo ya Mmaraka' : 'Market Share' },
             ].map((tab) => (
               <button
                 key={tab.key}
@@ -152,8 +152,8 @@ export default function TelecomStatisticsPage() {
           <div className="bg-white rounded-2xl p-3 sm:p-6 md:p-8 shadow-sm border border-gray-100">
             {activeTab === 'mobile' && (
               <div>
-                <h3 className="text-xl font-display text-bocra-slate mb-2">Mobile Telephony Subscriptions by Operator</h3>
-                <p className="text-sm text-bocra-slate/50 mb-6">Thousands of subscribers (2020-2024)</p>
+                <h3 className="text-xl font-bold text-bocra-slate mb-2">{lang === 'tn' ? 'Disamasetshene tsa Megala ya Mogala ka Molaodi' : 'Mobile Telephony Subscriptions by Operator'}</h3>
+                <p className="text-sm text-bocra-slate/50 mb-6">{lang === 'tn' ? 'Dikete tsa basamasetshene (2020-2024)' : 'Thousands of subscribers (2020-2024)'}</p>
                 <ResponsiveContainer width="100%" height={chartH}>
                   <BarChart data={MOBILE_SUBS} barGap={4}>
                     <CartesianGrid strokeDasharray="3 3" stroke="#E2E8F0" />
@@ -174,8 +174,8 @@ export default function TelecomStatisticsPage() {
 
             {activeTab === 'money' && (
               <div>
-                <h3 className="text-xl font-display text-bocra-slate mb-2">Mobile Money Subscriptions Growth</h3>
-                <p className="text-sm text-bocra-slate/50 mb-6">Thousands of subscribers (2020-2024)</p>
+                <h3 className="text-xl font-bold text-bocra-slate mb-2">{lang === 'tn' ? 'Kgolo ya Disamasetshene tsa Madi a Mogala' : 'Mobile Money Subscriptions Growth'}</h3>
+                <p className="text-sm text-bocra-slate/50 mb-6">{lang === 'tn' ? 'Dikete tsa basamasetshene (2020-2024)' : 'Thousands of subscribers (2020-2024)'}</p>
                 <ResponsiveContainer width="100%" height={chartH}>
                   <LineChart data={MOBILE_MONEY}>
                     <CartesianGrid strokeDasharray="3 3" stroke="#E2E8F0" />
@@ -193,8 +193,8 @@ export default function TelecomStatisticsPage() {
 
             {activeTab === 'broadband' && (
               <div>
-                <h3 className="text-xl font-display text-bocra-slate mb-2">Broadband Subscribers</h3>
-                <p className="text-sm text-bocra-slate/50 mb-6">Mobile vs Fixed broadband (thousands, 2020-2024)</p>
+                <h3 className="text-xl font-bold text-bocra-slate mb-2">{lang === 'tn' ? 'Basamasetshene ba Inthanete ya Lobelo' : 'Broadband Subscribers'}</h3>
+                <p className="text-sm text-bocra-slate/50 mb-6">{lang === 'tn' ? 'Inthanete ya mogala vs e e tsepameng (dikete, 2020-2024)' : 'Mobile vs Fixed broadband (thousands, 2020-2024)'}</p>
                 <ResponsiveContainer width="100%" height={chartH}>
                   <BarChart data={BROADBAND}>
                     <CartesianGrid strokeDasharray="3 3" stroke="#E2E8F0" />
@@ -202,8 +202,8 @@ export default function TelecomStatisticsPage() {
                     <YAxis tick={{ fill: '#64748B', fontSize }} />
                     <Tooltip contentStyle={{ borderRadius: '12px', border: '1px solid #E2E8F0' }} />
                     <Legend />
-                    <Bar dataKey="mobile" name="Mobile Broadband" fill="#6BBE4E" radius={[6, 6, 0, 0]} />
-                    <Bar dataKey="fixed" name="Fixed Broadband" fill="#00458B" radius={[6, 6, 0, 0]} />
+                    <Bar dataKey="mobile" name={lang === 'tn' ? 'Inthanete ya Mogala' : 'Mobile Broadband'} fill="#6BBE4E" radius={[6, 6, 0, 0]} />
+                    <Bar dataKey="fixed" name={lang === 'tn' ? 'Inthanete e e Tsepameng' : 'Fixed Broadband'} fill="#00458B" radius={[6, 6, 0, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
@@ -212,8 +212,8 @@ export default function TelecomStatisticsPage() {
             {activeTab === 'market' && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div>
-                  <h3 className="text-xl font-display text-bocra-slate mb-2">Mobile Market Share</h3>
-                  <p className="text-sm text-bocra-slate/50 mb-6">By operator (%)</p>
+                  <h3 className="text-xl font-bold text-bocra-slate mb-2">{lang === 'tn' ? 'Karolo ya Mmaraka ya Mogala' : 'Mobile Market Share'}</h3>
+                  <p className="text-sm text-bocra-slate/50 mb-6">{lang === 'tn' ? 'Ka molaodi (%)' : 'By operator (%)'}</p>
                   <ResponsiveContainer width="100%" height={pieH}>
                     <PieChart>
                       <Pie data={MARKET_SHARE} cx="50%" cy="50%" outerRadius={isMobile ? 80 : 110} innerRadius={isMobile ? 40 : 60} dataKey="value" label={isMobile ? false : ({ name, value }) => `${name}: ${value}%`}>
@@ -227,8 +227,8 @@ export default function TelecomStatisticsPage() {
                   </ResponsiveContainer>
                 </div>
                 <div>
-                  <h3 className="text-xl font-display text-bocra-slate mb-2">Prepaid vs Postpaid</h3>
-                  <p className="text-sm text-bocra-slate/50 mb-6">Subscription type (%)</p>
+                  <h3 className="text-xl font-bold text-bocra-slate mb-2">{lang === 'tn' ? 'E e Duelwang Pele vs E e Duelwang Morago' : 'Prepaid vs Postpaid'}</h3>
+                  <p className="text-sm text-bocra-slate/50 mb-6">{lang === 'tn' ? 'Mofuta wa samasetshene (%)' : 'Subscription type (%)'}</p>
                   <ResponsiveContainer width="100%" height={pieH}>
                     <PieChart>
                       <Pie data={PREPAID_POSTPAID} cx="50%" cy="50%" outerRadius={isMobile ? 80 : 110} innerRadius={isMobile ? 40 : 60} dataKey="value" label={isMobile ? false : ({ name, value }) => `${name}: ${value}%`}>
