@@ -105,7 +105,7 @@ const SEARCH_INDEX = [
   { title: 'News & Events', path: '/media/news-events', category: 'Media', type: 'Page', description: 'Latest news, public notices, tenders, regulatory updates, and media releases from BOCRA.' },
 ];
 
-const POPULAR_SEARCHES = [
+const getPopularSearches = (lang) => [
   { label: lang === 'tn' ? 'Tlhagisa Ngongorego' : 'File a Complaint', query: 'complaint' },
   { label: 'Mascom', query: 'mascom' },
   { label: 'Cybersecurity', query: 'cybersecurity' },
@@ -120,6 +120,7 @@ const TYPE_ORDER = { Page: 0, Document: 1, Operator: 2 };
 
 export default function SearchPage() {
   const { lang } = useLanguage();
+  const POPULAR_SEARCHES = getPopularSearches(lang);
   const [searchParams] = useSearchParams();
   const [query, setQuery] = useState(searchParams.get('q') || '');
   const heroRef = useScrollReveal();

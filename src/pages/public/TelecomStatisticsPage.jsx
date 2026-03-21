@@ -68,7 +68,7 @@ const MARKET_SHARE = [
   { name: 'Orange', value: 24, color: '#FF6600' },
 ];
 
-const STAT_CARDS = [
+const getStatCards = (lang) => [
   { icon: Phone, label: 'Mobile Subscriptions', value: 4710000, suffix: '', color: 'bocra-blue' },
   { icon: CreditCard, label: 'Mobile Money Users', value: 2100000, suffix: '', color: 'bocra-cyan' },
   { icon: Wifi, label: 'Broadband Subscribers', value: 922000, suffix: '', color: 'bocra-green' },
@@ -79,6 +79,7 @@ const OPERATOR_COLORS = { Mascom: '#E21836', BTC: '#0066CC', Orange: '#FF6600' }
 
 export default function TelecomStatisticsPage() {
   const { lang } = useLanguage();
+  const STAT_CARDS = getStatCards(lang);
   const [activeTab, setActiveTab] = useState('mobile');
   const [isMobile, setIsMobile] = useState(false);
   const heroRef = useScrollReveal();

@@ -96,6 +96,7 @@ const LICENCES = [
 
 /* ── Sidebar ── */
 function Sidebar({ slug, nav }) {
+  const { lang } = useLanguage();
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
   useEffect(() => {
@@ -173,6 +174,7 @@ function PdfCard({ url, name, size }) {
  * GRID VIEW — All 13 licence cards, consistent design, HD images
  * ══════════════════════════════════════════════════════════════════════ */
 function Grid({ nav }) {
+  const { lang } = useLanguage();
   const ref = useRef(null);
   useEffect(() => {
     if (!ref.current) return;
@@ -267,6 +269,7 @@ function Grid({ nav }) {
  * ══════════════════════════════════════════════════════════════════════ */
 /* ── Licence Application Form — Download PDF, fill, upload back ── */
 function LicenceApplicationForm({ licence }) {
+  const { lang } = useLanguage();
   const [form, setForm] = useState({ fullName: '', email: '', phone: '' });
   const [file, setFile] = useState(null);
   const [submitted, setSubmitted] = useState(false);
@@ -470,6 +473,7 @@ function LicenceApplicationForm({ licence }) {
 }
 
 function Detail({ licence: l, nav }) {
+  const { lang } = useLanguage();
   const ref = useRef(null);
   useEffect(() => {
     /* Don't scrollTo here — Layout already does it on pathname change */

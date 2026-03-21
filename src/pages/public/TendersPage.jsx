@@ -15,12 +15,12 @@ import { useLanguage } from '../../lib/language';
 
 const BASE = import.meta.env.BASE_URL || '/';
 
-const STATUS_STYLE = {
+const getStatusStyle = (lang) => ({
   open: { bg: 'bg-green-50', text: 'text-green-700', border: 'border-green-200', label: 'Open' },
   closed: { bg: 'bg-gray-100', text: 'text-gray-500', border: 'border-gray-200', label: 'Closed' },
   awarded: { bg: 'bg-blue-50', text: 'text-blue-700', border: 'border-blue-200', label: 'Awarded' },
   adjudicated: { bg: 'bg-[#F7B731]/10', text: 'text-[#F7B731]', border: 'border-[#F7B731]/20', label: lang === 'tn' ? 'Tse di Atlholetsweng' : 'Adjudicated' },
-};
+});
 
 const TENDERS = [
   {
@@ -106,6 +106,7 @@ const ITT_SECTIONS = [
 
 export default function TendersPage() {
   const { lang } = useLanguage();
+  const STATUS_STYLE = getStatusStyle(lang);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('All');
   const [filterCategory, setFilterCategory] = useState('All');

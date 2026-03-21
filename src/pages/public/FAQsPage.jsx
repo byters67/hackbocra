@@ -12,7 +12,7 @@ import PageHero from '../../components/ui/PageHero';
 import { useLanguage } from '../../lib/language';
 import { useScrollReveal } from '../../hooks/useAnimations';
 
-const FAQS = [
+const getFaqs = (lang) => [
   {
     category: 'General',
     icon: HelpCircle,
@@ -190,6 +190,7 @@ function FAQItem({ item, isOpen, toggle, color }) {
 
 export default function FAQsPage() {
   const { lang } = useLanguage();
+  const FAQS = getFaqs(lang);
   const [openItems, setOpenItems] = useState(new Set(['General-0']));
   const [activeCategory, setActiveCategory] = useState('all');
   const [search, setSearch] = useState('');

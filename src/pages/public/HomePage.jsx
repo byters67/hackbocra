@@ -23,23 +23,23 @@ const IMG_TOWER = `${BASE}images/tower-blue.jpg`;
 const IMG_SUNSET = `${BASE}images/tower-sunset.jpg`;
 const IMG_MOBILE = `${BASE}images/mobile-world.jpeg`;
 
-const SECTORS = [
+const getSectors = (lang) => [
   { icon: Wifi, title: lang === 'tn' ? 'Megala le Tlhaeletsano' : 'Telecommunications', desc: lang === 'tn' ? 'Go laola dineteweke tsa megala, inthanete, le VoIP go fitlhelela botlhe.' : 'Regulating mobile networks, internet, and VoIP for universal access.', path: '/mandate/telecommunications', img: `${BASE}images/telecommunications.jpg`, color: '#00A6CE' },
   { icon: Radio, title: lang === 'tn' ? 'Phasalatso' : 'Broadcasting', desc: lang === 'tn' ? 'Go laola ditirelo tsa radio, TV, le phasalatso ya mo inthaneteng.' : 'Overseeing radio, TV, and online broadcasting services.', path: '/mandate/broadcasting', img: `${BASE}images/broadcasting.jpeg`, color: '#C8237B' },
   { icon: Mail, title: lang === 'tn' ? 'Ditirelo tsa Poso' : 'Postal', desc: lang === 'tn' ? 'Go laola ditirelo tsa poso tsa botlhe le tsa kgwebo.' : 'Managing universal and commercial postal services.', path: '/mandate/postal', img: `${BASE}images/postal.jpg`, color: '#F7B731' },
   { icon: Globe, title: lang === 'tn' ? 'Inthanete le ICT' : 'Internet & ICT', desc: lang === 'tn' ? 'Go rotloetsa inthanete e e lebelo, tshireletso ya saebo, le mafelo a .BW.' : 'Promoting broadband, cybersecurity, and .BW domains.', path: '/mandate/internet', img: `${BASE}images/internet_ict.jpg`, color: '#6BBE4E' },
 ];
 
-const SERVICES = [
-  { icon: AlertCircle, title: lang === 'tn' ? 'Tlhagisa Ngongorego' : 'File a Complaint', desc: 'Report issues with your service provider', path: '/services/file-complaint', color: '#C8237B' },
-  { icon: Search, title: lang === 'tn' ? 'Netefatsa Laesense' : 'Verify a Licence', desc: 'Check if an operator is licensed', path: '/services/licence-verification', color: '#00A6CE' },
-  { icon: Shield, title: lang === 'tn' ? 'Tumelelo ya Mofuta' : 'Type Approval', desc: 'Search approved equipment', path: '/services/type-approval', color: '#F7B731' },
-  { icon: Globe, title: lang === 'tn' ? 'Kwadisa .BW' : 'Register .BW', desc: 'Get your Botswana domain', path: '/services/register-bw', color: '#6BBE4E' },
-  { icon: Signal, title: lang === 'tn' ? 'Tlhokomelo ya Boleng' : 'QoS Monitoring', desc: 'Check network quality live', path: '/services/qos-monitoring', color: '#00A6CE' },
-  { icon: BarChart3, title: lang === 'tn' ? 'Dipalopalo' : 'Statistics', desc: 'Telecom sector data', path: '/telecom-statistics', color: '#C8237B' },
+const getServices = (lang) => [
+  { icon: AlertCircle, title: lang === 'tn' ? 'Tlhagisa Ngongorego' : 'File a Complaint', desc: lang === 'tn' ? 'Bega mathata a motlamedi wa gago wa tirelo' : 'Report issues with your service provider', path: '/services/file-complaint', color: '#C8237B' },
+  { icon: Search, title: lang === 'tn' ? 'Netefatsa Laesense' : 'Verify a Licence', desc: lang === 'tn' ? 'Tlhola gore molaodi o na le laesense' : 'Check if an operator is licensed', path: '/services/licence-verification', color: '#00A6CE' },
+  { icon: Shield, title: lang === 'tn' ? 'Tumelelo ya Mofuta' : 'Type Approval', desc: lang === 'tn' ? 'Batla didirisiwa tse di amogetsweng' : 'Search approved equipment', path: '/services/type-approval', color: '#F7B731' },
+  { icon: Globe, title: lang === 'tn' ? 'Kwadisa .BW' : 'Register .BW', desc: lang === 'tn' ? 'Bona domeine ya gago ya Botswana' : 'Get your Botswana domain', path: '/services/register-bw', color: '#6BBE4E' },
+  { icon: Signal, title: lang === 'tn' ? 'Tlhokomelo ya Boleng' : 'QoS Monitoring', desc: lang === 'tn' ? 'Tlhola boleng jwa neteweke ka nako ya jaanong' : 'Check network quality live', path: '/services/qos-monitoring', color: '#00A6CE' },
+  { icon: BarChart3, title: lang === 'tn' ? 'Dipalopalo' : 'Statistics', desc: lang === 'tn' ? 'Data ya lefapha la megala' : 'Telecom sector data', path: '/telecom-statistics', color: '#C8237B' },
 ];
 
-const STATS = [
+const getStats = (lang) => [
   { value: 4200000, suffix: '+', label: lang === 'tn' ? 'Disamosetšene tsa Mogala' : 'Mobile Subscriptions', icon: Phone },
   { value: 2100000, suffix: '+', label: lang === 'tn' ? 'Badirisi ba Madi a Mogala' : 'Mobile Money Users', icon: TrendingUp },
   { value: 850000, suffix: '+', label: lang === 'tn' ? 'Basamosetšene ba Inthanete' : 'Broadband Subscribers', icon: Wifi },
@@ -54,6 +54,10 @@ const NEWS = [
 ];
 
 export default function HomePage() {
+  const { lang } = useLanguage();
+  const SECTORS = getSectors(lang);
+  const SERVICES = getServices(lang);
+  const STATS = getStats(lang);
   const heroRef = useRef(null);
   const sectorsRef = useStaggerReveal({ stagger: 0.15 });
   const servicesRef = useStaggerReveal({ stagger: 0.08 });
