@@ -51,8 +51,8 @@ const getExecMembers = (lang) => [
     colour: C.cyan,
     icon: TrendingUp,
     bio: [
-      lang === 'tn' ? 'Rre Murphy Setshwane o bereka jaaka Motlhankedi wa Tlhabololo ya Kgwebo kwa BOCRA. O ikarabela ka go tsamaisa tlhabololo ya mmaraka, tshekatsheko ya madirelo, le mananeo a leano a kgwebo a a rotloetsang kgolo le kgaisano mo Botswana\u2019s communications sector.',
-      'His department oversees market research, economic analysis of the telecommunications industry, and the development of policies that encourage investment and innovation in the sector.',
+      lang === 'tn' ? 'Rre Murphy Setshwane o bereka jaaka Motlhankedi wa Tlhabololo ya Kgwebo kwa BOCRA. O ikarabela ka go tsamaisa tlhabololo ya mmaraka, tshekatsheko ya madirelo, le mananeo a leano a kgwebo a a rotloetsang kgolo le kgaisano mo lefapheng la dikgolagano la Botswana.' : "Mr. Murphy Setshwane serves as Director of Business Development at BOCRA. He is responsible for driving market development, industry analysis, and strategic business initiatives that promote growth and competition in Botswana\u2019s communications sector.",
+      lang === 'tn' ? 'Lefapha la gagwe le okamela patlisiso ya mmaraka, tshekatsheko ya ikonomi ya madirelo a megala, le tlhabololo ya dipholisi tse di rotloetsang matsolo le boitlhamedi mo lefapheng.' : 'His department oversees market research, economic analysis of the telecommunications industry, and the development of policies that encourage investment and innovation in the sector.',
     ],
   },
   {
@@ -64,8 +64,8 @@ const getExecMembers = (lang) => [
     colour: C.magenta,
     icon: Settings,
     bio: [
-      lang === 'tn' ? 'Rre Peter Tladinyane o bereka jaaka Motlhankedi wa Ditirelo tsa Khomporasi kwa BOCRA. O okamela Bothati\u2019s human resources, administration, and corporate governance functions.',
-      'His department is responsible for organisational development, talent management, and ensuring BOCRA maintains world-class operational standards in the delivery of its regulatory mandate.',
+      lang === 'tn' ? 'Rre Peter Tladinyane o bereka jaaka Motlhankedi wa Ditirelo tsa Khomporasi kwa BOCRA. O okamela ditiro tsa badiri, tsamaiso, le taolo ya khomporasi ya Bothati.' : "Mr. Peter Tladinyane serves as Director of Corporate Services at BOCRA. He oversees the Authority\u2019s human resources, administration, and corporate governance functions.",
+      lang === 'tn' ? 'Lefapha la gagwe le ikarabela ka tlhabololo ya mokgatlho, taolo ya bokgoni, le go netefatsa gore BOCRA e boloka maemo a a kwa godimo a ditiro mo go fanweng ga tiragatso ya taolo.' : 'His department is responsible for organisational development, talent management, and ensuring BOCRA maintains world-class operational standards in the delivery of its regulatory mandate.',
     ],
   },
   {
@@ -77,8 +77,8 @@ const getExecMembers = (lang) => [
     colour: C.yellow,
     icon: DollarSign,
     bio: [
-      lang === 'tn' ? 'Mme Bonny Mine o bereka jaaka Motlhankedi wa Ditšhelete kwa BOCRA. O ikarabela ka Bothati\u2019s financial management, budgeting, procurement, and reporting functions.',
-      'Her department ensures sound financial governance, compliance with public sector accounting standards, and efficient management of BOCRA\u2019s resources to support the Authority\u2019s regulatory activities.',
+      lang === 'tn' ? 'Mme Bonny Mine o bereka jaaka Motlhankedi wa Ditšhelete kwa BOCRA. O ikarabela ka tsamaiso ya ditšhelete, tekanyetso, theko, le ditiro tsa dipego tsa Bothati.' : "Ms. Bonny Mine serves as Director of Finance at BOCRA. She is responsible for the Authority\u2019s financial management, budgeting, procurement, and reporting functions.",
+      lang === 'tn' ? 'Lefapha la gagwe le netefatsa taolo e e siameng ya ditšhelete, go obamela maemo a go bala ditšhelete a setšhaba, le tsamaiso e e nonofileng ya metswedi ya BOCRA go tshegetsa ditiro tsa taolo tsa Bothati.' : "Her department ensures sound financial governance, compliance with public sector accounting standards, and efficient management of BOCRA\u2019s resources to support the Authority\u2019s regulatory activities.",
     ],
   },
   {
