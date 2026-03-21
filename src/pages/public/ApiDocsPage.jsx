@@ -23,6 +23,7 @@ import {
 } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import { useScrollReveal, useStaggerReveal } from '../../hooks/useAnimations';
+import { useLanguage } from '../../lib/language';
 
 // ─── API ENDPOINT DEFINITIONS ───────────────────────────────────
 
@@ -151,6 +152,7 @@ const FEATURES = [
 export default function ApiDocsPage() {
   const heroRef = useScrollReveal();
   const featuresRef = useStaggerReveal({ stagger: 0.1 });
+  const { lang } = useLanguage();
 
   return (
     <div>

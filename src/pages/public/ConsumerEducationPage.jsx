@@ -43,7 +43,7 @@ const getSteps = (lang) => [
 export default function ConsumerEducationPage() {
   const { lang } = useLanguage();
   const RIGHTS = getRights(lang);
-  const COMMON_COMPLAINTS = getCommonComplaints(lang);
+  const COMMON_COMPLAINTS = getCOMMON_ISSUES(lang);
   const STEPS = getSteps(lang);
   const heroRef = useScrollReveal();
   const rightsRef = useStaggerReveal({ stagger: 0.08 });
