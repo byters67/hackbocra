@@ -1,41 +1,41 @@
 /**
- * Documents & Legislation Page - Complete Document Library
- * 420+ documents organized by category with search, filter, sort, view modes.
- * PDFs should be placed in public/documents/ with matching filenames.
+ * Documents & Legislation Page — Redesigned
+ * Category cards → click to see documents. Search across all. Fully bilingual.
  */
-import { useState, useMemo, useRef, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import {
-  ChevronRight, Search, Download, FileText, Filter,
-  Grid, List, Scale, BookOpen, BarChart3, Shield, Radio,
-  Wifi, Signal, FileCheck, Settings, Users, MapPin, Cpu,
-  AlertCircle, Globe, SortAsc, SortDesc, X, FolderOpen
+  ChevronRight, Search, Download, FileText, Scale, BookOpen, BarChart3,
+  Shield, Radio, Wifi, Signal, FileCheck, Settings, Users, MapPin, Cpu,
+  AlertCircle, Globe, X, ArrowLeft, FolderOpen
 } from 'lucide-react';
 import { useScrollReveal } from '../../hooks/useAnimations';
-
 import PageHero from '../../components/ui/PageHero';
 import { useLanguage } from '../../lib/language';
+
 const BASE = import.meta.env.BASE_URL;
 
-const getCATEGORY_CONFIG = (lang) => ({
-  'Legislation': { color: '#C8237B', icon: Scale, desc: lang === 'tn' ? 'Melao, dikaelo, le didirisiwa tsa molao' : 'Acts, bills, regulations and legal instruments' },
-  'Annual Reports': { color: '#00A6CE', icon: BookOpen, desc: lang === 'tn' ? 'Dipego tsa ngwaga le ngwaga tsa BOCRA le BTA' : 'BOCRA and BTA annual reports' },
-  'Guidelines & Standards': { color: '#6BBE4E', icon: Shield, desc: lang === 'tn' ? 'Ditaelo tsa taolo, melao ya maitsholo le maemo' : 'Regulatory guidelines, codes of conduct and standards' },
-  'Licensing': { color: '#F7B731', icon: FileCheck, desc: lang === 'tn' ? 'Dithulaganyo tsa dilaesense, dikopo le ditlhokego' : 'Licensing frameworks, applications and requirements' },
-  'Technical Specifications': { color: '#7C3AED', icon: Cpu, desc: lang === 'tn' ? 'Maemo a didirisiwa le dintlha tsa tumelelo ya mofuta' : 'Equipment standards and type approval specifications' },
-  'Consultation Papers': { color: '#0891B2', icon: Users, desc: lang === 'tn' ? 'Dikwalo tsa ditherisano tsa setšhaba le dipampiri tsa dipuisano' : 'Public consultation documents and discussion papers' },
-  'Measurement Reports': { color: '#DC2626', icon: Signal, desc: lang === 'tn' ? 'Dipego tsa ditekanyo tsa EMF le lefelo' : 'EMF and site measurement reports' },
-  'Broadband & Internet': { color: '#2563EB', icon: Wifi, desc: lang === 'tn' ? 'Leano la inthanete ya lobelo, ditlhwatlhwa tsa inthanete le kgolagano' : 'Broadband strategy, internet pricing and connectivity' },
-  'Spectrum & Frequency': { color: '#059669', icon: Signal, desc: lang === 'tn' ? 'Mananeo a frikwensi ya radio le tsamaiso ya sepeketeramo' : 'Radio frequency plans and spectrum management' },
-  'Consumer Protection': { color: '#E11D48', icon: AlertCircle, desc: lang === 'tn' ? 'Go tsamaisa dingongorego, dipholisi tsa badirisi le KYC' : 'Complaints handling, consumer policies and KYC' },
-  'Rulings & Disputes': { color: '#9333EA', icon: Scale, desc: lang === 'tn' ? 'Ditharabololo tsa dikganetsano, dikatlholo le ditshwetso' : 'Dispute resolutions, judgments and rulings' },
-  'Forms & Applications': { color: '#0284C7', icon: FileText, desc: lang === 'tn' ? 'Diforomo tsa dikopo le dipotsolotso' : 'Application forms and questionnaires' },
-  'Numbering Plan': { color: '#4F46E5', icon: Settings, desc: lang === 'tn' ? 'Mananeo a bosetšhaba a dinomoro le dikabelo' : 'National numbering plans and allocations' },
-  'Research & Publications': { color: '#B45309', icon: BarChart3, desc: lang === 'tn' ? 'Dithuto tsa mmaraka, dipatlisiso, ditlhagiso le dipatlisiso' : 'Market studies, surveys, presentations and research' },
-  'Policy': { color: '#0D9488', icon: Globe, desc: lang === 'tn' ? 'Dipholisi, maano, ditaelo le dikitsiso tsa setšhaba' : 'Policies, strategies, directives and public notices' },
-  'EMF & Health': { color: '#BE185D', icon: MapPin, desc: lang === 'tn' ? 'Go amiwa ke mafelo a electromagnetic le dipatlisiso tsa boitekanelo' : 'Electromagnetic field exposure and health research' },
-  'Broadcasting': { color: '#EA580C', icon: Radio, desc: lang === 'tn' ? 'Melao ya phasalatso, ditaelo tsa ditlhopho le dikitsiso' : 'Broadcasting codes, election guidelines and notices' },
-});
+const getCATEGORY_CONFIG = (lang) => {
+  const tn = lang === 'tn';
+  return {
+  'Legislation': { name: tn ? 'Melao' : 'Legislation', color: '#C8237B', icon: Scale, desc: tn ? 'Melao, dikaelo, le didirisiwa tsa molao' : 'Acts, bills, regulations and legal instruments' },
+  'Annual Reports': { name: tn ? 'Dipego tsa Ngwaga' : 'Annual Reports', color: '#00A6CE', icon: BookOpen, desc: tn ? 'Dipego tsa ngwaga le ngwaga tsa BOCRA le BTA' : 'BOCRA and BTA annual reports' },
+  'Guidelines & Standards': { name: tn ? 'Ditaelo le Maemo' : 'Guidelines & Standards', color: '#6BBE4E', icon: Shield, desc: tn ? 'Ditaelo tsa taolo, melao ya maitsholo le maemo' : 'Regulatory guidelines, codes of conduct and standards' },
+  'Licensing': { name: tn ? 'Dilaesense' : 'Licensing', color: '#F7B731', icon: FileCheck, desc: tn ? 'Dithulaganyo tsa dilaesense, dikopo le ditlhokego' : 'Licensing frameworks, applications and requirements' },
+  'Technical Specifications': { name: tn ? 'Maemo a Setegeniki' : 'Technical Specifications', color: '#7C3AED', icon: Cpu, desc: tn ? 'Maemo a didirisiwa le dintlha tsa tumelelo ya mofuta' : 'Equipment standards and type approval specifications' },
+  'Consultation Papers': { name: tn ? 'Dipampiri tsa Ditherisano' : 'Consultation Papers', color: '#0891B2', icon: Users, desc: tn ? 'Dikwalo tsa ditherisano tsa setshaba le dipampiri tsa dipuisano' : 'Public consultation documents and discussion papers' },
+  'Measurement Reports': { name: tn ? 'Dipego tsa Ditekanyo' : 'Measurement Reports', color: '#DC2626', icon: Signal, desc: tn ? 'Dipego tsa ditekanyo tsa EMF le lefelo' : 'EMF and site measurement reports' },
+  'Broadband & Internet': { name: tn ? 'Inthanete ya Lobelo' : 'Broadband & Internet', color: '#2563EB', icon: Wifi, desc: tn ? 'Leano la inthanete ya lobelo, ditlhwatlhwa le kgolagano' : 'Broadband strategy, internet pricing and connectivity' },
+  'Spectrum & Frequency': { name: tn ? 'Sepeketeramo le Frikwensi' : 'Spectrum & Frequency', color: '#059669', icon: Signal, desc: tn ? 'Mananeo a frikwensi ya radio le tsamaiso ya sepeketeramo' : 'Radio frequency plans and spectrum management' },
+  'Consumer Protection': { name: tn ? 'Tshireletso ya Badirisi' : 'Consumer Protection', color: '#E11D48', icon: AlertCircle, desc: tn ? 'Go tsamaisa dingongorego, dipholisi tsa badirisi le KYC' : 'Complaints handling, consumer policies and KYC' },
+  'Rulings & Disputes': { name: tn ? 'Ditshwetso le Dikganetsano' : 'Rulings & Disputes', color: '#9333EA', icon: Scale, desc: tn ? 'Ditharabololo tsa dikganetsano, dikatlholo le ditshwetso' : 'Dispute resolutions, judgments and rulings' },
+  'Forms & Applications': { name: tn ? 'Diforomo le Dikopo' : 'Forms & Applications', color: '#0284C7', icon: FileText, desc: tn ? 'Diforomo tsa dikopo le dipotsolotso' : 'Application forms and questionnaires' },
+  'Numbering Plan': { name: tn ? 'Leano la Dinomoro' : 'Numbering Plan', color: '#4F46E5', icon: Settings, desc: tn ? 'Mananeo a bosetshaba a dinomoro le dikabelo' : 'National numbering plans and allocations' },
+  'Research & Publications': { name: tn ? 'Dipatlisiso le Dikgatiso' : 'Research & Publications', color: '#B45309', icon: BarChart3, desc: tn ? 'Dithuto tsa mmaraka, dipatlisiso le ditlhagiso' : 'Market studies, surveys, presentations and research' },
+  'Policy': { name: tn ? 'Dipholisi' : 'Policy', color: '#0D9488', icon: Globe, desc: tn ? 'Dipholisi, maano, ditaelo le dikitsiso tsa setshaba' : 'Policies, strategies, directives and public notices' },
+  'EMF & Health': { name: tn ? 'EMF le Boitekanelo' : 'EMF & Health', color: '#BE185D', icon: MapPin, desc: tn ? 'Go amiwa ke mafelo a electromagnetic le dipatlisiso tsa boitekanelo' : 'Electromagnetic field exposure and health research' },
+  'Broadcasting': { name: tn ? 'Phasalatso' : 'Broadcasting', color: '#EA580C', icon: Radio, desc: tn ? 'Melao ya phasalatso, ditaelo tsa ditlhopho le dikitsiso' : 'Broadcasting codes, election guidelines and notices' },
+};};
 
 const DOCUMENTS = [
   // LEGISLATION
@@ -317,112 +317,112 @@ const DOCUMENTS = [
   { title: 'Campus Radio Broadcasters Notice', file: 'Public_Notice_Campus_Radio_Broadcasters.pdf', category: 'Broadcasting', year: '2024' },
 ];
 
-const CATEGORIES = ['All', ...Object.keys(getCATEGORY_CONFIG('en'))];
-const getYears = () => { const y = [...new Set(DOCUMENTS.map(d => d.year))].sort((a, b) => b.localeCompare(a)); return ['All Years', ...y]; };
+const CAT_KEYS = Object.keys(getCATEGORY_CONFIG('en'));
 
 export default function DocumentsPage() {
   const { lang } = useLanguage();
-  const CATEGORY_CONFIG = getCATEGORY_CONFIG(lang);
-  const [category, setCategory] = useState('All');
+  const tn = lang === 'tn';
+  const CATS = getCATEGORY_CONFIG(lang);
+  const [activeCategory, setActiveCategory] = useState(null);
   const [search, setSearch] = useState('');
-  const [year, setYear] = useState('All Years');
-  const [sortDir, setSortDir] = useState('desc');
-  const [viewMode, setViewMode] = useState('list');
-  const [showMobileCats, setShowMobileCats] = useState(false);
+  const [yearFilter, setYearFilter] = useState('');
   const heroRef = useScrollReveal();
-  const listRef = useRef(null);
-  const years = useMemo(getYears, []);
 
-  const filtered = useMemo(() => {
-    let docs = DOCUMENTS.filter(doc => {
-      const matchCat = category === 'All' || doc.category === category;
-      const matchYear = year === 'All Years' || doc.year === year;
-      const matchSearch = doc.title.toLowerCase().includes(search.toLowerCase()) || doc.category.toLowerCase().includes(search.toLowerCase());
-      return matchCat && matchYear && matchSearch;
-    });
-    docs.sort((a, b) => sortDir === 'desc' ? b.year.localeCompare(a.year) : a.year.localeCompare(b.year));
-    return docs;
-  }, [category, search, year, sortDir]);
-
-  const categoryCounts = useMemo(() => {
-    const c = { All: DOCUMENTS.length };
-    DOCUMENTS.forEach(d => { c[d.category] = (c[d.category] || 0) + 1; });
+  const catCounts = useMemo(() => {
+    const c = {};
+    CAT_KEYS.forEach(k => { c[k] = DOCUMENTS.filter(d => d.category === k).length; });
     return c;
   }, []);
 
-  const handleDownload = (file) => { window.open(`${BASE}documents/${file}`, '_blank'); };
+  const years = useMemo(() => [...new Set(DOCUMENTS.map(d => d.year))].sort((a, b) => b.localeCompare(a)), []);
 
-  useEffect(() => {
-    if (category !== 'All' && listRef.current) listRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }, [category]);
+  const filteredDocs = useMemo(() => {
+    let docs = DOCUMENTS;
+    if (activeCategory) docs = docs.filter(d => d.category === activeCategory);
+    if (yearFilter) docs = docs.filter(d => d.year === yearFilter);
+    if (search) { const q = search.toLowerCase(); docs = docs.filter(d => d.title.toLowerCase().includes(q) || d.category.toLowerCase().includes(q)); }
+    return docs.sort((a, b) => b.year.localeCompare(a.year));
+  }, [activeCategory, yearFilter, search]);
+
+  const totalDocs = DOCUMENTS.length;
+  const handleDownload = (file) => { if (file) window.open(`${BASE}documents/${file}`, '_blank'); };
 
   return (
-    <div className="bg-white">
-      <div className="bg-bocra-off-white border-b border-gray-100"><div className="section-wrapper py-4"><nav className="text-sm text-bocra-slate/50 flex items-center gap-2"><Link to="/" className="hover:text-bocra-blue transition-colors">{lang === 'tn' ? 'Gae' : 'Home'}</Link><ChevronRight size={14} /><span className="text-bocra-slate">{lang === 'tn' ? 'Dikwalo le Melao' : 'Documents & Legislation'}</span></nav></div></div>
-      {/* Hero */}
-      <PageHero category="RESOURCES" categoryTn="DITHULAGANYO" title="Documents & Legislation" titleTn="Dikwalo le Melao" description="Access BOCRA regulatory documents, draft legislation, consultation papers, and published guidelines." descriptionTn="Fitlhelela dikwalo tsa taolo tsa BOCRA, melao e e sa ntseng e dirwa, dipampiri tsa therisano, le ditaelo tse di gatisitsweng." color="yellow" />
+    <div className="bg-white min-h-screen">
+      <div className="bg-bocra-off-white border-b border-gray-100"><div className="section-wrapper py-4"><nav className="text-sm text-bocra-slate/50 flex items-center gap-2">
+        <Link to="/" className="hover:text-bocra-blue">{tn ? 'Gae' : 'Home'}</Link><ChevronRight size={14} />
+        {activeCategory ? (<><button onClick={() => setActiveCategory(null)} className="hover:text-bocra-blue">{tn ? 'Dikwalo' : 'Documents'}</button><ChevronRight size={14} /><span className="text-bocra-slate font-medium">{CATS[activeCategory]?.name}</span></>) : (<span className="text-bocra-slate font-medium">{tn ? 'Dikwalo le Melao' : 'Documents & Legislation'}</span>)}
+      </nav></div></div>
 
+      <PageHero category="RESOURCES" categoryTn="METSWEDI" title="Documents & Legislation" titleTn="Dikwalo le Melao" description={`Browse ${totalDocs}+ official documents — legislation, reports, guidelines, policies, and forms.`} descriptionTn={`Batla dikwalo di le ${totalDocs}+ tsa semmuso — melao, dipego, ditaelo, dipholisi, le diforomo.`} color="magenta" />
 
-      {/* Sticky search/filter bar — sits OUTSIDE the flex layout so sticky works against page scroll */}
-      <div className="bg-white sticky top-16 lg:top-[120px] z-30 border-b border-gray-100 shadow-sm">
-        <div className="section-wrapper py-3">
-          <div className="flex flex-col sm:flex-row gap-3">
-            <div className="relative flex-1"><Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-bocra-slate/30" /><input type="search" placeholder={lang === 'tn' ? `Batla mo dikwalong di le ${filtered.length}...` : `Search ${filtered.length} documents...`} value={search} onChange={e => setSearch(e.target.value)} className="w-full pl-10 pr-10 py-2.5 bg-bocra-off-white border border-gray-200 rounded-xl text-sm focus:border-bocra-blue focus:ring-2 focus:ring-bocra-blue/10 outline-none transition-all" />{search && <button onClick={() => setSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-bocra-slate/30 hover:text-bocra-slate"><X size={14} /></button>}</div>
-            <div className="flex gap-2">
-              <select value={year} onChange={e => setYear(e.target.value)} className="px-3 py-2.5 bg-bocra-off-white border border-gray-200 rounded-xl text-sm focus:border-bocra-blue outline-none">{years.map(y => <option key={y} value={y}>{y === 'All Years' ? (lang === 'tn' ? 'Dingwaga Tsotlhe' : 'All Years') : y}</option>)}</select>
-              <button onClick={() => setSortDir(s => s === 'desc' ? 'asc' : 'desc')} className="px-3 py-2.5 bg-bocra-off-white border border-gray-200 rounded-xl text-sm hover:border-gray-300 transition-colors flex items-center gap-1.5" title={sortDir === 'desc' ? 'Newest first' : 'Oldest first'}>{sortDir === 'desc' ? <SortDesc size={14} /> : <SortAsc size={14} />}<span className="hidden sm:inline">{sortDir === 'desc' ? (lang === 'tn' ? 'Tsa Bosheng' : 'Newest') : (lang === 'tn' ? 'Tsa Bogologolo' : 'Oldest')}</span></button>
-              <div className="hidden sm:flex border border-gray-200 rounded-xl overflow-hidden"><button onClick={() => setViewMode('list')} className={`p-2.5 ${viewMode === 'list' ? 'bg-bocra-blue text-white' : 'bg-bocra-off-white text-bocra-slate/40'}`}><List size={16} /></button><button onClick={() => setViewMode('grid')} className={`p-2.5 ${viewMode === 'grid' ? 'bg-bocra-blue text-white' : 'bg-bocra-off-white text-bocra-slate/40'}`}><Grid size={16} /></button></div>
-            </div>
-          </div>
-          {(category !== 'All' || year !== 'All Years' || search) && <div className="flex flex-wrap items-center gap-2 mt-3"><span className="text-xs text-bocra-slate/40">{lang === 'tn' ? 'Disefa:' : 'Filters:'}</span>{category !== 'All' && <span className="inline-flex items-center gap-1 px-2.5 py-1 text-xs rounded-full text-white" style={{ backgroundColor: CATEGORY_CONFIG[category]?.color }}>{category}<button onClick={() => setCategory('All')}><X size={12} /></button></span>}{year !== 'All Years' && <span className="inline-flex items-center gap-1 px-2.5 py-1 text-xs rounded-full bg-gray-200 text-bocra-slate">{year}<button onClick={() => setYear('All Years')}><X size={12} /></button></span>}{search && <span className="inline-flex items-center gap-1 px-2.5 py-1 text-xs rounded-full bg-gray-200 text-bocra-slate">"{search}"<button onClick={() => setSearch('')}><X size={12} /></button></span>}<button onClick={() => { setCategory('All'); setYear('All Years'); setSearch(''); }} className="text-xs text-bocra-blue hover:underline">{lang === 'tn' ? 'Tlosa tsotlhe' : 'Clear all'}</button></div>}
-        </div>
-      </div>
+      {/* Search */}
+      <section className="py-4"><div className="section-wrapper max-w-3xl mx-auto"><div className="relative">
+        <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-bocra-slate/30" />
+        <input type="search" value={search} onChange={e => setSearch(e.target.value)} placeholder={tn ? `Batla mo dikwalong di le ${totalDocs}...` : `Search ${totalDocs} documents...`} className="w-full pl-11 pr-10 py-3.5 bg-white border border-gray-200 rounded-2xl text-sm focus:border-[#00A6CE] focus:ring-2 focus:ring-[#00A6CE]/10 outline-none shadow-sm" />
+        {search && <button onClick={() => setSearch('')} className="absolute right-4 top-1/2 -translate-y-1/2 text-bocra-slate/30 hover:text-bocra-slate"><X size={16} /></button>}
+      </div></div></section>
 
-      <section className="py-6 sm:py-8"><div className="section-wrapper">
-        <div className="lg:hidden mb-4">
-          <button onClick={() => setShowMobileCats(!showMobileCats)} className="flex items-center gap-2 text-sm font-medium text-bocra-slate mb-3"><Filter size={16} />{lang === 'tn' ? 'Batla ka Karolo' : (lang === 'tn' ? 'Batla ka Karolo' : 'Browse by Category')}<ChevronRight size={16} className={`transition-transform ${showMobileCats ? 'rotate-90' : ''}`} /></button>
-          {showMobileCats && <div className="flex flex-wrap gap-2 mb-4">{CATEGORIES.map(cat => { const config = CATEGORY_CONFIG[cat]; const active = category === cat; return (<button key={cat} onClick={() => { setCategory(cat); setShowMobileCats(false); }} className={`px-3 py-1.5 text-xs rounded-full font-medium transition-all border ${active ? 'text-white border-transparent' : 'text-bocra-slate/60 border-gray-200 bg-white'}`} style={active ? { backgroundColor: config?.color || '#00A6CE' } : {}}>{cat} ({categoryCounts[cat] || 0})</button>); })}</div>}
-        </div>
-
-        <div className="flex gap-6">
-          <aside className="hidden lg:block w-72 flex-shrink-0"><div className="sticky top-[200px] space-y-1.5 max-h-[calc(100vh-240px)] overflow-y-auto pr-2">
-            <h3 className="text-xs font-semibold text-bocra-slate/40 uppercase tracking-widest mb-3 px-3">{lang === 'tn' ? 'Dikarolo' : 'Categories'}</h3>
-            {CATEGORIES.map(cat => { const config = CATEGORY_CONFIG[cat]; const Icon = config?.icon || FolderOpen; const active = category === cat; return (
-              <button key={cat} onClick={() => setCategory(cat)} className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left text-sm transition-all ${active ? 'bg-white shadow-sm text-bocra-slate font-medium' : 'text-bocra-slate/60 hover:text-bocra-slate hover:bg-gray-50'}`}>
-                <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${active ? '' : 'bg-gray-100'}`} style={active ? { backgroundColor: `${config?.color || '#00A6CE'}15` } : {}}>
-                  {cat === 'All' ? <FolderOpen size={16} className={active ? 'text-bocra-blue' : 'text-bocra-slate/40'} /> : <Icon size={16} style={active ? { color: config.color } : {}} className={!active ? 'text-bocra-slate/40' : ''} />}
+      {!activeCategory && !search ? (
+        <section className="py-6"><div className="section-wrapper">
+          <h2 className="text-lg font-bold text-bocra-slate mb-1 text-center">{tn ? 'Batla ka Karolo' : 'Browse by Category'}</h2>
+          <p className="text-sm text-bocra-slate/40 text-center mb-6">{tn ? `Dikwalo di le ${totalDocs} mo dikarolong di le ${CAT_KEYS.length}` : `${totalDocs} documents across ${CAT_KEYS.length} categories`}</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {CAT_KEYS.map(key => { const cat = CATS[key]; const Icon = cat.icon; const count = catCounts[key] || 0; return (
+              <button key={key} onClick={() => setActiveCategory(key)} className="bg-white rounded-2xl border border-gray-100 p-5 text-left hover:shadow-lg hover:border-gray-200 hover:-translate-y-1 transition-all duration-200 group relative overflow-hidden">
+                <div className="absolute top-0 left-0 w-full h-1 transition-all group-hover:h-1.5" style={{ backgroundColor: cat.color }} />
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style={{ backgroundColor: `${cat.color}12` }}><Icon size={22} style={{ color: cat.color }} /></div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between mb-1">
+                      <h3 className="font-bold text-sm text-bocra-slate group-hover:text-[#00458B] transition-colors">{cat.name}</h3>
+                      <span className="text-xs font-bold px-2.5 py-1 rounded-full" style={{ backgroundColor: `${cat.color}12`, color: cat.color }}>{count}</span>
+                    </div>
+                    <p className="text-xs text-bocra-slate/50 leading-relaxed">{cat.desc}</p>
+                  </div>
                 </div>
-                <span className="flex-1 truncate">{cat === 'All' ? (lang === 'tn' ? 'Tsotlhe' : 'All') : cat}</span>
-                <span className={`text-xs px-2 py-0.5 rounded-full ${active ? 'bg-bocra-blue/10 text-bocra-blue' : 'bg-gray-100 text-bocra-slate/40'}`}>{categoryCounts[cat] || 0}</span>
               </button>
             ); })}
-          </div></aside>
-
-          <div className="flex-1 min-w-0">
-            <div ref={listRef} className="pb-2"><p className="text-sm text-bocra-slate/50">{filtered.length} {lang === 'tn' ? (filtered.length !== 1 ? 'dikwalo' : 'sekwalo') : `document${filtered.length !== 1 ? 's' : ''}`}{category !== 'All' && <span className="text-bocra-slate/30"> — {CATEGORY_CONFIG[category]?.desc}</span>}</p></div>
-
-            {filtered.length === 0 ? (
-              <div className="text-center py-12"><FileText size={48} className="mx-auto text-bocra-slate/20 mb-4" /><h3 className="text-lg font-medium text-bocra-slate/40">{lang === 'tn' ? 'Ga go na dikwalo tse di bonweng' : 'No documents found'}</h3><p className="text-sm text-bocra-slate/30 mt-1">{lang === 'tn' ? 'Leka go fetola dipatlisiso kgotsa disefa' : 'Try adjusting your search or filters'}</p></div>
-            ) : viewMode === 'grid' ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 pb-8">{filtered.map((doc, i) => { const config = CATEGORY_CONFIG[doc.category]; return (
-                <button key={i} onClick={() => handleDownload(doc.file)} className="bg-white rounded-xl p-5 text-left hover:shadow-lg transition-all group border border-gray-100 hover:border-gray-200 relative overflow-hidden">
-                  <div className="absolute top-0 left-0 w-full h-1 rounded-t-xl" style={{ backgroundColor: config?.color }} />
-                  <div className="flex items-start gap-3"><div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0" style={{ backgroundColor: `${config?.color}15` }}><FileText size={18} style={{ color: config?.color }} /></div><div className="flex-1 min-w-0"><h3 className="font-medium text-sm text-bocra-slate group-hover:text-bocra-blue transition-colors line-clamp-2 leading-snug">{doc.title}</h3><div className="flex items-center gap-2 mt-2"><span className="text-[10px] px-2 py-0.5 rounded-full font-medium text-white" style={{ backgroundColor: config?.color }}>{doc.category}</span><span className="text-xs text-bocra-slate/40">{doc.year}</span></div></div></div>
-                  <div className="mt-3 flex items-center gap-1 text-xs text-bocra-blue opacity-0 group-hover:opacity-100 transition-opacity"><Download size={12} /> {lang === 'tn' ? 'Tsenya PDF' : (lang === 'tn' ? 'Tsenya PDF' : 'Download PDF')}</div>
-                </button>
-              ); })}</div>
-            ) : (
-              <div className="space-y-2 pb-8">{filtered.map((doc, i) => { const config = CATEGORY_CONFIG[doc.category]; return (
-                <button key={i} onClick={() => handleDownload(doc.file)} className="w-full bg-white rounded-xl p-4 flex items-center gap-4 hover:shadow-md transition-all group border border-gray-100 hover:border-gray-200 text-left">
-                  <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0" style={{ backgroundColor: `${config?.color}15` }}><FileText size={18} style={{ color: config?.color }} /></div>
-                  <div className="flex-1 min-w-0"><h3 className="font-medium text-sm text-bocra-slate group-hover:text-bocra-blue transition-colors truncate">{doc.title}</h3><div className="flex items-center gap-2 mt-1"><span className="text-[10px] px-2 py-0.5 rounded-full font-medium text-white" style={{ backgroundColor: config?.color }}>{doc.category}</span><span className="text-xs text-bocra-slate/40">{doc.year}</span><span className="text-xs text-bocra-slate/30">•</span><span className="text-xs text-bocra-slate/40">PDF</span></div></div>
-                  <div className="p-2 rounded-lg hover:bg-bocra-blue/5 transition-colors flex-shrink-0 opacity-50 group-hover:opacity-100"><Download size={18} className="text-bocra-blue" /></div>
-                </button>
-              ); })}</div>
-            )}
           </div>
-        </div>
-      </div></section>
+        </div></section>
+      ) : (
+        <section className="py-6"><div className="section-wrapper max-w-4xl mx-auto">
+          {activeCategory && (<div className="mb-6">
+            <button onClick={() => { setActiveCategory(null); setYearFilter(''); }} className="flex items-center gap-2 text-sm text-[#00A6CE] hover:text-[#00458B] font-medium mb-4 transition-colors"><ArrowLeft size={16} /> {tn ? 'Boela kwa Dikarolong' : 'Back to Categories'}</button>
+            <div className="flex items-center gap-4 mb-4">
+              <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style={{ backgroundColor: `${CATS[activeCategory]?.color}12` }}>
+                {(() => { const Icon = CATS[activeCategory]?.icon || FolderOpen; return <Icon size={22} style={{ color: CATS[activeCategory]?.color }} />; })()}
+              </div>
+              <div><h2 className="text-xl font-bold text-bocra-slate">{CATS[activeCategory]?.name}</h2><p className="text-sm text-bocra-slate/40">{CATS[activeCategory]?.desc}</p></div>
+            </div>
+          </div>)}
+
+          {search && !activeCategory && <div className="mb-4"><p className="text-sm text-bocra-slate/50">{tn ? `Dipholo di le ${filteredDocs.length} bakeng sa` : `${filteredDocs.length} results for`} "{search}"</p></div>}
+
+          {(activeCategory || search) && <div className="flex items-center gap-2 mb-4 flex-wrap">
+            <button onClick={() => setYearFilter('')} className={`px-3 py-1.5 text-xs font-medium rounded-lg border transition-all ${!yearFilter ? 'bg-[#00458B] text-white border-[#00458B]' : 'bg-white text-bocra-slate/50 border-gray-200'}`}>{tn ? 'Dingwaga Tsotlhe' : 'All Years'}</button>
+            {years.slice(0, 12).map(y => (<button key={y} onClick={() => setYearFilter(yearFilter === y ? '' : y)} className={`px-3 py-1.5 text-xs font-medium rounded-lg border transition-all ${yearFilter === y ? 'bg-[#00458B] text-white border-[#00458B]' : 'bg-white text-bocra-slate/50 border-gray-200'}`}>{y}</button>))}
+          </div>}
+
+          {filteredDocs.length === 0 ? (
+            <div className="text-center py-16"><FileText size={48} className="mx-auto text-bocra-slate/15 mb-4" /><h3 className="text-lg font-medium text-bocra-slate/40">{tn ? 'Ga go na dikwalo tse di bonweng' : 'No documents found'}</h3><p className="text-sm text-bocra-slate/30 mt-1">{tn ? 'Leka go fetola dipatlisiso kgotsa disefa' : 'Try adjusting your search or filters'}</p></div>
+          ) : (
+            <div className="space-y-2">{filteredDocs.map((doc, i) => { const config = CATS[doc.category]; return (
+              <button key={i} onClick={() => handleDownload(doc.file)} className="w-full bg-white rounded-xl p-4 flex items-center gap-4 hover:shadow-md transition-all group border border-gray-100 hover:border-gray-200 text-left">
+                <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0" style={{ backgroundColor: `${config?.color}15` }}><FileText size={18} style={{ color: config?.color }} /></div>
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-medium text-sm text-bocra-slate group-hover:text-[#00A6CE] transition-colors truncate">{doc.title}</h3>
+                  <div className="flex items-center gap-2 mt-1">
+                    {!activeCategory && <span className="text-[10px] px-2 py-0.5 rounded-full font-medium text-white" style={{ backgroundColor: config?.color }}>{config?.name || doc.category}</span>}
+                    <span className="text-xs text-bocra-slate/40">{doc.year}</span><span className="text-xs text-bocra-slate/30">•</span><span className="text-xs text-bocra-slate/40">PDF</span>
+                  </div>
+                </div>
+                <div className="p-2 rounded-lg hover:bg-[#00A6CE]/5 transition-colors flex-shrink-0 opacity-50 group-hover:opacity-100"><Download size={18} className="text-[#00A6CE]" /></div>
+              </button>
+            ); })}</div>
+          )}
+        </div></section>
+      )}
 
       <div className="flex h-1"><div className="flex-1 bg-[#00A6CE]" /><div className="flex-1 bg-[#C8237B]" /><div className="flex-1 bg-[#F7B731]" /><div className="flex-1 bg-[#6BBE4E]" /></div>
     </div>
