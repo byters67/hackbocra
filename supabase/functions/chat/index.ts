@@ -13,7 +13,7 @@
 
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
 
-const ANTHROPIC_API_KEY = Deno.env.get('ANTHROPIC_API_KEY');
+const GROQ_API_KEY = Deno.env.get('GROQ_API_KEY');
 const SUPABASE_URL = Deno.env.get('SUPABASE_URL');
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
 
@@ -273,7 +273,7 @@ serve(async (req: Request) => {
       });
     }
 
-    if (!ANTHROPIC_API_KEY) {
+    if (!GROQ_API_KEY) {
       return jsonResponse(req, { error: 'API key not configured' }, 500);
     }
 
@@ -308,30 +308,32 @@ serve(async (req: Request) => {
       { role: 'user', content: `[CITIZEN QUERY]: ${message}` },
     ];
 
-    // Call Claude API
-    const claudeRes = await fetch('https://api.anthropic.com/v1/messages', {
+    // Call Groq API (OpenAI-compatible endpoint)
+    const groqRes = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'x-api-key': ANTHROPIC_API_KEY,
-        'anthropic-version': '2023-06-01',
+        'Authorization': `Bearer ${GROQ_API_KEY}`,
       },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
+        model: 'llama-3.1-8b-instant',
         max_tokens: 1024,
-        system: systemPrompt,
-        messages,
+        temperature: 0.7,
+        messages: [
+          { role: 'system', content: systemPrompt },
+          ...messages,
+        ],
       }),
     });
 
-    if (!claudeRes.ok) {
-      const errText = await claudeRes.text();
-      console.error('[chat] Claude API error:', errText);
+    if (!groqRes.ok) {
+      const errText = await groqRes.text();
+      console.error('[chat] Groq API error:', errText);
       return jsonResponse(req, { error: 'AI service unavailable. Please try again shortly.' }, 502);
     }
 
-    const data = await claudeRes.json();
-    const reply = data.content?.[0]?.text || 'Sorry, I could not generate a response.';
+    const data = await groqRes.json();
+    const reply = data.choices?.[0]?.message?.content || 'Sorry, I could not generate a response.';
 
     return jsonResponse(req, { reply });
   } catch (err) {
