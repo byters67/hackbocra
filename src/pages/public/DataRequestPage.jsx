@@ -15,26 +15,29 @@
 
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import {
   ChevronRight, Shield, Send, CheckCircle, Clock, FileText,
   Eye, Edit3, Trash2, Lock, Download, XCircle, AlertCircle, User
 } from 'lucide-react';
 import PageHero from '../../components/ui/PageHero';
+import Breadcrumb from '../../components/ui/Breadcrumb';
 import { useAuth } from '../../lib/auth';
-import { supabase } from '../../lib/supabase';
+import { supabase, checkRateLimit } from '../../lib/supabase';
 import { useRecaptcha } from '../../hooks/useRecaptcha';
 import { sanitizeInput, sanitizeError } from '../../lib/security';
+import { validateForm } from '../../lib/validation';
 import ConsentCheckbox from '../../components/ui/ConsentCheckbox';
 import { useScrollReveal } from '../../hooks/useAnimations';
 import { useLanguage } from '../../lib/language';
 
 const getREQUEST_TYPES = (lang) => [
-  { value: 'access', label: lang === 'tn' ? 'Fitlhelela data ya me' : 'Access my data', desc: lang === 'tn' ? 'Bona khopi ya data yotlhe ya botho e BOCRA e nang le yona ka ga gago' : 'Get a copy of all personal data BOCRA holds about you', icon: Eye },
-  { value: 'correction', label: lang === 'tn' ? 'Baakanya data ya me' : 'Correct my data', desc: lang === 'tn' ? 'Baakanya tshedimosetso e e sa nepagalang kgotsa e e sa felelang' : 'Fix inaccurate or incomplete information', icon: Edit3 },
-  { value: 'deletion', label: lang === 'tn' ? 'Phimola data ya me' : 'Delete my data', desc: lang === 'tn' ? 'Kopa go phimolwa ga data ya gago ya botho' : 'Request erasure of your personal data', icon: Trash2 },
-  { value: 'restriction', label: lang === 'tn' ? 'Kganela go dirwa' : 'Restrict processing', desc: lang === 'tn' ? 'Kganela tsela e BOCRA e dirisang data ya gago ka yona' : 'Limit how BOCRA uses your data', icon: Lock },
-  { value: 'portability', label: lang === 'tn' ? 'Romela data ya me' : 'Export my data', desc: lang === 'tn' ? 'Amogela data ya gago ka mokgwa o o balwang ke motšhine' : 'Receive your data in a machine-readable format', icon: Download },
-  { value: 'withdraw_consent', label: 'Withdraw consent', desc: 'Revoke previously given consent', icon: XCircle },
+  { value: 'access', label: tn ? 'Fitlhelela data ya me' : 'Access my data', desc: tn ? 'Bona khopi ya data yotlhe ya botho e BOCRA e nang le yona ka ga gago' : 'Get a copy of all personal data BOCRA holds about you', icon: Eye },
+  { value: 'correction', label: tn ? 'Baakanya data ya me' : 'Correct my data', desc: tn ? 'Baakanya tshedimosetso e e sa nepagalang kgotsa e e sa felelang' : 'Fix inaccurate or incomplete information', icon: Edit3 },
+  { value: 'deletion', label: tn ? 'Phimola data ya me' : 'Delete my data', desc: tn ? 'Kopa go phimolwa ga data ya gago ya botho' : 'Request erasure of your personal data', icon: Trash2 },
+  { value: 'restriction', label: tn ? 'Kganela go dirwa' : 'Restrict processing', desc: tn ? 'Kganela tsela e BOCRA e dirisang data ya gago ka yona' : 'Limit how BOCRA uses your data', icon: Lock },
+  { value: 'portability', label: tn ? 'Romela data ya me' : 'Export my data', desc: tn ? 'Amogela data ya gago ka mokgwa o o balwang ke motšhine' : 'Receive your data in a machine-readable format', icon: Download },
+  { value: 'withdraw_consent', label: lang === 'tn' ? 'Gogela morago tumelano' : 'Withdraw consent', desc: lang === 'tn' ? 'Gogela morago tumelano e e neng e neetswe' : 'Revoke previously given consent', icon: XCircle },
 ];
 
 const DATA_CATEGORIES = [
@@ -56,6 +59,7 @@ const STATUS_CONFIG = {
 
 export default function DataRequestPage() {
   const { lang } = useLanguage();
+  const tn = tn;
   const REQUEST_TYPES = getREQUEST_TYPES(lang);
   const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
@@ -75,6 +79,7 @@ export default function DataRequestPage() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
   const [refNumber, setRefNumber] = useState('');
+  const [formErrors, setFormErrors] = useState({});
 
   useEffect(() => {
     // No redirect — page is accessible to everyone
@@ -82,12 +87,20 @@ export default function DataRequestPage() {
   }, [user, authLoading]);
 
   useEffect(() => {
-    if (user) fetchRequests();
+    let cancelled = false;
+
+    if (user) {
+      (async () => {
+        await fetchRequests(cancelled);
+      })();
+    }
+
+    return () => { cancelled = true; };
   }, [user]);
 
   const [fetchError, setFetchError] = useState('');
 
-  async function fetchRequests() {
+  async function fetchRequests(cancelled = false) {
     setLoadingRequests(true);
     setFetchError('');
     try {
@@ -97,31 +110,60 @@ export default function DataRequestPage() {
         .eq('requester_id', user.id)
         .order('created_at', { ascending: false });
       if (error) throw error;
-      setRequests(data || []);
+      if (!cancelled) {
+        setRequests(data || []);
+      }
     } catch (err) {
-      setRequests([]);
-      setFetchError(sanitizeError(err));
+      if (!cancelled) {
+        setRequests([]);
+        setFetchError(sanitizeError(err));
+      }
     }
-    setLoadingRequests(false);
+    if (!cancelled) {
+      setLoadingRequests(false);
+    }
   }
 
   async function handleSubmit(e) {
     e.preventDefault();
-    if (!requestType || !description.trim() || !consent) return;
+
+    // Rate limiting
+    if (!checkRateLimit('data-request')) {
+      setError(tn ? 'Tsweetswee ema pele o romela gape.' : 'Please wait before submitting again.');
+      return;
+    }
+
+    // Form validation
+    const { isValid, errors } = validateForm([
+      { value: requestType, name: 'Request type', rules: ['required'] },
+      { value: description, name: 'Description', rules: ['required', { maxLength: 5000 }] },
+    ]);
+
+    if (!isValid) {
+      setFormErrors(errors);
+      return;
+    }
+
+    setFormErrors({});
+
+    if (!consent) {
+      setError(tn ? 'O tshwanetse go naya tumelano pele o romela.' : 'You must give consent before submitting.');
+      return;
+    }
 
     setSubmitting(true);
     setError('');
 
-    const recaptchaToken = await executeRecaptcha('submit_data_request');
-    if (!recaptchaToken) {
-      setError(lang === 'tn' ? 'Tsweetswee leka gape (tshireletso ya saete).' : 'Security check failed. Please wait and try again.');
-      setSubmitting(false);
-      return;
-    }
-
-    const ref = 'DPA-' + new Date().getFullYear() + '-' + crypto.randomUUID().slice(0, 8).toUpperCase();
-
     try {
+      const recaptchaToken = await executeRecaptcha('submit_data_request');
+      if (!recaptchaToken) {
+        setError(tn ? 'Tsweetswee leka gape (tshireletso ya saete).' : 'Security check failed. Please wait and try again.');
+        setSubmitting(false);
+        return;
+      }
+
+      const ref = 'DPA-' + new Date().getFullYear() + '-' + crypto.randomUUID().slice(0, 8).toUpperCase();
+
       const { error: insertErr } = await supabase.from('data_requests').insert([{
         requester_id: user.id,
         requester_name: user.user_metadata?.full_name || user.email,
@@ -151,6 +193,7 @@ export default function DataRequestPage() {
     setCategories([]);
     setConsent(false);
     setError('');
+    setFormErrors({});
     setView('list');
   }
 
@@ -172,14 +215,16 @@ export default function DataRequestPage() {
 
   return (
     <div className="min-h-screen bg-bocra-off-white">
+      <Helmet>
+        <title>Data Request — BOCRA</title>
+        <meta name="description" content="Request telecommunications market data and statistics from BOCRA." />
+        <link rel="canonical" href="https://bocra.org.bw/portal/data-request" />
+      </Helmet>
+
       {/* Breadcrumb */}
       <div className="bg-bocra-off-white border-b border-gray-100">
         <div className="section-wrapper py-4">
-          <nav className="text-sm text-bocra-slate/50 flex items-center gap-2">
-            <Link to="/" className="hover:text-bocra-blue">{lang === 'tn' ? 'Gae' : 'Home'}</Link>
-            <ChevronRight size={14} />
-            <span className="text-bocra-slate font-medium">My Data Rights</span>
-          </nav>
+          <Breadcrumb items={[{ label: tn ? 'Potlolo' : 'Portal' }, { label: tn ? 'Kopo ya Data' : 'Data Request' }]} />
         </div>
       </div>
 
@@ -193,20 +238,20 @@ export default function DataRequestPage() {
             <div className="w-16 h-16 rounded-full bg-[#00458B]/10 flex items-center justify-center mx-auto mb-4">
               <Shield size={28} className="text-[#00458B]" />
             </div>
-            <h2 className="text-xl font-bold text-bocra-slate mb-2">Sign In to Access Data Rights</h2>
+            <h2 className="text-xl font-bold text-bocra-slate mb-2">{tn ? 'Tsena go Fitlhelela Ditshwanelo tsa Data' : 'Sign In to Access Data Rights'}</h2>
             <p className="text-sm text-bocra-slate/60 max-w-md mx-auto mb-6">
-              To submit a Data Subject Access Request or view your previous requests, please sign in with your BOCRA account. If you don't have one, you can register through the ASMS-WebCP portal.
+              {tn ? 'Go romela Kopo ya Fitlhelelo ya Data kgotsa go bona dikopo tsa gago tse di fetileng, tsweetswee tsena ka akhaonto ya gago ya BOCRA. Fa o se na yona, o ka ikwadisa ka potlolo ya ASMS-WebCP.' : 'To submit a Data Subject Access Request or view your previous requests, please sign in with your BOCRA account. If you don\'t have one, you can register through the ASMS-WebCP portal.'}
             </p>
             <div className="flex items-center justify-center gap-3">
               <Link to="/services/asms-webcp" className="px-6 py-2.5 bg-[#00458B] text-white text-sm font-medium rounded-xl hover:bg-[#003366] transition-all">
-                Sign In
+                {tn ? 'Tsena' : 'Sign In'}
               </Link>
               <Link to="/services/asms-webcp" className="px-6 py-2.5 border border-gray-200 text-sm font-medium text-bocra-slate rounded-xl hover:bg-gray-50 transition-all">
-                Create Account
+                {tn ? 'Bula Akhaonto' : 'Create Account'}
               </Link>
             </div>
             <p className="text-xs text-bocra-slate/30 mt-6">
-              For general enquiries about data protection, contact us at <a href="mailto:info@bocra.org.bw" className="text-[#00A6CE] hover:underline">info@bocra.org.bw</a> or call <a href="tel:+2673957755" className="text-[#00A6CE] hover:underline">+267 395 7755</a>.
+              {tn ? 'Ka dipotso ka tshireletso ya data, ikgolaganye le rona mo ' : 'For general enquiries about data protection, contact us at '}<a href="mailto:info@bocra.org.bw" className="text-[#00A6CE] hover:underline">info@bocra.org.bw</a> {tn ? 'kgotsa leletsa ' : 'or call '}<a href="tel:+2673957755" className="text-[#00A6CE] hover:underline">+267 395 7755</a>.
             </p>
           </div>
         )}
@@ -234,12 +279,12 @@ export default function DataRequestPage() {
           {view === 'list' && (
             <button onClick={() => setView('form')} className="btn-primary text-sm py-2.5 px-5">
               <FileText size={14} />
-              New Request
+              {tn ? 'Kopo e Ntšhwa' : 'New Request'}
             </button>
           )}
           {view !== 'list' && (
             <button onClick={resetForm} className="text-sm text-bocra-slate/50 hover:text-bocra-slate">
-              Back to requests
+              {tn ? 'Boela kwa dikopong' : 'Back to requests'}
             </button>
           )}
         </div>
@@ -247,7 +292,7 @@ export default function DataRequestPage() {
         {/* ─── VIEW: Request List ─── */}
         {view === 'list' && (
           <div className="space-y-4">
-            <h2 className="text-xl font-bold text-bocra-slate">Your Data Requests</h2>
+            <h2 className="text-xl font-bold text-bocra-slate">{tn ? 'Dikopo tsa Gago tsa Data' : 'Your Data Requests'}</h2>
 
             {fetchError && (
               <div className="flex items-center gap-2 text-red-600 text-sm bg-red-50 border border-red-200 p-3 rounded-lg mb-4">
@@ -263,14 +308,13 @@ export default function DataRequestPage() {
             ) : requests.length === 0 && !fetchError ? (
               <div className="bg-white rounded-xl border border-gray-200 p-10 text-center">
                 <Shield size={40} className="text-bocra-blue/20 mx-auto mb-4" />
-                <h3 className="text-lg font-semibold text-bocra-slate mb-2">No requests yet</h3>
+                <h3 className="text-lg font-semibold text-bocra-slate mb-2">{tn ? 'Ga go na dikopo ka nako eno' : 'No requests yet'}</h3>
                 <p className="text-sm text-bocra-slate/50 max-w-md mx-auto mb-6">
-                  You have the right to access, correct, or delete any personal data BOCRA holds about you.
-                  Submit a request and we will respond within 30 days.
+                  {tn ? 'O na le tshwanelo ya go fitlhelela, go baakanya, kgotsa go phimola data epe ya botho e BOCRA e nang le yona ka ga gago. Romela kopo mme re tla araba mo malatsing a le 30.' : 'You have the right to access, correct, or delete any personal data BOCRA holds about you. Submit a request and we will respond within 30 days.'}
                 </p>
                 <button onClick={() => setView('form')} className="btn-primary text-sm py-2.5 px-6">
                   <FileText size={14} />
-                  Submit a Request
+                  {tn ? 'Romela Kopo' : 'Submit a Request'}
                 </button>
               </div>
             ) : (
@@ -306,21 +350,21 @@ export default function DataRequestPage() {
                         <div className="px-5 pb-4 border-t border-gray-100 pt-3 space-y-3">
                           <div className="grid grid-cols-2 gap-3 text-sm">
                             <div>
-                              <span className="text-bocra-slate/40 text-xs">Submitted</span>
+                              <span className="text-bocra-slate/40 text-xs">{tn ? 'E Rometswe' : 'Submitted'}</span>
                               <p className="text-bocra-slate">{new Date(req.submitted_at).toLocaleDateString('en-BW', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
                             </div>
                             <div>
-                              <span className="text-bocra-slate/40 text-xs">Response due by</span>
+                              <span className="text-bocra-slate/40 text-xs">{tn ? 'Karabo e tshwanetse ka' : 'Response due by'}</span>
                               <p className="text-bocra-slate font-medium">{new Date(req.due_by).toLocaleDateString('en-BW', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
                             </div>
                           </div>
                           <div>
-                            <span className="text-bocra-slate/40 text-xs">Description</span>
+                            <span className="text-bocra-slate/40 text-xs">{tn ? 'Tlhaloso' : 'Description'}</span>
                             <p className="text-sm text-bocra-slate mt-0.5">{req.description}</p>
                           </div>
                           {req.data_categories?.length > 0 && (
                             <div>
-                              <span className="text-bocra-slate/40 text-xs">Data categories</span>
+                              <span className="text-bocra-slate/40 text-xs">{tn ? 'Dikarolo tsa data' : 'Data categories'}</span>
                               <div className="flex flex-wrap gap-1.5 mt-1">
                                 {req.data_categories.map(c => (
                                   <span key={c} className="px-2 py-0.5 bg-bocra-blue/5 text-bocra-blue text-xs rounded-md">{c}</span>
@@ -330,7 +374,7 @@ export default function DataRequestPage() {
                           )}
                           {req.response && (
                             <div className="bg-green-50 border border-green-200 rounded-lg p-3">
-                              <span className="text-green-700 text-xs font-medium">BOCRA Response</span>
+                              <span className="text-green-700 text-xs font-medium">{tn ? 'Karabo ya BOCRA' : 'BOCRA Response'}</span>
                               <p className="text-sm text-green-800 mt-1">{req.response}</p>
                             </div>
                           )}
@@ -346,19 +390,18 @@ export default function DataRequestPage() {
             <div className="bg-bocra-blue/[0.03] border border-bocra-blue/10 rounded-xl p-5 mt-6">
               <h3 className="text-sm font-semibold text-bocra-slate mb-2 flex items-center gap-2">
                 <Shield size={14} className="text-bocra-blue" />
-                Your Rights Under the Data Protection Act, 2018
+                {tn ? 'Ditshwanelo tsa Gago ka fa Tlase ga Molao wa Tshireletso ya Data, 2018' : 'Your Rights Under the Data Protection Act, 2018'}
               </h3>
               <ul className="text-xs text-bocra-slate/60 space-y-1.5">
-                <li><strong>Right to Access</strong> — Request a copy of all personal data we hold about you</li>
-                <li><strong>Right to Rectification</strong> — Have inaccurate or incomplete data corrected</li>
-                <li><strong>Right to Erasure</strong> — Request deletion of your data (subject to legal obligations)</li>
-                <li><strong>Right to Restrict Processing</strong> — Limit how we process your data</li>
-                <li><strong>Right to Portability</strong> — Receive your data in a machine-readable format</li>
-                <li><strong>Right to Withdraw Consent</strong> — Revoke consent without affecting prior processing</li>
+                <li><strong>{tn ? 'Tshwanelo ya Fitlhelelo' : 'Right to Access'}</strong> — {tn ? 'Kopa khopi ya data yotlhe ya botho e re nang le yona ka ga gago' : 'Request a copy of all personal data we hold about you'}</li>
+                <li><strong>{tn ? 'Tshwanelo ya Baakanyetso' : 'Right to Rectification'}</strong> — {tn ? 'Data e e sa nepagalang kgotsa e e sa felelang e baakangwe' : 'Have inaccurate or incomplete data corrected'}</li>
+                <li><strong>{tn ? 'Tshwanelo ya Phimolelo' : 'Right to Erasure'}</strong> — {tn ? 'Kopa go phimolwa ga data ya gago (go ya ka ditlamelo tsa molao)' : 'Request deletion of your data (subject to legal obligations)'}</li>
+                <li><strong>{tn ? 'Tshwanelo ya go Kganela Tiragatso' : 'Right to Restrict Processing'}</strong> — {tn ? 'Kganela tsela e re dirisang data ya gago ka yona' : 'Limit how we process your data'}</li>
+                <li><strong>{tn ? 'Tshwanelo ya go Tsamaisa' : 'Right to Portability'}</strong> — {tn ? 'Amogela data ya gago ka mokgwa o o balwang ke motšhine' : 'Receive your data in a machine-readable format'}</li>
+                <li><strong>{tn ? 'Tshwanelo ya go Gogela Morago Tumelano' : 'Right to Withdraw Consent'}</strong> — {tn ? 'Gogela morago tumelano ntle le go ama tiragatso e e fetileng' : 'Revoke consent without affecting prior processing'}</li>
               </ul>
               <p className="text-xs text-bocra-slate/40 mt-3">
-                BOCRA will respond to all requests within <strong>30 days</strong> as required by law.
-                Read our full <Link to="/privacy-notice" className="text-bocra-blue hover:underline">Privacy Notice</Link>.
+                {tn ? <>BOCRA e tla araba dikopo tsotlhe mo malatsing a le <strong>30</strong> jaaka go tlhokega ka molao. Bala <Link to="/privacy-notice" className="text-bocra-blue hover:underline">Kitsiso ya Poraefesi</Link> ya rona ka botlalo.</> : <>BOCRA will respond to all requests within <strong>30 days</strong> as required by law. Read our full <Link to="/privacy-notice" className="text-bocra-blue hover:underline">Privacy Notice</Link>.</>}
               </p>
             </div>
           </div>
@@ -367,11 +410,11 @@ export default function DataRequestPage() {
         {/* ─── VIEW: New Request Form ─── */}
         {view === 'form' && (
           <form onSubmit={handleSubmit} className="space-y-6">
-            <h2 className="text-xl font-bold text-bocra-slate">{lang === 'tn' ? 'Romela Kopo ya Data' : 'Submit a Data Request'}</h2>
+            <h2 className="text-xl font-bold text-bocra-slate">{tn ? 'Romela Kopo ya Data' : 'Submit a Data Request'}</h2>
 
             {/* Step 1: Request type */}
             <div>
-              <label className="block text-sm font-medium text-bocra-slate mb-3">What would you like to do?</label>
+              <label className="block text-sm font-medium text-bocra-slate mb-3">{tn ? 'O batla go dira eng?' : 'What would you like to do?'}</label>
               <div className="grid sm:grid-cols-2 gap-3">
                 {REQUEST_TYPES.map((type) => {
                   const Icon = type.icon;
@@ -380,7 +423,7 @@ export default function DataRequestPage() {
                     <button
                       key={type.value}
                       type="button"
-                      onClick={() => setRequestType(type.value)}
+                      onClick={() => { setRequestType(type.value); setFormErrors(prev => ({ ...prev, 'Request type': undefined })); }}
                       className={`text-left p-4 rounded-xl border-2 transition-all ${
                         selected
                           ? 'border-bocra-blue bg-bocra-blue/[0.03]'
@@ -402,14 +445,17 @@ export default function DataRequestPage() {
                   );
                 })}
               </div>
+              {formErrors['Request type'] && (
+                <p className="text-red-600 text-xs mt-1">{formErrors['Request type']}</p>
+              )}
             </div>
 
             {/* Step 2: Data categories */}
             {requestType && (
               <div>
                 <label className="block text-sm font-medium text-bocra-slate mb-2">
-                  Which data categories does this relate to?
-                  <span className="text-bocra-slate/40 font-normal ml-1">(select all that apply)</span>
+                  {tn ? 'Kopo eno e amana le dikarolo dife tsa data?' : 'Which data categories does this relate to?'}
+                  <span className="text-bocra-slate/40 font-normal ml-1">{tn ? '(tlhopha tsotlhe tse di amanang)' : '(select all that apply)'}</span>
                 </label>
                 <div className="flex flex-wrap gap-2">
                   {DATA_CATEGORIES.map((cat) => {
@@ -437,11 +483,11 @@ export default function DataRequestPage() {
             {requestType && (
               <div>
                 <label className="block text-sm font-medium text-bocra-slate mb-1.5">
-                  Describe your request
+                  {tn ? 'Tlhalosa kopo ya gago' : 'Describe your request'}
                 </label>
                 <textarea
                   value={description}
-                  onChange={(e) => setDescription(e.target.value)}
+                  onChange={(e) => { setDescription(e.target.value); setFormErrors(prev => ({ ...prev, Description: undefined })); }}
                   rows={4}
                   required
                   placeholder={
@@ -452,6 +498,9 @@ export default function DataRequestPage() {
                   }
                   className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm text-bocra-slate placeholder:text-bocra-slate/30 focus:border-bocra-blue focus:ring-2 focus:ring-bocra-blue/10 outline-none transition-all resize-none"
                 />
+                {formErrors['Description'] && (
+                  <p className="text-red-600 text-xs mt-1">{formErrors['Description']}</p>
+                )}
               </div>
             )}
 
@@ -476,7 +525,7 @@ export default function DataRequestPage() {
                   disabled={submitting || !consent}
                   className="btn-primary w-full justify-center py-3.5 text-base disabled:opacity-60"
                 >
-                  {submitting ? 'Submitting...' : 'Submit Request'}
+                  {submitting ? (tn ? 'E Romela...' : 'Submitting...') : (tn ? 'Romela Kopo' : 'Submit Request')}
                   <Send size={16} />
                 </button>
               </>
@@ -490,23 +539,23 @@ export default function DataRequestPage() {
             <div className="w-16 h-16 rounded-full bg-green-50 flex items-center justify-center mx-auto mb-4">
               <CheckCircle size={32} className="text-[#6BBE4E]" />
             </div>
-            <h2 className="text-2xl font-bold text-bocra-slate mb-2">{lang === 'tn' ? 'Kopo e Rometse' : 'Request Submitted'}</h2>
+            <h2 className="text-2xl font-bold text-bocra-slate mb-2">{tn ? 'Kopo e Rometse' : 'Request Submitted'}</h2>
             <p className="text-sm text-bocra-slate/50 max-w-md mx-auto mb-4">
-              Your data request has been received. BOCRA will verify your identity and respond within <strong>30 days</strong> as required by the Data Protection Act, 2018.
+              {tn ? <>Kopo ya gago ya data e amogetse. BOCRA e tla netefatsa boitshupo jwa gago mme e arabe mo malatsing a le <strong>30</strong> jaaka go tlhokega ka Molao wa Tshireletso ya Data, 2018.</> : <>Your data request has been received. BOCRA will verify your identity and respond within <strong>30 days</strong> as required by the Data Protection Act, 2018.</>}
             </p>
             <div className="inline-block px-5 py-2.5 bg-bocra-off-white rounded-lg text-lg font-mono font-bold text-bocra-blue mb-6">
               {refNumber}
             </div>
-            <p className="text-xs text-bocra-slate/30 mb-6">Keep this reference number for your records.</p>
+            <p className="text-xs text-bocra-slate/30 mb-6">{tn ? 'Boloka nomoro eno ya tshupetso ya direkoto tsa gago.' : 'Keep this reference number for your records.'}</p>
             <div className="flex justify-center gap-3">
               <button
                 onClick={resetForm}
                 className="px-5 py-2.5 border border-gray-200 text-bocra-slate text-sm rounded-xl hover:border-gray-300"
               >
-                View My Requests
+                {tn ? 'Bona Dikopo tsa Me' : 'View My Requests'}
               </button>
               <Link to="/" className="btn-primary text-sm py-2.5 px-5">
-                Return Home
+                {tn ? 'Boela Gae' : 'Return Home'}
               </Link>
             </div>
           </div>

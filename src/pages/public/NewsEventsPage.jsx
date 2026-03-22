@@ -3,9 +3,11 @@
  * Route: /media/news-events
  * Fully bilingual EN/TN
  */
-import { useState, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../../lib/language';
+import { supabase } from '../../lib/supabase';
 import PageHero from '../../components/ui/PageHero';
 import { useStaggerReveal } from '../../hooks/useAnimations';
 import {
@@ -16,24 +18,24 @@ import {
 
 /* ── Categories ────────────────────────────────── */
 const CATEGORIES = [
-  { id: 'notices', label: 'Public Notices', labelTn: 'Dikitsiso tsa Setšhaba', icon: Megaphone, color: '#00A6CE', desc: 'Official gazettes, operator lists, and public announcements', descTn: 'Dikgatiso tsa semmuso, ditlhokamelo tsa balaodi, le dikitsiso tsa setšhaba' },
-  { id: 'tenders', label: 'Tenders & Procurement', labelTn: 'Ditendara le Thekololo', icon: ShoppingBag, color: '#6BBE4E', desc: 'Bidding opportunities, awarded contracts, and evaluations', descTn: 'Ditšhono tsa go tsenya ditendara, dikonteraka tse di abetsweng, le ditekolo' },
-  { id: 'media', label: 'Media Releases', labelTn: 'Dikgang tsa Bobegakgang', icon: Newspaper, color: '#C8237B', desc: 'Press releases, pricing approvals, and stakeholder updates', descTn: 'Dikgatiso tsa bobegakgang, ditumelelo tsa ditlhwatlhwa, le diphetogo tsa baamegi' },
-  { id: 'regulatory', label: 'Regulatory Documents', labelTn: 'Dipampiri tsa Taolo', icon: Gavel, color: '#F7B731', desc: 'Codes of conduct, guidelines, and regulatory frameworks', descTn: 'Melao ya maitsholo, ditaelo, le dithulaganyo tsa taolo' },
+  { id: 'Public Notices', label: 'Public Notices', labelTn: 'Dikitsiso tsa Setšhaba', icon: Megaphone, color: '#00A6CE', desc: 'Official gazettes, operator lists, and public announcements', descTn: 'Dikgatiso tsa semmuso, ditlhokamelo tsa balaodi, le dikitsiso tsa setšhaba' },
+  { id: 'Tenders & Procurement', label: 'Tenders & Procurement', labelTn: 'Ditendara le Thekololo', icon: ShoppingBag, color: '#6BBE4E', desc: 'Bidding opportunities, awarded contracts, and evaluations', descTn: 'Ditšhono tsa go tsenya ditendara, dikonteraka tse di abetsweng, le ditekolo' },
+  { id: 'Media Releases', label: 'Media Releases', labelTn: 'Dikgang tsa Bobegakgang', icon: Newspaper, color: '#C8237B', desc: 'Press releases, pricing approvals, and stakeholder updates', descTn: 'Dikgatiso tsa bobegakgang, ditumelelo tsa ditlhwatlhwa, le diphetogo tsa baamegi' },
+  { id: 'Regulatory Documents', label: 'Regulatory Documents', labelTn: 'Dipampiri tsa Taolo', icon: Gavel, color: '#F7B731', desc: 'Codes of conduct, guidelines, and regulatory frameworks', descTn: 'Melao ya maitsholo, ditaelo, le dithulaganyo tsa taolo' },
 ];
 
 /* ── Badge config ────────────────────────────────── */
 const BADGE_MAP = {
-  notices:    { bg: 'bg-[#00A6CE]/10', text: 'text-[#00A6CE]', label: 'Public Notice', labelTn: 'Kitsiso ya Setšhaba' },
-  tenders:    { bg: 'bg-[#6BBE4E]/10', text: 'text-[#6BBE4E]', label: 'Tender', labelTn: 'Tendara' },
-  media:      { bg: 'bg-[#C8237B]/10', text: 'text-[#C8237B]', label: 'Media Release', labelTn: 'Kgang ya Bobegakgang' },
-  regulatory: { bg: 'bg-[#F7B731]/10', text: 'text-[#F7B731]', label: 'Regulatory', labelTn: 'Ya Taolo' },
+  'Public Notices':          { bg: 'bg-[#00A6CE]/10', text: 'text-[#00A6CE]', label: 'Public Notice', labelTn: 'Kitsiso ya Setšhaba' },
+  'Tenders & Procurement':  { bg: 'bg-[#6BBE4E]/10', text: 'text-[#6BBE4E]', label: 'Tender', labelTn: 'Tendara' },
+  'Media Releases':         { bg: 'bg-[#C8237B]/10', text: 'text-[#C8237B]', label: 'Media Release', labelTn: 'Kgang ya Bobegakgang' },
+  'Regulatory Documents':   { bg: 'bg-[#F7B731]/10', text: 'text-[#F7B731]', label: 'Regulatory', labelTn: 'Ya Taolo' },
 };
 
 /* ── Document data ────────────────────────────────── */
 const DOCUMENTS = [
   {
-    id: 1, category: 'regulatory',
+    id: 1, category: 'Regulatory Documents',
     title: 'Code of Conduct for Broadcasting During Elections',
     titleTn: 'Molao wa Maitsholo wa Phasalatso ka Nako ya Ditlhopho',
     description: 'Comprehensive code governing broadcasting service licensees during election periods. Covers impartiality, party political broadcasts, advertising rules, and complaints procedures.',
@@ -41,7 +43,7 @@ const DOCUMENTS = [
     date: 'July 2019', sortDate: '2019-07-01', file: 'FINAL_Broadcasting_Election_Code_of_Conduct_JULY_2019.pdf', pages: 18, icon: MonitorSpeaker,
   },
   {
-    id: 2, category: 'notices',
+    id: 2, category: 'Public Notices',
     title: 'Licensed Communications Operators Publication',
     titleTn: 'Kgatiso ya Balaodi ba Dikgolagano ba ba nang le Dilaesense',
     description: 'Official gazette listing all BOCRA-licensed SAP, NFP, Mobile Network Operators (BTC, Mascom, Orange), Postal Service Providers, and Broadcasting Operators.',
@@ -49,7 +51,7 @@ const DOCUMENTS = [
     date: '2019', sortDate: '2019-01-01', file: 'BOCRALICENSEESPUBLICATION.pdf', pages: 13, icon: Building2,
   },
   {
-    id: 3, category: 'notices',
+    id: 3, category: 'Public Notices',
     title: 'QoS Monitoring System — Public Notice',
     titleTn: 'Tsamaiso ya Tlhokomelo ya Boleng jwa Tirelo — Kitsiso ya Setšhaba',
     description: 'Tender notice for supply, installation and commissioning of a Quality of Service monitoring system for fixed and mobile networks.',
@@ -57,7 +59,7 @@ const DOCUMENTS = [
     date: 'June 2021', sortDate: '2021-06-01', file: 'Public_Notice-QOS_Monitoring_system.pdf', pages: 1, icon: Wifi,
   },
   {
-    id: 4, category: 'media',
+    id: 4, category: 'Media Releases',
     title: 'BOCRA Approves Reduction in Fixed Broadband Prices',
     titleTn: 'BOCRA e Dumela Pogelo ya Ditlhwatlhwa tsa Inthanete ya Lobelo e e Tsepameng',
     description: 'BOCRA approved up to 40% price reductions for BTC fixed broadband services. 20Mbps from P975 to P650, 50Mbps from P1,985 to P1,200, 100Mbps from P2,800 to P1,900.',
@@ -65,7 +67,7 @@ const DOCUMENTS = [
     date: 'June 2021', sortDate: '2021-06-23', file: 'Public_notice_BTC_prices.pdf', pages: 1, icon: Newspaper,
   },
   {
-    id: 5, category: 'tenders',
+    id: 5, category: 'Tenders & Procurement',
     title: 'Supply and Delivery of ICT Equipment',
     titleTn: 'Go Reka le go Romela Didirisiwa tsa ICT',
     description: 'Invitation to tender for the supply and delivery of ICT equipment to support BOCRA operational capacity and digital infrastructure.',
@@ -73,7 +75,7 @@ const DOCUMENTS = [
     date: 'February 2024', sortDate: '2024-02-13', file: 'SUPPLY_AND_DELIVERY_OF_ICT_EQUIPMENT_13-02-24.pdf', pages: 1, icon: ShoppingBag,
   },
   {
-    id: 6, category: 'tenders',
+    id: 6, category: 'Tenders & Procurement',
     title: 'BOCRA Public Tender Notice',
     titleTn: 'Kitsiso ya Tendara ya Setšhaba ya BOCRA',
     description: 'General procurement notice inviting qualified bidders to submit proposals for various Authority service requirements.',
@@ -81,7 +83,7 @@ const DOCUMENTS = [
     date: 'January 2024', sortDate: '2024-01-23', file: 'BOCRA_PUBLIC_TENDER_NOTICE_23-01-2024.pdf', pages: 1, icon: ShoppingBag,
   },
   {
-    id: 7, category: 'tenders',
+    id: 7, category: 'Tenders & Procurement',
     title: 'Notice of Best Evaluated Bidder — Etsha 6 Computer Lab',
     titleTn: 'Kitsiso ya Modira-tendara yo o Itekilweng Botoka — Laporatheri ya Khomphiutha ya Etsha 6',
     description: 'Contract awarded to C.E.N. Enterprises (Pty) Ltd for BWP 1,881,718.92 for construction of a computer laboratory at Etsha 6 Primary School, Okavango District.',
@@ -89,7 +91,7 @@ const DOCUMENTS = [
     date: '2024', sortDate: '2024-01-01', file: 'Notice_of_Best_Evaluated_Bidder__Construction-of-Computer-Lab-at-Etsha-6_Primary-School_.pdf', pages: 1, icon: Award,
   },
   {
-    id: 8, category: 'notices',
+    id: 8, category: 'Public Notices',
     title: 'BOCRA Public Advertisement',
     titleTn: 'Papatso ya Setšhaba ya BOCRA',
     description: 'Official BOCRA advertisement outlining regulatory updates, service information, and stakeholder communications published in national media.',
@@ -104,27 +106,62 @@ export default function NewsEventsPage() {
   const [activeCategory, setActiveCategory] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [sortOrder, setSortOrder] = useState('newest');
+  const [allDocs, setAllDocs] = useState(DOCUMENTS);
   const cardsRef = useStaggerReveal({ stagger: 0.08 });
 
-  const totalCount = DOCUMENTS.length;
+  // Fetch published posts from Supabase and merge with hardcoded DOCUMENTS
+  useEffect(() => {
+    let cancelled = false;
+    async function fetchPosts() {
+      try {
+        const { data, error } = await supabase
+          .from('posts')
+          .select('*')
+          .eq('status', 'published')
+          .order('published_at', { ascending: false });
+        if (cancelled) return;
+        if (error) throw error;
+        if (data && data.length > 0) {
+          const mapped = data.map(post => ({
+            id: `post-${post.id}`,
+            category: post.category,
+            title: post.title,
+            description: post.summary || '',
+            date: post.published_at
+              ? new Date(post.published_at).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
+              : '',
+            sortDate: post.published_at || post.created_at || '',
+            icon: FileText,
+          }));
+          setAllDocs([...mapped, ...DOCUMENTS]);
+        }
+      } catch (err) {
+        console.error('Failed to fetch posts:', err);
+      }
+    }
+    fetchPosts();
+    return () => { cancelled = true; };
+  }, []);
+
+  const totalCount = allDocs.length;
   const catCounts = useMemo(() => {
     const c = {};
-    CATEGORIES.forEach(cat => { c[cat.id] = DOCUMENTS.filter(d => d.category === cat.id).length; });
+    CATEGORIES.forEach(cat => { c[cat.id] = allDocs.filter(d => d.category === cat.id).length; });
     return c;
-  }, []);
+  }, [allDocs]);
 
   const activeCat = activeCategory ? CATEGORIES.find(c => c.id === activeCategory) : null;
 
   const filtered = useMemo(() => {
     if (!activeCategory) return [];
-    let docs = DOCUMENTS.filter(d => d.category === activeCategory);
+    let docs = allDocs.filter(d => d.category === activeCategory);
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase();
-      docs = docs.filter(d => d.title.toLowerCase().includes(q) || d.description.toLowerCase().includes(q) || (d.titleTn && d.titleTn.toLowerCase().includes(q)));
+      docs = docs.filter(d => d.title.toLowerCase().includes(q) || (d.description || '').toLowerCase().includes(q) || (d.titleTn && d.titleTn.toLowerCase().includes(q)));
     }
-    docs.sort((a, b) => sortOrder === 'newest' ? b.sortDate.localeCompare(a.sortDate) : a.sortDate.localeCompare(b.sortDate));
+    docs.sort((a, b) => sortOrder === 'newest' ? (b.sortDate || '').localeCompare(a.sortDate || '') : (a.sortDate || '').localeCompare(b.sortDate || ''));
     return docs;
-  }, [activeCategory, searchQuery, sortOrder]);
+  }, [allDocs, activeCategory, searchQuery, sortOrder]);
 
   const pdfBase = `${import.meta.env.BASE_URL}documents/news/`;
 
@@ -132,6 +169,11 @@ export default function NewsEventsPage() {
   if (!activeCat) {
     return (
       <div className="bg-white">
+        <Helmet>
+          <title>News &amp; Events — BOCRA</title>
+          <meta name="description" content="Latest news and upcoming events from BOCRA." />
+          <link rel="canonical" href="https://bocra.org.bw/media/news-events" />
+        </Helmet>
         <div className="bg-bocra-off-white border-b border-gray-100">
           <div className="section-wrapper py-4">
             <nav className="text-sm text-bocra-slate/50 flex items-center gap-2">
@@ -216,12 +258,23 @@ export default function NewsEventsPage() {
 
   return (
     <div className="bg-white">
+      <Helmet>
+        <title>News &amp; Events — BOCRA</title>
+        <meta name="description" content="Latest news and upcoming events from BOCRA." />
+        <link rel="canonical" href="https://bocra.org.bw/media/news-events" />
+      </Helmet>
       <div className="bg-bocra-off-white border-b border-gray-100">
         <div className="section-wrapper py-4">
           <nav className="text-sm text-bocra-slate/50 flex items-center gap-2">
             <Link to="/" className="hover:text-bocra-blue">{tn ? 'Gae' : 'Home'}</Link>
             <ChevronRight size={14} />
-            <button onClick={() => { setActiveCategory(null); setSearchQuery(''); }} className="hover:text-bocra-blue">{tn ? 'Dikgang le Ditiragalo' : 'News & Events'}</button>
+            <Link
+              to="/media/news-events"
+              onClick={() => { setActiveCategory(null); setSearchQuery(''); }}
+              className="hover:text-bocra-blue"
+            >
+              {tn ? 'Dikgang le Ditiragalo' : 'News & Events'}
+            </Link>
             <ChevronRight size={14} />
             <span className="text-bocra-slate font-medium">{tn ? activeCat.labelTn : activeCat.label}</span>
           </nav>
@@ -230,12 +283,19 @@ export default function NewsEventsPage() {
 
       <section className="py-8">
         <div className="section-wrapper max-w-4xl">
-          {/* Back */}
-          <button onClick={() => { setActiveCategory(null); setSearchQuery(''); }}
-            className="flex items-center gap-2 text-sm text-[#00A6CE] hover:text-[#00458B] font-medium mb-6 transition-colors group">
+          {/* Back — real route link + state reset so the category grid (News & Events hub) always shows. */}
+          <Link
+            to="/media/news-events"
+            replace
+            onClick={() => {
+              setActiveCategory(null);
+              setSearchQuery('');
+            }}
+            className="inline-flex items-center gap-2 text-sm text-[#00A6CE] hover:text-[#00458B] font-medium mb-6 transition-colors group"
+          >
             <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
-            {tn ? 'Boela kwa Dikarolong' : 'Back to Categories'}
-          </button>
+            {tn ? 'Boela kwa Dikgang le Ditiragalo' : 'Back to News & Events'}
+          </Link>
 
           {/* Header */}
           <div className="flex items-start gap-4 mb-6">
@@ -276,7 +336,7 @@ export default function NewsEventsPage() {
           ) : (
             <div className="space-y-2">
               {filtered.map(doc => {
-                const DocIcon = doc.icon;
+                const DocIcon = doc.icon || FileText;
                 return (
                   <div key={doc.id} className="group flex items-start gap-4 p-4 sm:p-5 bg-white border border-gray-100 rounded-xl hover:shadow-lg hover:border-gray-200 transition-all">
                     <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${badge.bg}`}>
@@ -291,18 +351,20 @@ export default function NewsEventsPage() {
                           {tn ? badge.labelTn : badge.label}
                         </span>
                         <span className="text-xs text-gray-400 flex items-center gap-1"><Calendar size={11} />{doc.date}</span>
-                        <span className="text-xs text-gray-300">PDF</span>
+                        {doc.file && <span className="text-xs text-gray-300">PDF</span>}
                         {doc.pages > 1 && <span className="text-xs text-gray-300">{doc.pages} {tn ? 'matlhare' : 'pages'}</span>}
                       </div>
                       <p className="text-xs text-gray-400 mt-2 leading-relaxed line-clamp-2 hidden sm:block">
                         {tn && doc.descTn ? doc.descTn : doc.description}
                       </p>
                     </div>
-                    <a href={`${pdfBase}${doc.file}`} target="_blank" rel="noopener noreferrer"
-                      className="flex-shrink-0 p-2 rounded-lg text-gray-300 hover:text-[#00458B] hover:bg-[#00458B]/5 transition-all"
-                      title={tn ? 'Bula PDF' : 'View PDF'}>
-                      <Download size={18} />
-                    </a>
+                    {doc.file && (
+                      <a href={`${pdfBase}${doc.file}`} target="_blank" rel="noopener noreferrer"
+                        className="flex-shrink-0 p-2 rounded-lg text-gray-300 hover:text-[#00458B] hover:bg-[#00458B]/5 transition-all"
+                        title={tn ? 'Bula PDF' : 'View PDF'}>
+                        <Download size={18} />
+                      </a>
+                    )}
                   </div>
                 );
               })}

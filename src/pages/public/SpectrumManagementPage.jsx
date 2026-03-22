@@ -6,11 +6,13 @@
  * and provides info on frequency plans, monitoring, and digital switchover.
  */
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import {
-  ChevronRight, Radio, Wifi, Signal, Globe, Shield, Activity,
+  Radio, Wifi, Signal, Globe, Shield, Activity,
   ArrowRight, ExternalLink, FileText, Zap, BarChart3, Tv, Phone,
   CheckCircle, AlertTriangle, Waves
 } from 'lucide-react';
+import Breadcrumb from '../../components/ui/Breadcrumb';
 import { useScrollReveal, useStaggerReveal } from '../../hooks/useAnimations';
 import PageHero from '../../components/ui/PageHero';
 import { useLanguage } from '../../lib/language';
@@ -52,16 +54,15 @@ export default function SpectrumManagementPage() {
 
   return (
     <div className="bg-white min-h-screen">
+      <Helmet>
+        <title>Spectrum Management — BOCRA</title>
+        <meta name="description" content="Radio frequency spectrum management, monitoring, and digital switchover in Botswana." />
+        <link rel="canonical" href="https://bocra.org.bw/services/spectrum" />
+      </Helmet>
       {/* Breadcrumb */}
       <div className="bg-bocra-off-white border-b border-gray-100">
         <div className="section-wrapper py-4">
-          <nav className="text-sm text-bocra-slate/50 flex items-center gap-2">
-            <Link to="/" className="hover:text-bocra-blue">{tn ? 'Gae' : 'Home'}</Link>
-            <ChevronRight size={14} />
-            <span className="text-bocra-slate/50">{tn ? 'Ditirelo' : 'Services'}</span>
-            <ChevronRight size={14} />
-            <span className="text-bocra-slate font-medium">{tn ? 'Tsamaiso ya Sepeketeramo' : 'Spectrum Management'}</span>
-          </nav>
+          <Breadcrumb items={[{ label: 'Services' }, { label: 'Spectrum Management' }]} />
         </div>
       </div>
 

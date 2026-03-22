@@ -3,9 +3,11 @@
  * Route: /mandate/telecommunications
  */
 import { Link } from 'react-router-dom';
-import { ChevronRight, Wifi, Phone, Globe, Users, Shield, Award, Signal, BarChart3, ArrowRight, CheckCircle, Building } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
+import { Wifi, Phone, Globe, Users, Shield, Award, Signal, BarChart3, ArrowRight, CheckCircle, Building } from 'lucide-react';
 import { useScrollReveal, useStaggerReveal } from '../../hooks/useAnimations';
 import PageHero from '../../components/ui/PageHero';
+import Breadcrumb from '../../components/ui/Breadcrumb';
 import { useLanguage } from '../../lib/language';
 
 const getOPERATORS = (lang) => {
@@ -33,7 +35,12 @@ export default function TelecommunicationsPage() {
   const cardsRef = useStaggerReveal({ stagger: 0.1 });
   return (
     <div className="bg-white min-h-screen">
-      <div className="bg-bocra-off-white border-b border-gray-100"><div className="section-wrapper py-4"><nav className="text-sm text-bocra-slate/50 flex items-center gap-2"><Link to="/" className="hover:text-bocra-blue">{tn ? 'Gae' : 'Home'}</Link><ChevronRight size={14} /><span className="text-bocra-slate/50">{tn ? 'Tiragatso' : 'Mandate'}</span><ChevronRight size={14} /><span className="text-bocra-slate font-medium">{tn ? 'Megala le Tlhaeletsano' : 'Telecommunications'}</span></nav></div></div>
+      <Helmet>
+        <title>Telecommunications — BOCRA</title>
+        <meta name="description" content="Telecommunications regulation, spectrum management, and operator oversight in Botswana." />
+        <link rel="canonical" href="https://bocra.org.bw/mandate/telecommunications" />
+      </Helmet>
+      <div className="bg-bocra-off-white border-b border-gray-100"><div className="section-wrapper py-4"><Breadcrumb items={[{ label: 'Mandate' }, { label: 'Telecommunications' }]} /></div></div>
       <PageHero category="MANDATE" categoryTn="TIRAGATSO" title="Telecommunications" titleTn="Megala le Tlhaeletsano" description="Regulating mobile, fixed-line, internet, and VoIP services in Botswana — promoting competition, innovation, consumer protection and universal access." descriptionTn="Go laola ditirelo tsa megala, inthanete, le VoIP mo Botswana — go rotloetsa kgaisano, boitlhamedi, tshireletso ya badirisi le phitlhelelo ya botlhe." color="cyan" />
 
       <section className="py-10">

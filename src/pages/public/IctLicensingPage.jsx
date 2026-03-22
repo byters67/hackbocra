@@ -3,6 +3,7 @@
  * Category cards → click to see documents. Fully bilingual.
  */
 import { useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import {
   ChevronRight, Download, FileText, Search, Shield, Radio,
@@ -10,6 +11,7 @@ import {
 } from 'lucide-react';
 import { useStaggerReveal } from '../../hooks/useAnimations';
 import PageHero from '../../components/ui/PageHero';
+import Breadcrumb from '../../components/ui/Breadcrumb';
 import { useLanguage } from '../../lib/language';
 
 const BASE = import.meta.env.BASE_URL;
@@ -83,7 +85,12 @@ export default function IctLicensingPage() {
   if (!active) {
     return (
       <div className="bg-white">
-        <div className="bg-bocra-off-white border-b border-gray-100"><div className="section-wrapper py-4"><nav className="text-sm text-bocra-slate/50 flex items-center gap-2"><Link to="/" className="hover:text-bocra-blue">{tn ? 'Gae' : 'Home'}</Link><ChevronRight size={14} /><Link to="/documents/drafts" className="hover:text-bocra-blue">{tn ? 'Dikwalo' : 'Documents'}</Link><ChevronRight size={14} /><span className="text-bocra-slate font-medium">{tn ? 'Thulaganyo ya Dilaesense tsa ICT' : 'ICT Licensing Framework'}</span></nav></div></div>
+        <Helmet>
+          <title>ICT Licensing Documents — BOCRA</title>
+          <meta name="description" content="Access ICT licensing documents, application forms, and regulatory guidelines." />
+          <link rel="canonical" href="https://bocra.org.bw/documents/ict-licensing" />
+        </Helmet>
+        <div className="bg-bocra-off-white border-b border-gray-100"><div className="section-wrapper py-4"><Breadcrumb items={[{ label: 'Documents', href: '/documents/drafts' }, { label: 'ICT Licensing' }]} /></div></div>
         <PageHero category="LICENSING" categoryTn="DILAESENSE" title="ICT Licensing Framework" titleTn="Thulaganyo ya Dilaesense tsa ICT" description="Regulatory framework documents, application requirements, and guidelines for ICT service providers in Botswana." descriptionTn="Dikwalo tsa thulaganyo ya taolo, ditlhokego tsa dikopo, le ditaelo tsa baneedi ba ditirelo tsa ICT." color="green" />
 
         <section className="py-6"><div className="section-wrapper">
@@ -142,6 +149,11 @@ export default function IctLicensingPage() {
   const Icon = active.icon;
   return (
     <div className="bg-white">
+      <Helmet>
+        <title>ICT Licensing Documents — BOCRA</title>
+        <meta name="description" content="Access ICT licensing documents, application forms, and regulatory guidelines." />
+        <link rel="canonical" href="https://bocra.org.bw/documents/ict-licensing" />
+      </Helmet>
       <div className="bg-bocra-off-white border-b border-gray-100"><div className="section-wrapper py-4"><nav className="text-sm text-bocra-slate/50 flex items-center gap-2"><Link to="/" className="hover:text-bocra-blue">{tn ? 'Gae' : 'Home'}</Link><ChevronRight size={14} /><button onClick={() => { setActiveSection(null); setSearch(''); }} className="hover:text-bocra-blue">{tn ? 'Dilaesense tsa ICT' : 'ICT Licensing'}</button><ChevronRight size={14} /><span className="text-bocra-slate font-medium">{active.title}</span></nav></div></div>
 
       <section className="py-8"><div className="section-wrapper max-w-4xl">

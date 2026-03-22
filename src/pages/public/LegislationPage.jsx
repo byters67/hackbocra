@@ -3,9 +3,11 @@
  * Route: /mandate/legislation
  */
 import { Link } from 'react-router-dom';
-import { ChevronRight, Scale, FileText, Shield, ExternalLink, BookOpen, CheckCircle, Globe, Radio, Mail as MailIcon, Key } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
+import { Scale, FileText, Shield, ExternalLink, BookOpen, CheckCircle, Globe, Radio, Mail as MailIcon, Key } from 'lucide-react';
 import { useScrollReveal, useStaggerReveal } from '../../hooks/useAnimations';
 import PageHero from '../../components/ui/PageHero';
+import Breadcrumb from '../../components/ui/Breadcrumb';
 import { useLanguage } from '../../lib/language';
 
 const getLAWS = (tn) => [
@@ -24,7 +26,12 @@ export default function LegislationPage() {
   const cardsRef = useStaggerReveal({ stagger: 0.08 });
   return (
     <div className="bg-white min-h-screen">
-      <div className="bg-bocra-off-white border-b border-gray-100"><div className="section-wrapper py-4"><nav className="text-sm text-bocra-slate/50 flex items-center gap-2"><Link to="/" className="hover:text-bocra-blue">{tn ? 'Gae' : 'Home'}</Link><ChevronRight size={14} /><span className="text-bocra-slate/50">{tn ? 'Tiragatso' : 'Mandate'}</span><ChevronRight size={14} /><span className="text-bocra-slate font-medium">{tn ? 'Melao' : 'Legislation'}</span></nav></div></div>
+      <Helmet>
+        <title>Legislation — BOCRA</title>
+        <meta name="description" content="Communications legislation, regulations, and legal framework governing BOCRA." />
+        <link rel="canonical" href="https://bocra.org.bw/mandate/legislation" />
+      </Helmet>
+      <div className="bg-bocra-off-white border-b border-gray-100"><div className="section-wrapper py-4"><Breadcrumb items={[{ label: 'Mandate' }, { label: 'Legislation' }]} /></div></div>
       <PageHero category="MANDATE" categoryTn="TIRAGATSO" title="Governing Legislation" titleTn="Melao e e Laolang" description="The laws and Acts that establish BOCRA's mandate and regulatory powers across telecommunications, broadcasting, postal, internet, and data protection." descriptionTn="Melao le Ditlhopho tse di tlhomang tiragatso ya BOCRA le maatla a taolo mo megala, phasalatso, poso, inthanete, le tshireletso ya data." color="blue" />
 
       <section className="py-10">

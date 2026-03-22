@@ -174,7 +174,7 @@ export default function Header() {
               <Globe size={12} className="text-[#00458B]" />
               <span className={lang === 'en' ? 'text-[#00458B]' : 'text-gray-400'}>EN</span>
               <span className="text-gray-300">|</span>
-              <span className={lang === 'tn' ? 'text-[#00458B]' : 'text-gray-400'}>TN</span>
+              <span className={lang === 'tn' ? 'text-[#00458B]' : 'text-gray-400'}>ST</span>
             </button>
             <Link to="/services/asms-webcp" className="px-3 py-1.5 text-[11px] font-bold bg-bocra-green/10 text-bocra-green rounded-md hover:bg-bocra-green hover:text-white transition-all">{t('header.asms')}</Link>
             <Link to="/services/register-bw" className="px-3 py-1.5 text-[11px] font-bold bg-bocra-cyan/10 text-bocra-cyan rounded-md hover:bg-bocra-cyan hover:text-white transition-all">{t('header.registerBW')}</Link>
@@ -235,7 +235,7 @@ export default function Header() {
               {/* Language toggle — mobile */}
               <button onClick={toggleLang} className="w-full flex items-center justify-center gap-2 px-4 py-3 border border-gray-200 rounded-xl text-sm font-medium text-bocra-slate hover:bg-gray-50 transition-all">
                 <Globe size={16} className="text-[#00458B]" />
-                {lang === 'en' ? 'Fetolela go Setswana (TN)' : 'Switch to English (EN)'}
+                {lang === 'en' ? 'Fetolela go Setswana (ST)' : 'Switch to English (EN)'}
               </button>
               <Link to="/services/file-complaint" className="btn-primary w-full justify-center">{lang === 'tn' ? 'Tlhagisa Ngongorego' : 'File a Complaint'}</Link>
               <Link to="/admin" className="btn-secondary w-full justify-center">

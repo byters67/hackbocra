@@ -5,15 +5,17 @@
  * colour-coded cards, popular searches, and clean BOCRA-styled layout.
  */
 import { useState, useMemo } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Link, useSearchParams } from 'react-router-dom';
 import {
-  Search, ChevronRight, FileText, Newspaper, BookOpen, ArrowRight,
+  Search, FileText, Newspaper, BookOpen, ArrowRight,
   Shield, Globe, Building, Phone, AlertCircle, Award, Radio,
   Users, Wifi, Lock, HelpCircle, BarChart3, Mail
 } from 'lucide-react';
 import { useScrollReveal } from '../../hooks/useAnimations';
 
 import PageHero from '../../components/ui/PageHero';
+import Breadcrumb from '../../components/ui/Breadcrumb';
 import { useLanguage } from '../../lib/language';
 const CATEGORY_STYLE = {
   About:      { color: '#00458B', bg: 'bg-[#00458B]/10', text: 'text-[#00458B]', icon: BookOpen },
@@ -108,18 +110,19 @@ const SEARCH_INDEX = [
 const getPopularSearches = (lang) => [
   { label: lang === 'tn' ? 'Tlhagisa Ngongorego' : 'File a Complaint', query: 'complaint' },
   { label: 'Mascom', query: 'mascom' },
-  { label: 'Cybersecurity', query: 'cybersecurity' },
-  { label: 'Licence', query: 'licence' },
+  { label: lang === 'tn' ? 'Tshireletso ya Saebara' : 'Cybersecurity', query: 'cybersecurity' },
+  { label: lang === 'tn' ? 'Laesense' : 'Licence', query: 'licence' },
   { label: '.BW Domain', query: 'domain' },
-  { label: 'Data Protection', query: 'data protection' },
+  { label: lang === 'tn' ? 'Tshireletso ya Data' : 'Data Protection', query: 'data protection' },
   { label: 'BTC', query: 'BTC' },
-  { label: 'Broadcasting', query: 'broadcasting' },
+  { label: lang === 'tn' ? 'Phasalatso' : 'Broadcasting', query: 'broadcasting' },
 ];
 
 const TYPE_ORDER = { Page: 0, Document: 1, Operator: 2 };
 
 export default function SearchPage() {
   const { lang } = useLanguage();
+  const tn = lang === 'tn';
   const POPULAR_SEARCHES = getPopularSearches(lang);
   const [searchParams] = useSearchParams();
   const [query, setQuery] = useState(searchParams.get('q') || '');
@@ -156,18 +159,19 @@ export default function SearchPage() {
     return groups;
   }, [results]);
 
-  const typeLabels = { Page: 'Pages', Document: 'Documents & Legislation', Operator: 'Operators' };
+  const typeLabels = { Page: tn ? 'Ditsebe' : 'Pages', Document: tn ? 'Dikwalo le Melao' : 'Documents & Legislation', Operator: tn ? 'Batsholetsi' : 'Operators' };
 
   return (
     <div className="bg-white">
+      <Helmet>
+        <title>Search — BOCRA</title>
+        <meta name="description" content="Search the BOCRA website for documents, news, services, and regulatory information." />
+        <link rel="canonical" href="https://bocra.org.bw/search" />
+      </Helmet>
       {/* Breadcrumb */}
       <div className="bg-bocra-off-white border-b border-gray-100">
         <div className="section-wrapper py-4">
-          <nav className="text-sm text-bocra-slate/50 flex items-center gap-2">
-            <Link to="/" className="hover:text-bocra-blue transition-colors">{lang === 'tn' ? 'Gae' : 'Home'}</Link>
-            <ChevronRight size={14} />
-            <span className="text-bocra-slate">Search</span>
-          </nav>
+          <Breadcrumb items={[{ label: tn ? 'Batla' : 'Search' }]} />
         </div>
       </div>
       {/* Hero */}
@@ -183,19 +187,19 @@ export default function SearchPage() {
                 type="text"
                 value={query}
                 onChange={e => setQuery(e.target.value)}
-                placeholder="Search pages, documents, services, licensing..."
+                placeholder={tn ? 'Batla ditsebe, dikwalo, ditirelo, dilaesense...' : 'Search pages, documents, services, licensing...'}
                 className="w-full pl-11 pr-4 py-3.5 text-sm border-0 focus:outline-none focus:ring-0 text-bocra-slate placeholder:text-gray-400 rounded-lg"
                 autoFocus
               />
               {query && (
                 <button onClick={() => setQuery('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-300 hover:text-gray-500 text-xs px-2 py-1 rounded hover:bg-gray-100">
-                  Clear
+                  {tn ? 'Phimola' : 'Clear'}
                 </button>
               )}
             </div>
           </div>
           {query && results.length > 0 && (
-            <p className="text-xs text-bocra-slate/40 mt-2 text-center">{results.length} result{results.length !== 1 ? 's' : ''} for "{query}"</p>
+            <p className="text-xs text-bocra-slate/40 mt-2 text-center">{results.length} {tn ? (results.length !== 1 ? 'dipholo' : 'sephetho') : (results.length !== 1 ? 'results' : 'result')} {tn ? 'tsa' : 'for'} "{query}"</p>
           )}
         </div>
       </section>
@@ -225,13 +229,13 @@ export default function SearchPage() {
             {results.length === 0 ? (
               <div className="text-center py-16">
                 <Search size={48} className="mx-auto mb-4 text-gray-200" />
-                <p className="text-lg text-bocra-slate/50 mb-2">No results found for "{query}"</p>
-                <p className="text-sm text-bocra-slate/30">Try different keywords or browse our sections below</p>
+                <p className="text-lg text-bocra-slate/50 mb-2">{tn ? `Ga go na dipholo tse di bonweng tsa "${query}"` : `No results found for "${query}"`}</p>
+                <p className="text-sm text-bocra-slate/30">{tn ? 'Leka mafoko a mangwe kgotsa o lebelele dikarolo tsa rona' : 'Try different keywords or browse our sections below'}</p>
                 <div className="flex flex-wrap justify-center gap-2 mt-6">
                   {POPULAR_SEARCHES.slice(0, 4).map(s => (
                     <button key={s.query} onClick={() => setQuery(s.query)}
                       className="px-3 py-1.5 bg-bocra-off-white border border-gray-200 rounded-lg text-xs font-medium text-bocra-slate/50 hover:text-[#00A6CE] transition-all">
-                      Try "{s.label}"
+                      {tn ? `Leka "${s.label}"` : `Try "${s.label}"`}
                     </button>
                   ))}
                 </div>

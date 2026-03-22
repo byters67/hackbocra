@@ -3,12 +3,14 @@
  * Route: /mandate/broadcasting
  */
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import {
   ChevronRight, Radio, Tv, Globe, MapPin, Music, Shield, Wifi,
   FileText, Award, BarChart3
 } from 'lucide-react';
 import { useScrollReveal, useStaggerReveal } from '../../hooks/useAnimations';
 import PageHero from '../../components/ui/PageHero';
+import Breadcrumb from '../../components/ui/Breadcrumb';
 import { useLanguage } from '../../lib/language';
 
 const getRADIO_STATIONS = (lang) => {
@@ -69,16 +71,15 @@ export default function BroadcastingPage() {
 
   return (
     <div className="bg-white min-h-screen">
+      <Helmet>
+        <title>Broadcasting — BOCRA</title>
+        <meta name="description" content="Broadcasting regulation, licensing, and digital migration in Botswana." />
+        <link rel="canonical" href="https://bocra.org.bw/mandate/broadcasting" />
+      </Helmet>
       {/* Breadcrumb */}
       <div className="bg-bocra-off-white border-b border-gray-100">
         <div className="section-wrapper py-4">
-          <nav className="text-sm text-bocra-slate/50 flex items-center gap-2">
-            <Link to="/" className="hover:text-bocra-blue transition-colors">{tn ? 'Gae' : 'Home'}</Link>
-            <ChevronRight size={14} />
-            <span className="text-bocra-slate/50">{tn ? 'Tiragatso' : 'Mandate'}</span>
-            <ChevronRight size={14} />
-            <span className="text-bocra-slate font-medium">{tn ? 'Phasalatso' : 'Broadcasting'}</span>
-          </nav>
+          <Breadcrumb items={[{ label: 'Mandate' }, { label: 'Broadcasting' }]} />
         </div>
       </div>
 

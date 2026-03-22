@@ -21,11 +21,14 @@
 
 import { useEffect, useState, useMemo } from 'react';
 import { Link, useParams, useLocation } from 'react-router-dom';
-import { ChevronRight, ArrowLeft, ExternalLink } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
+import { ArrowLeft, ExternalLink } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import { useScrollReveal } from '../../hooks/useAnimations';
 import { useLanguage } from '../../lib/language';
 import usePageContent from '../../hooks/usePageContent';
+import { sanitizeHtml } from '../../lib/sanitizeHtml';
+import Breadcrumb from '../../components/ui/Breadcrumb';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // PAGE CONTENT DATABASE
@@ -1174,18 +1177,15 @@ export default function ContentPage() {
 
   return (
     <div>
+      <Helmet>
+        <title>{displayTitle} — BOCRA</title>
+        <meta name="description" content={displayTitle} />
+      </Helmet>
+
       {/* Breadcrumb */}
       <div className="bg-bocra-off-white border-b border-gray-100">
         <div className="section-wrapper py-4">
-          <nav className="text-sm text-bocra-slate/50 flex items-center gap-2">
-            <Link to="/" className="hover:text-bocra-blue transition-colors">{t('content.home')}</Link>
-            {displayBreadcrumb.map((crumb, i) => (
-              <span key={i} className="flex items-center gap-2">
-                <ChevronRight size={14} />
-                <span className={i === displayBreadcrumb.length - 1 ? 'text-bocra-slate font-medium' : ''}>{crumb}</span>
-              </span>
-            ))}
-          </nav>
+          <Breadcrumb items={displayBreadcrumb.map((crumb) => ({ label: crumb }))} />
         </div>
       </div>
 
@@ -1213,7 +1213,7 @@ export default function ContentPage() {
           <div className="max-w-3xl mx-auto">
             <div
               className="content-body"
-              dangerouslySetInnerHTML={{ __html: displayContent }}
+              dangerouslySetInnerHTML={{ __html: sanitizeHtml(displayContent) }}
             />
           </div>
         </div>

@@ -10,7 +10,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { supabase } from '../../lib/supabase';
+import { supabase, checkRateLimit } from '../../lib/supabase';
 import { useRecaptcha } from '../../hooks/useRecaptcha';
 import { useAuth } from '../../lib/auth';
 import {
@@ -18,8 +18,12 @@ import {
   Radio, Wifi, Tv, Globe, Shield, Satellite, Phone,
   AlertCircle, Award, CheckCircle, Send, User, Mail, Building, MapPin, Lock
 } from 'lucide-react';
+import Breadcrumb from '../../components/ui/Breadcrumb';
 import PageHero from '../../components/ui/PageHero';
 import { useLanguage } from '../../lib/language';
+import { Helmet } from 'react-helmet-async';
+import { sanitizeHtml } from '../../lib/sanitizeHtml';
+import { validateForm } from '../../lib/validation';
 
 gsap.registerPlugin(ScrollTrigger);
 const B = import.meta.env.BASE_URL || '/';
@@ -199,11 +203,7 @@ function Grid({ nav }) {
       {/* Breadcrumb */}
       <div className="bg-bocra-off-white border-b border-gray-100">
         <div className="section-wrapper py-4">
-          <nav className="text-sm text-bocra-slate/50 flex items-center gap-2">
-            <Link to="/" className="hover:text-bocra-blue transition-colors">{lang === 'tn' ? 'Gae' : 'Home'}</Link>
-            <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18l6-6-6-6"/></svg></span>
-            <span className="text-bocra-slate font-medium">{lang === 'tn' ? 'Dilaesense' : 'Licensing'}</span>
-          </nav>
+          <Breadcrumb items={[{ label: 'Licensing' }]} />
         </div>
       </div>
 
@@ -283,6 +283,7 @@ function LicenceApplicationForm({ licence }) {
 
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState(null);
+  const [formErrors, setFormErrors] = useState({});
   const { executeRecaptcha } = useRecaptcha();
 
   // Auto-fill form if logged in — fallback chain:
@@ -290,6 +291,7 @@ function LicenceApplicationForm({ licence }) {
   // 2. Operators table (if extended with user profiles)
   // 3. Profiles table (auto-created on signup, may have phone)
   useEffect(() => {
+    let cancelled = false;
     if (user) {
       (async () => {
         let fullName = user.user_metadata?.full_name || '';
@@ -318,13 +320,24 @@ function LicenceApplicationForm({ licence }) {
           } catch (_) { /* profile may not exist yet */ }
         }
 
-        setForm(f => ({ ...f, fullName, email, phone }));
+        if (!cancelled) {
+          setForm(f => ({ ...f, fullName, email, phone }));
+        }
       })();
     }
+    return () => { cancelled = true; };
   }, [user]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!checkRateLimit('licence-application')) { setSubmitError('Please wait before submitting again.'); return; }
+    const { isValid, errors } = validateForm([
+      { value: form.fullName, name: 'Full Name', rules: ['required'] },
+      { value: form.email, name: 'Email', rules: ['required', 'email'] },
+      { value: form.phone, name: 'Phone', rules: ['required', 'phone'] },
+    ]);
+    if (!isValid) { setFormErrors(errors); return; }
+    setFormErrors({});
     setSubmitting(true);
     setSubmitError(null);
     const token = await executeRecaptcha('submit_licence_application');
@@ -432,11 +445,14 @@ function LicenceApplicationForm({ licence }) {
             <p className="text-xs font-bold text-gray-400 uppercase tracking-widest flex items-center gap-2"><User className="w-3.5 h-3.5" /> {lang === 'tn' ? 'Dintlha tsa Kgolagano ya Gago' : 'Your Contact Details'}</p>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div><label className="text-xs font-medium text-gray-600 mb-1 block">{lang === 'tn' ? 'Leina ka Botlalo' : 'Full Name'} *</label>
-                <input required type="text" value={form.fullName} onChange={e => setForm({ ...form, fullName: e.target.value })} className="w-full px-3 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:border-[#00A6CE] focus:ring-2 focus:ring-[#00A6CE]/10 outline-none" /></div>
+                <input required type="text" value={form.fullName} onChange={e => setForm({ ...form, fullName: e.target.value })} className="w-full px-3 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:border-[#00A6CE] focus:ring-2 focus:ring-[#00A6CE]/10 outline-none" />
+                {formErrors['Full Name'] && <p className="text-xs text-red-500 mt-1">{formErrors['Full Name']}</p>}</div>
               <div><label className="text-xs font-medium text-gray-600 mb-1 block">{lang === 'tn' ? 'Aterese ya Imeile' : 'Email Address'} *</label>
-                <input required type="email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} className="w-full px-3 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:border-[#00A6CE] outline-none" /></div>
+                <input required type="email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} className="w-full px-3 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:border-[#00A6CE] outline-none" />
+                {formErrors['Email'] && <p className="text-xs text-red-500 mt-1">{formErrors['Email']}</p>}</div>
               <div><label className="text-xs font-medium text-gray-600 mb-1 block">{lang === 'tn' ? 'Nomoro ya Mogala' : 'Phone Number'} *</label>
-                <input required type="tel" value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })} placeholder="+267" className="w-full px-3 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:border-[#00A6CE] outline-none" /></div>
+                <input required type="tel" value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })} placeholder="+267" className="w-full px-3 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:border-[#00A6CE] outline-none" />
+                {formErrors['Phone'] && <p className="text-xs text-red-500 mt-1">{formErrors['Phone']}</p>}</div>
             </div>
           </div>
 
@@ -520,7 +536,7 @@ function Detail({ licence: l, nav }) {
       {/* Two columns — stacks on mobile */}
       <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
         <div ref={ref} className="flex-1 min-w-0">
-          <div className="content-body" dangerouslySetInnerHTML={{ __html: lang === 'tn' && l.content_tn ? l.content_tn : (l.content_en || l.content) }} />
+          <div className="content-body" dangerouslySetInnerHTML={{ __html: sanitizeHtml(lang === 'tn' && l.content_tn ? l.content_tn : (l.content_en || l.content)) }} />
 
           {(l.pdf || l.pdf2) && (
             <div className="mt-6 sm:mt-8 p-4 sm:p-6 bg-gray-50 rounded-2xl border border-gray-100 space-y-3">
@@ -575,6 +591,11 @@ export default function LicensingHubPage() {
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-12">
+      <Helmet>
+        <title>Licensing — BOCRA</title>
+        <meta name="description" content="Apply for telecommunications, broadcasting, and postal licences in Botswana." />
+        <link rel="canonical" href="https://bocra.org.bw/licensing" />
+      </Helmet>
       {l ? <Detail licence={l} nav={nav} /> : <Grid nav={nav} />}
     </div>
   );

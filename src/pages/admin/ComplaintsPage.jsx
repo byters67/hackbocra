@@ -4,7 +4,7 @@
  * List view with filters + Detail view with AI analysis, replies, status changes.
  * Status values match database constraint: pending, investigating, resolved, closed
  */
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import { useParams, useNavigate, useOutletContext } from 'react-router-dom';
 import {
   ArrowLeft, Search, Send, Clock, ChevronDown, X, Mail,
@@ -64,11 +64,18 @@ function ComplaintsList({ navigate }) {
   const [statusFilter, setStatusFilter] = useState('');
 
   useEffect(() => {
+    let cancelled = false;
     (async () => {
-      const { data } = await supabase.from('complaints').select('*').order('created_at', { ascending: false });
-      if (data) setComplaints(data);
-      setLoading(false);
+      try {
+        const { data, error } = await supabase.from('complaints').select('*').order('created_at', { ascending: false });
+        if (error) throw error;
+        if (!cancelled && data) setComplaints(data);
+      } catch (err) {
+        console.error('Failed to fetch complaints:', err);
+      }
+      if (!cancelled) setLoading(false);
     })();
+    return () => { cancelled = true; };
   }, []);
 
   const filtered = useMemo(() => {
@@ -188,13 +195,25 @@ function ComplaintDetail({ id, profile, navigate }) {
   const [statusUpdating, setStatusUpdating] = useState(false);
 
   useEffect(() => {
+    let cancelled = false;
     (async () => {
-      const { data: c } = await supabase.from('complaints').select('*').eq('id', id).single();
-      if (c) setComplaint(c);
-      const { data: r } = await supabase.from('complaint_responses').select('*, profiles:admin_id(full_name)').eq('complaint_id', id).order('created_at', { ascending: true });
-      if (r) setResponses(r);
-      setLoading(false);
+      try {
+        const { data: c, error: cErr } = await supabase.from('complaints').select('*').eq('id', id).single();
+        if (cErr) throw cErr;
+        if (!cancelled && c) setComplaint(c);
+      } catch (err) {
+        console.error('Failed to fetch complaint details:', err);
+      }
+      try {
+        const { data: r, error: rErr } = await supabase.from('complaint_responses').select('*, profiles:admin_id(full_name)').eq('complaint_id', id).order('created_at', { ascending: true });
+        if (rErr) throw rErr;
+        if (!cancelled && r) setResponses(r);
+      } catch (err) {
+        console.error('Failed to fetch complaint responses:', err);
+      }
+      if (!cancelled) setLoading(false);
     })();
+    return () => { cancelled = true; };
   }, [id]);
 
   async function handleStatusChange(newStatus) {
@@ -218,8 +237,13 @@ function ComplaintDetail({ id, profile, navigate }) {
       window.open(`mailto:${complaint.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(replyText.trim())}`);
 
       setReplyText('');
-      const { data } = await supabase.from('complaint_responses').select('*, profiles:admin_id(full_name)').eq('complaint_id', id).order('created_at', { ascending: true });
-      if (data) setResponses(data);
+      try {
+        const { data, error: rErr } = await supabase.from('complaint_responses').select('*, profiles:admin_id(full_name)').eq('complaint_id', id).order('created_at', { ascending: true });
+        if (rErr) throw rErr;
+        if (data) setResponses(data);
+      } catch (err) {
+        console.error('Failed to re-fetch responses after reply:', err);
+      }
 
       if (complaint.status === 'pending' || complaint.status === 'submitted') handleStatusChange('in_review');
     } catch { alert('Unable to save reply.'); }
@@ -430,6 +454,13 @@ function ClassificationCorrector({ complaint, onUpdate }) {
   const [urgency, setUrgency] = useState(complaint.ai_urgency || '');
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  const savedTimerRef = useRef(null);
+
+  useEffect(() => {
+    return () => {
+      if (savedTimerRef.current) clearTimeout(savedTimerRef.current);
+    };
+  }, []);
 
   const hasChanges = category !== complaint.ai_category || department !== complaint.ai_department || urgency !== complaint.ai_urgency;
 
@@ -448,7 +479,8 @@ function ClassificationCorrector({ complaint, onUpdate }) {
       else {
         onUpdate(prev => ({ ...prev, ai_category: category, ai_department: department, ai_urgency: urgency, ai_confidence: 100 }));
         setSaved(true);
-        setTimeout(() => setSaved(false), 2000);
+        if (savedTimerRef.current) clearTimeout(savedTimerRef.current);
+        savedTimerRef.current = setTimeout(() => setSaved(false), 2000);
       }
     } catch { alert('Unable to update classification.'); }
     setSaving(false);

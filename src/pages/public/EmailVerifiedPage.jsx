@@ -10,6 +10,7 @@
  * the success message. If no valid session is found, shows a fallback.
  */
 import { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import BocraLogo from '../../components/ui/BocraLogo';
@@ -82,6 +83,10 @@ export default function EmailVerifiedPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#00458B] to-[#003366] p-6">
+      <Helmet>
+        <title>Email Verified — BOCRA</title>
+        <meta name="description" content="Email verification confirmation for BOCRA services." />
+      </Helmet>
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-0 right-0 w-64 h-64 bg-[#00A6CE]/10 rounded-full blur-3xl" />
         <div className="absolute bottom-0 left-0 w-64 h-64 bg-[#6BBE4E]/10 rounded-full blur-3xl" />

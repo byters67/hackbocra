@@ -12,12 +12,14 @@
  * - Responsive — sidebar collapses to hamburger on mobile
  */
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { Outlet, Navigate } from 'react-router-dom';
 import { useAuth } from '../../lib/auth';
 import { supabase } from '../../lib/supabase';
 import AdminSidebar from '../../components/admin/AdminSidebar';
 import { useLanguage } from '../../lib/language';
+import ErrorBoundary from '../../components/ui/ErrorBoundary';
+import PageLoader from '../../components/ui/PageLoader';
 
 export default function AdminLayout() {
   // Auth bypass strictly for local development only — stripped from production builds by Vite
@@ -160,7 +162,11 @@ export default function AdminLayout() {
       <AdminSidebar profile={profile} />
       <main className="flex-1 lg:pl-0 pl-0 pt-14 lg:pt-0">
         <div className="p-4 sm:p-6 lg:p-8 max-w-[1400px] mx-auto">
-          <Outlet context={{ profile, user }} />
+          <ErrorBoundary>
+            <Suspense fallback={<PageLoader />}>
+              <Outlet context={{ profile, user }} />
+            </Suspense>
+          </ErrorBoundary>
         </div>
       </main>
     </div>

@@ -2,16 +2,19 @@
  * TendersPage.jsx — BOCRA Tenders & Procurement
  * Route: /tenders
  */
-import { useState, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import {
-  ChevronRight, Search, FileText, Download, Calendar, Clock,
+  Search, FileText, Download, Calendar, Clock,
   CheckCircle, AlertCircle, ShoppingBag, Building, Filter,
   ExternalLink, Mail, ArrowRight, Award
 } from 'lucide-react';
+import Breadcrumb from '../../components/ui/Breadcrumb';
 import { useScrollReveal, useStaggerReveal } from '../../hooks/useAnimations';
 import PageHero from '../../components/ui/PageHero';
 import { useLanguage } from '../../lib/language';
+import { supabase } from '../../lib/supabase';
 
 const BASE = import.meta.env.BASE_URL || '/';
 
@@ -121,11 +124,49 @@ export default function TendersPage() {
   const [filterStatus, setFilterStatus] = useState('All');
   const [filterCategory, setFilterCategory] = useState('All');
   const [expanded, setExpanded] = useState(null);
+  const [allTenders, setAllTenders] = useState(TENDERS);
   const heroRef = useScrollReveal();
   const cardsRef = useStaggerReveal({ stagger: 0.08 });
 
+  // Fetch from Supabase — merges with hardcoded TENDERS
+  useEffect(() => {
+    let cancelled = false;
+    async function fetchTenders() {
+      try {
+        const { data, error } = await supabase
+          .from('tenders')
+          .select('*')
+          .order('created_at', { ascending: false });
+        if (cancelled) return;
+        if (error) throw error;
+        if (data && data.length > 0) {
+          const mapped = data.map(t => ({
+            id: t.id,
+            ref: t.ref,
+            title: t.title,
+            method: t.method,
+            status: t.status,
+            closingDate: t.closing_date || '',
+            publishDate: t.publish_date || '',
+            decisionDate: t.decision_date || '',
+            awardedTo: t.awarded_to || undefined,
+            amount: t.amount || undefined,
+            decision: t.decision || undefined,
+            file: t.file || undefined,
+            category: t.category || 'General',
+          }));
+          setAllTenders([...mapped, ...TENDERS]);
+        }
+      } catch (err) {
+        console.error('Failed to fetch tenders:', err);
+      }
+    }
+    fetchTenders();
+    return () => { cancelled = true; };
+  }, []);
+
   const filtered = useMemo(() => {
-    let results = TENDERS;
+    let results = allTenders;
     if (filterStatus !== 'All') results = results.filter(t => t.status === filterStatus.toLowerCase());
     if (filterCategory !== 'All') results = results.filter(t => t.category === filterCategory);
     if (searchTerm.trim()) {
@@ -133,17 +174,22 @@ export default function TendersPage() {
       results = results.filter(t => t.title.toLowerCase().includes(q) || t.ref.toLowerCase().includes(q));
     }
     return results;
-  }, [searchTerm, filterStatus, filterCategory]);
+  }, [allTenders, searchTerm, filterStatus, filterCategory]);
 
   const counts = useMemo(() => {
     const c = { open: 0, closed: 0, awarded: 0, adjudicated: 0 };
-    TENDERS.forEach(t => { c[t.status] = (c[t.status] || 0) + 1; });
+    allTenders.forEach(t => { c[t.status] = (c[t.status] || 0) + 1; });
     return c;
-  }, []);
+  }, [allTenders]);
 
   return (
     <div className="bg-white min-h-screen">
-      <div className="bg-bocra-off-white border-b border-gray-100"><div className="section-wrapper py-4"><nav className="text-sm text-bocra-slate/50 flex items-center gap-2"><Link to="/" className="hover:text-bocra-blue">Home</Link><ChevronRight size={14} /><span className="text-bocra-slate font-medium">{lang === 'tn' ? 'Ditendara' : 'Tenders'}</span></nav></div></div>
+      <Helmet>
+        <title>Tenders — BOCRA</title>
+        <meta name="description" content="Current and past tender opportunities from BOCRA." />
+        <link rel="canonical" href="https://bocra.org.bw/tenders" />
+      </Helmet>
+      <div className="bg-bocra-off-white border-b border-gray-100"><div className="section-wrapper py-4"><Breadcrumb items={[{ label: 'Tenders' }]} /></div></div>
 
       <PageHero category="PROCUREMENT" categoryTn="THEKO" title="Tenders & Procurement" titleTn="Ditendara le Theko" description="BOCRA follows a thorough tendering process to ensure best value-for-money. View current and past tenders, adjudication decisions, and procurement opportunities." descriptionTn="BOCRA e latela thulaganyo e e tseneletseng ya ditendara go netefatsa boleng jo bo gaisang jwa madi. Bona ditendara tsa jaanong le tse di fetileng." color="yellow" />
 
@@ -152,7 +198,7 @@ export default function TendersPage() {
         <div className="max-w-4xl mx-auto">
           <div className="bg-white rounded-xl shadow-lg border border-gray-100 p-4 grid grid-cols-2 sm:grid-cols-4 gap-4">
             {[
-              { label: lang === 'tn' ? 'Ditendara Tsotlhe' : 'Total Tenders', value: TENDERS.length, color: '#00458B' },
+              { label: lang === 'tn' ? 'Ditendara Tsotlhe' : 'Total Tenders', value: allTenders.length, color: '#00458B' },
               { label: 'Open', value: counts.open, color: '#6BBE4E' },
               { label: lang === 'tn' ? 'Tse di Atlholetsweng' : 'Adjudicated', value: counts.adjudicated, color: '#F7B731' },
               { label: 'Closed', value: counts.closed, color: '#64748B' },

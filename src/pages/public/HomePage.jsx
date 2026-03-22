@@ -2,7 +2,8 @@
  * Home Page — Landing Page
  * Uses your uploaded telecom images. No AI gradients. Everything clickable.
  */
-import { useEffect, useRef } from 'react';
+import { Helmet } from 'react-helmet-async';
+import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -12,6 +13,7 @@ import {
   Building, FileText, ChevronRight
 } from 'lucide-react';
 import { useScrollReveal, useStaggerReveal, useCountUp } from '../../hooks/useAnimations';
+import { supabase } from '../../lib/supabase';
 import { useLanguage } from '../../lib/language';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -58,11 +60,43 @@ export default function HomePage() {
   const SECTORS = getSectors(lang);
   const SERVICES = getServices(lang);
   const STATS = getStats(lang);
-  const NEWS = getNews(lang);
+  const FALLBACK_NEWS = getNews(lang);
+  const [news, setNews] = useState(FALLBACK_NEWS);
   const heroRef = useRef(null);
   const sectorsRef = useStaggerReveal({ stagger: 0.15 });
   const servicesRef = useStaggerReveal({ stagger: 0.08 });
   const newsRef = useStaggerReveal({ stagger: 0.1 });
+
+  // Fetch latest 4 published articles from Supabase
+  useEffect(() => {
+    let cancelled = false;
+    async function fetchLatestNews() {
+      try {
+        const { data, error } = await supabase
+          .from('posts')
+          .select('*')
+          .eq('status', 'published')
+          .order('published_at', { ascending: false })
+          .limit(4);
+        if (cancelled) return;
+        if (error) throw error;
+        if (data && data.length > 0) {
+          setNews(data.map(post => ({
+            date: post.published_at
+              ? new Date(post.published_at).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
+              : '',
+            cat: post.category || '',
+            title: post.title,
+            excerpt: post.summary || '',
+          })));
+        }
+      } catch (err) {
+        console.error('Failed to fetch latest news:', err);
+      }
+    }
+    fetchLatestNews();
+    return () => { cancelled = true; };
+  }, []);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -77,6 +111,11 @@ export default function HomePage() {
 
   return (
     <div>
+      <Helmet>
+        <title>BOCRA — Botswana Communications Regulatory Authority</title>
+        <meta name="description" content="Regulating telecommunications, broadcasting, postal, and internet services in Botswana." />
+        <link rel="canonical" href="https://bocra.org.bw/" />
+      </Helmet>
       {/* ═══ HERO ═══ */}
       <section ref={heroRef} className="relative min-h-[60vh] sm:min-h-[70vh] flex items-center overflow-hidden">
         {/* Background image */}
@@ -217,7 +256,7 @@ export default function HomePage() {
             </Link>
           </div>
           <div ref={newsRef} className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory sm:snap-none sm:pb-0 sm:grid sm:grid-cols-2 lg:grid-cols-4 sm:gap-5 -mx-4 px-4 sm:mx-0 sm:px-0" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' }}>
-            {NEWS.map((n, i) => (
+            {news.map((n, i) => (
               <Link key={i} to="/media/news-events" className="group bg-gray-50 rounded-2xl overflow-hidden hover:shadow-lg transition-all duration-500 hover:-translate-y-1 border border-gray-100 w-[75vw] sm:w-auto min-w-0 flex-shrink-0 sm:flex-shrink snap-start">
                 <div className="h-1 w-full" style={{ background: SECTORS[i % 4].color }} />
                 <div className="p-6">

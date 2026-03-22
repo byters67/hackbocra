@@ -16,11 +16,13 @@
 
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import {
-  ChevronRight, Code2, Key, Shield, Zap, Clock, AlertCircle,
+  Code2, Key, Shield, Zap, Clock, AlertCircle,
   ChevronDown, Play, Copy, CheckCircle, Database,
   BookOpen, Globe, Lock, ArrowRight
 } from 'lucide-react';
+import Breadcrumb from '../../components/ui/Breadcrumb';
 import { supabase } from '../../lib/supabase';
 import { useScrollReveal, useStaggerReveal } from '../../hooks/useAnimations';
 import { useLanguage } from '../../lib/language';
@@ -156,14 +158,15 @@ export default function ApiDocsPage() {
 
   return (
     <div>
+      <Helmet>
+        <title>API Documentation — BOCRA</title>
+        <meta name="description" content="BOCRA public API documentation for developers." />
+        <link rel="canonical" href="https://bocra.org.bw/api-docs" />
+      </Helmet>
       {/* Breadcrumb */}
       <div className="bg-bocra-off-white border-b border-gray-100">
         <div className="section-wrapper py-4">
-          <nav className="text-sm text-bocra-slate/50 flex items-center gap-2">
-            <Link to="/" className="hover:text-bocra-blue transition-colors">{lang === 'tn' ? 'Gae' : 'Home'}</Link>
-            <ChevronRight size={14} />
-            <span className="text-bocra-slate">Open Data API</span>
-          </nav>
+          <Breadcrumb items={[{ label: 'API Documentation' }]} />
         </div>
       </div>
 

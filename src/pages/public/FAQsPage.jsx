@@ -3,6 +3,7 @@
  * Click a category to see its questions. Fully bilingual.
  */
 import { useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import {
   ChevronDown, ChevronRight, HelpCircle, Shield, Globe, FileText,
@@ -113,6 +114,11 @@ export default function FAQsPage() {
   if (!active) {
     return (
       <div className="bg-white">
+        <Helmet>
+          <title>FAQs — BOCRA</title>
+          <meta name="description" content="Frequently asked questions about BOCRA services, licensing, complaints, and telecommunications regulation." />
+          <link rel="canonical" href="https://bocra.org.bw/faqs" />
+        </Helmet>
         <div className="bg-bocra-off-white border-b border-gray-100"><div className="section-wrapper py-4"><nav className="text-sm text-bocra-slate/50 flex items-center gap-2"><Link to="/" className="hover:text-bocra-blue">{tn ? 'Gae' : 'Home'}</Link><ChevronRight size={14} /><span className="text-bocra-slate font-medium">{tn ? 'Dipotso tse di Botswang Gantsi' : 'FAQs'}</span></nav></div></div>
         <PageHero category="RESOURCES" categoryTn="DITHULAGANYO" title="Frequently Asked Questions" titleTn="Dipotso Tse di Botswang Gantsi" description={tn ? `Bona dikarabo tsa dipotso di le ${totalCount} tse di tlwaelegileng ka ga ditirelo tsa BOCRA, dilaesense, dingongorego, tshireletso ya saebo, le tse dingwe.` : `Find answers to ${totalCount} common questions about BOCRA services, licensing, complaints, cybersecurity, and more.`} color="yellow" />
 

@@ -73,24 +73,56 @@ export default function AutomationPage() {
   const [viewingReport, setViewingReport] = useState(null);
 
   useEffect(() => {
-    fetchAll();
+    let cancelled = false;
+
+    async function doFetchAll() {
+      setLoading(true);
+      try {
+        const [rulesRes, logsRes, reportsRes, complaintsRes, incidentsRes, appsRes] = await Promise.all([
+          getWorkflowRules(),
+          getWorkflowLogs(20),
+          getGeneratedReports(5),
+          supabase.from('complaints').select('*').order('created_at', { ascending: false }),
+          supabase.from('cyber_incidents').select('id, status, urgency, created_at'),
+          supabase.from('licence_applications').select('id, status, licence_type, created_at'),
+        ]);
+        if (!cancelled) {
+          if (rulesRes.data) setRules(rulesRes.data);
+          if (logsRes.data) setLogs(logsRes.data);
+          if (reportsRes.data) setReports(reportsRes.data);
+          setCaseStats(computeCaseStats(complaintsRes.data || [], incidentsRes.data || [], appsRes.data || []));
+          setLoading(false);
+        }
+      } catch (err) {
+        console.error('Fetch all error:', err);
+        if (!cancelled) setLoading(false);
+      }
+    }
+
+    doFetchAll();
+    return () => { cancelled = true; };
   }, []);
 
   async function fetchAll() {
     setLoading(true);
-    const [rulesRes, logsRes, reportsRes, complaintsRes, incidentsRes, appsRes] = await Promise.all([
-      getWorkflowRules(),
-      getWorkflowLogs(20),
-      getGeneratedReports(5),
-      supabase.from('complaints').select('*').order('created_at', { ascending: false }),
-      supabase.from('cyber_incidents').select('id, status, urgency, created_at'),
-      supabase.from('licence_applications').select('id, status, licence_type, created_at'),
-    ]);
-    if (rulesRes.data) setRules(rulesRes.data);
-    if (logsRes.data) setLogs(logsRes.data);
-    if (reportsRes.data) setReports(reportsRes.data);
-    setCaseStats(computeCaseStats(complaintsRes.data || [], incidentsRes.data || [], appsRes.data || []));
-    setLoading(false);
+    try {
+      const [rulesRes, logsRes, reportsRes, complaintsRes, incidentsRes, appsRes] = await Promise.all([
+        getWorkflowRules(),
+        getWorkflowLogs(20),
+        getGeneratedReports(5),
+        supabase.from('complaints').select('*').order('created_at', { ascending: false }),
+        supabase.from('cyber_incidents').select('id, status, urgency, created_at'),
+        supabase.from('licence_applications').select('id, status, licence_type, created_at'),
+      ]);
+      if (rulesRes.data) setRules(rulesRes.data);
+      if (logsRes.data) setLogs(logsRes.data);
+      if (reportsRes.data) setReports(reportsRes.data);
+      setCaseStats(computeCaseStats(complaintsRes.data || [], incidentsRes.data || [], appsRes.data || []));
+      setLoading(false);
+    } catch (err) {
+      console.error('Fetch all error:', err);
+      setLoading(false);
+    }
   }
 
   function computeCaseStats(complaints, incidents, applications) {

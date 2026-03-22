@@ -17,16 +17,18 @@
  * - Animated on scroll
  */
 
+import { Helmet } from 'react-helmet-async';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
   BarChart, Bar, LineChart, Line, PieChart, Pie, Cell,
   XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend
 } from 'recharts';
-import { ChevronRight, TrendingUp, Phone, Wifi, CreditCard, Radio } from 'lucide-react';
+import { TrendingUp, Phone, Wifi, CreditCard, Radio } from 'lucide-react';
 import { useScrollReveal, useStaggerReveal, useCountUp } from '../../hooks/useAnimations';
 
 import PageHero from '../../components/ui/PageHero';
+import Breadcrumb from '../../components/ui/Breadcrumb';
 import { useLanguage } from '../../lib/language';
 // Mobile subscriptions by operator (thousands)
 const MOBILE_SUBS = [
@@ -98,14 +100,17 @@ export default function TelecomStatisticsPage() {
 
   return (
     <div>
+      <Helmet>
+        <title>Telecom Statistics — BOCRA</title>
+        <meta name="description" content="Botswana telecommunications market data: subscriptions, broadband, mobile money." />
+        <link rel="canonical" href="https://bocra.org.bw/telecom-statistics" />
+      </Helmet>
       {/* Breadcrumb */}
       <div className="bg-bocra-off-white border-b border-gray-100">
         <div className="section-wrapper py-4">
-          <nav className="text-sm text-bocra-slate/50 flex items-center gap-2">
-            <Link to="/" className="hover:text-bocra-blue transition-colors">{lang === 'tn' ? 'Gae' : 'Home'}</Link>
-            <ChevronRight size={14} />
-            <span className="text-bocra-slate">{lang === 'tn' ? 'Dipalopalo tsa Megala' : 'Telecom Statistics'}</span>
-          </nav>
+          <Breadcrumb items={[
+            { label: 'Telecom Statistics' },
+          ]} />
         </div>
       </div>
       {/* Hero */}
