@@ -104,18 +104,18 @@ export default function OrganogramPage() {
     }, treeRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [lang]);
 
   return (
     <div className="bg-white min-h-screen">
       <div className="bg-bocra-off-white border-b border-gray-100">
         <div className="section-wrapper py-4">
           <nav className="text-sm text-bocra-slate/50 flex items-center gap-2">
-            <Link to="/" className="hover:text-bocra-blue">Home</Link>
+            <Link to="/" className="hover:text-bocra-blue">{lang === 'tn' ? 'Gae' : 'Home'}</Link>
             <ChevronRight size={14} />
-            <Link to="/about/profile" className="hover:text-bocra-blue">About</Link>
+            <Link to="/about/profile" className="hover:text-bocra-blue">{lang === 'tn' ? 'Ka ga' : 'About'}</Link>
             <ChevronRight size={14} />
-            <span className="text-bocra-slate font-medium">Organogram</span>
+            <span className="text-bocra-slate font-medium">{lang === 'tn' ? 'Thulaganyo ya Setheo' : 'Organogram'}</span>
           </nav>
         </div>
       </div>
