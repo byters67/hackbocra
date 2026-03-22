@@ -456,7 +456,7 @@ export default function DocumentsPage() {
           ) : filteredDocs.length === 0 ? (
             <div className="text-center py-16"><FileText size={48} className="mx-auto text-bocra-slate/15 mb-4" /><h3 className="text-lg font-medium text-bocra-slate/40">{tn ? 'Ga go na dikwalo tse di bonweng' : 'No documents found'}</h3><p className="text-sm text-bocra-slate/30 mt-1">{tn ? 'Leka go fetola dipatlisiso kgotsa disefa' : 'Try adjusting your search or filters'}</p></div>
           ) : (
-            <div className="space-y-2">{filteredDocs.map((doc, i) => { const config = CATS[doc.category]; return (
+            <div className="space-y-2 max-h-[70vh] overflow-y-auto pr-1 documents-scroll">{filteredDocs.map((doc, i) => { const config = CATS[doc.category]; return (
               <button key={i} onClick={() => handleDownload(doc.file, doc.file_url)} className="w-full bg-white rounded-xl p-4 flex items-center gap-4 hover:shadow-md transition-all group border border-gray-100 hover:border-gray-200 text-left">
                 <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0" style={{ backgroundColor: `${config?.color}15` }}><FileText size={18} style={{ color: config?.color }} /></div>
                 <div className="flex-1 min-w-0">
