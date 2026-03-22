@@ -21,6 +21,7 @@ import { Search, Calendar, ArrowRight, Tag } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import { useScrollReveal, useStaggerReveal } from '../../hooks/useAnimations';
 import Breadcrumb from '../../components/ui/Breadcrumb';
+import { useLanguage } from '../../lib/language';
 
 // Placeholder news data (will be replaced by Supabase queries)
 const PLACEHOLDER_NEWS = [
@@ -65,6 +66,8 @@ const PLACEHOLDER_NEWS = [
 const CATEGORIES = ['All', 'Public Notices', 'Tenders & Procurement', 'Media Releases', 'Regulatory Documents'];
 
 export default function NewsPage() {
+  const { lang } = useLanguage();
+  const tn = lang === 'tn';
   const [activeCategory, setActiveCategory] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
   const [news, setNews] = useState(PLACEHOLDER_NEWS);
@@ -121,7 +124,7 @@ export default function NewsPage() {
       {/* Breadcrumb */}
       <div className="bg-bocra-off-white border-b border-gray-100">
         <div className="section-wrapper py-4">
-          <Breadcrumb items={[{ label: 'Media', href: '/media/news' }, { label: 'News' }]} />
+          <Breadcrumb items={[{ label: tn ? 'Bobegadikgang' : 'Media', href: '/media/news' }, { label: tn ? 'Dikgang' : 'News' }]} />
         </div>
       </div>
 
@@ -133,10 +136,10 @@ export default function NewsPage() {
           <div ref={heroRef} className="relative max-w-3xl">
             <div className="flex items-center gap-2 mb-3">
               <div className="w-8 h-1 bg-white/40 rounded-full" />
-              <span className="text-xs text-white/60 uppercase tracking-widest font-medium">Media</span>
+              <span className="text-xs text-white/60 uppercase tracking-widest font-medium">{tn ? 'Bobegadikgang' : 'Media'}</span>
             </div>
-            <h1 className="text-2xl sm:text-3xl lg:text-5xl font-bold text-white leading-tight">News & Events</h1>
-            <p className="text-white/70 mt-3 text-sm sm:text-base max-w-2xl leading-relaxed">Stay updated with the latest from BOCRA and the communications sector.</p>
+            <h1 className="text-2xl sm:text-3xl lg:text-5xl font-bold text-white leading-tight">{tn ? 'Dikgang le Ditiragalo' : 'News & Events'}</h1>
+            <p className="text-white/70 mt-3 text-sm sm:text-base max-w-2xl leading-relaxed">{tn ? 'Nna le dikgang tsa bosheng go tswa BOCRA le lefapha la dikgolagano.' : 'Stay updated with the latest from BOCRA and the communications sector.'}</p>
           </div>
         </div>
       </section>
@@ -157,7 +160,7 @@ export default function NewsPage() {
                       : 'bg-bocra-off-white text-bocra-slate/60 hover:bg-bocra-blue/5 hover:text-bocra-blue'
                   }`}
                 >
-                  {cat}
+                  {cat === 'All' && tn ? 'Tsotlhe' : cat}
                 </button>
               ))}
             </div>
@@ -166,7 +169,7 @@ export default function NewsPage() {
               <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-bocra-slate/30" />
               <input
                 type="search"
-                placeholder="Search news..."
+                placeholder={tn ? 'Batla dikgang...' : 'Search news...'}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-10 pr-4 py-2.5 bg-bocra-off-white border border-gray-200 rounded-xl text-sm focus:border-bocra-blue focus:ring-2 focus:ring-bocra-blue/10 outline-none transition-all"
@@ -194,7 +197,7 @@ export default function NewsPage() {
             </div>
           ) : filteredNews.length === 0 ? (
             <div className="text-center py-16">
-              <p className="text-bocra-slate/50 text-lg">No news items match your filters.</p>
+              <p className="text-bocra-slate/50 text-lg">{tn ? 'Ga go na dikgang tse di tsamaelanang le disefa tsa gago.' : 'No news items match your filters.'}</p>
             </div>
           ) : (
             <div ref={gridRef} className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -219,7 +222,7 @@ export default function NewsPage() {
                       {item.excerpt}
                     </p>
                     <span className="inline-flex items-center gap-1 text-sm font-medium text-bocra-blue">
-                      Read more <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                      {tn ? 'Buisa go feta' : 'Read more'} <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
                     </span>
                   </div>
                 </article>

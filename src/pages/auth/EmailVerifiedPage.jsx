@@ -4,8 +4,11 @@
  */
 import { CheckCircle } from 'lucide-react';
 import BocraLogo from '../../components/ui/BocraLogo';
+import { useLanguage } from '../../lib/language';
 
 export default function EmailVerifiedPage() {
+  const { lang } = useLanguage();
+  const tn = lang === 'tn';
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#00458B] to-[#003366] p-6">
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -17,11 +20,11 @@ export default function EmailVerifiedPage() {
         <div className="w-16 h-16 bg-[#6BBE4E]/10 rounded-full flex items-center justify-center mx-auto mb-5">
           <CheckCircle size={36} className="text-[#6BBE4E]" />
         </div>
-        <h1 className="text-xl font-bold text-[#1A2B4A]">Email Verified!</h1>
+        <h1 className="text-xl font-bold text-[#1A2B4A]">{tn ? 'Imeile e Netefaditswe!' : 'Email Verified!'}</h1>
         <p className="text-sm text-gray-500 mt-3 leading-relaxed">
-          Your email has been successfully verified. Your BOCRA account is now active.
+          {tn ? 'Imeile ya gago e netefaditswe ka katlego. Akhaonto ya gago ya BOCRA e a bereka jaanong.' : 'Your email has been successfully verified. Your BOCRA account is now active.'}
         </p>
-        <p className="text-xs text-gray-400 mt-4">You can close this page and sign in to your account.</p>
+        <p className="text-xs text-gray-400 mt-4">{tn ? 'O ka tswala tsebe e mme o tsene mo akhaontong ya gago.' : 'You can close this page and sign in to your account.'}</p>
       </div>
     </div>
   );
