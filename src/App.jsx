@@ -4,6 +4,7 @@
  */
 import { useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async';
 import { AuthProvider } from './lib/auth';
 import { LanguageProvider } from './lib/language';
 import { NotificationProvider } from './lib/notifications';
@@ -67,6 +68,7 @@ export default function App() {
   const [ready, setReady] = useState(!!sessionStorage.getItem('bocra-splash'));
 
   return (
+    <HelmetProvider>
     <AuthProvider>
       <LanguageProvider>
         <NotificationProvider>
@@ -160,5 +162,6 @@ export default function App() {
         </NotificationProvider>
       </LanguageProvider>
     </AuthProvider>
+    </HelmetProvider>
   );
 }
