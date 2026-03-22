@@ -15,15 +15,18 @@
 
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import {
   ChevronRight, Shield, Send, CheckCircle, Clock, FileText,
   Eye, Edit3, Trash2, Lock, Download, XCircle, AlertCircle, User
 } from 'lucide-react';
 import PageHero from '../../components/ui/PageHero';
+import Breadcrumb from '../../components/ui/Breadcrumb';
 import { useAuth } from '../../lib/auth';
-import { supabase } from '../../lib/supabase';
+import { supabase, checkRateLimit } from '../../lib/supabase';
 import { useRecaptcha } from '../../hooks/useRecaptcha';
 import { sanitizeInput, sanitizeError } from '../../lib/security';
+import { validateForm } from '../../lib/validation';
 import ConsentCheckbox from '../../components/ui/ConsentCheckbox';
 import { useScrollReveal } from '../../hooks/useAnimations';
 import { useLanguage } from '../../lib/language';
@@ -75,6 +78,7 @@ export default function DataRequestPage() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
   const [refNumber, setRefNumber] = useState('');
+  const [formErrors, setFormErrors] = useState({});
 
   useEffect(() => {
     // No redirect — page is accessible to everyone
@@ -82,12 +86,20 @@ export default function DataRequestPage() {
   }, [user, authLoading]);
 
   useEffect(() => {
-    if (user) fetchRequests();
+    let cancelled = false;
+
+    if (user) {
+      (async () => {
+        await fetchRequests(cancelled);
+      })();
+    }
+
+    return () => { cancelled = true; };
   }, [user]);
 
   const [fetchError, setFetchError] = useState('');
 
-  async function fetchRequests() {
+  async function fetchRequests(cancelled = false) {
     setLoadingRequests(true);
     setFetchError('');
     try {
@@ -97,31 +109,60 @@ export default function DataRequestPage() {
         .eq('requester_id', user.id)
         .order('created_at', { ascending: false });
       if (error) throw error;
-      setRequests(data || []);
+      if (!cancelled) {
+        setRequests(data || []);
+      }
     } catch (err) {
-      setRequests([]);
-      setFetchError(sanitizeError(err));
+      if (!cancelled) {
+        setRequests([]);
+        setFetchError(sanitizeError(err));
+      }
     }
-    setLoadingRequests(false);
+    if (!cancelled) {
+      setLoadingRequests(false);
+    }
   }
 
   async function handleSubmit(e) {
     e.preventDefault();
-    if (!requestType || !description.trim() || !consent) return;
+
+    // Rate limiting
+    if (!checkRateLimit('data-request')) {
+      setError('Please wait before submitting again.');
+      return;
+    }
+
+    // Form validation
+    const { isValid, errors } = validateForm([
+      { value: requestType, name: 'Request type', rules: ['required'] },
+      { value: description, name: 'Description', rules: ['required', { maxLength: 5000 }] },
+    ]);
+
+    if (!isValid) {
+      setFormErrors(errors);
+      return;
+    }
+
+    setFormErrors({});
+
+    if (!consent) {
+      setError('You must give consent before submitting.');
+      return;
+    }
 
     setSubmitting(true);
     setError('');
 
-    const recaptchaToken = await executeRecaptcha('submit_data_request');
-    if (!recaptchaToken) {
-      setError(lang === 'tn' ? 'Tsweetswee leka gape (tshireletso ya saete).' : 'Security check failed. Please wait and try again.');
-      setSubmitting(false);
-      return;
-    }
-
-    const ref = 'DPA-' + new Date().getFullYear() + '-' + crypto.randomUUID().slice(0, 8).toUpperCase();
-
     try {
+      const recaptchaToken = await executeRecaptcha('submit_data_request');
+      if (!recaptchaToken) {
+        setError(lang === 'tn' ? 'Tsweetswee leka gape (tshireletso ya saete).' : 'Security check failed. Please wait and try again.');
+        setSubmitting(false);
+        return;
+      }
+
+      const ref = 'DPA-' + new Date().getFullYear() + '-' + crypto.randomUUID().slice(0, 8).toUpperCase();
+
       const { error: insertErr } = await supabase.from('data_requests').insert([{
         requester_id: user.id,
         requester_name: user.user_metadata?.full_name || user.email,
@@ -151,6 +192,7 @@ export default function DataRequestPage() {
     setCategories([]);
     setConsent(false);
     setError('');
+    setFormErrors({});
     setView('list');
   }
 
@@ -172,14 +214,16 @@ export default function DataRequestPage() {
 
   return (
     <div className="min-h-screen bg-bocra-off-white">
+      <Helmet>
+        <title>Data Request — BOCRA</title>
+        <meta name="description" content="Request telecommunications market data and statistics from BOCRA." />
+        <link rel="canonical" href="https://bocra.org.bw/portal/data-request" />
+      </Helmet>
+
       {/* Breadcrumb */}
       <div className="bg-bocra-off-white border-b border-gray-100">
         <div className="section-wrapper py-4">
-          <nav className="text-sm text-bocra-slate/50 flex items-center gap-2">
-            <Link to="/" className="hover:text-bocra-blue">{lang === 'tn' ? 'Gae' : 'Home'}</Link>
-            <ChevronRight size={14} />
-            <span className="text-bocra-slate font-medium">My Data Rights</span>
-          </nav>
+          <Breadcrumb items={[{ label: 'Portal' }, { label: 'Data Request' }]} />
         </div>
       </div>
 
@@ -380,7 +424,7 @@ export default function DataRequestPage() {
                     <button
                       key={type.value}
                       type="button"
-                      onClick={() => setRequestType(type.value)}
+                      onClick={() => { setRequestType(type.value); setFormErrors(prev => ({ ...prev, 'Request type': undefined })); }}
                       className={`text-left p-4 rounded-xl border-2 transition-all ${
                         selected
                           ? 'border-bocra-blue bg-bocra-blue/[0.03]'
@@ -402,6 +446,9 @@ export default function DataRequestPage() {
                   );
                 })}
               </div>
+              {formErrors['Request type'] && (
+                <p className="text-red-600 text-xs mt-1">{formErrors['Request type']}</p>
+              )}
             </div>
 
             {/* Step 2: Data categories */}
@@ -441,7 +488,7 @@ export default function DataRequestPage() {
                 </label>
                 <textarea
                   value={description}
-                  onChange={(e) => setDescription(e.target.value)}
+                  onChange={(e) => { setDescription(e.target.value); setFormErrors(prev => ({ ...prev, Description: undefined })); }}
                   rows={4}
                   required
                   placeholder={
@@ -452,6 +499,9 @@ export default function DataRequestPage() {
                   }
                   className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm text-bocra-slate placeholder:text-bocra-slate/30 focus:border-bocra-blue focus:ring-2 focus:ring-bocra-blue/10 outline-none transition-all resize-none"
                 />
+                {formErrors['Description'] && (
+                  <p className="text-red-600 text-xs mt-1">{formErrors['Description']}</p>
+                )}
               </div>
             )}
 

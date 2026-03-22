@@ -6,18 +6,20 @@
  * Interactive quiz cards use plain language with large tap targets.
  * Real CVE data from NIST NVD API.
  */
-import { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
-import { supabase } from '../../lib/supabase';
+import { supabase, checkRateLimit } from '../../lib/supabase';
 import ConsentCheckbox from '../../components/ui/ConsentCheckbox';
 import { useRecaptcha } from '../../hooks/useRecaptcha';
 import {
-  ChevronRight, Shield, AlertTriangle, Send, CheckCircle, Clock,
+  Shield, AlertTriangle, Send, CheckCircle, Clock,
   Eye, Lock, Bug, Smartphone, Wifi, CreditCard, Users, FileText,
   ChevronDown, ExternalLink, ArrowRight, Activity, Globe, Server,
   AlertCircle, ShieldCheck, ShieldAlert, Radio, X, ChevronLeft,
   Phone, Mail, RefreshCw, Target, Fingerprint, HelpCircle, Award
 } from 'lucide-react';
+import Breadcrumb from '../../components/ui/Breadcrumb';
 import { useScrollReveal, useStaggerReveal } from '../../hooks/useAnimations';
 
 import PageHero from '../../components/ui/PageHero';
@@ -41,11 +43,11 @@ function timeAgo(d) {
   const dy = Math.floor(h / 24);
   return dy + ' day' + (dy > 1 ? 's' : '') + ' ago';
 }
-async function fetchCVEs() {
+async function fetchCVEs(signal) {
   try {
     const now = new Date(), ago = new Date(now.getTime() - 7 * 864e5);
     const f = d => d.toISOString().replace('Z', '');
-    const res = await fetch('https://services.nvd.nist.gov/rest/json/cves/2.0?pubStartDate=' + f(ago) + '&pubEndDate=' + f(now) + '&resultsPerPage=15');
+    const res = await fetch('https://services.nvd.nist.gov/rest/json/cves/2.0?pubStartDate=' + f(ago) + '&pubEndDate=' + f(now) + '&resultsPerPage=15', { signal });
     if (!res.ok) throw new Error(res.status);
     const data = await res.json();
     return (data?.vulnerabilities || []).map(item => {
@@ -53,7 +55,7 @@ async function fetchCVEs() {
       const score = c.metrics?.cvssMetricV31?.[0]?.cvssData?.baseScore || c.metrics?.cvssMetricV30?.[0]?.cvssData?.baseScore || null;
       return { id: c.id, time: timeAgo(c.published), severity: score ? cvssToSev(score) : 'MEDIUM', desc: desc.slice(0, 200), sector: detectSector(desc), cvssScore: score, published: c.published };
     }).sort((a, b) => { const o = { CRITICAL: 0, HIGH: 1, MEDIUM: 2, LOW: 3 }; return (o[a.severity] || 2) - (o[b.severity] || 2); });
-  } catch { return null; }
+  } catch (err) { if (err.name === 'AbortError') throw err; return null; }
 }
 
 const SEV_STYLE = {
@@ -125,7 +127,7 @@ const getSAFETY_TIPS = (lang) => [
 ];
 
 /* ── Quiz Card Component — large, friendly, accessible ── */
-function QuizCard({ tip, index }) {
+const QuizCard = React.memo(function QuizCard({ tip, index }) {
   const { lang } = useLanguage();
   const [showQuiz, setShowQuiz] = useState(false);
   const [selected, setSelected] = useState(null);
@@ -195,7 +197,7 @@ function QuizCard({ tip, index }) {
       </div>
     </div>
   );
-}
+});
 
 export default function CybersecurityHubPage() {
   const { lang } = useLanguage();
@@ -211,6 +213,7 @@ export default function CybersecurityHubPage() {
   const [incidentConsent, setIncidentConsent] = useState(false);
   const [alerts, setAlerts] = useState([]);
   const [alertsLoading, setAlertsLoading] = useState(true);
+  const [alertsError, setAlertsError] = useState(null);
   const [alertFilter, setAlertFilter] = useState('ALL');
   const [showAllAlerts, setShowAllAlerts] = useState(false);
   const [lastRefresh, setLastRefresh] = useState(null);
@@ -219,8 +222,8 @@ export default function CybersecurityHubPage() {
   const [incidentSubmitting, setIncidentSubmitting] = useState(false);
   const [submittedRef, setSubmittedRef] = useState('');
 
-  useEffect(() => { (async () => { setAlertsLoading(true); const d = await fetchCVEs(); if (d?.length) { setAlerts(d); setLastRefresh(new Date()); } setAlertsLoading(false); })(); }, []);
-  const refresh = async () => { setAlertsLoading(true); const d = await fetchCVEs(); if (d?.length) { setAlerts(d); setLastRefresh(new Date()); } setAlertsLoading(false); };
+  useEffect(() => { let cancelled = false; (async () => { setAlertsLoading(true); setAlertsError(null); try { const d = await fetchCVEs(); if (!cancelled) { if (d?.length) { setAlerts(d); setLastRefresh(new Date()); } else if (d === null) { setAlertsError('Unable to load vulnerability data. Please try again.'); } } } catch (err) { if (!cancelled) { setAlertsError('Unable to load vulnerability data. Please try again.'); } } finally { if (!cancelled) { setAlertsLoading(false); } } })(); return () => { cancelled = true; }; }, []);
+  const refresh = async () => { setAlertsLoading(true); setAlertsError(null); const d = await fetchCVEs(); if (d?.length) { setAlerts(d); setLastRefresh(new Date()); } else if (d === null) { setAlertsError('Unable to load vulnerability data. Please try again.'); } setAlertsLoading(false); };
   const filtered = alertFilter === 'ALL' ? alerts : alerts.filter(a => a.severity === alertFilter);
   const visible = showAllAlerts ? filtered : filtered.slice(0, 5);
   const visibleTips = showAllTips ? SAFETY_TIPS : SAFETY_TIPS.slice(0, 4);
@@ -228,14 +231,15 @@ export default function CybersecurityHubPage() {
 
   return (
     <div className="bg-white">
+      <Helmet>
+        <title>Cybersecurity Hub — BOCRA</title>
+        <meta name="description" content="Report cyber incidents, access safety resources, and view current vulnerability alerts." />
+        <link rel="canonical" href="https://bocra.org.bw/cybersecurity" />
+      </Helmet>
       {/* Breadcrumb */}
       <div className="bg-bocra-off-white border-b border-gray-100">
         <div className="section-wrapper py-4">
-          <nav className="text-sm text-bocra-slate/50 flex items-center gap-2">
-            <Link to="/" className="hover:text-bocra-blue transition-colors">{lang === 'tn' ? 'Gae' : 'Home'}</Link>
-            <ChevronRight size={14} />
-            <span className="text-bocra-slate">{lang === 'tn' ? 'Lefelo la Tshireletso ya Saebo' : 'Cybersecurity Hub'}</span>
-          </nav>
+          <Breadcrumb items={[{ label: 'Cybersecurity Hub' }]} />
         </div>
       </div>
 
@@ -362,6 +366,10 @@ export default function CybersecurityHubPage() {
                 <button
                   disabled={!incidentConsent || incidentSubmitting}
                   onClick={async () => {
+                    if (!checkRateLimit('cyber-incident')) {
+                      setIncidentError('Please wait before submitting again.');
+                      return;
+                    }
                     setIncidentError('');
                     setIncidentSubmitting(true);
                     try {
@@ -480,6 +488,12 @@ export default function CybersecurityHubPage() {
             <div className="space-y-2">{[...Array(4)].map((_, i) => (
               <div key={i} className="bg-white border border-gray-100 rounded-xl p-5 animate-pulse"><div className="flex gap-3"><div className="w-3 h-3 mt-1 rounded-full bg-gray-200" /><div className="flex-1 space-y-2"><div className="w-1/3 h-4 bg-gray-100 rounded" /><div className="w-full h-3 bg-gray-50 rounded" /></div></div></div>
             ))}<p className="text-center text-xs text-bocra-slate/30 py-2">{lang === 'tn' ? 'E laisa data ya dikotsi tsa nako ya jaanong...' : 'Loading live vulnerability data...'}</p></div>
+          ) : alertsError ? (
+            <div className="bg-red-50 border border-red-200 rounded-xl p-6 text-center">
+              <AlertCircle size={24} className="text-red-400 mx-auto mb-2" />
+              <p className="text-sm text-red-600 mb-3">{alertsError}</p>
+              <button onClick={refresh} className="text-sm text-bocra-blue hover:underline">{lang === 'tn' ? 'Leka gape' : 'Try again'}</button>
+            </div>
           ) : (
             <div className="space-y-2">
               {visible.map(alert => { const s = SEV_STYLE[alert.severity] || SEV_STYLE.MEDIUM; return (

@@ -138,7 +138,7 @@ export const CSP_DIRECTIVES = {
   'style-src': ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
   'font-src': ["'self'", 'https://fonts.gstatic.com'],
   'img-src': ["'self'", 'data:', 'https://*.supabase.co', 'https://*.openstreetmap.org'],
-  'connect-src': ["'self'", 'https://*.supabase.co', 'https://www.google.com'],
+  'connect-src': ["'self'", 'https://*.supabase.co', 'https://www.google.com', 'https://fonts.googleapis.com', 'https://fonts.gstatic.com'],
   'frame-src': ["'self'", 'https://*.openstreetmap.org', 'https://www.google.com'],
   'object-src': ["'none'"],
   'base-uri': ["'self'"],

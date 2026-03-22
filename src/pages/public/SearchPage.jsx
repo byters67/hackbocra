@@ -5,15 +5,17 @@
  * colour-coded cards, popular searches, and clean BOCRA-styled layout.
  */
 import { useState, useMemo } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Link, useSearchParams } from 'react-router-dom';
 import {
-  Search, ChevronRight, FileText, Newspaper, BookOpen, ArrowRight,
+  Search, FileText, Newspaper, BookOpen, ArrowRight,
   Shield, Globe, Building, Phone, AlertCircle, Award, Radio,
   Users, Wifi, Lock, HelpCircle, BarChart3, Mail
 } from 'lucide-react';
 import { useScrollReveal } from '../../hooks/useAnimations';
 
 import PageHero from '../../components/ui/PageHero';
+import Breadcrumb from '../../components/ui/Breadcrumb';
 import { useLanguage } from '../../lib/language';
 const CATEGORY_STYLE = {
   About:      { color: '#00458B', bg: 'bg-[#00458B]/10', text: 'text-[#00458B]', icon: BookOpen },
@@ -160,14 +162,15 @@ export default function SearchPage() {
 
   return (
     <div className="bg-white">
+      <Helmet>
+        <title>Search — BOCRA</title>
+        <meta name="description" content="Search the BOCRA website for documents, news, services, and regulatory information." />
+        <link rel="canonical" href="https://bocra.org.bw/search" />
+      </Helmet>
       {/* Breadcrumb */}
       <div className="bg-bocra-off-white border-b border-gray-100">
         <div className="section-wrapper py-4">
-          <nav className="text-sm text-bocra-slate/50 flex items-center gap-2">
-            <Link to="/" className="hover:text-bocra-blue transition-colors">{lang === 'tn' ? 'Gae' : 'Home'}</Link>
-            <ChevronRight size={14} />
-            <span className="text-bocra-slate">Search</span>
-          </nav>
+          <Breadcrumb items={[{ label: 'Search' }]} />
         </div>
       </div>
       {/* Hero */}

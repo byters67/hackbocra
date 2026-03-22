@@ -10,6 +10,7 @@
  * - Page transition animation
  */
 
+import { Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
 import Header from './Header';
 import Footer from './Footer';
@@ -18,6 +19,8 @@ import AccessibilityWidget from '../ui/AccessibilityWidget';
 import CookieConsent from '../ui/CookieConsent';
 import ChatWidget from '../ui/ChatWidget';
 import RecaptchaBadge from '../ui/RecaptchaBadge';
+import ErrorBoundary from '../ui/ErrorBoundary';
+import PageLoader from '../ui/PageLoader';
 
 export default function Layout() {
   return (
@@ -32,14 +35,22 @@ export default function Layout() {
       <Header />
 
       <main id="main-content" className="flex-1 pt-16 lg:pt-[120px]">
-        <PageTransition>
-          <Outlet />
-        </PageTransition>
+        <ErrorBoundary>
+          <Suspense fallback={<PageLoader />}>
+            <PageTransition>
+              <Outlet />
+            </PageTransition>
+          </Suspense>
+        </ErrorBoundary>
       </main>
 
       <Footer />
-      <AccessibilityWidget />
-      <ChatWidget />
+      <ErrorBoundary>
+        <AccessibilityWidget />
+      </ErrorBoundary>
+      <ErrorBoundary>
+        <ChatWidget />
+      </ErrorBoundary>
       <RecaptchaBadge />
       <CookieConsent />
     </div>

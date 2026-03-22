@@ -3,12 +3,14 @@
  * Route: /about/chief-executive
  */
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import {
-  ChevronRight, Quote, Award, Briefcase, GraduationCap, Globe,
+  Quote, Award, Briefcase, GraduationCap, Globe,
   Users, ArrowRight, Shield, BookOpen, Radio, Wifi, Mail, Phone
 } from 'lucide-react';
 import { useScrollReveal } from '../../hooks/useAnimations';
 import PageHero from '../../components/ui/PageHero';
+import Breadcrumb from '../../components/ui/Breadcrumb';
 import { useLanguage } from '../../lib/language';
 
 const BASE = import.meta.env.BASE_URL || '/';
@@ -28,16 +30,15 @@ export default function ChiefExecutivePage() {
 
   return (
     <div className="bg-white min-h-screen">
+      <Helmet>
+        <title>Chief Executive — BOCRA</title>
+        <meta name="description" content="Message from the BOCRA Chief Executive on telecommunications regulation in Botswana." />
+        <link rel="canonical" href="https://bocra.org.bw/about/chief-executive" />
+      </Helmet>
       {/* Breadcrumb */}
       <div className="bg-bocra-off-white border-b border-gray-100">
         <div className="section-wrapper py-4">
-          <nav className="text-sm text-bocra-slate/50 flex items-center gap-2">
-            <Link to="/" className="hover:text-bocra-blue">{tn ? 'Gae' : 'Home'}</Link>
-            <ChevronRight size={14} />
-            <Link to="/about/profile" className="hover:text-bocra-blue">{tn ? 'Ka ga Rona' : 'About'}</Link>
-            <ChevronRight size={14} />
-            <span className="text-bocra-slate font-medium">{tn ? 'Mokaedi Mogolo' : 'Chief Executive'}</span>
-          </nav>
+          <Breadcrumb items={[{ label: 'About', href: '/about/profile' }, { label: 'Chief Executive' }]} />
         </div>
       </div>
 

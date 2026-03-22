@@ -1,6 +1,6 @@
 /**
  * DashboardPage — BOCRA Admin Portal Smart Insights
- * 
+ *
  * Not just numbers — actionable insights powered by AI classification.
  * Shows trends, provider comparisons, department workloads, urgency distribution.
  * Realtime updates when new submissions arrive.
@@ -43,7 +43,7 @@ export default function DashboardPage() {
   const [escalationResult, setEscalationResult] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const fetchData = useCallback(async () => {
+  const fetchData = useCallback(async (cancelled = { current: false }) => {
     try {
       const [cRes, aRes, iRes, ctRes, recentC] = await Promise.all([
         supabase.from('complaints').select('*'),
@@ -52,6 +52,14 @@ export default function DashboardPage() {
         supabase.from('contact_submissions').select('id', { count: 'exact', head: true }),
         supabase.from('complaints').select('*').order('created_at', { ascending: false }).limit(8),
       ]);
+
+      if (cRes.error) throw cRes.error;
+      if (aRes.error) throw aRes.error;
+      if (iRes.error) throw iRes.error;
+      if (ctRes.error) throw ctRes.error;
+      if (recentC.error) throw recentC.error;
+
+      if (cancelled.current) return;
 
       const complaints = cRes.data || [];
       const apps = aRes.data || [];
@@ -125,12 +133,17 @@ export default function DashboardPage() {
       setSlaCompliance(totalOpen > 0 ? Math.round(((totalOpen - slaCounts.breached) / totalOpen) * 100) : 100);
 
       // Fetch recent workflow automations
-      const { data: logs } = await getWorkflowLogs(5);
-      if (logs) setRecentAutomations(logs);
+      try {
+        const { data: logs, error: logsError } = await getWorkflowLogs(5);
+        if (logsError) throw logsError;
+        if (!cancelled.current && logs) setRecentAutomations(logs);
+      } catch (logsErr) {
+        console.error('[BOCRA] Workflow logs fetch error:', logsErr);
+      }
     } catch (err) {
       console.error('[BOCRA] Dashboard fetch error:', err);
     }
-    setLoading(false);
+    if (!cancelled.current) setLoading(false);
   }, []);
 
   function generateInsights(complaints, apps, incidents) {
@@ -187,27 +200,32 @@ export default function DashboardPage() {
   }
 
   useEffect(() => {
-    fetchData();
+    let cancelled = { current: false };
+    fetchData(cancelled);
     const channel = supabase.channel('admin-dashboard-v2')
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'complaints' }, (payload) => {
+        if (cancelled.current) return;
         setRealtimeEvents(prev => [{ type: 'complaint', data: payload.new, time: new Date() }, ...prev.slice(0, 9)]);
         setStats(s => ({ ...s, complaints: s.complaints + 1, totalComplaints: s.totalComplaints + 1 }));
         setRecentComplaints(prev => [payload.new, ...prev.slice(0, 7)]);
       })
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'licence_applications' }, (payload) => {
+        if (cancelled.current) return;
         setRealtimeEvents(prev => [{ type: 'application', data: payload.new, time: new Date() }, ...prev.slice(0, 9)]);
         setStats(s => ({ ...s, applications: s.applications + 1 }));
       })
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'cyber_incidents' }, (payload) => {
+        if (cancelled.current) return;
         setRealtimeEvents(prev => [{ type: 'incident', data: payload.new, time: new Date() }, ...prev.slice(0, 9)]);
         setStats(s => ({ ...s, incidents: s.incidents + 1 }));
       })
       .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'complaints' }, () => {
+        if (cancelled.current) return;
         // Refetch when AI classification updates a complaint
-        fetchData();
+        fetchData(cancelled);
       })
       .subscribe();
-    return () => { supabase.removeChannel(channel); };
+    return () => { cancelled.current = true; supabase.removeChannel(channel); };
   }, [fetchData]);
 
   const timeAgo = (d) => {
@@ -522,7 +540,7 @@ export default function DashboardPage() {
                 <Zap size={12} className="text-[#F7B731] flex-shrink-0" />
                 <div className="flex-1 min-w-0">
                   <p className="text-[11px] font-medium text-gray-700 truncate">{log.rule_name}</p>
-                  <p className="text-[9px] text-gray-400 truncate">{log.case_reference || log.case_type} \u2014 {log.action_taken}</p>
+                  <p className="text-[9px] text-gray-400 truncate">{log.case_reference || log.case_type} — {log.action_taken}</p>
                 </div>
                 <span className={`text-[9px] px-1.5 py-0.5 rounded-full font-medium ${log.action_result === 'success' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
                   {log.action_result}
@@ -540,15 +558,18 @@ export default function DashboardPage() {
           <div className="space-y-2">
             <button
               onClick={async () => {
-                setEscalationRunning(true);
-                setEscalationResult(null);
-                const { data, error } = await runEscalationCheck();
-                setEscalationRunning(false);
-                if (error) {
-                  setEscalationResult({ type: 'error', message: error.message });
-                } else {
+                try {
+                  setEscalationRunning(true);
+                  setEscalationResult(null);
+                  const { data, error } = await runEscalationCheck();
+                  if (error) throw error;
+                  setEscalationRunning(false);
                   setEscalationResult({ type: 'success', message: `${data?.escalations || 0} case(s) escalated` });
                   fetchData();
+                } catch (err) {
+                  console.error('[BOCRA] Escalation check error:', err);
+                  setEscalationRunning(false);
+                  setEscalationResult({ type: 'error', message: err.message || 'Escalation check failed' });
                 }
               }}
               disabled={escalationRunning}

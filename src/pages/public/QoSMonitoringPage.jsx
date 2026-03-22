@@ -4,18 +4,19 @@
  * Data from qos_reports Supabase table
  */
 import { useState, useEffect, useMemo } from 'react';
-import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import {
-  ChevronRight, Signal, Phone, Clock, Activity, Zap, Globe,
+  Signal, Phone, Clock, Activity, Zap, Globe,
   AlertTriangle, TrendingUp, TrendingDown, BarChart3, Brain, RefreshCw
 } from 'lucide-react';
+import Breadcrumb from '../../components/ui/Breadcrumb';
 import {
   LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid,
   Tooltip, ResponsiveContainer, Legend, RadarChart, Radar,
   PolarGrid, PolarAngleAxis, PieChart, Pie, Cell
 } from 'recharts';
 import { useScrollReveal } from '../../hooks/useAnimations';
-import { supabase } from '../../lib/supabase';
+import { supabase, supabaseUrl_, supabaseAnonKey_, checkRateLimit } from '../../lib/supabase';
 
 import PageHero from '../../components/ui/PageHero';
 import { useLanguage } from '../../lib/language';
@@ -47,30 +48,46 @@ export default function QoSMonitoringPage() {
   const [tab, setTab] = useState('overview');
   const [rawData, setRawData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [aiCache, setAiCache] = useState({});
   const [aiLoading, setAiLoading] = useState(false);
   const heroRef = useScrollReveal();
   const aiInsights = aiCache[tab] || [];
 
   useEffect(() => {
+    let cancelled = false;
     (async () => {
-      const { data } = await supabase.from('qos_reports').select('*').order('year').order('created_at');
-      if (data && data.length > 0) setRawData(data);
-      setLoading(false);
+      try {
+        setLoading(true);
+        setError(null);
+        const { data, error: fetchError } = await supabase.from('qos_reports').select('*').order('year').order('created_at');
+        if (fetchError) throw fetchError;
+        if (!cancelled) setRawData(data || []);
+      } catch (err) {
+        console.error('[BOCRA] Failed to load QoS data:', err);
+        if (!cancelled) setError('Failed to load QoS data. Please try again later.');
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
     })();
+    return () => { cancelled = true; };
   }, []);
 
   // Auto-trigger AI analysis when data loads or tab changes
   useEffect(() => {
+    let cancelled = false;
     if (rawData.length > 0 && !aiCache[tab] && !aiLoading) {
-      generateAiInsights(tab);
+      generateAiInsights(tab, cancelled);
     }
+    return () => { cancelled = true; };
   }, [rawData, tab]);
 
-  const generateAiInsights = async (targetTab) => {
+  const generateAiInsights = async (targetTab, cancelled) => {
     if (rawData.length === 0) return;
     const t = targetTab || tab;
+    if (!checkRateLimit('qos-report')) { return; }
     setAiLoading(true);
+    const controller = new AbortController();
     try {
       const national = rawData.filter(r => r.region === 'National');
       const summary = Object.keys(OPS).map(o => {
@@ -92,14 +109,15 @@ export default function QoSMonitoringPage() {
         regional: `Analyse this REAL regional telecom data. Give exactly 4 bullet points (start each with •). Each bullet: 1-2 sentences about specific regions with numbers. No intro, no conclusion.\n\nRegional Data:\n${regionSummary}\n\nFocus: Urban vs rural coverage gaps, worst-served regions, which operator has best rural performance, digital divide.`,
       };
 
-      const res = await fetch('https://cyalwtuladeexxfsbrcs.supabase.co/functions/v1/qos-insights', {
+      const res = await fetch(`${supabaseUrl_}/functions/v1/qos-insights`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN5YWx3dHVsYWRlZXh4ZnNicmNzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM1MjM2NTYsImV4cCI6MjA4OTA5OTY1Nn0.rvH-J2O9sttpRFYLSo28BogTwBhwFD2Ei_QuMbnrHUk',
-          'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN5YWx3dHVsYWRlZXh4ZnNicmNzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM1MjM2NTYsImV4cCI6MjA4OTA5OTY1Nn0.rvH-J2O9sttpRFYLSo28BogTwBhwFD2Ei_QuMbnrHUk',
+          'Authorization': `Bearer ${supabaseAnonKey_}`,
+          'apikey': supabaseAnonKey_,
         },
         body: JSON.stringify({ prompt: prompts[t] || prompts.overview }),
+        signal: controller.signal,
       });
 
       if (res.ok) {
@@ -108,15 +126,16 @@ export default function QoSMonitoringPage() {
         reply = reply.replace(/\*\*(.*?)\*\*/g, '$1');
         reply = reply.replace(/#+\s*/g, '');
         const bullets = reply.split('•').map(s => s.trim()).filter(s => s.length > 20);
-        setAiCache(prev => ({ ...prev, [t]: bullets.slice(0, 4) }));
+        if (!cancelled) setAiCache(prev => ({ ...prev, [t]: bullets.slice(0, 4) }));
       } else {
-        setAiCache(prev => ({ ...prev, [t]: ['AI analysis unavailable.'] }));
+        if (!cancelled) setAiCache(prev => ({ ...prev, [t]: ['AI analysis unavailable.'] }));
       }
     } catch (err) {
+      if (err.name === 'AbortError') return;
       console.warn('[BOCRA] AI QoS analysis failed:', err);
-      setAiCache(prev => ({ ...prev, [t]: ['AI analysis unavailable.'] }));
+      if (!cancelled) setAiCache(prev => ({ ...prev, [t]: ['AI analysis unavailable.'] }));
     }
-    setAiLoading(false);
+    if (!cancelled) setAiLoading(false);
   };
 
   const monthlyData = useMemo(() => {
@@ -161,9 +180,14 @@ export default function QoSMonitoringPage() {
 
   return (
     <div className="bg-white">
-      <div className="bg-bocra-off-white border-b border-gray-100"><div className="section-wrapper py-4"><nav className="text-sm text-bocra-slate/50 flex items-center gap-2"><Link to="/" className="hover:text-bocra-blue transition-colors">{lang === 'tn' ? 'Gae' : 'Home'}</Link><ChevronRight size={14}/><span className="text-bocra-slate">{lang === 'tn' ? 'Tlhokomelo ya Boleng' : 'QoS Monitoring'}</span></nav></div></div>
+      <Helmet>
+        <title>QoS Monitoring — BOCRA</title>
+        <meta name="description" content="Quality of Service monitoring data for telecommunications operators in Botswana." />
+        <link rel="canonical" href="https://bocra.org.bw/services/qos-monitoring" />
+      </Helmet>
+      <div className="bg-bocra-off-white border-b border-gray-100"><div className="section-wrapper py-4"><Breadcrumb items={[{ label: 'Services' }, { label: 'QoS Monitoring' }]} /></div></div>
 
-      
+
       {/* Hero */}
       <PageHero category="SERVICES" categoryTn="DITIRELO" title="Quality of Service Monitoring" titleTn="Tlhokomelo ya Boleng jwa Tirelo" description="Real-time performance data for Botswana's telecommunications operators — call success rates, throughput, latency, and more." descriptionTn="Data ya boleng jwa tirelo ya nako ya jaanong ya balaodi ba megala ba Botswana." color="cyan" />
 
@@ -183,6 +207,10 @@ export default function QoSMonitoringPage() {
           ))}
         </div>
       </div></section>
+
+      {error && (
+        <section className="py-4"><div className="section-wrapper"><div className="bg-red-50 border border-red-200 rounded-xl p-4 text-center text-sm text-red-700">{error}</div></div></section>
+      )}
 
       {noData ? (
         <section className="py-12"><div className="section-wrapper text-center">

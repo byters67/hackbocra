@@ -6,7 +6,8 @@
 import { useState, useEffect } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import { Signal, Plus, Trash2, CheckCircle, BarChart3 } from 'lucide-react';
-import { supabase } from '../../lib/supabase';
+import { supabase, checkRateLimit } from '../../lib/supabase';
+import { validateForm } from '../../lib/validation';
 
 const OPS = ['mascom', 'btc', 'orange'];
 const OP_LABELS = { mascom: 'Mascom', btc: 'BTC', orange: 'Orange' };
@@ -17,23 +18,57 @@ export default function QoSReportsPage() {
   const { profile } = useOutletContext();
   const [reports, setReports] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState({ operator: 'mascom', month: 'Jan', year: 2025, region: 'National', call_success_rate: '', dropped_call_rate: '', throughput: '', uptime: '', latency: '', sms_delivery: '' });
   const [saving, setSaving] = useState(false);
   const [success, setSuccess] = useState(false);
 
   useEffect(() => {
-    fetchReports();
-  }, []);
+    let cancelled = false;
 
-  async function fetchReports() {
-    const { data } = await supabase.from('qos_reports').select('*').order('year', { ascending: false }).order('created_at', { ascending: false }).limit(50);
-    if (data) setReports(data);
-    setLoading(false);
-  }
+    async function fetchReports() {
+      try {
+        const { data, error: fetchError } = await supabase.from('qos_reports').select('*').order('year', { ascending: false }).order('created_at', { ascending: false }).limit(50);
+        if (cancelled) return;
+        if (fetchError) throw fetchError;
+        if (data) setReports(data);
+      } catch (err) {
+        if (!cancelled) {
+          console.error('Error fetching QoS reports:', err);
+          setError('Failed to load reports.');
+        }
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+
+    fetchReports();
+
+    return () => { cancelled = true; };
+  }, []);
 
   async function handleSubmit(e) {
     e.preventDefault();
+
+    // Rate limiting
+    if (!checkRateLimit('qos-report')) { setError('Please wait before submitting again.'); return; }
+
+    // Form validation
+    const { isValid, errors } = validateForm([
+      { value: form.operator, name: 'Operator', rules: ['required'] },
+      { value: form.month, name: 'Month', rules: ['required'] },
+      { value: String(form.year), name: 'Year', rules: ['required'] },
+      { value: form.region, name: 'Region', rules: ['required'] },
+      { value: form.call_success_rate, name: 'Call Success Rate', rules: ['required'] },
+      { value: form.dropped_call_rate, name: 'Dropped Call Rate', rules: ['required'] },
+      { value: form.throughput, name: 'Throughput', rules: ['required'] },
+      { value: form.uptime, name: 'Uptime', rules: ['required'] },
+      { value: form.latency, name: 'Latency', rules: ['required'] },
+      { value: form.sms_delivery, name: 'SMS Delivery', rules: ['required'] },
+    ]);
+    if (!isValid) { setError(Object.values(errors)[0]); return; }
+
     // Validate all KPI fields have values
     const kpis = ['call_success_rate', 'dropped_call_rate', 'throughput', 'uptime', 'latency', 'sms_delivery'];
     for (const k of kpis) {
@@ -42,25 +77,49 @@ export default function QoSReportsPage() {
     if (parseFloat(form.call_success_rate) > 100 || parseFloat(form.uptime) > 100 || parseFloat(form.sms_delivery) > 100) { alert('Percentage values cannot exceed 100%'); return; }
     if (parseFloat(form.call_success_rate) < 0 || parseFloat(form.dropped_call_rate) < 0) { alert('Values cannot be negative'); return; }
     setSaving(true);
-    const { error } = await supabase.from('qos_reports').insert({
-      ...form,
-      call_success_rate: parseFloat(form.call_success_rate),
-      dropped_call_rate: parseFloat(form.dropped_call_rate),
-      throughput: parseFloat(form.throughput),
-      uptime: parseFloat(form.uptime),
-      latency: parseFloat(form.latency),
-      sms_delivery: parseFloat(form.sms_delivery),
-      submitted_by: profile?.id,
-    });
-    if (error) alert('Error: ' + error.message);
-    else { setSuccess(true); setShowForm(false); fetchReports(); setTimeout(() => setSuccess(false), 3000); }
-    setSaving(false);
+    try {
+      const { error: insertError } = await supabase.from('qos_reports').insert({
+        ...form,
+        call_success_rate: parseFloat(form.call_success_rate),
+        dropped_call_rate: parseFloat(form.dropped_call_rate),
+        throughput: parseFloat(form.throughput),
+        uptime: parseFloat(form.uptime),
+        latency: parseFloat(form.latency),
+        sms_delivery: parseFloat(form.sms_delivery),
+        submitted_by: profile?.id,
+      });
+      if (insertError) { alert('Error: ' + insertError.message); }
+      else { setSuccess(true); setShowForm(false); fetchReportsRefresh(); }
+    } catch (err) {
+      console.error('Error submitting QoS report:', err);
+      setError('Failed to submit report.');
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  async function fetchReportsRefresh() {
+    try {
+      const { data, error: fetchError } = await supabase.from('qos_reports').select('*').order('year', { ascending: false }).order('created_at', { ascending: false }).limit(50);
+      if (fetchError) throw fetchError;
+      if (data) setReports(data);
+      const tid = setTimeout(() => setSuccess(false), 3000);
+      return () => clearTimeout(tid);
+    } catch (err) {
+      console.error('Error refreshing QoS reports:', err);
+    }
   }
 
   async function handleDelete(id) {
     if (!confirm('Delete this report?')) return;
-    await supabase.from('qos_reports').delete().eq('id', id);
-    fetchReports();
+    try {
+      const { error: deleteError } = await supabase.from('qos_reports').delete().eq('id', id);
+      if (deleteError) throw deleteError;
+      fetchReportsRefresh();
+    } catch (err) {
+      console.error('Error deleting QoS report:', err);
+      setError('Failed to delete report.');
+    }
   }
 
   const u = (k, v) => setForm(f => ({ ...f, [k]: v }));
@@ -78,6 +137,8 @@ export default function QoSReportsPage() {
           <Plus size={14}/> {showForm ? 'Cancel' : 'New Report'}
         </button>
       </div>
+
+      {error && <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-xl text-sm text-red-700">{error}</div>}
 
       {success && <div className="mb-4 p-3 bg-green-50 border border-green-200 rounded-xl text-sm text-green-700 flex items-center gap-2"><CheckCircle size={14}/> Report submitted — public QoS dashboard updated.</div>}
 

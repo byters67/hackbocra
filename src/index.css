@@ -25,6 +25,9 @@
 }
 .chat-markdown p + p { margin-top: 0.5rem; }
 
+/* Hide floating reCAPTCHA badge — attribution is inline in the footer */
+.grecaptcha-badge { visibility: hidden !important; }
+
 /* ============================================
    BASE STYLES
    ============================================ */

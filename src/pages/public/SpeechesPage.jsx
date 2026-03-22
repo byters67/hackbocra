@@ -4,6 +4,7 @@
  * Fully bilingual EN/TN — 26 real BOCRA speeches
  */
 import { useState, useMemo } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import {
   ChevronRight, Search, Download, Calendar, User, ArrowLeft,
@@ -11,6 +12,7 @@ import {
   Shield, Wifi
 } from 'lucide-react';
 import { useStaggerReveal } from '../../hooks/useAnimations';
+import Breadcrumb from '../../components/ui/Breadcrumb';
 import { useLanguage } from '../../lib/language';
 import PageHero from '../../components/ui/PageHero';
 
@@ -94,15 +96,14 @@ export default function SpeechesPage() {
   if (!activeCat) {
     return (
       <div className="bg-white">
+        <Helmet>
+          <title>Speeches — BOCRA</title>
+          <meta name="description" content="Official speeches and presentations from BOCRA leadership." />
+          <link rel="canonical" href="https://bocra.org.bw/media/speeches" />
+        </Helmet>
         <div className="bg-bocra-off-white border-b border-gray-100">
           <div className="section-wrapper py-4">
-            <nav className="text-sm text-bocra-slate/50 flex items-center gap-2">
-              <Link to="/" className="hover:text-bocra-blue">{tn ? 'Gae' : 'Home'}</Link>
-              <ChevronRight size={14} />
-              <span className="text-bocra-slate/50">{tn ? 'Bobegadikgang' : 'Media'}</span>
-              <ChevronRight size={14} />
-              <span className="text-bocra-slate font-medium">{tn ? 'Dipuo' : 'Speeches'}</span>
-            </nav>
+            <Breadcrumb items={[{ label: 'Media' }, { label: 'Speeches' }]} />
           </div>
         </div>
 
@@ -192,6 +193,11 @@ export default function SpeechesPage() {
 
   return (
     <div className="bg-white">
+      <Helmet>
+        <title>Speeches — BOCRA</title>
+        <meta name="description" content="Official speeches and presentations from BOCRA leadership." />
+        <link rel="canonical" href="https://bocra.org.bw/media/speeches" />
+      </Helmet>
       <div className="bg-bocra-off-white border-b border-gray-100">
         <div className="section-wrapper py-4">
           <nav className="text-sm text-bocra-slate/50 flex items-center gap-2">

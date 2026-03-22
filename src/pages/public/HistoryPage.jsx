@@ -5,10 +5,12 @@
 
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ChevronRight, ChevronDown } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
+import { ChevronDown } from 'lucide-react';
 import { useScrollReveal, useStaggerReveal } from '../../hooks/useAnimations';
 
 import PageHero from '../../components/ui/PageHero';
+import Breadcrumb from '../../components/ui/Breadcrumb';
 import { useLanguage } from '../../lib/language';
 const getTimeline = (lang) => [
   {
@@ -146,15 +148,14 @@ export default function HistoryPage() {
 
   return (
     <div>
+      <Helmet>
+        <title>History — BOCRA</title>
+        <meta name="description" content="The history and evolution of BOCRA and telecommunications regulation in Botswana." />
+        <link rel="canonical" href="https://bocra.org.bw/about/history" />
+      </Helmet>
       <div className="bg-bocra-off-white border-b border-gray-100">
         <div className="section-wrapper py-4">
-          <nav className="text-sm text-bocra-slate/50 flex items-center gap-2">
-            <Link to="/" className="hover:text-bocra-blue transition-colors">{lang === 'tn' ? 'Gae' : 'Home'}</Link>
-            <ChevronRight size={14} />
-            <Link to="/about/profile" className="hover:text-bocra-blue transition-colors">{lang === 'tn' ? 'Ka ga Rona' : 'About'}</Link>
-            <ChevronRight size={14} />
-            <span className="text-bocra-slate font-medium">{lang === 'tn' ? 'Histori' : 'History'}</span>
-          </nav>
+          <Breadcrumb items={[{ label: 'About', href: '/about/profile' }, { label: 'History' }]} />
         </div>
       </div>
       {/* Hero */}

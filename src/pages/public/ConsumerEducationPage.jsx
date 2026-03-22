@@ -6,13 +6,15 @@
  * Route: /complaints/consumer-education
  */
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import {
-  ChevronRight, Shield, AlertCircle, CheckCircle, Phone, Wifi,
+  Shield, AlertCircle, CheckCircle, Phone, Wifi,
   CreditCard, Clock, FileText, ArrowRight, Users, Globe,
   Radio, Mail, HelpCircle, Scale, Eye, Lock, Smartphone, Tv
 } from 'lucide-react';
 import { useScrollReveal, useStaggerReveal } from '../../hooks/useAnimations';
 import PageHero from '../../components/ui/PageHero';
+import Breadcrumb from '../../components/ui/Breadcrumb';
 import { useLanguage } from '../../lib/language';
 
 const getRights = (lang) => [
@@ -53,16 +55,18 @@ export default function ConsumerEducationPage() {
 
   return (
     <div className="bg-white min-h-screen">
+      <Helmet>
+        <title>Consumer Education — BOCRA</title>
+        <meta name="description" content="Consumer education resources for telecommunications and broadcasting services in Botswana." />
+        <link rel="canonical" href="https://bocra.org.bw/complaints/consumer-education" />
+      </Helmet>
       {/* Breadcrumb */}
       <div className="bg-bocra-off-white border-b border-gray-100">
         <div className="section-wrapper py-4">
-          <nav className="text-sm text-bocra-slate/50 flex items-center gap-2">
-            <Link to="/" className="hover:text-bocra-blue">{tn ? 'Gae' : 'Home'}</Link>
-            <ChevronRight size={14} />
-            <span className="text-bocra-slate/50">{tn ? 'Ditirelo' : 'Services'}</span>
-            <ChevronRight size={14} />
-            <span className="text-bocra-slate font-medium">{tn ? 'Thuto ya Badirisi' : 'Consumer Education'}</span>
-          </nav>
+          <Breadcrumb items={[
+            { label: 'Complaints', href: '/complaints' },
+            { label: 'Consumer Education' },
+          ]} />
         </div>
       </div>
 

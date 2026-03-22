@@ -2,16 +2,20 @@
  * CareersPage.jsx — Careers at BOCRA
  * Route: /about/careers
  */
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import {
-  ChevronRight, Briefcase, GraduationCap, Heart, Globe, Shield,
+  Briefcase, GraduationCap, Heart, Globe, Shield,
   Users, Wifi, ArrowRight, Mail, Phone, MapPin, Clock, Star,
-  CheckCircle, Building, Award, Send
+  CheckCircle, Building, Award, Send, Calendar, Edit3
 } from 'lucide-react';
 import { useScrollReveal } from '../../hooks/useAnimations';
 import PageHero from '../../components/ui/PageHero';
+import Breadcrumb from '../../components/ui/Breadcrumb';
 import { useLanguage } from '../../lib/language';
+import { useAuth } from '../../lib/auth';
+import { supabase } from '../../lib/supabase';
 
 const getWHY_BOCRA = (lang) => [
   { icon: Globe, title: lang === 'tn' ? 'Phetogo ya Dijithale' : 'Digital Transformation', desc: lang === 'tn' ? 'Tshwaela mo go ageng Botswana e e golaganeng le e e etelletsweng ke dijithale.' : 'Help build a connected and digitally driven Botswana for all citizens.', color: '#00A6CE' },
@@ -38,6 +42,13 @@ const getAPPLICATION_STEPS = (lang) => [
   { step: '4', title: lang === 'tn' ? 'Tsamaiso ya Tlhopho' : 'Selection Process', desc: lang === 'tn' ? 'Bakopi ba ba fitlhetseng maemo ba tla laleledwa dipuisano le ditlhatlhobo.' : 'Shortlisted candidates will be invited for interviews and assessments.', color: '#6BBE4E' },
 ];
 
+const CAREERS_CV_EMAIL = 'info@bocra.org.bw';
+const CAREERS_CV_SUBJECT = 'General Application - CV Submission';
+const CAREERS_MAILTO_HREF = `mailto:${CAREERS_CV_EMAIL}?subject=${encodeURIComponent(CAREERS_CV_SUBJECT)}`;
+/** Opens in the browser when no desktop mail client handles mailto: */
+const CAREERS_GMAIL_COMPOSE_HREF =
+  `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(CAREERS_CV_EMAIL)}&su=${encodeURIComponent(CAREERS_CV_SUBJECT)}`;
+
 export default function CareersPage() {
   const { lang } = useLanguage();
   const tn = lang === 'tn';
@@ -45,19 +56,50 @@ export default function CareersPage() {
   const WHY_BOCRA = getWHY_BOCRA(lang);
   const DEPARTMENTS = getDEPARTMENTS(lang);
   const STEPS = getAPPLICATION_STEPS(lang);
+  const { profile } = useAuth();
+  const isAdmin = profile?.role === 'admin' || profile?.role === 'staff';
+
+  const [jobs, setJobs] = useState([]);
+  const [loadingJobs, setLoadingJobs] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+    const fetchJobs = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('job_openings')
+          .select('*')
+          .eq('status', 'open')
+          .order('created_at', { ascending: false });
+
+        if (error) throw error;
+        if (!cancelled && data) {
+          setJobs(data);
+        }
+      } catch (err) {
+        console.error('Failed to fetch jobs:', err);
+      } finally {
+        if (!cancelled) setLoadingJobs(false);
+      }
+    };
+    fetchJobs();
+    return () => { cancelled = true; };
+  }, []);
 
   return (
     <div className="bg-white min-h-screen">
+      <Helmet>
+        <title>Careers — BOCRA</title>
+        <meta name="description" content="Career opportunities at the Botswana Communications Regulatory Authority." />
+        <link rel="canonical" href="https://bocra.org.bw/about/careers" />
+      </Helmet>
       {/* Breadcrumb */}
       <div className="bg-bocra-off-white border-b border-gray-100">
         <div className="section-wrapper py-4">
-          <nav className="text-sm text-bocra-slate/50 flex items-center gap-2">
-            <Link to="/" className="hover:text-bocra-blue transition-colors">{tn ? 'Gae' : 'Home'}</Link>
-            <ChevronRight size={14} />
-            <Link to="/about/profile" className="hover:text-bocra-blue transition-colors">{tn ? 'Ka ga Rona' : 'About'}</Link>
-            <ChevronRight size={14} />
-            <span className="text-bocra-slate font-medium">{tn ? 'Menyetla ya Ditiro' : 'Careers'}</span>
-          </nav>
+          <Breadcrumb items={[
+            { label: 'About', href: '/about/profile' },
+            { label: 'Careers' },
+          ]} />
         </div>
       </div>
 
@@ -101,26 +143,98 @@ export default function CareersPage() {
         <div className="section-wrapper max-w-5xl">
           <div className="text-center mb-8">
             <p className="text-[10px] text-bocra-slate/30 uppercase tracking-[0.25em] font-medium mb-2">{tn ? 'MAEMO A A LENG TENG' : 'CURRENT OPENINGS'}</p>
-            <h2 className="text-xl font-bold text-[#001A3A]">{tn ? 'Maemo a Ditiro a a Leng Teng' : 'Current Job Openings'}</h2>
+            <div className="flex items-center justify-center gap-3">
+              <h2 className="text-xl font-bold text-[#001A3A]">{tn ? 'Maemo a Ditiro a a Leng Teng' : 'Current Job Openings'}</h2>
+              {isAdmin && (
+                <Link to="/admin/jobs" className="text-sm text-bocra-blue hover:underline flex items-center gap-1">
+                  <Edit3 size={14} /> Manage
+                </Link>
+              )}
+            </div>
           </div>
 
-          {/* No openings state */}
-          <div className="bg-white rounded-2xl border border-gray-100 p-8 text-center">
-            <div className="w-16 h-16 rounded-2xl bg-[#00A6CE]/10 flex items-center justify-center mx-auto mb-4">
-              <Briefcase size={28} className="text-[#00A6CE]" />
+          {loadingJobs ? (
+            <div className="space-y-4">
+              {[1, 2].map(i => (
+                <div key={i} className="bg-white rounded-2xl border border-gray-100 p-7 animate-pulse">
+                  <div className="flex justify-between mb-3"><div className="h-6 w-2/3 bg-gray-200 rounded" /><div className="h-6 w-16 bg-gray-200 rounded-full" /></div>
+                  <div className="flex gap-3 mb-4"><div className="h-4 w-28 bg-gray-100 rounded" /><div className="h-4 w-32 bg-gray-100 rounded" /><div className="h-4 w-20 bg-gray-100 rounded" /></div>
+                  <div className="space-y-2"><div className="h-4 w-full bg-gray-100 rounded" /><div className="h-4 w-5/6 bg-gray-100 rounded" /></div>
+                </div>
+              ))}
             </div>
-            <h3 className="text-lg font-bold text-bocra-slate mb-2">{tn ? 'Ga go na Maemo a a Butsweng ga Jaana' : 'No Current Openings'}</h3>
-            <p className="text-sm text-bocra-slate/50 max-w-md mx-auto mb-4">
-              {tn
-                ? 'Ga go na maemo a a leng teng ga jaana. Boelang gape ka metlha go bona menyetla e mesha, kgotsa romela CV ya gago go re bolokela mo lenaaneng la rona.'
-                : 'There are no open positions at this time. Please check back regularly for new opportunities, or submit your CV to be kept on file for future vacancies.'}
-            </p>
-            <a href="mailto:info@bocra.org.bw?subject=General%20Application%20-%20CV%20Submission"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold text-white bg-[#00A6CE] hover:bg-[#008DB3] transition-colors">
-              <Send size={14} />
-              {tn ? 'Romela CV ya Gago' : 'Submit Your CV'}
-            </a>
-          </div>
+          ) : jobs.length > 0 ? (
+            <div className="space-y-4">
+              {jobs.map(job => (
+                <div key={job.id} className="bg-white rounded-2xl p-7 shadow-sm border border-gray-100 hover:-translate-y-1 transition-transform">
+                  <div className="flex justify-between items-start mb-3">
+                    <h3 className="text-xl font-bold text-gray-900">{job.title}</h3>
+                    <span className="bg-green-100 text-green-800 text-xs font-medium px-3 py-1 rounded-full flex-shrink-0 ml-3">Open</span>
+                  </div>
+                  <div className="flex flex-wrap gap-3 text-sm text-gray-600 mb-4">
+                    <span className="flex items-center gap-1"><Briefcase size={14} /> {job.department}</span>
+                    <span className="flex items-center gap-1"><MapPin size={14} /> {job.location}</span>
+                    <span className="flex items-center gap-1"><Clock size={14} /> {job.employment_type}</span>
+                    {job.closing_date && (
+                      <span className="flex items-center gap-1"><Calendar size={14} /> Closes: {new Date(job.closing_date).toLocaleDateString()}</span>
+                    )}
+                  </div>
+                  <p className="text-gray-700 mb-4 whitespace-pre-wrap">{job.description}</p>
+                  {job.requirements && (
+                    <div className="mb-4">
+                      <h4 className="font-semibold text-gray-900 mb-2">Requirements</h4>
+                      <p className="text-gray-700 whitespace-pre-wrap text-sm">{job.requirements}</p>
+                    </div>
+                  )}
+                  {job.qualifications && (
+                    <div className="mb-4">
+                      <h4 className="font-semibold text-gray-900 mb-2">Qualifications</h4>
+                      <p className="text-gray-700 whitespace-pre-wrap text-sm">{job.qualifications}</p>
+                    </div>
+                  )}
+                  {job.salary_range && (
+                    <p className="text-bocra-blue font-medium">{job.salary_range}</p>
+                  )}
+                </div>
+              ))}
+            </div>
+          ) : (
+            /* No openings state — preserved exactly as original */
+            <div className="bg-white rounded-2xl border border-gray-100 p-8 text-center">
+              <div className="w-16 h-16 rounded-2xl bg-[#00A6CE]/10 flex items-center justify-center mx-auto mb-4">
+                <Briefcase size={28} className="text-[#00A6CE]" />
+              </div>
+              <h3 className="text-lg font-bold text-bocra-slate mb-2">{tn ? 'Ga go na Maemo a a Butsweng ga Jaana' : 'No Current Openings'}</h3>
+              <p className="text-sm text-bocra-slate/50 max-w-md mx-auto mb-4">
+                {tn
+                  ? 'Ga go na maemo a a leng teng ga jaana. Boelang gape ka metlha go bona menyetla e mesha, kgotsa romela CV ya gago go re bolokela mo lenaaneng la rona.'
+                  : 'There are no open positions at this time. Please check back regularly for new opportunities, or submit your CV to be kept on file for future vacancies.'}
+              </p>
+              <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
+                <a
+                  href={CAREERS_GMAIL_COMPOSE_HREF}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold text-white bg-[#00A6CE] hover:bg-[#008DB3] transition-colors w-full sm:w-auto"
+                >
+                  <Send size={14} />
+                  {tn ? 'Romela CV ya Gago' : 'Submit Your CV'}
+                </a>
+                <a
+                  href={CAREERS_MAILTO_HREF}
+                  className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold text-[#00A6CE] bg-white border-2 border-[#00A6CE] hover:bg-[#00A6CE]/5 transition-colors w-full sm:w-auto"
+                >
+                  <Mail size={14} />
+                  {tn ? 'Bula sesebeli sa imeile' : 'Use email app'}
+                </a>
+              </div>
+              <p className="text-xs text-bocra-slate/40 mt-3 max-w-md mx-auto">
+                {tn
+                  ? 'Konopo e e kwa godimo e bula Gmail mo thepeng e nngwe (o ka tsenela mo akhaonteng ya gago). Fa o na le Outlook, Thunderbird, kgotsa se sengwe, dirisa konopo ya bobedi.'
+                  : 'The main button opens Gmail in a new tab (sign in if asked). If you use Outlook, Thunderbird, or Apple Mail, use "Use email app" instead \u2014 or write to info@bocra.org.bw.'}
+              </p>
+            </div>
+          )}
         </div>
       </section>
 

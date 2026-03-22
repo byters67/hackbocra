@@ -6,6 +6,7 @@
  */
 import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import {
@@ -14,6 +15,7 @@ import {
   Wifi, Scale, Star
 } from 'lucide-react';
 import PageHero from '../../components/ui/PageHero';
+import Breadcrumb from '../../components/ui/Breadcrumb';
 import { useLanguage } from '../../lib/language';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -359,16 +361,15 @@ export default function ExecutiveManagementPage() {
 
   return (
     <div>
+      <Helmet>
+        <title>Executive Management — BOCRA</title>
+        <meta name="description" content="Meet the BOCRA executive management team leading Botswana's communications regulation." />
+        <link rel="canonical" href="https://bocra.org.bw/about/executive-management" />
+      </Helmet>
       {/* Breadcrumb */}
       <div className="bg-bocra-off-white border-b border-gray-100">
         <div className="section-wrapper py-4">
-          <nav className="text-sm text-bocra-slate/50 flex items-center gap-2">
-            <Link to="/" className="hover:text-bocra-blue transition-colors">{lang === 'tn' ? 'Gae' : 'Home'}</Link>
-            <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18l6-6-6-6"/></svg></span>
-            <Link to="/about/profile" className="hover:text-bocra-blue transition-colors">{lang === 'tn' ? 'Ka ga Rona' : 'About'}</Link>
-            <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18l6-6-6-6"/></svg></span>
-            <span className="text-bocra-slate font-medium">{lang === 'tn' ? 'Botsamaisi jwa Phethagatso' : 'Executive Management'}</span>
-          </nav>
+          <Breadcrumb items={[{ label: 'About', href: '/about/profile' }, { label: 'Executive Management' }]} />
         </div>
       </div>
 

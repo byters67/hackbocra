@@ -15,10 +15,11 @@
  * - Right To Safety
  */
 
+import { Helmet } from 'react-helmet-async';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
-  ChevronRight, AlertCircle, CheckCircle, Send,
+  AlertCircle, CheckCircle, Send,
   FileText, Clock, Shield, Phone, HelpCircle
 } from 'lucide-react';
 import { checkRateLimit, supabaseUrl_, supabaseAnonKey_ } from '../../lib/supabase';
@@ -28,6 +29,7 @@ import { useScrollReveal, useStaggerReveal } from '../../hooks/useAnimations';
 import ConsentCheckbox from '../../components/ui/ConsentCheckbox';
 
 import PageHero from '../../components/ui/PageHero';
+import Breadcrumb from '../../components/ui/Breadcrumb';
 import { useLanguage } from '../../lib/language';
 const getCOMPLAINT_TYPES = (lang) => lang === 'tn' ? [
   'Mathata a Dituelo / Go Lefisiwa',
@@ -188,16 +190,15 @@ export default function FileComplaintPage() {
 
   return (
     <div>
+      <Helmet>
+        <title>File a Complaint — BOCRA</title>
+        <meta name="description" content="Report service quality issues with telecoms, broadcasting, postal, or internet providers in Botswana." />
+        <link rel="canonical" href="https://bocra.org.bw/services/file-complaint" />
+      </Helmet>
       {/* Breadcrumb */}
       <div className="bg-bocra-off-white border-b border-gray-100">
         <div className="section-wrapper py-4">
-          <nav className="text-sm text-bocra-slate/50 flex items-center gap-2">
-            <Link to="/" className="hover:text-bocra-blue transition-colors">{lang === 'tn' ? 'Gae' : 'Home'}</Link>
-            <ChevronRight size={14} />
-            <Link to="/services/file-complaint" className="hover:text-bocra-blue transition-colors">{lang === 'tn' ? 'Ditirelo' : 'Services'}</Link>
-            <ChevronRight size={14} />
-            <span className="text-bocra-slate">{lang === 'tn' ? 'Tlhagisa Ngongorego' : 'File a Complaint'}</span>
-          </nav>
+          <Breadcrumb items={[{ label: 'Services', href: '/services' }, { label: 'File a Complaint' }]} />
         </div>
       </div>
       {/* Hero */}

@@ -10,7 +10,7 @@
  */
 
 import { useState, useEffect } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate, Link } from 'react-router-dom';
 import {
   LayoutDashboard,
   AlertCircle,
@@ -23,10 +23,13 @@ import {
   X,
   Smartphone,
   MessageSquare,
+  Newspaper,
+  FolderOpen,
+  Briefcase,
 } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../lib/auth';
-import BocraLogo from '../ui/BocraLogo';
+import BocraLogo from '../../components/ui/BocraLogo';
 
 const NAV_ITEMS = [
   { to: '/admin', label: 'Dashboard', icon: LayoutDashboard, end: true },
@@ -37,6 +40,12 @@ const NAV_ITEMS = [
   { to: '/admin/consultations', label: 'Consultations', icon: MessageSquare },
   { to: '/admin/type-approval', label: 'Type Approval Devices', icon: Smartphone },
   { to: '/admin/data-requests', label: 'Data Requests', icon: UserCheck, countKey: 'dataRequests' },
+];
+
+const CONTENT_NAV_ITEMS = [
+  { to: '/admin/news', label: 'News & Articles', icon: Newspaper },
+  { to: '/admin/documents-manage', label: 'Documents', icon: FolderOpen },
+  { to: '/admin/jobs', label: 'Jobs / Careers', icon: Briefcase },
 ];
 
 export default function AdminSidebar({ profile }) {
@@ -83,11 +92,16 @@ export default function AdminSidebar({ profile }) {
 
   const sidebarContent = (
     <div className="flex flex-col h-full">
-      {/* Logo */}
-      <div className="px-5 py-6 border-b border-white/10">
-        <BocraLogo white height={36} />
-        <p className="text-[10px] text-cyan-300 mt-1 tracking-widest uppercase">Admin Portal</p>
-      </div>
+      {/* Logo — entire block links to public homepage */}
+      <Link
+        to="/"
+        onClick={() => setMobileOpen(false)}
+        className="block px-5 py-6 border-b border-white/10 hover:bg-white/5 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#00A6CE]/40 cursor-pointer no-underline text-inherit"
+        aria-label="Go to BOCRA homepage"
+      >
+        <BocraLogo white height={36} className="pointer-events-none" />
+        <p className="text-[10px] text-cyan-300 mt-1 tracking-widest uppercase pointer-events-none">Admin Portal</p>
+      </Link>
 
       {/* Navigation */}
       <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
@@ -112,6 +126,28 @@ export default function AdminSidebar({ profile }) {
                 {counts[item.countKey]}
               </span>
             )}
+          </NavLink>
+        ))}
+
+        {/* Content Management */}
+        <div className="pt-4 pb-1 px-3">
+          <p className="text-[10px] text-gray-500 uppercase tracking-widest font-medium">Content</p>
+        </div>
+        {CONTENT_NAV_ITEMS.map((item) => (
+          <NavLink
+            key={item.to}
+            to={item.to}
+            onClick={() => setMobileOpen(false)}
+            className={({ isActive }) =>
+              `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                isActive
+                  ? 'bg-[#00A6CE]/15 text-[#00A6CE]'
+                  : 'text-gray-300 hover:bg-white/5 hover:text-white'
+              }`
+            }
+          >
+            <item.icon size={18} />
+            <span className="flex-1">{item.label}</span>
           </NavLink>
         ))}
       </nav>

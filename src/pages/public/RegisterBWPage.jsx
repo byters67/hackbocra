@@ -5,9 +5,10 @@
  * same card styles, same hero banner pattern. Logos from nic partners.
  */
 import { useState, useRef } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import {
-  ChevronRight, Search, Globe, Shield, Clock, Users, CheckCircle,
+  Search, Globe, Shield, Clock, Users, CheckCircle,
   ArrowRight, ExternalLink, FileText, Download, Mail, Phone,
   Building, Award, Zap, Lock, Server, ChevronDown, AlertCircle,
   Star, MapPin, RefreshCw, HelpCircle, BookOpen, XCircle
@@ -15,6 +16,7 @@ import {
 import { useScrollReveal, useStaggerReveal } from '../../hooks/useAnimations';
 
 import PageHero from '../../components/ui/PageHero';
+import Breadcrumb from '../../components/ui/Breadcrumb';
 import { useLanguage } from '../../lib/language';
 const BASE = import.meta.env.BASE_URL;
 
@@ -157,14 +159,15 @@ export default function RegisterBWPage() {
 
   return (
     <div className="bg-white">
+      <Helmet>
+        <title>Register .BW Domain — BOCRA</title>
+        <meta name="description" content="Register a .bw domain name for Botswana and check domain availability." />
+        <link rel="canonical" href="https://bocra.org.bw/services/register-bw" />
+      </Helmet>
       {/* Breadcrumb */}
       <div className="bg-bocra-off-white border-b border-gray-100">
         <div className="section-wrapper py-4">
-          <nav className="text-sm text-bocra-slate/50 flex items-center gap-2">
-            <Link to="/" className="hover:text-bocra-blue transition-colors">{lang === 'tn' ? 'Gae' : 'Home'}</Link>
-            <ChevronRight size={14} />
-            <span className="text-bocra-slate">{lang === 'tn' ? 'Kwadisa Lefelo la .BW' : 'Register .BW Domain'}</span>
-          </nav>
+          <Breadcrumb items={[{ label: 'Services' }, { label: 'Register .BW Domain' }]} />
         </div>
       </div>
 

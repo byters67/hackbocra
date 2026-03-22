@@ -22,11 +22,14 @@ import {
   Hash, Calendar, Filter, SlidersHorizontal, ExternalLink, Package,
   CreditCard
 } from 'lucide-react';
+import Breadcrumb from '../../components/ui/Breadcrumb';
 import { useScrollReveal } from '../../hooks/useAnimations';
 import { useAuth } from '../../lib/auth';
-import { supabase, supabaseUrl_, supabaseAnonKey_ } from '../../lib/supabase';
+import { supabase, supabaseUrl_, supabaseAnonKey_, checkRateLimit } from '../../lib/supabase';
 import { useRecaptcha } from '../../hooks/useRecaptcha';
 import { useLanguage } from '../../lib/language';
+import { Helmet } from 'react-helmet-async';
+import { validateForm } from '../../lib/validation';
 
 /* ─── DEVICE CATEGORIES & ICONS (data comes from Supabase) ─── */
 const DEVICE_CATEGORIES = ['All', 'Mobile Phone', 'Router', 'Access Point', 'Tablet', 'Two-Way Radio', 'CPE Device', 'IP Camera', 'Satellite Terminal', 'Base Station', 'Network Switch', 'POS Terminal', 'IoT Device', 'Vehicle System', 'Solar Inverter'];
@@ -69,12 +72,18 @@ export default function TypeApprovalPage() {
   const heroRef = useScrollReveal();
 
   useEffect(() => {
-    if (user) {
-      (async () => {
-        const { data } = await supabase.from('profiles').select('*').eq('id', user.id).single();
-        if (data) setOperator(data);
-      })();
-    }
+    if (!user) return;
+    let cancelled = false;
+    (async () => {
+      try {
+        const { data, error } = await supabase.from('profiles').select('*').eq('id', user.id).single();
+        if (error) throw error;
+        if (!cancelled && data) setOperator(data);
+      } catch (err) {
+        console.error('Failed to fetch profile:', err);
+      }
+    })();
+    return () => { cancelled = true; };
   }, [user]);
 
   if (view === 'login') return <LoginForm setView={setView} signIn={signIn} lang={lang} />;
@@ -85,20 +94,15 @@ export default function TypeApprovalPage() {
   /* ── LANDING ── */
   return (
     <div className="bg-white min-h-screen">
+      <Helmet>
+        <title>Type Approval — BOCRA</title>
+        <meta name="description" content="Search approved telecommunications equipment and apply for type approval certification in Botswana." />
+        <link rel="canonical" href="https://bocra.org.bw/services/type-approval" />
+      </Helmet>
       {/* Breadcrumb */}
       <div className="bg-bocra-off-white border-b border-gray-100">
         <div className="section-wrapper py-4">
-          <nav className="text-sm text-bocra-slate/50 flex items-center gap-2">
-            <Link to="/" className="hover:text-bocra-blue transition-colors">
-              {lang === 'tn' ? 'Legae' : 'Home'}
-            </Link>
-            <ChevronRight size={14} />
-            <Link to="/services" className="hover:text-bocra-blue transition-colors">
-              {lang === 'tn' ? 'Ditirelo' : 'Services'}
-            </Link>
-            <ChevronRight size={14} />
-            <span className="text-bocra-slate font-medium">{lang === 'tn' ? 'Tumelelo ya Mofuta' : 'Type Approval'}</span>
-          </nav>
+          <Breadcrumb items={[{ label: 'Services' }, { label: 'Type Approval' }]} />
         </div>
       </div>
 
@@ -395,39 +399,53 @@ function TypeApprovalSearch({ setView, lang }) {
 
   // Fetch devices from Supabase
   useEffect(() => {
+    let cancelled = false;
     (async () => {
       setLoading(true);
-      let q = supabase.from('type_approved_devices').select('*', { count: 'exact' });
+      try {
+        let q = supabase.from('type_approved_devices').select('*', { count: 'exact' });
 
-      if (category !== 'All') q = q.eq('category', category);
+        if (category !== 'All') q = q.eq('category', category);
 
-      if (query.trim()) {
-        const searchTerm = `%${query.trim()}%`;
-        q = q.or(`device_name.ilike.${searchTerm},manufacturer.ilike.${searchTerm},model_number.ilike.${searchTerm},certificate_number.ilike.${searchTerm}`);
+        if (query.trim()) {
+          const searchTerm = `%${query.trim()}%`;
+          q = q.or(`device_name.ilike.${searchTerm},manufacturer.ilike.${searchTerm},model_number.ilike.${searchTerm},certificate_number.ilike.${searchTerm}`);
+        }
+
+        if (sortBy === 'date') q = q.order('approval_date', { ascending: false });
+        else if (sortBy === 'name') q = q.order('device_name', { ascending: true });
+        else if (sortBy === 'make') q = q.order('manufacturer', { ascending: true });
+
+        const { data, count, error } = await q.limit(100);
+        if (error) throw error;
+        if (!cancelled && data) {
+          setDevices(data);
+          setTotalCount(count || data.length);
+        }
+      } catch (err) {
+        console.error('Failed to fetch devices:', err);
       }
-
-      if (sortBy === 'date') q = q.order('approval_date', { ascending: false });
-      else if (sortBy === 'name') q = q.order('device_name', { ascending: true });
-      else if (sortBy === 'make') q = q.order('manufacturer', { ascending: true });
-
-      const { data, count, error } = await q.limit(100);
-      if (!error && data) {
-        setDevices(data);
-        setTotalCount(count || data.length);
-      }
-      setLoading(false);
+      if (!cancelled) setLoading(false);
     })();
+    return () => { cancelled = true; };
   }, [query, category, sortBy]);
 
   // Fetch distinct categories on mount
   useEffect(() => {
+    let cancelled = false;
     (async () => {
-      const { data } = await supabase.from('type_approved_devices').select('category').order('category');
-      if (data) {
-        const cats = [...new Set(data.map(d => d.category))];
-        setDbCategories(['All', ...cats]);
+      try {
+        const { data, error } = await supabase.from('type_approved_devices').select('category').order('category');
+        if (error) throw error;
+        if (!cancelled && data) {
+          const cats = [...new Set(data.map(d => d.category))];
+          setDbCategories(['All', ...cats]);
+        }
+      } catch (err) {
+        console.error('Failed to fetch categories:', err);
       }
     })();
+    return () => { cancelled = true; };
   }, []);
 
   const activeCats = dbCategories.length > 1 ? dbCategories : DEVICE_CATEGORIES;
@@ -646,19 +664,29 @@ function TypeApprovalDashboard({ operator, user, signOut, setView, lang }) {
 
   useEffect(() => {
     if (!user) return;
+    let cancelled = false;
     (async () => {
-      const [aR, cR] = await Promise.all([
-        supabase.from('licence_applications').select('*')
-          .or(`operator_user_id.eq.${user.id},email.eq.${user.email}`)
-          .order('created_at', { ascending: false }),
-        supabase.from('complaints').select('*')
-          .eq('email', user.email)
-          .order('created_at', { ascending: false }),
-      ]);
-      if (aR.data) setApplications(aR.data);
-      if (cR.data) setComplaints(cR.data);
-      setLoading(false);
+      try {
+        const [aR, cR] = await Promise.all([
+          supabase.from('licence_applications').select('*')
+            .or(`operator_user_id.eq.${user.id},email.eq.${user.email}`)
+            .order('created_at', { ascending: false }),
+          supabase.from('complaints').select('*')
+            .eq('email', user.email)
+            .order('created_at', { ascending: false }),
+        ]);
+        if (aR.error) throw aR.error;
+        if (cR.error) throw cR.error;
+        if (!cancelled) {
+          if (aR.data) setApplications(aR.data);
+          if (cR.data) setComplaints(cR.data);
+        }
+      } catch (err) {
+        console.error('Failed to fetch dashboard data:', err);
+      }
+      if (!cancelled) setLoading(false);
     })();
+    return () => { cancelled = true; };
   }, [user]);
 
   const SC = {
@@ -876,10 +904,23 @@ function ComplaintsSection({ setView, lang }) {
   const [checkRef, setCheckRef] = useState('');
   const [checkResults, setCheckResults] = useState(null);
   const [checkLoading, setCheckLoading] = useState(false);
+  const [formErrors, setFormErrors] = useState({});
 
   const handleSubmitComplaint = async (e) => {
     e.preventDefault();
-    if (!form.email || !form.fullName || !form.category || !form.description) return;
+    if (!checkRateLimit('type-approval')) {
+      setComplaintError('Please wait before submitting again.');
+      return;
+    }
+    const { isValid, errors } = validateForm([
+      { value: form.email, name: 'email', rules: ['required', 'email'] },
+      { value: form.fullName, name: 'fullName', rules: ['required'] },
+      { value: form.phone, name: 'phone', rules: ['phone'] },
+      { value: form.category, name: 'category', rules: ['required'] },
+      { value: form.description, name: 'description', rules: ['required'] },
+    ]);
+    setFormErrors(errors);
+    if (!isValid) return;
     if (form.description.trim().length < 20) {
       setComplaintError('Please provide at least 20 characters in the description.');
       return;
@@ -934,10 +975,16 @@ function ComplaintsSection({ setView, lang }) {
     e.preventDefault();
     if (!checkEmail) return;
     setCheckLoading(true);
-    let query = supabase.from('complaints').select('*').eq('email', checkEmail).eq('provider', 'Type Approval');
-    if (checkRef.trim()) query = query.ilike('id', `%${checkRef}%`);
-    const { data } = await query.order('created_at', { ascending: false });
-    setCheckResults(data || []);
+    try {
+      let query = supabase.from('complaints').select('*').eq('email', checkEmail).eq('provider', 'Type Approval');
+      if (checkRef.trim()) query = query.ilike('id', `%${checkRef}%`);
+      const { data, error } = await query.order('created_at', { ascending: false });
+      if (error) throw error;
+      setCheckResults(data || []);
+    } catch (err) {
+      console.error('Failed to check complaint status:', err);
+      setComplaintError('Failed to check status. Please try again.');
+    }
     setCheckLoading(false);
   };
 

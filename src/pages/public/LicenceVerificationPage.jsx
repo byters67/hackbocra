@@ -1,6 +1,8 @@
-import{useState,useMemo}from'react';import{Link}from'react-router-dom';import{ChevronRight,Search,Shield,CheckCircle,Building,Wifi,Globe,Truck,Tv,FileCheck,AlertCircle,ChevronDown}from'lucide-react';import{useScrollReveal}from'../../hooks/useAnimations';
+import { Helmet } from 'react-helmet-async';
+import{useState,useMemo}from'react';import{Link}from'react-router-dom';import{Search,Shield,CheckCircle,Building,Wifi,Globe,Truck,Tv,FileCheck,AlertCircle,ChevronDown}from'lucide-react';import{useScrollReveal}from'../../hooks/useAnimations';
 import { useLanguage } from '../../lib/language';
 import PageHero from '../../components/ui/PageHero';
+import Breadcrumb from '../../components/ui/Breadcrumb';
 const L=[
 {l:'NFP 01-18/19',c:'Mascom Wireless Botswana (Pty) Ltd',t:'NFP',s:'PTO',sec:'Telecommunications',i:'2018-09-01',e:'2033-08-31',a:'Tsholetsa House, Plot 4705/6, Main Mall, Gaborone'},
 {l:'NFP 02-18/19',c:'Orange Botswana (Pty) Ltd',t:'NFP',s:'PTO',sec:'Telecommunications',i:'2018-09-01',e:'2033-08-31',a:'Plot 166, Queens Road, Main Mall, Gaborone'},
@@ -199,7 +201,12 @@ export default function LicenceVerificationPage(){
   const res=useMemo(()=>{if(!q.trim()&&!sf)return[];const w=q.toLowerCase().trim().split(/\s+/).filter(x=>x.length>0);return L.filter(x=>{if(sf&&x.sec!==sf)return false;if(w.length===0)return true;const h=(x.l+' '+x.c+' '+x.sec+' '+x.t+' '+(x.s||'')+' '+x.a).toLowerCase();return w.every(word=>h.includes(word))});},[q,sf]);
   const vis=sa?res:res.slice(0,12);const secs=[...new Set(L.map(x=>x.sec))];const exp=d=>new Date(d)<new Date();
   return(<div className="bg-white">
-    <div className="bg-bocra-off-white border-b border-gray-100"><div className="section-wrapper py-4"><nav className="text-sm text-bocra-slate/50 flex items-center gap-2"><Link to="/" className="hover:text-bocra-blue transition-colors">{lang === 'tn' ? 'Gae' : 'Home'}</Link><ChevronRight size={14}/><span className="text-bocra-slate">{lang === 'tn' ? 'Netefatso ya Laesense' : 'Licence Verification'}</span></nav></div></div>
+      <Helmet>
+        <title>Licence Verification — BOCRA</title>
+        <meta name="description" content="Verify the status of licensed telecommunications and broadcasting operators in Botswana." />
+        <link rel="canonical" href="https://bocra.org.bw/services/licence-verification" />
+      </Helmet>
+    <div className="bg-bocra-off-white border-b border-gray-100"><div className="section-wrapper py-4"><Breadcrumb items={[{ label: 'Services' }, { label: 'Licence Verification' }]} /></div></div>
     
       {/* Hero */}
       <PageHero category="SERVICES" categoryTn="DITIRELO" title="Licence Verification" titleTn="Netefatso ya Laesense" description="Verify the validity and status of telecommunications, broadcasting, and postal licences issued by BOCRA." descriptionTn="Netefatsa go siama le maemo a dilaesense tsa megala, phasalatso, le poso tse di ntshitsweng ke BOCRA." color="green" />

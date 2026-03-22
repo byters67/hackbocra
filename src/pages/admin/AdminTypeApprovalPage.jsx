@@ -10,6 +10,7 @@ import {
   Download, Smartphone, ChevronDown, AlertCircle, Eye
 } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
+import { validateForm } from '../../lib/validation';
 
 const CATEGORIES = [
   'Mobile Phone', 'Tablet', 'Router', 'CPE Device', 'Access Point',
@@ -47,17 +48,45 @@ export default function AdminTypeApprovalPage() {
   const [error, setError] = useState('');
   const [selectedDevice, setSelectedDevice] = useState(null);
 
-  useEffect(() => { fetchDevices(); }, []);
+  useEffect(() => {
+    let cancelled = false;
+
+    async function doFetch() {
+      try {
+        const { data, error } = await supabase
+          .from('type_approved_devices')
+          .select('*')
+          .order('approval_date', { ascending: false })
+          .limit(200);
+        if (!cancelled) {
+          if (data) setDevices(data);
+          if (error) console.error('Fetch error:', error);
+          setLoading(false);
+        }
+      } catch (err) {
+        console.error('Fetch error:', err);
+        if (!cancelled) setLoading(false);
+      }
+    }
+
+    doFetch();
+    return () => { cancelled = true; };
+  }, []);
 
   async function fetchDevices() {
-    const { data, error } = await supabase
-      .from('type_approved_devices')
-      .select('*')
-      .order('approval_date', { ascending: false })
-      .limit(200);
-    if (data) setDevices(data);
-    if (error) console.error('Fetch error:', error);
-    setLoading(false);
+    try {
+      const { data, error } = await supabase
+        .from('type_approved_devices')
+        .select('*')
+        .order('approval_date', { ascending: false })
+        .limit(200);
+      if (data) setDevices(data);
+      if (error) console.error('Fetch error:', error);
+      setLoading(false);
+    } catch (err) {
+      console.error('Fetch error:', err);
+      setLoading(false);
+    }
   }
 
   const filtered = useMemo(() => {
@@ -119,11 +148,19 @@ export default function AdminTypeApprovalPage() {
     e.preventDefault();
     setError('');
 
-    if (!form.device_name.trim()) { setError('Device name is required'); return; }
-    if (!form.manufacturer.trim()) { setError('Manufacturer is required'); return; }
-    if (!form.model_number.trim()) { setError('Model number is required'); return; }
-    if (!form.certificate_number.trim()) { setError('Certificate number is required'); return; }
-    if (!form.approval_date) { setError('Approval date is required'); return; }
+    const { isValid, errors } = validateForm([
+      { value: form.device_name, name: 'Device name', rules: ['required'] },
+      { value: form.manufacturer, name: 'Manufacturer', rules: ['required'] },
+      { value: form.model_number, name: 'Model number', rules: ['required'] },
+      { value: form.certificate_number, name: 'Certificate number', rules: ['required'] },
+      { value: form.approval_date, name: 'Approval date', rules: ['required'] },
+    ]);
+
+    if (!isValid) {
+      const firstError = Object.values(errors)[0];
+      setError(firstError);
+      return;
+    }
 
     setSaving(true);
 
@@ -143,43 +180,59 @@ export default function AdminTypeApprovalPage() {
       imei_required: form.imei_required,
     };
 
-    if (editingId) {
-      const { error: updateErr } = await supabase
-        .from('type_approved_devices')
-        .update(payload)
-        .eq('id', editingId);
-      if (updateErr) { setError(updateErr.message); setSaving(false); return; }
-      setSuccess('Device updated successfully');
-    } else {
-      const { error: insertErr } = await supabase
-        .from('type_approved_devices')
-        .insert(payload);
-      if (insertErr) { setError(insertErr.message); setSaving(false); return; }
-      setSuccess('Device added — now visible in public Type Approval Search');
-    }
+    try {
+      if (editingId) {
+        const { error: updateErr } = await supabase
+          .from('type_approved_devices')
+          .update(payload)
+          .eq('id', editingId);
+        if (updateErr) { setError(updateErr.message); setSaving(false); return; }
+        setSuccess('Device updated successfully');
+      } else {
+        const { error: insertErr } = await supabase
+          .from('type_approved_devices')
+          .insert(payload);
+        if (insertErr) { setError(insertErr.message); setSaving(false); return; }
+        setSuccess('Device added — now visible in public Type Approval Search');
+      }
 
-    setSaving(false);
-    resetForm();
-    fetchDevices();
-    setTimeout(() => setSuccess(''), 4000);
+      setSaving(false);
+      resetForm();
+      fetchDevices();
+      const timeoutId = setTimeout(() => setSuccess(''), 4000);
+    } catch (err) {
+      console.error('Submit error:', err);
+      setError(err.message || 'An unexpected error occurred');
+      setSaving(false);
+    }
   }
 
   async function handleDelete(id) {
     if (!confirm('Delete this device from the type approval database? This cannot be undone.')) return;
-    const { error } = await supabase.from('type_approved_devices').delete().eq('id', id);
-    if (error) alert('Error: ' + error.message);
-    else { fetchDevices(); if (selectedDevice?.id === id) setSelectedDevice(null); }
+    try {
+      const { error } = await supabase.from('type_approved_devices').delete().eq('id', id);
+      if (error) alert('Error: ' + error.message);
+      else { fetchDevices(); if (selectedDevice?.id === id) setSelectedDevice(null); }
+    } catch (err) {
+      console.error('Delete error:', err);
+      alert('Error: ' + (err.message || 'An unexpected error occurred'));
+    }
   }
 
   async function quickStatusChange(id, newStatus) {
-    const { error } = await supabase
-      .from('type_approved_devices')
-      .update({ status: newStatus })
-      .eq('id', id);
-    if (error) alert('Error: ' + error.message);
-    else {
-      fetchDevices();
-      if (selectedDevice?.id === id) setSelectedDevice(s => ({ ...s, status: newStatus }));
+    try {
+      const { error } = await supabase
+        .from('type_approved_devices')
+        .update({ status: newStatus })
+        .eq('id', id);
+      if (error) alert('Error: ' + error.message);
+      else {
+        fetchDevices();
+        if (selectedDevice?.id === id) setSelectedDevice(s => ({ ...s, status: newStatus }));
+      }
+    } catch (err) {
+      console.error('Status change error:', err);
+      alert('Error: ' + (err.message || 'An unexpected error occurred'));
     }
   }
 

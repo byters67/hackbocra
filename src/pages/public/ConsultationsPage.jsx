@@ -14,13 +14,15 @@
 
 import { useState, useMemo, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import {
   ChevronRight, Search, FileText, Calendar, Clock, Users, Send,
   CheckCircle, AlertCircle, ChevronDown, Download, MessageSquare,
   Filter, ArrowLeft, Globe, Radio, Wifi, Mail as MailIcon, Building
 } from 'lucide-react';
+import Breadcrumb from '../../components/ui/Breadcrumb';
 import { useScrollReveal } from '../../hooks/useAnimations';
-import { supabase } from '../../lib/supabase';
+import { supabase, checkRateLimit } from '../../lib/supabase';
 import { useRecaptcha } from '../../hooks/useRecaptcha';
 import { useLanguage } from '../../lib/language';
 
@@ -155,12 +157,17 @@ export default function ConsultationsPage() {
   const heroRef = useScrollReveal();
 
   useEffect(() => {
+    let cancelled = false;
     (async () => {
       try {
-        const { count } = await supabase.from('consultation_submissions').select('*', { count: 'exact', head: true });
-        if (typeof count === 'number') setTotalSubmissions(count);
-      } catch {}
+        const { count, error } = await supabase.from('consultation_submissions').select('*', { count: 'exact', head: true });
+        if (error) throw error;
+        if (!cancelled && typeof count === 'number') setTotalSubmissions(count);
+      } catch (err) {
+        console.warn('Failed to fetch total submissions count:', err);
+      }
     })();
+    return () => { cancelled = true; };
   }, []);
 
   const openItems = useMemo(() => CONSULTATIONS.filter(c => c.status === 'open' && (sectorFilter === 'All' || c.sector === sectorFilter)), [sectorFilter]);
@@ -176,7 +183,12 @@ export default function ConsultationsPage() {
 
   return (
     <div className="bg-white min-h-screen">
-      <div className="bg-bocra-off-white border-b border-gray-100"><div className="section-wrapper py-4"><nav className="text-sm text-bocra-slate/50 flex items-center gap-2"><Link to="/" className="hover:text-bocra-blue transition-colors">{lang === 'tn' ? 'Gae' : 'Home'}</Link><ChevronRight size={14} /><span className="text-bocra-slate font-medium">{lang === 'tn' ? 'Ditheriso tsa Setšhaba' : 'Public Consultations'}</span></nav></div></div>
+      <Helmet>
+        <title>Public Consultations — BOCRA</title>
+        <meta name="description" content="Participate in BOCRA public consultations on telecommunications, broadcasting, and postal regulation." />
+        <link rel="canonical" href="https://bocra.org.bw/consultations" />
+      </Helmet>
+      <div className="bg-bocra-off-white border-b border-gray-100"><div className="section-wrapper py-4"><Breadcrumb items={[{ label: 'Public Consultations' }]} /></div></div>
 
       <section className="px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6 pb-0">
         <div className="relative py-12 sm:py-16 px-5 sm:px-8 lg:px-10 rounded-2xl overflow-hidden bg-gradient-to-br from-[#00458B] to-[#001A3A]">
@@ -240,16 +252,22 @@ function ConsultationCard({ item, onRespond }) {
 
   // Fetch count of public responses on mount
   useEffect(() => {
+    let cancelled = false;
     (async () => {
       try {
-        const { count } = await supabase
+        const { count, error } = await supabase
           .from('consultation_submissions')
           .select('id', { count: 'exact', head: true })
           .eq('consultation_id', item.id)
           .eq('is_public', true);
-        setResponseCount(count ?? 0);
-      } catch { setResponseCount(0); }
+        if (error) throw error;
+        if (!cancelled) setResponseCount(count ?? 0);
+      } catch (err) {
+        console.warn('Failed to fetch response count:', err);
+        if (!cancelled) setResponseCount(0);
+      }
     })();
+    return () => { cancelled = true; };
   }, [item.id]);
 
   // Fetch full public responses when user clicks to view
@@ -257,14 +275,20 @@ function ConsultationCard({ item, onRespond }) {
     if (publicResponses.length > 0) { setResponsesOpen(!responsesOpen); return; }
     setResponsesLoading(true);
     setResponsesOpen(true);
-    const { data } = await supabase
-      .from('consultation_submissions')
-      .select('id, full_name, organisation, respondent_type, topic_tags, response_text, created_at')
-      .eq('consultation_id', item.id)
-      .eq('is_public', true)
-      .order('created_at', { ascending: false })
-      .limit(50);
-    setPublicResponses(data || []);
+    try {
+      const { data, error } = await supabase
+        .from('consultation_submissions')
+        .select('id, full_name, organisation, respondent_type, topic_tags, response_text, created_at')
+        .eq('consultation_id', item.id)
+        .eq('is_public', true)
+        .order('created_at', { ascending: false })
+        .limit(50);
+      if (error) throw error;
+      setPublicResponses(data || []);
+    } catch (err) {
+      console.warn('Failed to load public responses:', err);
+      setPublicResponses([]);
+    }
     setResponsesLoading(false);
   };
 
@@ -412,6 +436,7 @@ function SubmitResponsePage({ consultation, onBack }) {
 
   const handleSubmit = async () => {
     if (!validate()) return;
+    if (!checkRateLimit('consultation-submission')) { setFormErr('Please wait before submitting again.'); return; }
     setSubmitting(true);
     setFormErr('');
     const recaptchaToken = await executeRecaptcha('submit_consultation_response');

@@ -10,7 +10,7 @@
  */
 
 import { useState, useEffect } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate, Link } from 'react-router-dom';
 import {
   LayoutDashboard,
   AlertCircle,
@@ -24,6 +24,10 @@ import {
   Zap,
   Smartphone,
   MessageSquare,
+  Newspaper,
+  FolderOpen,
+  Briefcase,
+  ScrollText,
 } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../lib/auth';
@@ -39,6 +43,11 @@ const NAV_ITEMS = [
   { to: '/admin/type-approval', label: 'Type Approval Devices', icon: Smartphone },
   { to: '/admin/data-requests', label: 'Data Requests', icon: UserCheck, countKey: 'dataRequests' },
   { to: '/admin/automation', label: 'Automation', icon: Zap },
+  { section: 'Content Management' },
+  { to: '/admin/news', label: 'News & Articles', icon: Newspaper },
+  { to: '/admin/documents-manage', label: 'Documents', icon: FolderOpen },
+  { to: '/admin/jobs', label: 'Jobs / Careers', icon: Briefcase },
+  { to: '/admin/tenders-manage', label: 'Tenders', icon: ScrollText },
 ];
 
 export default function AdminSidebar({ profile }) {
@@ -85,15 +94,25 @@ export default function AdminSidebar({ profile }) {
 
   const sidebarContent = (
     <div className="flex flex-col h-full">
-      {/* Logo */}
-      <div className="px-5 py-6 border-b border-white/10">
-        <BocraLogo white height={36} />
-        <p className="text-[10px] text-cyan-300 mt-1 tracking-widest uppercase">Admin Portal</p>
-      </div>
+      {/* Logo — entire block links to public homepage */}
+      <Link
+        to="/"
+        onClick={() => setMobileOpen(false)}
+        className="block px-5 py-6 border-b border-white/10 hover:bg-white/5 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#00A6CE]/40 cursor-pointer no-underline text-inherit"
+        aria-label="Go to BOCRA homepage"
+      >
+        <BocraLogo white height={36} className="pointer-events-none" />
+        <p className="text-[10px] text-cyan-300 mt-1 tracking-widest uppercase pointer-events-none">Admin Portal</p>
+      </Link>
 
       {/* Navigation */}
       <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
-        {NAV_ITEMS.map((item) => (
+        {NAV_ITEMS.map((item, idx) =>
+          item.section ? (
+            <p key={item.section} className="text-[10px] text-gray-500 uppercase tracking-widest px-3 pt-4 pb-1 font-medium">
+              {item.section}
+            </p>
+          ) : (
           <NavLink
             key={item.to}
             to={item.to}
@@ -115,7 +134,8 @@ export default function AdminSidebar({ profile }) {
               </span>
             )}
           </NavLink>
-        ))}
+          )
+        )}
       </nav>
 
       {/* Admin info + logout */}

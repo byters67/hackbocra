@@ -2,14 +2,16 @@
  * DataProtectionPage.jsx — Data Protection Information
  * Route: /data-protection
  */
+import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import {
-  ChevronRight, Shield, Lock, Eye, Edit3, Trash2, FileText,
+  Shield, Lock, Eye, Edit3, Trash2, FileText,
   Users, AlertCircle, CheckCircle, ExternalLink, Phone, Mail,
   ArrowRight, Scale, Globe, Key, UserCheck
 } from 'lucide-react';
 import { useScrollReveal, useStaggerReveal } from '../../hooks/useAnimations';
 import PageHero from '../../components/ui/PageHero';
+import Breadcrumb from '../../components/ui/Breadcrumb';
 import { useLanguage } from '../../lib/language';
 
 const getRIGHTS = (tn) => [
@@ -40,14 +42,15 @@ export default function DataProtectionPage() {
 
   return (
     <div className="bg-white min-h-screen">
+      <Helmet>
+        <title>Data Protection — BOCRA</title>
+        <meta name="description" content="Data protection resources, rights, and compliance information for Botswana." />
+        <link rel="canonical" href="https://bocra.org.bw/data-protection" />
+      </Helmet>
       {/* Breadcrumb */}
       <div className="bg-bocra-off-white border-b border-gray-100">
         <div className="section-wrapper py-4">
-          <nav className="text-sm text-bocra-slate/50 flex items-center gap-2">
-            <Link to="/" className="hover:text-bocra-blue transition-colors">{tn ? 'Gae' : 'Home'}</Link>
-            <ChevronRight size={14} />
-            <span className="text-bocra-slate font-medium">{tn ? 'Tshireletso ya Data' : 'Data Protection'}</span>
-          </nav>
+          <Breadcrumb items={[{ label: 'Data Protection' }]} />
         </div>
       </div>
 

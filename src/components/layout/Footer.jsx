@@ -2,7 +2,7 @@
  * Footer — Bilingual (EN/TN) clean compact layout
  */
 import { Link } from 'react-router-dom';
-import { Mail, Phone, MapPin, ArrowUpRight } from 'lucide-react';
+import { Mail, Phone, MapPin, ArrowUpRight, ShieldCheck } from 'lucide-react';
 import BocraLogo from '../ui/BocraLogo';
 import { useLanguage } from '../../lib/language';
 
@@ -78,7 +78,10 @@ export default function Footer() {
       <div className="border-t border-white/5">
         <div className="section-wrapper py-4 flex flex-col items-center gap-1 text-center">
           <p className="text-[11px] text-white/30">© {new Date().getFullYear()} {tn ? 'Botswana Communications Regulatory Authority. Ditshwanelo Tsotlhe di Tsentswe.' : 'Botswana Communications Regulatory Authority. All Rights Reserved.'}</p>
-          <p className="text-[10px] text-white/20 mt-1">{tn ? 'E sireletswa ke reCAPTCHA' : 'Protected by reCAPTCHA'} — <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" className="underline hover:text-white/40">{tn ? 'Sephiri' : 'Privacy'}</a> · <a href="https://policies.google.com/terms" target="_blank" rel="noopener noreferrer" className="underline hover:text-white/40">{tn ? 'Melawana' : 'Terms'}</a></p>
+          <div className="flex items-center justify-center gap-1.5 mt-1">
+            <ShieldCheck size={12} className="text-white/20" />
+            <p className="text-[10px] text-white/20">{tn ? 'E sireletswa ke reCAPTCHA' : 'Protected by reCAPTCHA'} &mdash; <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" className="underline hover:text-white/40">{tn ? 'Sephiri' : 'Privacy'}</a> · <a href="https://policies.google.com/terms" target="_blank" rel="noopener noreferrer" className="underline hover:text-white/40">{tn ? 'Melawana' : 'Terms'}</a></p>
+          </div>
           <Link to="/privacy-notice" className="text-[11px] text-white/30 hover:text-white/60 transition-colors">{tn ? 'Kitsiso ya Sephiri' : 'Privacy Notice'}</Link>
         </div>
       </div>

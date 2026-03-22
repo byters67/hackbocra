@@ -2,77 +2,103 @@
  * App.jsx - Main Application Router
  * All routes defined here. SplashScreen plays once on first visit.
  */
-import { useState } from 'react';
+import { useState, lazy } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { HelmetProvider } from 'react-helmet-async';
 import { AuthProvider } from './lib/auth';
 import { LanguageProvider } from './lib/language';
 import { NotificationProvider } from './lib/notifications';
 import Layout from './components/layout/Layout';
 import SplashScreen from './components/animations/SplashScreen';
+import ErrorBoundary from './components/ui/ErrorBoundary';
 
-import HomePage from './pages/public/HomePage';
-import AboutProfilePage from './pages/public/AboutProfilePage';
-import ContactPage from './pages/public/ContactPage';
-import FileComplaintPage from './pages/public/FileComplaintPage';
-import NewsPage from './pages/public/NewsPage';
-import NewsEventsPage from './pages/public/NewsEventsPage';
-import FAQsPage from './pages/public/FAQsPage';
-import DocumentsPage from './pages/public/DocumentsPage';
-import ContentPage from './pages/public/ContentPage';
-import TelecomStatisticsPage from './pages/public/TelecomStatisticsPage';
-import LicenceVerificationPage from './pages/public/LicenceVerificationPage';
-import TypeApprovalPage from './pages/public/TypeApprovalPage';
-import SearchPage from './pages/public/SearchPage';
-import HistoryPage from './pages/public/HistoryPage';
-import BoardOfDirectorsPage from './pages/public/BoardOfDirectorsPage';
-import ExecutiveManagementPage from './pages/public/ExecutiveManagementPage';
-import LicensingHubPage from './pages/public/LicensingHubPage';
-import CybersecurityHubPage from './pages/public/CybersecurityHubPage';
-import RegisterBWPage from './pages/public/RegisterBWPage';
-import IctLicensingPage from './pages/public/IctLicensingPage';
-import OperatorPortalPage from './pages/public/OperatorPortalPage';
-import QoSMonitoringPage from './pages/public/QoSMonitoringPage';
-import SpectrumManagementPage from './pages/public/SpectrumManagementPage';
+// KEEP STATIC — auth page (needed immediately)
 import LoginPage from './pages/auth/LoginPage';
-import EmailVerifiedPage from './pages/auth/EmailVerifiedPage';
 import AdminLayout from './pages/admin/AdminLayout';
-import AdminDashboard from './pages/admin/DashboardPage';
-import AdminComplaints from './pages/admin/ComplaintsPage';
-import AdminApplications from './pages/admin/ApplicationsPage';
-import AdminIncidents from './pages/admin/IncidentsPage';
-import AdminQoSReports from './pages/admin/QoSReportsPage';
-import AdminContact from './pages/admin/ContactPage';
-import AdminDataRequests from './pages/admin/DataRequestsPage';
-import AdminTypeApproval from './pages/admin/AdminTypeApprovalPage';
-import AdminConsultations from './pages/admin/AdminConsultationsPage';
-import ConsultationsPage from './pages/public/ConsultationsPage';
-import SpeechesPage from './pages/public/SpeechesPage';
-import BroadcastingPage from './pages/public/BroadcastingPage';
-import InternetPage from './pages/public/InternetPage';
-import DataProtectionPage from './pages/public/DataProtectionPage';
-import LegislationPage from './pages/public/LegislationPage';
-import TelecommunicationsPage from './pages/public/TelecommunicationsPage';
-import PostalPage from './pages/public/PostalPage';
-import LicensingFrameworkPage from './pages/public/LicensingFrameworkPage';
-import InfrastructureSharingPage from './pages/public/InfrastructureSharingPage';
-import ConsumerEducationPage from './pages/public/ConsumerEducationPage';
-import TendersPage from './pages/public/TendersPage';
-import ChiefExecutivePage from './pages/public/ChiefExecutivePage';
-import OrganogramPage from './pages/public/OrganogramPage';
-import DataRequestPage from './pages/public/DataRequestPage';
-import CareersPage from './pages/public/CareersPage';
+
+// LAZY — all public page components
+const HomePage = lazy(() => import('./pages/public/HomePage'));
+const AboutProfilePage = lazy(() => import('./pages/public/AboutProfilePage'));
+const ContactPage = lazy(() => import('./pages/public/ContactPage'));
+const FileComplaintPage = lazy(() => import('./pages/public/FileComplaintPage'));
+const NewsPage = lazy(() => import('./pages/public/NewsPage'));
+const NewsEventsPage = lazy(() => import('./pages/public/NewsEventsPage'));
+const FAQsPage = lazy(() => import('./pages/public/FAQsPage'));
+const DocumentsPage = lazy(() => import('./pages/public/DocumentsPage'));
+const ContentPage = lazy(() => import('./pages/public/ContentPage'));
+const TelecomStatisticsPage = lazy(() => import('./pages/public/TelecomStatisticsPage'));
+const LicenceVerificationPage = lazy(() => import('./pages/public/LicenceVerificationPage'));
+const TypeApprovalPage = lazy(() => import('./pages/public/TypeApprovalPage'));
+const SearchPage = lazy(() => import('./pages/public/SearchPage'));
+const HistoryPage = lazy(() => import('./pages/public/HistoryPage'));
+const BoardOfDirectorsPage = lazy(() => import('./pages/public/BoardOfDirectorsPage'));
+const ExecutiveManagementPage = lazy(() => import('./pages/public/ExecutiveManagementPage'));
+const LicensingHubPage = lazy(() => import('./pages/public/LicensingHubPage'));
+const CybersecurityHubPage = lazy(() => import('./pages/public/CybersecurityHubPage'));
+const RegisterBWPage = lazy(() => import('./pages/public/RegisterBWPage'));
+const IctLicensingPage = lazy(() => import('./pages/public/IctLicensingPage'));
+const OperatorPortalPage = lazy(() => import('./pages/public/OperatorPortalPage'));
+const QoSMonitoringPage = lazy(() => import('./pages/public/QoSMonitoringPage'));
+const SpectrumManagementPage = lazy(() => import('./pages/public/SpectrumManagementPage'));
+const EmailVerifiedPage = lazy(() => import('./pages/auth/EmailVerifiedPage'));
+const ConsultationsPage = lazy(() => import('./pages/public/ConsultationsPage'));
+const SpeechesPage = lazy(() => import('./pages/public/SpeechesPage'));
+const BroadcastingPage = lazy(() => import('./pages/public/BroadcastingPage'));
+const InternetPage = lazy(() => import('./pages/public/InternetPage'));
+const DataProtectionPage = lazy(() => import('./pages/public/DataProtectionPage'));
+const LegislationPage = lazy(() => import('./pages/public/LegislationPage'));
+const TelecommunicationsPage = lazy(() => import('./pages/public/TelecommunicationsPage'));
+const PostalPage = lazy(() => import('./pages/public/PostalPage'));
+const LicensingFrameworkPage = lazy(() => import('./pages/public/LicensingFrameworkPage'));
+const InfrastructureSharingPage = lazy(() => import('./pages/public/InfrastructureSharingPage'));
+const ConsumerEducationPage = lazy(() => import('./pages/public/ConsumerEducationPage'));
+const TendersPage = lazy(() => import('./pages/public/TendersPage'));
+const ChiefExecutivePage = lazy(() => import('./pages/public/ChiefExecutivePage'));
+const OrganogramPage = lazy(() => import('./pages/public/OrganogramPage'));
+const DataRequestPage = lazy(() => import('./pages/public/DataRequestPage'));
+const CareersPage = lazy(() => import('./pages/public/CareersPage'));
+
+// LAZY — admin pages (never fetched by public visitors)
+const AdminDashboard = lazy(() => import('./pages/admin/DashboardPage'));
+const AdminComplaints = lazy(() => import('./pages/admin/ComplaintsPage'));
+const AdminApplications = lazy(() => import('./pages/admin/ApplicationsPage'));
+const AdminIncidents = lazy(() => import('./pages/admin/IncidentsPage'));
+const AdminQoSReports = lazy(() => import('./pages/admin/QoSReportsPage'));
+const AdminContact = lazy(() => import('./pages/admin/ContactPage'));
+const AdminDataRequests = lazy(() => import('./pages/admin/DataRequestsPage'));
+const AdminTypeApproval = lazy(() => import('./pages/admin/AdminTypeApprovalPage'));
+const AdminConsultations = lazy(() => import('./pages/admin/AdminConsultationsPage'));
+const AdminNews = lazy(() => import('./pages/admin/NewsManagerPage'));
+const AdminDocuments = lazy(() => import('./pages/admin/DocumentsManagerPage'));
+const AdminJobs = lazy(() => import('./pages/admin/JobsManagerPage'));
+const AdminTenders = lazy(() => import('./pages/admin/TendersManagerPage'));
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 5 * 60 * 1000,
+      gcTime: 30 * 60 * 1000,
+      retry: 1,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 export default function App() {
   const [ready, setReady] = useState(!!sessionStorage.getItem('bocra-splash'));
 
   return (
+    <HelmetProvider>
+    <QueryClientProvider client={queryClient}>
     <AuthProvider>
       <LanguageProvider>
         <NotificationProvider>
           {!ready && <SplashScreen onComplete={() => setReady(true)} />}
 
           {ready && (
-            <BrowserRouter basename="/hackbocra">
+            <ErrorBoundary>
+            <BrowserRouter basename="/hackbocra" future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
               <Routes>
                 <Route path="/auth/login" element={<LoginPage />} />
                 <Route path="/auth/register" element={<LoginPage />} />
@@ -92,6 +118,10 @@ export default function App() {
                   <Route path="consultations" element={<AdminConsultations />} />
                   <Route path="type-approval" element={<AdminTypeApproval />} />
                   <Route path="data-requests" element={<AdminDataRequests />} />
+                  <Route path="news" element={<AdminNews />} />
+                  <Route path="documents-manage" element={<AdminDocuments />} />
+                  <Route path="jobs" element={<AdminJobs />} />
+                  <Route path="tenders-manage" element={<AdminTenders />} />
                 </Route>
 
                 <Route element={<Layout />}>
@@ -155,9 +185,12 @@ export default function App() {
                 </Route>
               </Routes>
             </BrowserRouter>
+            </ErrorBoundary>
           )}
         </NotificationProvider>
       </LanguageProvider>
     </AuthProvider>
+    </QueryClientProvider>
+    </HelmetProvider>
   );
 }

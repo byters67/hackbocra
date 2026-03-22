@@ -6,15 +6,17 @@
 import { useState, useEffect, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
-  ChevronRight, Search, Building, User, Mail, Phone, MapPin, Lock,
+  Search, Building, User, Mail, Phone, MapPin, Lock,
   Shield, FileCheck, Clock, CheckCircle, Eye, EyeOff, LogOut,
   CreditCard, Radio, ArrowRight, AlertCircle, Globe, ChevronDown
 } from 'lucide-react';
+import Breadcrumb from '../../components/ui/Breadcrumb';
 import { useScrollReveal } from '../../hooks/useAnimations';
 import { useAuth } from '../../lib/auth';
 import { supabase } from '../../lib/supabase';
 import { useRecaptcha } from '../../hooks/useRecaptcha';
 import { useLanguage } from '../../lib/language';
+import { Helmet } from 'react-helmet-async';
 
 // Reuse licence data for company search
 const KNOWN_COMPANIES = [
@@ -56,15 +58,22 @@ export default function OperatorPortalPage() {
 
   // Check if user is already logged in — fetch profile and go to dashboard
   useEffect(() => {
+    let cancelled = false;
     if (user) {
       (async () => {
-        const { data } = await supabase.from('profiles').select('*').eq('id', user.id).single();
-        if (data) {
-          setOperator(data);
-          setView('dashboard');
+        try {
+          const { data, error } = await supabase.from('profiles').select('*').eq('id', user.id).single();
+          if (error) throw error;
+          if (!cancelled && data) {
+            setOperator(data);
+            setView('dashboard');
+          }
+        } catch (err) {
+          console.error('Failed to fetch operator profile:', err);
         }
       })();
     }
+    return () => { cancelled = true; };
   }, [user]);
 
   if (view === 'register') return <RegisterForm setView={setView} signUp={signUp} />;
@@ -74,7 +83,12 @@ export default function OperatorPortalPage() {
   // Landing
   return (
     <div className="bg-white">
-      <div className="bg-bocra-off-white border-b border-gray-100"><div className="section-wrapper py-4"><nav className="text-sm text-bocra-slate/50 flex items-center gap-2"><Link to="/" className="hover:text-bocra-blue transition-colors">{lang === 'tn' ? 'Gae' : 'Home'}</Link><ChevronRight size={14} /><span className="text-bocra-slate">ASMS-WebCP</span></nav></div></div>
+      <Helmet>
+        <title>Operator Portal — BOCRA</title>
+        <meta name="description" content="BOCRA operator portal for licensed telecommunications service providers." />
+        <link rel="canonical" href="https://bocra.org.bw/services/asms-webcp" />
+      </Helmet>
+      <div className="bg-bocra-off-white border-b border-gray-100"><div className="section-wrapper py-4"><Breadcrumb items={[{ label: 'Services' }, { label: 'Operator Portal' }]} /></div></div>
 
       <section className="px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6 pb-0"><div className="relative py-10 sm:py-14 px-5 sm:px-8 lg:px-10 rounded-2xl overflow-hidden bg-gradient-to-br from-[#00458B] to-[#003366]">
         <div className="absolute top-0 right-0 w-48 sm:w-64 h-48 sm:h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2" />
@@ -220,13 +234,21 @@ function RegisterForm({ setView, signUp }) {
     if (authErr) { setError(authErr.message); setLoading(false); return; }
 
     if (authData?.user) {
-      await supabase.from('profiles').upsert({
-        id: authData.user.id,
-        full_name: form.firstName + ' ' + form.lastName,
-        organization: form.company,
-        phone: form.phone,
-        role: 'operator',
-      });
+      try {
+        const { error: upsertErr } = await supabase.from('profiles').upsert({
+          id: authData.user.id,
+          full_name: form.firstName + ' ' + form.lastName,
+          organization: form.company,
+          phone: form.phone,
+          role: 'operator',
+        });
+        if (upsertErr) throw upsertErr;
+      } catch (err) {
+        console.error('Failed to save operator profile:', err);
+        setError('Account created but profile save failed. Please update your profile after signing in.');
+        setLoading(false);
+        return;
+      }
     }
 
     setSuccess(true);
@@ -389,8 +411,8 @@ function OperatorDashboard({ operator, user, signOut, setView }) {
   const [saving, setSaving] = useState(false);
   const [profilePic, setProfilePic] = useState(localStorage.getItem('bocra-pfp-'+(user?.id||''))||'');
   const handleLogout = async()=>{await signOut();setView('landing');};
-  useEffect(()=>{if(!user)return;(async()=>{const[aR,cR]=await Promise.all([supabase.from('licence_applications').select('*').or(`operator_user_id.eq.${user.id},email.eq.${user.email}`).order('created_at',{ascending:false}),supabase.from('complaints').select('*').eq('email',user.email).order('created_at',{ascending:false})]);if(aR.data)setApplications(aR.data);if(cR.data)setComplaints(cR.data);setLoading(false);})();const ch=supabase.channel('op-upd').on('postgres_changes',{event:'UPDATE',schema:'public',table:'licence_applications'},(p)=>{setApplications(pr=>pr.map(a=>a.id===p.new.id?{...a,...p.new}:a));}).on('postgres_changes',{event:'UPDATE',schema:'public',table:'complaints'},(p)=>{setComplaints(pr=>pr.map(c=>c.id===p.new.id?{...c,...p.new}:c));}).subscribe();return()=>{supabase.removeChannel(ch);};},[user]);
-  const handleProfileSave=async()=>{if(!profile)return;setSaving(true);await supabase.from('profiles').update(profileForm).eq('id',profile.id);setSaving(false);setEditing(false);};
+  useEffect(()=>{if(!user)return;let cancelled=false;(async()=>{try{const[aR,cR]=await Promise.all([supabase.from('licence_applications').select('*').or(`operator_user_id.eq.${user.id},email.eq.${user.email}`).order('created_at',{ascending:false}),supabase.from('complaints').select('*').eq('email',user.email).order('created_at',{ascending:false})]);if(!cancelled){if(aR.data)setApplications(aR.data);if(cR.data)setComplaints(cR.data);setLoading(false);}}catch(err){console.error('Failed to fetch dashboard data:',err);if(!cancelled)setLoading(false);}})();const ch=supabase.channel('op-upd').on('postgres_changes',{event:'UPDATE',schema:'public',table:'licence_applications'},(p)=>{setApplications(pr=>pr.map(a=>a.id===p.new.id?{...a,...p.new}:a));}).on('postgres_changes',{event:'UPDATE',schema:'public',table:'complaints'},(p)=>{setComplaints(pr=>pr.map(c=>c.id===p.new.id?{...c,...p.new}:c));}).subscribe();return()=>{cancelled=true;supabase.removeChannel(ch);};},[user]);
+  const handleProfileSave=async()=>{if(!profile)return;setSaving(true);try{const{error}=await supabase.from('profiles').update(profileForm).eq('id',profile.id);if(error)throw error;}catch(err){console.error('Failed to save profile:',err);}setSaving(false);setEditing(false);};
   const handlePfpChange=(e)=>{const f=e.target.files?.[0];if(!f)return;const r=new FileReader();r.onload=(ev)=>{setProfilePic(ev.target.result);localStorage.setItem('bocra-pfp-'+(user?.id||''),ev.target.result);};r.readAsDataURL(f);};
   const removePfp=()=>{setProfilePic('');localStorage.removeItem('bocra-pfp-'+(user?.id||''));};
   const SC={pending:'bg-yellow-100 text-yellow-700',approved:'bg-green-100 text-green-700',rejected:'bg-red-100 text-red-700',investigating:'bg-blue-100 text-blue-700',resolved:'bg-green-100 text-green-700',closed:'bg-gray-100 text-gray-600'};

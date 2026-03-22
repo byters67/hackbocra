@@ -2,7 +2,8 @@
  * Documents & Legislation Page — Redesigned
  * Category cards → click to see documents. Search across all. Fully bilingual.
  */
-import { useState, useMemo } from 'react';
+import { Helmet } from 'react-helmet-async';
+import { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import {
   ChevronRight, Search, Download, FileText, Scale, BookOpen, BarChart3,
@@ -11,7 +12,9 @@ import {
 } from 'lucide-react';
 import { useScrollReveal } from '../../hooks/useAnimations';
 import PageHero from '../../components/ui/PageHero';
+import Breadcrumb from '../../components/ui/Breadcrumb';
 import { useLanguage } from '../../lib/language';
+import { supabase } from '../../lib/supabase';
 
 const BASE = import.meta.env.BASE_URL;
 
@@ -326,41 +329,80 @@ export default function DocumentsPage() {
   const [activeCategory, setActiveCategory] = useState(null);
   const [search, setSearch] = useState('');
   const [yearFilter, setYearFilter] = useState('');
+  const [docs, setDocs] = useState(DOCUMENTS);
+  const [loadingDocs, setLoadingDocs] = useState(true);
   const heroRef = useScrollReveal();
+
+  // Fetch from Supabase — falls back to hardcoded DOCUMENTS if empty or error
+  useEffect(() => {
+    let cancelled = false;
+    async function fetchDocs() {
+      try {
+        const { data, error } = await supabase
+          .from('documents')
+          .select('*')
+          .order('created_at', { ascending: false });
+        if (cancelled) return;
+        if (error) throw error;
+        if (data && data.length > 0) {
+          const uploaded = data.map(d => ({
+            title: d.title,
+            file: d.file_name || d.file_url || '',
+            file_url: d.file_url || null,
+            category: d.category,
+            year: d.year ? String(d.year) : '',
+          }));
+          setDocs([...uploaded, ...DOCUMENTS]);
+        }
+      } catch (err) {
+        console.error('Failed to fetch documents:', err);
+      } finally {
+        if (!cancelled) setLoadingDocs(false);
+      }
+    }
+    fetchDocs();
+    return () => { cancelled = true; };
+  }, []);
 
   const catCounts = useMemo(() => {
     const c = {};
-    CAT_KEYS.forEach(k => { c[k] = DOCUMENTS.filter(d => d.category === k).length; });
+    CAT_KEYS.forEach(k => { c[k] = docs.filter(d => d.category === k).length; });
     return c;
-  }, []);
+  }, [docs]);
 
-  const years = useMemo(() => [...new Set(DOCUMENTS.map(d => d.year))].sort((a, b) => b.localeCompare(a)), []);
+  const years = useMemo(() => [...new Set(docs.map(d => d.year).filter(Boolean))].sort((a, b) => b.localeCompare(a)), [docs]);
 
   const filteredDocs = useMemo(() => {
-    let docs = DOCUMENTS;
-    if (activeCategory) docs = docs.filter(d => d.category === activeCategory);
-    if (yearFilter) docs = docs.filter(d => d.year === yearFilter);
-    if (search) { const q = search.toLowerCase(); docs = docs.filter(d => d.title.toLowerCase().includes(q) || d.category.toLowerCase().includes(q)); }
-    return docs.sort((a, b) => b.year.localeCompare(a.year));
-  }, [activeCategory, yearFilter, search]);
+    let filtered = docs;
+    if (activeCategory) filtered = filtered.filter(d => d.category === activeCategory);
+    if (yearFilter) filtered = filtered.filter(d => d.year === yearFilter);
+    if (search) { const q = search.toLowerCase(); filtered = filtered.filter(d => d.title.toLowerCase().includes(q) || d.category.toLowerCase().includes(q)); }
+    return filtered.sort((a, b) => (b.year || '').localeCompare(a.year || ''));
+  }, [docs, activeCategory, yearFilter, search]);
 
-  const totalDocs = DOCUMENTS.length;
-  const handleDownload = (file) => { if (file) window.open(`${BASE}documents/${file}`, '_blank'); };
+  const totalDocs = docs.length;
+  const handleDownload = (file, fileUrl) => {
+    if (fileUrl) { window.open(fileUrl, '_blank'); return; }
+    if (file) window.open(`${BASE}documents/${file}`, '_blank');
+  };
 
   return (
     <div className="bg-white">
-      <div className="bg-bocra-off-white border-b border-gray-100"><div className="section-wrapper py-4"><nav className="text-sm text-bocra-slate/50 flex items-center gap-2">
-        <Link to="/" className="hover:text-bocra-blue">{tn ? 'Gae' : 'Home'}</Link><ChevronRight size={14} />
-        {activeCategory ? (<><button onClick={() => setActiveCategory(null)} className="hover:text-bocra-blue">{tn ? 'Dikwalo' : 'Documents'}</button><ChevronRight size={14} /><span className="text-bocra-slate font-medium">{CATS[activeCategory]?.name}</span></>) : (<span className="text-bocra-slate font-medium">{tn ? 'Dikwalo le Melao' : 'Documents & Legislation'}</span>)}
-      </nav></div></div>
+      <Helmet>
+        <title>Documents &amp; Publications — BOCRA</title>
+        <meta name="description" content="Access regulatory documents, guidelines, legislation, and annual reports." />
+        <link rel="canonical" href="https://bocra.org.bw/documents/drafts" />
+      </Helmet>
+      <div className="bg-bocra-off-white border-b border-gray-100"><div className="section-wrapper py-4"><Breadcrumb items={[{ label: 'Documents & Publications' }]} /></div></div>
 
       <PageHero category="RESOURCES" categoryTn="METSWEDI" title="Documents & Legislation" titleTn="Dikwalo le Melao" description={`Browse ${totalDocs}+ official documents — legislation, reports, guidelines, policies, and forms.`} descriptionTn={`Batla dikwalo di le ${totalDocs}+ tsa semmuso — melao, dipego, ditaelo, dipholisi, le diforomo.`} color="magenta" />
 
       {/* Search */}
-      <section className="py-4"><div className="section-wrapper max-w-3xl mx-auto"><div className="relative">
-        <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-bocra-slate/30" />
-        <input type="search" value={search} onChange={e => setSearch(e.target.value)} placeholder={tn ? `Batla mo dikwalong di le ${totalDocs}...` : `Search ${totalDocs} documents...`} className="w-full pl-11 pr-10 py-3.5 bg-white border border-gray-200 rounded-2xl text-sm focus:border-[#00A6CE] focus:ring-2 focus:ring-[#00A6CE]/10 outline-none shadow-sm" />
-        {search && <button onClick={() => setSearch('')} className="absolute right-4 top-1/2 -translate-y-1/2 text-bocra-slate/30 hover:text-bocra-slate"><X size={16} /></button>}
+      <section className="py-4"><div className="section-wrapper max-w-3xl mx-auto"><div className="relative" role="search">
+        <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-bocra-slate/30 pointer-events-none" aria-hidden />
+        {/* type="text" — type="search" draws a second native clear (×) in Chrome/Safari alongside our button */}
+        <input type="text" value={search} onChange={e => setSearch(e.target.value)} placeholder={tn ? `Batla mo dikwalong di le ${totalDocs}...` : `Search ${totalDocs} documents...`} className="w-full pl-11 pr-10 py-3.5 bg-white border border-gray-200 rounded-2xl text-sm focus:border-[#00A6CE] focus:ring-2 focus:ring-[#00A6CE]/10 outline-none shadow-sm" autoComplete="off" />
+        {search && <button type="button" onClick={() => setSearch('')} className="absolute right-4 top-1/2 -translate-y-1/2 text-bocra-slate/30 hover:text-bocra-slate" aria-label={tn ? 'Tlosa patlisiso' : 'Clear search'}><X size={16} /></button>}
       </div></div></section>
 
       {!activeCategory && !search ? (
@@ -404,11 +446,18 @@ export default function DocumentsPage() {
             {years.slice(0, 12).map(y => (<button key={y} onClick={() => setYearFilter(yearFilter === y ? '' : y)} className={`px-3 py-1.5 text-xs font-medium rounded-lg border transition-all ${yearFilter === y ? 'bg-[#00458B] text-white border-[#00458B]' : 'bg-white text-bocra-slate/50 border-gray-200'}`}>{y}</button>))}
           </div>}
 
-          {filteredDocs.length === 0 ? (
+          {loadingDocs ? (
+            <div className="space-y-2">{[1,2,3,4,5].map(i => (
+              <div key={i} className="w-full bg-white rounded-xl p-4 flex items-center gap-4 border border-gray-100 animate-pulse">
+                <div className="w-10 h-10 rounded-lg bg-gray-200 flex-shrink-0" />
+                <div className="flex-1 space-y-2"><div className="h-4 w-2/3 bg-gray-200 rounded" /><div className="h-3 w-1/3 bg-gray-100 rounded" /></div>
+              </div>
+            ))}</div>
+          ) : filteredDocs.length === 0 ? (
             <div className="text-center py-16"><FileText size={48} className="mx-auto text-bocra-slate/15 mb-4" /><h3 className="text-lg font-medium text-bocra-slate/40">{tn ? 'Ga go na dikwalo tse di bonweng' : 'No documents found'}</h3><p className="text-sm text-bocra-slate/30 mt-1">{tn ? 'Leka go fetola dipatlisiso kgotsa disefa' : 'Try adjusting your search or filters'}</p></div>
           ) : (
             <div className="space-y-2">{filteredDocs.map((doc, i) => { const config = CATS[doc.category]; return (
-              <button key={i} onClick={() => handleDownload(doc.file)} className="w-full bg-white rounded-xl p-4 flex items-center gap-4 hover:shadow-md transition-all group border border-gray-100 hover:border-gray-200 text-left">
+              <button key={i} onClick={() => handleDownload(doc.file, doc.file_url)} className="w-full bg-white rounded-xl p-4 flex items-center gap-4 hover:shadow-md transition-all group border border-gray-100 hover:border-gray-200 text-left">
                 <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0" style={{ backgroundColor: `${config?.color}15` }}><FileText size={18} style={{ color: config?.color }} /></div>
                 <div className="flex-1 min-w-0">
                   <h3 className="font-medium text-sm text-bocra-slate group-hover:text-[#00A6CE] transition-colors truncate">{doc.title}</h3>

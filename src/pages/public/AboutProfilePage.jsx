@@ -11,6 +11,7 @@
  */
 
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import {
   Target, Eye, Star, Lightbulb, Shield, Heart,
   ArrowRight, Users, Globe, Scale, Landmark, BookOpen
@@ -20,6 +21,7 @@ import { useLanguage } from '../../lib/language';
 import { useTranslatedStrings } from '../../hooks/useTranslatedContent';
 
 import PageHero from '../../components/ui/PageHero';
+import Breadcrumb from '../../components/ui/Breadcrumb';
 const VALUES = [
   { icon: Star, titleKey: 'val.excellence', descKey: 'val.excellenceDesc', color: '#00A6CE', bg: 'bg-[#00A6CE]/10', text: 'text-[#00A6CE]' },
   { icon: Lightbulb, titleKey: 'val.proactiveness', descKey: 'val.proactivenessDesc', color: '#C8237B', bg: 'bg-[#C8237B]/10', text: 'text-[#C8237B]' },
@@ -129,14 +131,15 @@ export default function AboutProfilePage() {
 
   return (
     <div>
+      <Helmet>
+        <title>About BOCRA — Botswana Communications Regulatory Authority</title>
+        <meta name="description" content="Learn about BOCRA's mission, mandate, and role in regulating Botswana's communications sector." />
+        <link rel="canonical" href="https://bocra.org.bw/about/profile" />
+      </Helmet>
       {/* Breadcrumb */}
       <div className="bg-bocra-off-white border-b border-gray-100">
         <div className="section-wrapper py-4">
-          <nav className="text-sm text-bocra-slate/50 flex items-center gap-2">
-            <Link to="/" className="hover:text-bocra-blue transition-colors">{at['breadcrumb.home']}</Link>
-            <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18l6-6-6-6"/></svg></span>
-            <span className="text-bocra-slate font-medium">{at['breadcrumb.about']}</span>
-          </nav>
+          <Breadcrumb items={[{ label: 'About BOCRA' }]} />
         </div>
       </div>
       {/* Hero */}
