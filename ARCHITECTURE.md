@@ -12,44 +12,72 @@
 
 ## Architecture Diagram
 
+```mermaid
+graph TD
+    subgraph Client["Client (Browser / Mobile)"]
+        SW["PWA Service Worker<br/>CacheFirst · StaleWhileRevalidate · NetworkOnly"]
+        SPA["React SPA<br/>51 lazy-loaded routes"]
+        RQ["React Query<br/>staleTime 5 min · retry 3 · exponential backoff"]
+        CB["Circuit Breaker<br/>CLOSED → OPEN → HALF_OPEN"]
+        EB["ErrorBoundary<br/>catches crashes · logs to DB"]
+        RL_C["Client Rate Limit<br/>30 req/min"]
+    end
+
+    subgraph Edge["Supabase Edge Functions (Deno)"]
+        SF["submit-form<br/>reCAPTCHA · persistent rate limit"]
+        CC["classify-complaint<br/>AI triage · fire-and-forget"]
+        RA["review-application<br/>AI licence review"]
+        CH["chat<br/>RAG + Claude · retry logic"]
+        TR["translate<br/>Setswana · fallback dictionary"]
+        HE["health<br/>DB · runtime · memory checks"]
+    end
+
+    subgraph External["External APIs"]
+        AI["Anthropic Claude API"]
+        GT["Google Translate API"]
+        RC["reCAPTCHA v3"]
+    end
+
+    subgraph Database["PostgreSQL (Supabase Managed)"]
+        PG["PgBouncer<br/>transaction mode · 200 connections"]
+        DB["17 migrations · RLS on every table<br/>35+ indexes · audit log triggers<br/>persistent rate limits · error logs<br/>data retention policy"]
+    end
+
+    subgraph Monitoring["Observability"]
+        HC["Health Endpoint<br/>GET /functions/v1/health"]
+        UM["Uptime Monitor<br/>60 s polling · logs status"]
+        EL["Error Logs Table<br/>react crashes · stack traces"]
+        AL["Audit Log<br/>append-only · 9 event types"]
+    end
+
+    Client -->|HTTPS| Edge
+    SPA --> RQ
+    RQ --> CB
+    CB -->|fallback on failure| SPA
+    EB -->|fire-and-forget POST| EL
+
+    SF --> RC
+    CC --> AI
+    RA --> AI
+    CH --> AI
+    TR --> GT
+    CB -.->|wraps| AI
+    CB -.->|wraps| GT
+
+    Edge --> PG --> DB
+
+    HE --> HC
+    UM -->|polls| HC
+    DB --> AL
+
+    style Client fill:#e8f4fd,stroke:#00458B
+    style Edge fill:#fff3e0,stroke:#F7B731
+    style Database fill:#e8f5e9,stroke:#6BBE4E
+    style External fill:#fce4ec,stroke:#C8237B
+    style Monitoring fill:#f3e5f5,stroke:#7B1FA2
 ```
-Client (Browser / Mobile)
-│
-├── PWA Service Worker
-│   ├── Static assets: CacheFirst (immutable, 1 year)
-│   ├── Public data: StaleWhileRevalidate (1 hour)
-│   └── Auth/Admin: NetworkOnly (never stale)
-│
-▼
-React SPA (51 lazy-loaded routes)
-├── React Query: staleTime 5min, retry 3 w/ exponential backoff
-├── Circuit breaker on external service calls
-├── ErrorBoundary with error reporting to DB
-└── Client-side rate limiting (30 req/min)
-│
-▼
-Supabase Edge Functions (6 serverless functions)
-├── submit-form     → Complaint/contact + reCAPTCHA + persistent rate limiting
-├── classify-complaint → AI triage (fire-and-forget, non-blocking)
-├── review-application → AI licence document review
-├── chat            → AI assistant with retry logic
-├── translate       → Setswana translation with fallback dictionary
-├── health          → System health check (DB, runtime, memory)
-│   All functions: CORS whitelist, fetchWithRetry, structured error responses
-│
-▼
-PgBouncer (Transaction Mode, 200 pooled connections)
-│
-▼
-PostgreSQL (Supabase Managed)
-├── 17 versioned migrations
-├── RLS on EVERY table (role verified server-side, not JWT)
-├── 35+ indexes including composite indexes
-├── Persistent rate limiting (DB-backed, not in-memory)
-├── Audit log (trigger-based, append-only, 9 event types)
-├── Error logging table
-└── Data retention policy (1yr contacts, 3yr complaints, 5yr incidents)
-```
+
+> **How to read this:** Requests flow top-down from Client → Edge Functions → Database. The circuit breaker (dashed lines) wraps external API calls so that when Anthropic or Google are down, the app serves fallbacks immediately instead of hanging. The Monitoring subgraph shows how errors and health data flow into observable stores.
 
 ## Security (Pentest-Driven)
 

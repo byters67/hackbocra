@@ -5,7 +5,7 @@
  * Shows trends, provider comparisons, department workloads, urgency distribution.
  * Realtime updates when new submissions arrive.
  */
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import {
   AlertCircle, FileCheck, Shield, Clock, Mail, ArrowRight, Bell,
@@ -24,6 +24,30 @@ const BOCRA = { blue: '#00458B', cyan: '#00A6CE', magenta: '#C8237B', yellow: '#
 const PIE_COLORS = [BOCRA.magenta, BOCRA.cyan, BOCRA.yellow, BOCRA.green, '#94A3B8', '#7C3AED', '#EA580C'];
 const URGENCY_COLORS = { critical: '#DC2626', high: '#EA580C', medium: '#F7B731', low: '#6BBE4E' };
 
+/** Recent rows from DB for the Live Feed (Realtime only fires for new inserts while the tab is open). */
+function buildRecentActivityFeed(complaintRows, apps, incidents) {
+  const items = [];
+  complaintRows.slice(0, 6).forEach((c) => {
+    items.push({ type: 'complaint', data: c, time: new Date(c.created_at) });
+  });
+  [...apps].sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).slice(0, 4).forEach((a) => {
+    items.push({ type: 'application', data: a, time: new Date(a.created_at) });
+  });
+  [...incidents].sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).slice(0, 4).forEach((i) => {
+    items.push({ type: 'incident', data: i, time: new Date(i.created_at) });
+  });
+  return items.sort((a, b) => b.time - a.time).slice(0, 12);
+}
+
+function getFeedDisplayName(evt) {
+  const d = evt.data;
+  if (!d) return 'Anonymous';
+  if (evt.type === 'complaint') return d.name || (typeof d.ai_summary === 'string' ? d.ai_summary.slice(0, 48) : '') || 'Complaint';
+  if (evt.type === 'application') return d.full_name || d.company || 'Applicant';
+  if (evt.type === 'incident') return d.reporter_name || (d.is_anonymous ? 'Anonymous reporter' : 'Reporter');
+  return d.name || d.full_name || 'Anonymous';
+}
+
 export default function DashboardPage() {
   const navigate = useNavigate();
   const { profile } = useOutletContext();
@@ -36,6 +60,7 @@ export default function DashboardPage() {
   const [triageStats, setTriageStats] = useState({ avgConfidence: 0, needsReview: 0, classified: 0, total: 0 });
   const [insights, setInsights] = useState([]);
   const [realtimeEvents, setRealtimeEvents] = useState([]);
+  const [recentActivity, setRecentActivity] = useState([]);
   const [slaBreakdown, setSlaBreakdown] = useState([]);
   const [slaCompliance, setSlaCompliance] = useState(100);
   const [recentAutomations, setRecentAutomations] = useState([]);
@@ -75,6 +100,7 @@ export default function DashboardPage() {
       });
 
       setRecentComplaints(recentC.data || []);
+      setRecentActivity(buildRecentActivityFeed(recentC.data || [], apps, incidents));
 
       // Provider breakdown
       const provCounts = {};
@@ -244,6 +270,25 @@ export default function DashboardPage() {
     incident: { icon: Shield, color: BOCRA.cyan, label: 'Cyber incident' },
   };
 
+  const liveFeedItems = useMemo(() => {
+    const merged = [...realtimeEvents];
+    const seen = new Set(realtimeEvents.map((e) => `${e.type}-${e.data?.id}`));
+    for (const r of recentActivity) {
+      const key = `${r.type}-${r.data?.id}`;
+      if (!seen.has(key)) {
+        merged.push(r);
+        seen.add(key);
+      }
+    }
+    return merged
+      .sort((a, b) => {
+        const ta = a.time instanceof Date ? a.time.getTime() : new Date(a.time).getTime();
+        const tb = b.time instanceof Date ? b.time.getTime() : new Date(b.time).getTime();
+        return tb - ta;
+      })
+      .slice(0, 8);
+  }, [realtimeEvents, recentActivity]);
+
   if (loading) return (
     <div className="flex items-center justify-center h-64">
       <div className="text-center">
@@ -409,15 +454,16 @@ export default function DashboardPage() {
             {realtimeEvents.length > 0 && <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />}
           </h3>
           <div className="space-y-1.5 max-h-[120px] overflow-y-auto">
-            {realtimeEvents.length === 0 ? (
-              <p className="text-[10px] text-gray-300 text-center py-3">Waiting for submissions…</p>
-            ) : realtimeEvents.slice(0, 5).map((evt, i) => {
+            {liveFeedItems.length === 0 ? (
+              <p className="text-[10px] text-gray-300 text-center py-3">No submissions yet. New activity appears here in real time.</p>
+            ) : liveFeedItems.slice(0, 5).map((evt, i) => {
               const config = EVENT_ICONS[evt.type] || { icon: Mail, color: BOCRA.green, label: 'Message' };
               const Icon = config.icon;
+              const key = evt.data?.id ? `${evt.type}-${evt.data.id}` : `feed-${i}`;
               return (
-                <div key={i} className="flex items-center gap-2 p-1.5 rounded bg-gray-50">
+                <div key={key} className="flex items-center gap-2 p-1.5 rounded bg-gray-50">
                   <Icon size={12} style={{ color: config.color }} />
-                  <p className="text-[10px] text-gray-600 truncate flex-1">{config.label} — {evt.data?.name || evt.data?.full_name || 'Anonymous'}</p>
+                  <p className="text-[10px] text-gray-600 truncate flex-1">{config.label} — {getFeedDisplayName(evt)}</p>
                   <span className="text-[9px] text-gray-300">{timeAgo(evt.time)}</span>
                 </div>
               );
