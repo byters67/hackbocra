@@ -1,3 +1,17 @@
+/**
+ * ErrorBoundary.jsx — React Error Boundary for Graceful Failure Recovery
+ *
+ * Catches JavaScript errors anywhere in the child component tree and displays
+ * a user-friendly fallback UI instead of crashing the entire page.
+ *
+ * Used throughout the app to wrap:
+ *   - The main content area (Layout.jsx)
+ *   - Individual widgets (ChatWidget, AccessibilityWidget)
+ *   - Each admin page section
+ *
+ * This addresses OWASP A06 (Vulnerable and Outdated Components) by ensuring
+ * that a crash in one component doesn't take down the entire application.
+ */
 import React from 'react';
 
 class ErrorBoundary extends React.Component {
@@ -11,8 +25,29 @@ class ErrorBoundary extends React.Component {
   }
 
   componentDidCatch(error, errorInfo) {
-    // TODO: Send to error reporting service (Sentry, LogRocket, etc.)
     console.error('ErrorBoundary caught:', error, errorInfo);
+
+    // Log to error_logs table (fire-and-forget — never crash on error logging)
+    try {
+      fetch(`${import.meta.env.VITE_SUPABASE_URL}/rest/v1/error_logs`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          apikey: import.meta.env.VITE_SUPABASE_ANON_KEY,
+          Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+        },
+        body: JSON.stringify({
+          error_type: 'react_crash',
+          message: error?.message || 'Unknown error',
+          stack: error?.stack?.substring(0, 2000),
+          component: errorInfo?.componentStack?.substring(0, 1000),
+          page_url: window.location.href,
+          user_agent: navigator.userAgent,
+        }),
+      }).catch(() => {}); // Silent — error reporting must never cause errors
+    } catch (_) {
+      // Silently fail
+    }
   }
 
   render() {

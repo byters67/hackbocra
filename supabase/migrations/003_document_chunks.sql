@@ -1,4 +1,20 @@
--- Step 4: Document chunks table for RAG context-stuffing
+-- =============================================================================
+-- BOCRA Website — Migration 003b: Document Chunks for RAG Chatbot
+-- =============================================================================
+--
+-- Stores pre-chunked text from BOCRA's official documents (legislation,
+-- licensing frameworks, pricing schedules, etc.) for the AI chat assistant.
+--
+-- HOW IT WORKS (Retrieval-Augmented Generation):
+--   1. BOCRA documents are split into ~500-word chunks (via scripts/insert-chunks.sql)
+--   2. When a citizen asks a question, the chat Edge Function extracts keywords
+--   3. Chunks are scored by keyword overlap and the top 30 are sent to Claude
+--   4. Claude answers using only BOCRA's official documents as context
+--
+-- This approach ensures the chatbot gives accurate, document-backed answers
+-- rather than hallucinating. See supabase/functions/chat/index.ts.
+-- =============================================================================
+
 CREATE TABLE IF NOT EXISTS document_chunks (
   id SERIAL PRIMARY KEY,
   doc_name TEXT NOT NULL,

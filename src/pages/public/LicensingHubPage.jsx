@@ -1,3 +1,7 @@
+/* ═══════════════════════════════════════════════════
+ * IMPORTS
+ * React, router, animation, Supabase, icons, and shared UI.
+ * ═══════════════════════════════════════════════════ */
 /**
  * ============================================================================
  * BOCRA LICENSING HUB — Apply For A Licence
@@ -25,6 +29,11 @@ import { Helmet } from 'react-helmet-async';
 import { sanitizeHtml } from '../../lib/sanitizeHtml';
 import { validateForm } from '../../lib/validation';
 
+/* ═══════════════════════════════════════════════════
+ * DATA & CONSTANTS
+ * Colour palette, icon map, bilingual intro text,
+ * and the master LICENCES array (all 13 licence types).
+ * ═══════════════════════════════════════════════════ */
 gsap.registerPlugin(ScrollTrigger);
 const B = import.meta.env.BASE_URL || '/';
 
@@ -101,6 +110,12 @@ const LICENCES = [
     pdf:null, pdfName:null, pdfSize:null, colour:C.green,
     content_tn: INTRO_TN + DL_TN, content_en: `<p>Applicants should furnish the Authority with the following information:</p><h3>Particulars Of The Applicant</h3><ul><li>Provide certified copy of certificate of incorporation or certificate of registration of the company</li><li>A complete ownership profile must be provided, listing all the Shareholders, their nationalities, their physical and postal addresses and their shareholding</li><li>Disclose the Directorship of the company. We require certified copies of Form 2A and 2B. Form 2E is required if the company is Close Company</li><li>It must be indicated whether your company is a member of a group, and if so, give details of the ownership profile of the subsidiaries from the ultimate parent company</li><li>The nature of the company must be disclosed i.e. whether it is a private or public company incorporated in terms of the Companies Act</li><li>The company must have a registered office in Botswana. Provide details of Registered Office i.e. certified copy of Form 2</li><li>Provide contact details of the Registered Office</li></ul><h3>Business Plan</h3><p>Provide a 3-year business plan of your proposed project. The business plan must at a minimum show the following:</p><ul><li>A statement on how the applicant will be different from other players in the market</li><li>Services on offer and how such services will benefit the market</li><li>Description of aftersales support structures for customers</li><li>Target market</li><li>Pricing for the services</li><li>3 year financial projections of the Cash Flows and Income Statement</li><li>A statement of commitment indicating the date of commencement of operations</li><li>Proof of funding</li></ul><h3>Technical Information</h3><p>The configuration and description of all the technical aspects of the network as well as the equipment that will be used must be fully disclosed:</p><ul><li>Network diagram/configuration</li><li>The description of all interfaces within the network</li><li>Description of major equipment that will form the core components of the network</li><li>Applicants must include brief CVs of technical experience and managerial capability of the personnel</li><li>Applicant must show if there is any job creation and transfer of skills to local personnel</li></ul><h3>Applicable Fees</h3><ul><li>An initial licence fee of <strong>P10,000</strong> (ten thousand Pula)</li><li>An annual fee of <strong>P3,000</strong> (three thousand Pula)</li><li>All licence fees attract a <strong>12% Value Added Tax</strong></li><li>Fees for spectrum are based on spectrum requirements and considered on a case-by-case basis</li><li>BOCRA reserves the right to change these fees from time to time</li><li>Licence is valid for <strong>15 years</strong></li></ul>` },
 ];
+
+/* ═══════════════════════════════════════════════════
+ * SUB-COMPONENTS
+ * Sidebar, PdfCard, Grid (all-licences view),
+ * LicenceApplicationForm, and Detail (single-licence view).
+ * ═══════════════════════════════════════════════════ */
 
 /* ── Sidebar ── */
 function Sidebar({ slug, nav }) {
@@ -572,7 +587,11 @@ function Detail({ licence: l, nav }) {
   );
 }
 
-/* ── Main Export ── */
+/* ═══════════════════════════════════════════════════
+ * MAIN COMPONENT
+ * Route dispatcher: shows Grid (all licences) or
+ * Detail (single licence) based on the URL slug.
+ * ═══════════════════════════════════════════════════ */
 export default function LicensingHubPage() {
   const { lang } = useLanguage();
   const { slug } = useParams();

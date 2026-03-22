@@ -1,3 +1,19 @@
+/**
+ * ConsentCheckbox.jsx — Data Protection Act Consent Component
+ *
+ * Reusable consent checkbox required on all public forms (complaints, contact,
+ * licence applications) to comply with the Botswana Data Protection Act, 2018.
+ *
+ * Props:
+ *   checked   — boolean: whether the checkbox is ticked
+ *   onChange  — function(boolean): callback when the checkbox state changes
+ *   purpose   — string: English description of data processing purpose
+ *   purposeTn — string: Setswana translation of the purpose
+ *
+ * The checkbox is marked as `required` — forms cannot submit without consent.
+ * Links to the Privacy Notice page for full data processing details.
+ * Bilingual (English / Setswana) — switches automatically with language toggle.
+ */
 import { Link } from 'react-router-dom';
 import { Shield } from 'lucide-react';
 import { useLanguage } from '../../lib/language';

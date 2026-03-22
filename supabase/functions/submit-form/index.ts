@@ -16,6 +16,7 @@
  */
 
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
+import { fetchWithRetry } from '../_shared/fetchWithRetry.ts';
 
 const SUPABASE_URL = Deno.env.get('SUPABASE_URL');
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
@@ -43,25 +44,52 @@ function getCorsHeaders(req: Request) {
   };
 }
 
-// ─── SERVER-SIDE RATE LIMITING (V-02) ─────────────────────────────
-// In-memory rate limiter per IP. Resets when function cold-starts, but
-// provides meaningful protection against burst abuse. For persistent
-// rate limiting, a Redis/KV store or Supabase table could be used.
-const rateLimitMap = new Map<string, number[]>();
-const RATE_WINDOW_MS = 60_000; // 1 minute
-const MAX_SUBMISSIONS_PER_WINDOW = 5; // 5 form submissions per minute per IP
+// ─── PERSISTENT RATE LIMITING (V-02) ──────────────────────────────
+// Database-backed rate limiter using the rate_limits table (migration 015).
+// Survives cold starts and works across all function instances.
 
-function isRateLimited(ip: string): boolean {
-  const now = Date.now();
-  const timestamps = (rateLimitMap.get(ip) || []).filter(t => now - t < RATE_WINDOW_MS);
+async function isRateLimited(
+  ip: string,
+  formType: string,
+  maxPerWindow: number,
+): Promise<boolean> {
+  // Hash the IP (matches rate_limits table schema — privacy-safe)
+  const ipHash = await crypto.subtle.digest(
+    'SHA-256',
+    new TextEncoder().encode(ip),
+  ).then(buf =>
+    [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, '0')).join(''),
+  );
 
-  if (timestamps.length >= MAX_SUBMISSIONS_PER_WINDOW) {
-    rateLimitMap.set(ip, timestamps);
-    return true;
-  }
+  // Count submissions in the last 60 seconds
+  const cutoff = new Date(Date.now() - 60000).toISOString();
+  const countRes = await fetch(
+    `${SUPABASE_URL}/rest/v1/rate_limits?select=id&ip_hash=eq.${ipHash}&form_type=eq.${formType}&submitted_at=gte.${cutoff}`,
+    {
+      headers: {
+        apikey: SUPABASE_SERVICE_ROLE_KEY!,
+        Authorization: `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
+        Prefer: 'count=exact',
+      },
+    },
+  );
+  const count = parseInt(
+    countRes.headers.get('content-range')?.split('/')[1] || '0',
+  );
 
-  timestamps.push(now);
-  rateLimitMap.set(ip, timestamps);
+  if (count >= maxPerWindow) return true;
+
+  // Record this request
+  await fetch(`${SUPABASE_URL}/rest/v1/rate_limits`, {
+    method: 'POST',
+    headers: {
+      apikey: SUPABASE_SERVICE_ROLE_KEY!,
+      Authorization: `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ ip_hash: ipHash, form_type: formType }),
+  });
+
   return false;
 }
 
@@ -83,11 +111,11 @@ async function verifyRecaptcha(token: string, expectedAction: string): Promise<R
   }
 
   try {
-    const res = await fetch(RECAPTCHA_VERIFY_URL, {
+    const res = await fetchWithRetry(RECAPTCHA_VERIFY_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: `secret=${encodeURIComponent(RECAPTCHA_SECRET_KEY)}&response=${encodeURIComponent(token)}`,
-    });
+    }, 2);
 
     if (!res.ok) {
       console.error('[submit-form] reCAPTCHA API error:', res.status);
@@ -273,7 +301,7 @@ serve(async (req: Request) => {
       || req.headers.get('cf-connecting-ip')
       || 'unknown';
 
-    if (isRateLimited(clientIp)) {
+    if (await isRateLimited(clientIp, 'form', 5)) {
       console.warn(`[submit-form] Rate limited: ${clientIp}`);
       return jsonResponse(req, {
         error: 'Too many submissions. Please wait a moment and try again.',

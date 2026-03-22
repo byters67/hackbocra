@@ -63,8 +63,9 @@ function ApplicationsList({ navigate }) {
     try {
       const { data, error } = await supabase
         .from('licence_applications')
-        .select('*')
-        .order('created_at', { ascending: false });
+        .select('*', { count: 'exact' })
+        .order('created_at', { ascending: false })
+        .limit(50);
 
       if (error) {
         console.error('[BOCRA] Failed to load applications:', error.message);

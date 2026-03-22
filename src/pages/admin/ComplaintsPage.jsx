@@ -67,7 +67,7 @@ function ComplaintsList({ navigate }) {
     let cancelled = false;
     (async () => {
       try {
-        const { data, error } = await supabase.from('complaints').select('*').order('created_at', { ascending: false });
+        const { data, error } = await supabase.from('complaints').select('*', { count: 'exact' }).order('created_at', { ascending: false }).limit(50);
         if (error) throw error;
         if (!cancelled && data) setComplaints(data);
       } catch (err) {

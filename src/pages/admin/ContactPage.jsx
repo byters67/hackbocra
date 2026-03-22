@@ -32,8 +32,9 @@ export default function ContactPage() {
     try {
       const { data, error } = await supabase
         .from('contact_submissions')
-        .select('*')
-        .order('created_at', { ascending: false });
+        .select('*', { count: 'exact' })
+        .order('created_at', { ascending: false })
+        .limit(50);
 
       if (error) {
         console.error('[BOCRA] Failed to load contact submissions:', error.message);

@@ -1,6 +1,10 @@
+/* ═══════════════════════════════════════════════════
+ * IMPORTS
+ * External libraries, components, hooks, and icons.
+ * ═══════════════════════════════════════════════════ */
 /**
  * Cybersecurity Hub — BOCRA
- * 
+ *
  * Bright, accessible, friendly design for ALL ages including older adults.
  * Uses the same visual language as the rest of the BOCRA site.
  * Interactive quiz cards use plain language with large tap targets.
@@ -24,6 +28,11 @@ import { useScrollReveal, useStaggerReveal } from '../../hooks/useAnimations';
 
 import PageHero from '../../components/ui/PageHero';
 import { useLanguage } from '../../lib/language';
+/* ═══════════════════════════════════════════════════
+ * DATA & CONSTANTS
+ * NVD API helpers, severity styles, incident types,
+ * and interactive safety tips with quiz content.
+ * ═══════════════════════════════════════════════════ */
 /* ── NVD API ── */
 function cvssToSev(s) { return s >= 9 ? 'CRITICAL' : s >= 7 ? 'HIGH' : s >= 4 ? 'MEDIUM' : 'LOW'; }
 function detectSector(d) {
@@ -126,6 +135,10 @@ const getSAFETY_TIPS = (lang) => [
     why: 'The Data Protection Act 2018 gives you the right to control how your personal information is collected, used, and shared by companies and government.' },
 ];
 
+/* ═══════════════════════════════════════════════════
+ * SUB-COMPONENTS
+ * Locally-defined helper components used by the main page.
+ * ═══════════════════════════════════════════════════ */
 /* ── Quiz Card Component — large, friendly, accessible ── */
 const QuizCard = React.memo(function QuizCard({ tip, index }) {
   const { lang } = useLanguage();
@@ -199,6 +212,11 @@ const QuizCard = React.memo(function QuizCard({ tip, index }) {
   );
 });
 
+/* ═══════════════════════════════════════════════════
+ * MAIN COMPONENT
+ * CybersecurityHubPage — hero, stats, incident report
+ * form, safety academy, live alerts, and partners.
+ * ═══════════════════════════════════════════════════ */
 export default function CybersecurityHubPage() {
   const { lang } = useLanguage();
   const { executeRecaptcha } = useRecaptcha();

@@ -1,5 +1,14 @@
 /**
- * Splash Screen — Bilingual (EN/TN)
+ * SplashScreen.jsx — Animated Intro Screen
+ *
+ * Plays a GSAP-animated splash screen on the user's first visit.
+ * Displays the BOCRA logo with entrance animation and a bilingual tagline.
+ * After the animation completes, it calls onComplete() to reveal the app.
+ *
+ * The splash only plays once per session — controlled by sessionStorage key
+ * 'bocra-splash'. Subsequent visits skip directly to the main content.
+ *
+ * Bilingual: tagline switches between English and Setswana.
  */
 import { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';

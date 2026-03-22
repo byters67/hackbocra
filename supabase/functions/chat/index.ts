@@ -12,6 +12,7 @@
  */
 
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
+import { fetchWithRetry } from '../_shared/fetchWithRetry.ts';
 
 const ANTHROPIC_API_KEY = Deno.env.get('ANTHROPIC_API_KEY');
 const SUPABASE_URL = Deno.env.get('SUPABASE_URL');
@@ -66,22 +67,48 @@ function getCorsHeaders(req: Request) {
   };
 }
 
-// --- Rate Limiting ---
-const rateLimitMap = new Map<string, number[]>();
-const RATE_LIMIT_WINDOW = 60_000; // 1 minute
-const RATE_LIMIT_MAX = 15; // 15 requests per minute per IP
+// --- PERSISTENT RATE LIMITING (uses rate_limits table from migration 015) ---
+// Survives cold starts and works across all function instances.
 
-function isRateLimited(ip: string): boolean {
-  const now = Date.now();
-  const timestamps = (rateLimitMap.get(ip) || []).filter(t => now - t < RATE_LIMIT_WINDOW);
+async function isRateLimited(
+  ip: string,
+  formType: string,
+  maxPerWindow: number,
+): Promise<boolean> {
+  const ipHash = await crypto.subtle.digest(
+    'SHA-256',
+    new TextEncoder().encode(ip),
+  ).then(buf =>
+    [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, '0')).join(''),
+  );
 
-  if (timestamps.length >= RATE_LIMIT_MAX) {
-    rateLimitMap.set(ip, timestamps);
-    return true;
-  }
+  const cutoff = new Date(Date.now() - 60000).toISOString();
+  const countRes = await fetch(
+    `${SUPABASE_URL}/rest/v1/rate_limits?select=id&ip_hash=eq.${ipHash}&form_type=eq.${formType}&submitted_at=gte.${cutoff}`,
+    {
+      headers: {
+        apikey: SUPABASE_SERVICE_ROLE_KEY!,
+        Authorization: `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
+        Prefer: 'count=exact',
+      },
+    },
+  );
+  const count = parseInt(
+    countRes.headers.get('content-range')?.split('/')[1] || '0',
+  );
 
-  timestamps.push(now);
-  rateLimitMap.set(ip, timestamps);
+  if (count >= maxPerWindow) return true;
+
+  await fetch(`${SUPABASE_URL}/rest/v1/rate_limits`, {
+    method: 'POST',
+    headers: {
+      apikey: SUPABASE_SERVICE_ROLE_KEY!,
+      Authorization: `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ ip_hash: ipHash, form_type: formType }),
+  });
+
   return false;
 }
 
@@ -266,7 +293,7 @@ serve(async (req: Request) => {
     const authHeader = req.headers.get('authorization') || '';
     // Use a hash of IP + auth token prefix to make spoofing harder
     const rateLimitKey = `${clientIp}:${authHeader.slice(-10)}`;
-    if (isRateLimited(rateLimitKey)) {
+    if (await isRateLimited(rateLimitKey, 'chat', 15)) {
       return new Response(JSON.stringify({ error: 'Too many requests. Please wait a moment and try again.' }), {
         status: 429,
         headers: { ...cors, 'Content-Type': 'application/json' },
@@ -309,7 +336,7 @@ serve(async (req: Request) => {
     ];
 
     // Call Claude API
-    const claudeRes = await fetch('https://api.anthropic.com/v1/messages', {
+    const claudeRes = await fetchWithRetry('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

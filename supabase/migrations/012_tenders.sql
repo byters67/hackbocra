@@ -1,6 +1,16 @@
--- 012_tenders.sql
--- Tenders & Procurement manager
--- Run in Supabase SQL Editor before building frontend.
+-- =============================================================================
+-- BOCRA Website — Migration 012: Tenders & Procurement Manager
+-- =============================================================================
+--
+-- Creates the tenders table for the public Tenders page and admin CMS.
+-- Tracks the full procurement lifecycle: open → closed → adjudicated → awarded.
+--
+-- NOTE: Date and amount columns are initially TEXT for flexibility during
+-- import. Migration 014 later converts them to proper DATE/NUMERIC types
+-- with CHECK constraints for data integrity.
+--
+-- RLS: Public can read all tenders (transparency). Admin/staff can manage.
+-- =============================================================================
 
 CREATE TABLE IF NOT EXISTS tenders (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,

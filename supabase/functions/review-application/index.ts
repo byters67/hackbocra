@@ -12,6 +12,7 @@
  */
 
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
+import { fetchWithRetry } from '../_shared/fetchWithRetry.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
 // ─── Environment (validated per POST request; no top-level throw) ───
@@ -209,7 +210,7 @@ Be strict but fair. When in doubt, use UNCLEAR rather than FAIL.`;
     },
   ];
 
-  const response = await fetch('https://api.anthropic.com/v1/messages', {
+  const response = await fetchWithRetry('https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -272,6 +273,51 @@ async function resetStatusOnError(
   }
 }
 
+// --- PERSISTENT RATE LIMITING (uses rate_limits table from migration 015) ---
+async function isRateLimited(
+  ip: string,
+  formType: string,
+  maxPerWindow: number,
+): Promise<boolean> {
+  if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) return false;
+
+  const ipHash = await crypto.subtle.digest(
+    'SHA-256',
+    new TextEncoder().encode(ip),
+  ).then(buf =>
+    [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, '0')).join(''),
+  );
+
+  const cutoff = new Date(Date.now() - 60000).toISOString();
+  const countRes = await fetch(
+    `${SUPABASE_URL}/rest/v1/rate_limits?select=id&ip_hash=eq.${ipHash}&form_type=eq.${formType}&submitted_at=gte.${cutoff}`,
+    {
+      headers: {
+        apikey: SUPABASE_SERVICE_ROLE_KEY,
+        Authorization: `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
+        Prefer: 'count=exact',
+      },
+    },
+  );
+  const count = parseInt(
+    countRes.headers.get('content-range')?.split('/')[1] || '0',
+  );
+
+  if (count >= maxPerWindow) return true;
+
+  await fetch(`${SUPABASE_URL}/rest/v1/rate_limits`, {
+    method: 'POST',
+    headers: {
+      apikey: SUPABASE_SERVICE_ROLE_KEY,
+      Authorization: `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ ip_hash: ipHash, form_type: formType }),
+  });
+
+  return false;
+}
+
 // ─── Main handler ───────────────────────────────────────────────
 serve(async (req) => {
   const origin = req.headers.get('Origin');
@@ -294,6 +340,12 @@ serve(async (req) => {
       503,
       origin
     );
+  }
+
+  // Rate limiting — 5 AI review requests per minute (most expensive operation)
+  const clientIp = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
+  if (await isRateLimited(clientIp, 'review', 5)) {
+    return jsonResponse({ error: 'Too many requests. Please wait a moment.' }, 429, origin);
   }
 
   // Service role client — only used server-side, never exposed

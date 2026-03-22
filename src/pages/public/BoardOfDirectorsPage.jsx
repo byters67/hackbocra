@@ -1,9 +1,14 @@
 /**
  * Board of Directors Page — BOCRA
- * 
+ *
  * Dynamic, interactive board member profiles with photos, bios,
  * expand/collapse detail views, and BOCRA dot colour accents.
  */
+
+/* ═══════════════════════════════════════════════════
+ * IMPORTS
+ * React, routing, animation, icons, and shared UI.
+ * ═══════════════════════════════════════════════════ */
 import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
@@ -17,6 +22,10 @@ import PageHero from '../../components/ui/PageHero';
 import Breadcrumb from '../../components/ui/Breadcrumb';
 import { useLanguage } from '../../lib/language';
 
+/* ═══════════════════════════════════════════════════
+ * DATA & CONSTANTS
+ * BOCRA brand colours, board member data, and config.
+ * ═══════════════════════════════════════════════════ */
 gsap.registerPlugin(ScrollTrigger);
 const B = import.meta.env.BASE_URL || '/';
 
@@ -154,6 +163,11 @@ const getBoardMembers = (lang) => [
     ],
   },
 ];
+
+/* ═══════════════════════════════════════════════════
+ * SUB-COMPONENTS
+ * BoardCarousel, MemberDetail modal, and MemberCard.
+ * ═══════════════════════════════════════════════════ */
 
 /* ── Auto-Playing Board Carousel ── */
 function BoardCarousel({ members, onSelect }) {
@@ -481,9 +495,10 @@ function MemberCard({ member, index, onClick }) {
 }
 
 
-/* ══════════════════════════════════════════════════════════════════
- * MAIN PAGE EXPORT
- * ══════════════════════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════
+ * MAIN COMPONENT
+ * BoardOfDirectorsPage — page layout and state.
+ * ═══════════════════════════════════════════════════ */
 export default function BoardOfDirectorsPage() {
   const { lang } = useLanguage();
   const BOARD_MEMBERS = getBoardMembers(lang);

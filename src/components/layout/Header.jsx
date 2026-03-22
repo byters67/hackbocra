@@ -1,5 +1,22 @@
 /**
- * Header / Navigation — Clean, compact, no clutter
+ * Header.jsx — Main Site Header & Navigation
+ *
+ * Fully responsive header with:
+ *   - Top utility bar (phone, email, portal links — desktop only, hides on scroll)
+ *   - Main navigation bar with dropdown mega-menus (desktop) / accordion (mobile)
+ *   - Language toggle (English ↔ Setswana) — bilingual support throughout
+ *   - User account menu (visible when authenticated)
+ *   - Notification bell with real-time unread badge
+ *   - Search button
+ *
+ * ACCESSIBILITY:
+ *   - Keyboard-navigable dropdowns
+ *   - aria-labels on all interactive elements
+ *   - Mobile menu is a full-screen overlay for easy touch targets
+ *
+ * BILINGUAL:
+ *   All navigation labels use the t() translation function from LanguageContext.
+ *   Menu items automatically switch between English and Setswana.
  */
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { Link, useLocation } from 'react-router-dom';
@@ -9,6 +26,12 @@ import { useAuth } from '../../lib/auth';
 import BocraLogo from '../ui/BocraLogo';
 import { NotificationBell } from '../../lib/notifications';
 
+/**
+ * Builds the navigation tree from translated strings.
+ * Each item is either a direct link ({ label, path }) or a dropdown group
+ * ({ label, children: [...] }). Children can include { heading } for section titles.
+ * The `wide` flag triggers a two-column mega-menu layout on desktop.
+ */
 function getNavItems(t, lang) {
   return [
     {
@@ -261,6 +284,10 @@ export default function Header() {
   );
 }
 
+/**
+ * MobileDropdown — Accordion-style dropdown for mobile navigation.
+ * Toggles open/closed on tap. Uses max-height transition for smooth animation.
+ */
 function MobileDropdown({ item, active, setActive }) {
   const isOpen = active === item.label;
   return (

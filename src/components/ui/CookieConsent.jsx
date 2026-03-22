@@ -1,3 +1,14 @@
+/**
+ * CookieConsent.jsx — GDPR/DPA Cookie Consent Banner
+ *
+ * Displays a cookie consent banner on first visit (1.5s delay for UX).
+ * Compliant with the Botswana Data Protection Act, 2018:
+ *   - Three options: Accept All, Essential Only, Decline
+ *   - Links to the Privacy Notice page
+ *   - Consent choice stored in localStorage (persists across sessions)
+ *   - Bilingual (English / Setswana)
+ *   - Confirmation toast shown briefly after selection
+ */
 import { useState, useEffect } from 'react';
 import { Shield, X, CheckCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';

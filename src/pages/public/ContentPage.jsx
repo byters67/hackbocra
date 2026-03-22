@@ -19,6 +19,11 @@
  * This is safe because the HTML is authored by the development team.
  */
 
+/* ═══════════════════════════════════════════════════
+ * IMPORTS
+ * React, routing, UI libraries, and project modules.
+ * ═══════════════════════════════════════════════════ */
+
 import { useEffect, useState, useMemo } from 'react';
 import { Link, useParams, useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
@@ -29,6 +34,11 @@ import { useLanguage } from '../../lib/language';
 import usePageContent from '../../hooks/usePageContent';
 import { sanitizeHtml } from '../../lib/sanitizeHtml';
 import Breadcrumb from '../../components/ui/Breadcrumb';
+
+/* ═══════════════════════════════════════════════════
+ * DATA & CONSTANTS
+ * Bilingual page content database and accent/colour mappings.
+ * ═══════════════════════════════════════════════════ */
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // PAGE CONTENT DATABASE
@@ -1118,6 +1128,12 @@ const SECTION_COLOURS = {
   'Dipotso tse di Botswang Thata': '#00A6CE',
   'Kitsiso ya Poraefesi': '#00458B',
 };
+
+/* ═══════════════════════════════════════════════════
+ * MAIN COMPONENT
+ * Renders a content page by slug with bilingual support,
+ * hero banner, sanitized HTML body, and quick-links strip.
+ * ═══════════════════════════════════════════════════ */
 
 export default function ContentPage() {
   const location = useLocation();

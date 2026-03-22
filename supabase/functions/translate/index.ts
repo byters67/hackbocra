@@ -14,6 +14,7 @@
  */
 
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
+import { fetchWithRetry } from '../_shared/fetchWithRetry.ts';
 
 const GOOGLE_API_KEY = Deno.env.get('GOOGLE_TRANSLATE_API_KEY');
 const GOOGLE_TRANSLATE_URL = 'https://translation.googleapis.com/language/translate/v2';
@@ -30,6 +31,9 @@ const DEV_ORIGINS = [
 const isDev = Deno.env.get('ENVIRONMENT') === 'development';
 const ALLOWED_ORIGINS = isDev ? [...PRODUCTION_ORIGINS, ...DEV_ORIGINS] : PRODUCTION_ORIGINS;
 
+const SUPABASE_URL_TRANSLATE = Deno.env.get('SUPABASE_URL');
+const SUPABASE_SERVICE_KEY_TRANSLATE = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
+
 function getCorsHeaders(req: Request) {
   const origin = req.headers.get('origin') || '';
   const allowedOrigin = ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
@@ -37,6 +41,51 @@ function getCorsHeaders(req: Request) {
     'Access-Control-Allow-Origin': allowedOrigin,
     'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
   };
+}
+
+// --- PERSISTENT RATE LIMITING (uses rate_limits table from migration 015) ---
+async function isRateLimited(
+  ip: string,
+  formType: string,
+  maxPerWindow: number,
+): Promise<boolean> {
+  if (!SUPABASE_URL_TRANSLATE || !SUPABASE_SERVICE_KEY_TRANSLATE) return false;
+
+  const ipHash = await crypto.subtle.digest(
+    'SHA-256',
+    new TextEncoder().encode(ip),
+  ).then(buf =>
+    [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, '0')).join(''),
+  );
+
+  const cutoff = new Date(Date.now() - 60000).toISOString();
+  const countRes = await fetch(
+    `${SUPABASE_URL_TRANSLATE}/rest/v1/rate_limits?select=id&ip_hash=eq.${ipHash}&form_type=eq.${formType}&submitted_at=gte.${cutoff}`,
+    {
+      headers: {
+        apikey: SUPABASE_SERVICE_KEY_TRANSLATE,
+        Authorization: `Bearer ${SUPABASE_SERVICE_KEY_TRANSLATE}`,
+        Prefer: 'count=exact',
+      },
+    },
+  );
+  const count = parseInt(
+    countRes.headers.get('content-range')?.split('/')[1] || '0',
+  );
+
+  if (count >= maxPerWindow) return true;
+
+  await fetch(`${SUPABASE_URL_TRANSLATE}/rest/v1/rate_limits`, {
+    method: 'POST',
+    headers: {
+      apikey: SUPABASE_SERVICE_KEY_TRANSLATE,
+      Authorization: `Bearer ${SUPABASE_SERVICE_KEY_TRANSLATE}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ ip_hash: ipHash, form_type: formType }),
+  });
+
+  return false;
 }
 
 serve(async (req: Request) => {
@@ -48,6 +97,12 @@ serve(async (req: Request) => {
   }
 
   try {
+    // Rate limiting — 30 requests per minute
+    const clientIp = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
+    if (await isRateLimited(clientIp, 'translate', 30)) {
+      return jsonResponse({ error: 'Too many requests. Please wait a moment.' }, 429, cors);
+    }
+
     if (!GOOGLE_API_KEY) {
       return jsonResponse(
         { error: 'Translation API key not configured' },
@@ -116,11 +171,11 @@ async function translateSingle(
   source: string,
   format: string,
 ): Promise<string | null> {
-  const res = await fetch(`${GOOGLE_TRANSLATE_URL}?key=${GOOGLE_API_KEY}`, {
+  const res = await fetchWithRetry(`${GOOGLE_TRANSLATE_URL}?key=${GOOGLE_API_KEY}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ q, target, source, format }),
-  });
+  }, 3);
 
   if (!res.ok) {
     console.error('[translate] Google API error:', await res.text());
@@ -137,11 +192,11 @@ async function translateArray(
   source: string,
   format: string,
 ): Promise<string[] | null> {
-  const res = await fetch(`${GOOGLE_TRANSLATE_URL}?key=${GOOGLE_API_KEY}`, {
+  const res = await fetchWithRetry(`${GOOGLE_TRANSLATE_URL}?key=${GOOGLE_API_KEY}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ q: texts, target, source, format }),
-  });
+  }, 3);
 
   if (!res.ok) {
     console.error('[translate] Google API error:', await res.text());

@@ -1,5 +1,25 @@
 /**
- * Enhanced Accessibility Widget — Fully Bilingual (EN/TN)
+ * AccessibilityWidget.jsx — WCAG 2.1 Accessibility Toolbar
+ *
+ * Floating accessibility panel (bottom-left) that provides:
+ *   - Text-to-Speech: reads the current page aloud using Web Speech API
+ *   - Font Size control: increase/decrease/reset page font size
+ *   - High Contrast mode: dark background with bright text
+ *   - Link Highlighting: outlines all clickable links in yellow
+ *   - Dyslexia-friendly font: switches to OpenDyslexic typeface
+ *   - Big Cursor: enlarges the mouse pointer
+ *   - Reading Guide: horizontal line follows the mouse for focus
+ *   - Reduced Motion: disables all CSS animations
+ *   - Back to Top button: smooth scroll to page top
+ *
+ * All settings persist in sessionStorage for the duration of the visit.
+ * Fully bilingual — labels switch between English and Setswana.
+ *
+ * COMPLIANCE: Addresses WCAG 2.1 AA requirements for:
+ *   - Resize Text (1.4.4)
+ *   - Contrast (1.4.3)
+ *   - Animation from Interactions (2.3.3)
+ *   - Focus Visible (2.4.7)
  */
 import { useState, useEffect, useCallback } from 'react';
 import { Accessibility, Volume2, ZoomIn, ZoomOut, RotateCcw, Eye, X, MousePointer, Type, Underline, Pause, Play, MinusCircle, Minus } from 'lucide-react';

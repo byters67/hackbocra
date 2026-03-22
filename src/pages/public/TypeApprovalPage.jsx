@@ -1,3 +1,8 @@
+/* ═══════════════════════════════════════════════════
+ * IMPORTS
+ * React, routing, icons, shared components, and hooks.
+ * ═══════════════════════════════════════════════════ */
+
 /**
  * Type Approval Page — SIMS Customer Portal Rebuild
  * Recreates typeapproval.bocra.org.bw functionality:
@@ -7,7 +12,7 @@
  * - Login → Dashboard (applications, complaints)
  * - Complaints & Enquiries (create + check status)
  * - User Manual + Guidelines downloads
- * 
+ *
  * Uses same Supabase auth as OperatorPortalPage.
  */
 
@@ -30,6 +35,11 @@ import { useRecaptcha } from '../../hooks/useRecaptcha';
 import { useLanguage } from '../../lib/language';
 import { Helmet } from 'react-helmet-async';
 import { validateForm } from '../../lib/validation';
+
+/* ═══════════════════════════════════════════════════
+ * DATA & CONSTANTS
+ * Device categories, icons, ID types, complaint categories, and base URL.
+ * ═══════════════════════════════════════════════════ */
 
 /* ─── DEVICE CATEGORIES & ICONS (data comes from Supabase) ─── */
 const DEVICE_CATEGORIES = ['All', 'Mobile Phone', 'Router', 'Access Point', 'Tablet', 'Two-Way Radio', 'CPE Device', 'IP Camera', 'Satellite Terminal', 'Base Station', 'Network Switch', 'POS Terminal', 'IoT Device', 'Vehicle System', 'Solar Inverter'];
@@ -61,9 +71,10 @@ const getCOMPLAINT_CATEGORIES = (lang) => [
 
 const BASE = import.meta.env.BASE_URL || '/';
 
-/* ═════════════════════════════════════════════════ */
-/*               MAIN PAGE COMPONENT                */
-/* ═════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════
+ * MAIN COMPONENT
+ * Primary exported page handling view routing, auth state, and the landing layout.
+ * ═══════════════════════════════════════════════════ */
 export default function TypeApprovalPage() {
   const [view, setView] = useState('landing');
   const { user, signIn, signOut } = useAuth();
@@ -384,6 +395,11 @@ export default function TypeApprovalPage() {
   );
 }
 
+
+/* ═══════════════════════════════════════════════════
+ * SUB-COMPONENTS
+ * TypeApprovalSearch, LoginForm, TypeApprovalDashboard, and ComplaintsSection.
+ * ═══════════════════════════════════════════════════ */
 
 /* ═════════════════════════════════════════════════ */
 /*            TYPE APPROVAL SEARCH                  */

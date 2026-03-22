@@ -69,8 +69,9 @@ function IncidentsList({ navigate }) {
     try {
       const { data, error } = await supabase
         .from('cyber_incidents')
-        .select('*')
-        .order('created_at', { ascending: false });
+        .select('*', { count: 'exact' })
+        .order('created_at', { ascending: false })
+        .limit(50);
 
       if (error) {
         console.error('[BOCRA] Failed to load incidents:', error.message);

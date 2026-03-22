@@ -2,6 +2,7 @@
   "name": "bocra-web",
   "private": true,
   "version": "1.0.0",
+  "sideEffects": false,
   "description": "BOCRA - Botswana Communications Regulatory Authority Website Redesign",
   "type": "module",
   "scripts": {

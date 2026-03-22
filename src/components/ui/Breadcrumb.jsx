@@ -1,3 +1,19 @@
+/**
+ * Breadcrumb.jsx — Navigation breadcrumb trail for page hierarchy.
+ *
+ * Renders a Home icon followed by chevron-separated links.
+ * Last item in the array is displayed as plain text (current page).
+ *
+ * @param {Array<{label: string, href?: string}>} items
+ *   - Items with href render as clickable links
+ *   - Items without href render as bold text (current page)
+ *
+ * USAGE:
+ *   <Breadcrumb items={[
+ *     { label: 'About', href: '/about/profile' },
+ *     { label: 'Board of Directors' },
+ *   ]} />
+ */
 import { Link } from 'react-router-dom';
 import { ChevronRight, Home } from 'lucide-react';
 

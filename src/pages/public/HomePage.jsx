@@ -1,6 +1,19 @@
 /**
- * Home Page — Landing Page
- * Uses your uploaded telecom images. No AI gradients. Everything clickable.
+ * HomePage.jsx — BOCRA Website Landing Page
+ *
+ * The main entry point for citizens visiting bocra.org.bw. Showcases:
+ *   - Hero section with animated headline and CTA buttons
+ *   - Four regulated sectors (Telecom, Broadcasting, Postal, Internet)
+ *   - Quick-access service cards (File Complaint, Verify Licence, etc.)
+ *   - Live telecom statistics counter (data from Supabase)
+ *   - Latest news feed pulled from the CMS (posts table)
+ *   - Call-to-action section with contact details
+ *
+ * ANIMATIONS: Uses GSAP ScrollTrigger via custom hooks (useScrollReveal,
+ * useStaggerReveal, useCountUp) for smooth scroll-triggered reveals.
+ *
+ * BILINGUAL: All content switches between English and Setswana using
+ * the LanguageContext. Static text is defined inline with lang checks.
  */
 import { Helmet } from 'react-helmet-async';
 import { useState, useEffect, useRef } from 'react';

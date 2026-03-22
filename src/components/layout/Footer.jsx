@@ -1,5 +1,14 @@
 /**
- * Footer — Bilingual (EN/TN) clean compact layout
+ * Footer.jsx — Site Footer with Quick Links, Contact Info & Social Media
+ *
+ * Fully bilingual (English / Setswana). Includes:
+ *   - BOCRA mission statement and logo
+ *   - Quick Links to key pages (About, Licensing, Documents, etc.)
+ *   - Online Services links (QoS Monitoring, Type Approval, Register .BW, etc.)
+ *   - Physical address, phone, and email contact details
+ *   - Social media links (Facebook, X/Twitter, YouTube, LinkedIn)
+ *   - Privacy Notice link and copyright
+ *   - Security verification badge
  */
 import { Link } from 'react-router-dom';
 import { Mail, Phone, MapPin, ArrowUpRight, ShieldCheck } from 'lucide-react';

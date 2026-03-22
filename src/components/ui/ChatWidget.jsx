@@ -1,8 +1,30 @@
+/**
+ * ChatWidget.jsx — AI-Powered Citizen Assistance Chatbot
+ *
+ * Floating chat widget (bottom-right corner) that connects to the BOCRA
+ * RAG chatbot via the Supabase Edge Function (supabase/functions/chat/).
+ *
+ * FEATURES:
+ *   - Retrieval-Augmented Generation (RAG): answers from official BOCRA documents
+ *   - Bilingual support (English + Setswana) — all UI strings swap with language
+ *   - Conversation history sent to Claude for multi-turn context
+ *   - Client-side rate limiting to prevent spam
+ *   - Suggested quick-start questions for common citizen queries
+ *   - Markdown rendering for structured AI responses
+ *
+ * SECURITY:
+ *   - Messages are prefixed with [CITIZEN QUERY] server-side to prevent prompt injection
+ *   - The Edge Function validates origin and applies its own rate limiting
+ *   - No user data is persisted — conversation clears on widget close
+ */
+
 import { useState, useRef, useEffect } from "react";
 import { MessageCircle, X, Send, Loader, RotateCcw } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import { useLanguage } from '../../lib/language';
 import { supabaseUrl_, supabaseAnonKey_ } from '../../lib/supabase';
+
+// Edge Function endpoint for the RAG chatbot
 const CHAT_API = `${supabaseUrl_}/functions/v1/chat`;
 
 export default function ChatWidget() {

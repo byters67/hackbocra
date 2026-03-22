@@ -8,3 +8,4 @@ dist/
 myfiles/
 .idea/
 supabase/.temp/
+supabase_linux_amd64.deb

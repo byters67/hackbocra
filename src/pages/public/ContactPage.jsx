@@ -1,3 +1,19 @@
+/**
+ * ContactPage.jsx — BOCRA Contact Us Page
+ *
+ * Public-facing page with:
+ *   - Contact form that submits to Supabase (contact_submissions table)
+ *   - BOCRA physical address, phone, email, and office hours
+ *   - Embedded OpenStreetMap showing BOCRA headquarters location
+ *   - Data Protection Act consent checkbox (ConsentCheckbox component)
+ *   - Client-side rate limiting to prevent spam submissions
+ *   - Bilingual support (English / Setswana)
+ *
+ * SECURITY:
+ *   - Input validation before submission
+ *   - Rate limiting via checkRateLimit() utility
+ *   - DPA consent required before data is collected
+ */
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';

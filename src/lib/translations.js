@@ -1,5 +1,22 @@
 /**
- * translations.js — English + Setswana UI strings
+ * translations.js — Bilingual UI String Dictionary (English + Setswana)
+ *
+ * Central source of truth for all translatable UI strings used across
+ * the BOCRA website. Consumed by the LanguageContext's t() function:
+ *
+ *   const { t } = useLanguage();
+ *   <h1>{t('nav.home')}</h1>  // "Home" in EN, "Gae" in TN
+ *
+ * STRUCTURE:
+ *   translations.en['key'] → English string
+ *   translations.tn['key'] → Setswana string
+ *
+ * ADDING NEW STRINGS:
+ *   1. Add the English string under `en`
+ *   2. Add the Setswana translation under `tn` with the same key
+ *   3. Use t('your.key') in the component
+ *
+ * Covers: navigation, footer, accessibility widget, 404 page, loading states.
  */
 const translations = {
   en: {

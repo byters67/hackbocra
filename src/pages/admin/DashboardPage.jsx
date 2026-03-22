@@ -46,9 +46,9 @@ export default function DashboardPage() {
   const fetchData = useCallback(async (cancelled = { current: false }) => {
     try {
       const [cRes, aRes, iRes, ctRes, recentC] = await Promise.all([
-        supabase.from('complaints').select('*'),
-        supabase.from('licence_applications').select('id, status, licence_type, created_at'),
-        supabase.from('cyber_incidents').select('id, status, urgency, created_at'),
+        supabase.from('complaints').select('*', { count: 'exact' }).limit(50),
+        supabase.from('licence_applications').select('id, status, licence_type, created_at', { count: 'exact' }).limit(50),
+        supabase.from('cyber_incidents').select('id, status, urgency, created_at', { count: 'exact' }).limit(50),
         supabase.from('contact_submissions').select('id', { count: 'exact', head: true }),
         supabase.from('complaints').select('*').order('created_at', { ascending: false }).limit(8),
       ]);

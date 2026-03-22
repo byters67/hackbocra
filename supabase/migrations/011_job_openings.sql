@@ -1,6 +1,13 @@
--- 011_job_openings.sql
--- Jobs / Careers manager — Phase 1.5
--- Run in Supabase SQL Editor before building frontend.
+-- =============================================================================
+-- BOCRA Website — Migration 011: Job Openings / Careers Manager
+-- =============================================================================
+--
+-- Creates the job_openings table for the public Careers page and admin CMS.
+-- Public visitors see open positions. Admin/staff can create, edit, and close listings.
+--
+-- RLS: Public can read open jobs only. Admin/staff have full CRUD access.
+-- The update_updated_at() trigger function is reused from 010_cms_content.sql.
+-- =============================================================================
 
 CREATE TABLE IF NOT EXISTS job_openings (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
