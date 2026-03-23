@@ -423,7 +423,7 @@ function OperatorDashboard({ operator, user, signOut, setView }) {
   const removePfp=()=>{setProfilePic('');localStorage.removeItem('bocra-pfp-'+(user?.id||''));};
   const SC={pending:'bg-yellow-100 text-yellow-700',approved:'bg-green-100 text-green-700',rejected:'bg-red-100 text-red-700',investigating:'bg-blue-100 text-blue-700',resolved:'bg-green-100 text-green-700',closed:'bg-gray-100 text-gray-600'};
   const ini=(name||'?').charAt(0).toUpperCase();
-  return(<div className="bg-bocra-off-white min-h-screen">
+  return(<div className="bg-bocra-off-white">
     <div className="bg-[#00458B] text-white"><div className="section-wrapper py-3 flex items-center justify-between"><div className="flex items-center gap-3"><Radio size={18} className="text-[#00A6CE]"/><span className="text-sm font-bold">ASMS-WebCP</span><span className="text-xs text-white/40 hidden sm:inline">{tn ? 'Potlolo ya Batsholetsi' : 'Operator Portal'}</span></div><div className="flex items-center gap-3">{profilePic?<img src={profilePic} alt="" className="w-7 h-7 rounded-full object-cover border-2 border-white/20"/>:<div className="w-7 h-7 rounded-full bg-[#00A6CE] flex items-center justify-center text-white text-xs font-bold">{ini}</div>}<span className="text-xs text-white/60 hidden sm:inline">{name}</span><button onClick={handleLogout} className="text-xs text-white/40 hover:text-white flex items-center gap-1"><LogOut size={12}/> {tn ? 'Tswa' : 'Sign Out'}</button></div></div></div>
     <div className="section-wrapper py-6">
       <div className="bg-white rounded-2xl border border-gray-200 p-6 mb-6"><div className="flex flex-col sm:flex-row sm:items-center gap-4">
