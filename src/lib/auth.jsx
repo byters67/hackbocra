@@ -33,26 +33,30 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const clearStaleSession = async () => {
+      // Clear browser session only; avoids extra network calls when refresh token is already invalid.
+      await supabase.auth.signOut({ scope: 'local' }).catch(() => {});
+      setUser(null);
+      setLoading(false);
+    };
+
     // Check for existing session on mount
     supabase.auth.getSession().then(({ data: { session }, error }) => {
       if (error) {
-        // Stale/invalid session in storage — clean it up
-        supabase.auth.signOut().catch(() => {});
-        setUser(null);
+        // Stale/invalid session in storage — clean it up locally
+        clearStaleSession();
       } else {
         setUser(session?.user ?? null);
+        setLoading(false);
       }
-      setLoading(false);
     });
 
     // Listen for auth state changes (login, logout, token refresh)
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
         if (event === 'TOKEN_REFRESHED' && !session) {
-          // Refresh token was invalid/expired — clear stale session
-          supabase.auth.signOut().catch(() => {});
-          setUser(null);
-          setLoading(false);
+          // Refresh token was invalid/expired — clear stale session locally
+          clearStaleSession();
           return;
         }
         if (event === 'SIGNED_OUT') {

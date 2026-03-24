@@ -9,7 +9,7 @@ import { useState, useEffect, useMemo, useRef } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import {
   FolderOpen, Plus, Trash2, CheckCircle, Search, Edit3, X,
-  Upload, AlertCircle, Download, FileText, Loader2,
+  Upload, AlertCircle, Download, FileText, Loader2, Bell,
 } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 
@@ -52,6 +52,7 @@ export default function DocumentsManagerPage() {
   const [error, setError] = useState('');
   const [uploadFile, setUploadFile] = useState(null);
   const [uploading, setUploading] = useState(false);
+  const [notifySubscribers, setNotifySubscribers] = useState(false);
 
   /* ─── Fetch ─── */
   useEffect(() => {
@@ -231,7 +232,24 @@ export default function DocumentsManagerPage() {
         setSuccess('Document uploaded successfully');
       }
 
+      // Send subscriber notification if toggled on
+      if (notifySubscribers) {
+        const CATEGORY_TO_AREA = { Legislation: 'telecoms', Broadcasting: 'broadcasting', 'Consumer Protection': 'telecoms', Licensing: 'licensing', 'Broadband & Internet': 'internet_ict', 'Spectrum & Frequency': 'telecoms', 'Cybersecurity': 'cybersecurity' };
+        const area = CATEGORY_TO_AREA[form.category] || 'telecoms';
+        try {
+          const { data: { session } } = await supabase.auth.getSession();
+          const nRes = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/send-notification`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${session?.access_token}` },
+            body: JSON.stringify({ action: 'notify', notification_type: 'document', content_title: form.title.trim(), area, content_url: '/documents/drafts' }),
+          });
+          const nData = await nRes.json();
+          if (nData.success) setSuccess(prev => prev + ` \u2014 Notification sent to ${nData.recipients_count} subscriber${nData.recipients_count !== 1 ? 's' : ''}`);
+        } catch { /* notification failure is non-critical */ }
+      }
+
       setSaving(false);
+      setNotifySubscribers(false);
       resetForm();
       fetchDocuments();
       setTimeout(() => setSuccess(''), 4000);
@@ -432,6 +450,13 @@ export default function DocumentsManagerPage() {
               )}
               <p className="text-[11px] text-gray-400 mt-1">Allowed: PDF, DOC, DOCX, XLS, XLSX. Max 20MB.</p>
             </div>
+
+            {/* Notify subscribers */}
+            <label className="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
+              <input type="checkbox" checked={notifySubscribers} onChange={e => setNotifySubscribers(e.target.checked)} className="rounded border-gray-300" />
+              <Bell size={14} className="text-gray-400" />
+              Notify subscribers about this document
+            </label>
 
             {/* Submit */}
             <div className="flex items-center gap-3 pt-2">

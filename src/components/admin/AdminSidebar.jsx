@@ -27,6 +27,7 @@ import {
   FolderOpen,
   Briefcase,
   Globe,
+  HelpCircle,
 } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../lib/auth';
@@ -48,6 +49,7 @@ const CONTENT_NAV_ITEMS = [
   { to: '/admin/news', label: 'News & Articles', icon: Newspaper },
   { to: '/admin/documents-manage', label: 'Documents', icon: FolderOpen },
   { to: '/admin/jobs', label: 'Jobs / Careers', icon: Briefcase },
+  { to: '/admin/faq', label: 'FAQ Management', icon: HelpCircle },
 ];
 
 export default function AdminSidebar({ profile }) {

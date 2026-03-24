@@ -2,7 +2,7 @@
  * FAQsPage — Redesigned with category cards
  * Click a category to see its questions. Fully bilingual.
  */
-import { useState } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import {
@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import PageHero from '../../components/ui/PageHero';
 import { useLanguage } from '../../lib/language';
+import { supabase } from '../../lib/supabase';
 import { useStaggerReveal } from '../../hooks/useAnimations';
 
 const getFaqs = (tn) => [
@@ -99,11 +100,63 @@ function FAQItem({ item, isOpen, toggle, color }) {
 export default function FAQsPage() {
   const { lang } = useLanguage();
   const tn = lang === 'tn';
-  const FAQS = getFaqs(tn);
+  const hardcoded = getFaqs(tn);
+  const [dbFaqs, setDbFaqs] = useState([]);
   const [activeCategory, setActiveCategory] = useState(null);
   const [openItems, setOpenItems] = useState(new Set());
   const [search, setSearch] = useState('');
   const cardsRef = useStaggerReveal({ stagger: 0.08 });
+
+  // Fetch admin-created FAQs from database (non-blocking — hardcoded always shows)
+  useEffect(() => {
+    supabase.from('faq_entries').select('*').eq('published', true).order('sort_order')
+      .then(({ data }) => { if (data) setDbFaqs(data); })
+      .catch(() => {});
+  }, []);
+
+  // Category config for DB entries (icon + color lookup)
+  const DB_CAT_CONFIG = { General: { icon: HelpCircle, color: '#00458B' }, Complaints: { icon: AlertCircle, color: '#C8237B' }, Licensing: { icon: FileText, color: '#6BBE4E' }, 'Domains & Internet': { icon: Globe, color: '#00A6CE' }, Cybersecurity: { icon: Shield, color: '#F7B731' }, 'QoS & Network': { icon: Wifi, color: '#059669' } };
+  const DB_CAT_TN = { General: 'Ka Kakaretso', Complaints: 'Dingongorego', Licensing: 'Dilaesense', 'Domains & Internet': 'Mafelo le Inthanete', Cybersecurity: 'Tshireletso ya Saebo', 'QoS & Network': 'Boleng jwa Tirelo le Neteweke' };
+
+  // Merge: convert DB rows into the same shape as hardcoded items, prepend to matching categories or create new ones
+  const FAQS = useMemo(() => {
+    if (dbFaqs.length === 0) return hardcoded;
+
+    // Deep clone hardcoded so we don't mutate
+    const merged = hardcoded.map(cat => ({ ...cat, items: [...cat.items] }));
+
+    // Group DB entries by category
+    const dbByCategory = {};
+    dbFaqs.forEach(row => {
+      if (!dbByCategory[row.category]) dbByCategory[row.category] = [];
+      dbByCategory[row.category].push({
+        q: tn ? (row.question_tn || row.question) : row.question,
+        a: tn ? (row.answer_tn || row.answer) : row.answer,
+        links: (row.links || []).map(l => ({ label: tn ? (l.labelTn || l.label) : l.label, path: l.path })),
+      });
+    });
+
+    // Prepend DB items to matching hardcoded categories
+    for (const [category, items] of Object.entries(dbByCategory)) {
+      const existing = merged.find(c => c.category === category || c.category === (DB_CAT_TN[category] || category));
+      if (existing) {
+        existing.items = [...items, ...existing.items];
+      } else {
+        // New category from DB
+        const config = DB_CAT_CONFIG[category] || { icon: HelpCircle, color: '#64748B' };
+        merged.push({
+          id: category.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+          category: tn ? (DB_CAT_TN[category] || category) : category,
+          icon: config.icon,
+          color: config.color,
+          desc: '',
+          items,
+        });
+      }
+    }
+
+    return merged;
+  }, [hardcoded, dbFaqs, tn]);
 
   const totalCount = FAQS.reduce((s, c) => s + c.items.length, 0);
   const toggle = (key) => { setOpenItems(p => { const n = new Set(p); n.has(key) ? n.delete(key) : n.add(key); return n; }); };

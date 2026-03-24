@@ -9,7 +9,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import {
   Newspaper, Plus, Trash2, CheckCircle, Search, Edit3, X,
-  Eye, AlertCircle, ChevronDown, Loader2,
+  Eye, AlertCircle, ChevronDown, Loader2, Bell,
 } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import RichTextEditor from '../../components/admin/RichTextEditor';
@@ -42,6 +42,7 @@ export default function NewsManagerPage() {
   const [saving, setSaving] = useState(false);
   const [success, setSuccess] = useState('');
   const [error, setError] = useState('');
+  const [notifySubscribers, setNotifySubscribers] = useState(false);
 
   /* ─── Fetch ─── */
   useEffect(() => {
@@ -182,7 +183,22 @@ export default function NewsManagerPage() {
         setSuccess('Article created \u2014 ' + (form.status === 'published' ? 'now visible on the public news page' : 'saved as draft'));
       }
 
+      // Send subscriber notification if toggled on and status is published
+      if (notifySubscribers && form.status === 'published') {
+        try {
+          const { data: { session } } = await supabase.auth.getSession();
+          const nRes = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/send-notification`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${session?.access_token}` },
+            body: JSON.stringify({ action: 'notify', notification_type: 'news', content_title: form.title.trim(), area: 'telecoms', content_url: '/media/news-events' }),
+          });
+          const nData = await nRes.json();
+          if (nData.success) setSuccess(prev => prev + ` \u2014 Notification sent to ${nData.recipients_count} subscriber${nData.recipients_count !== 1 ? 's' : ''}`);
+        } catch { /* notification failure is non-critical */ }
+      }
+
       setSaving(false);
+      setNotifySubscribers(false);
       resetForm();
       fetchPosts();
       setTimeout(() => setSuccess(''), 4000);
@@ -370,6 +386,15 @@ export default function NewsManagerPage() {
                 />
                 <p className="text-[11px] text-gray-400 mt-1">Leave blank to use today\u2019s date</p>
               </div>
+            )}
+
+            {/* Notify subscribers */}
+            {form.status === 'published' && (
+              <label className="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
+                <input type="checkbox" checked={notifySubscribers} onChange={e => setNotifySubscribers(e.target.checked)} className="rounded border-gray-300" />
+                <Bell size={14} className="text-gray-400" />
+                Notify subscribers about this article
+              </label>
             )}
 
             {/* Submit */}

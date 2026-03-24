@@ -74,6 +74,7 @@ function getNavItems(t, lang) {
         { label: 'Cybersecurity Hub', path: '/cybersecurity' },
         { label: t('nav.services.consumerEd'), path: '/complaints/consumer-education' },
         { label: t('nav.services.licenceVerify'), path: '/services/licence-verification' },
+        { label: t('nav.guidedJourneys'), path: '/services/guided-journeys' },
         { heading: t('nav.services.forIndustry') },
         { label: t('nav.services.applyLicence'), path: '/licensing' },
         { label: t('nav.services.typeApproval'), path: '/services/type-approval' },
@@ -202,6 +203,7 @@ export default function Header() {
             </button>
             <Link to="/services/asms-webcp" className="px-3 py-1.5 text-[11px] font-bold bg-bocra-green/10 text-bocra-green rounded-md hover:bg-bocra-green hover:text-white transition-all">{t('header.asms')}</Link>
             <Link to="/services/register-bw" className="px-3 py-1.5 text-[11px] font-bold bg-bocra-cyan/10 text-bocra-cyan rounded-md hover:bg-bocra-cyan hover:text-white transition-all">{t('header.registerBW')}</Link>
+            <Link to="/subscribe" className="px-3 py-1.5 text-[11px] font-bold bg-[#C8237B]/10 text-[#C8237B] rounded-md hover:bg-[#C8237B] hover:text-white transition-all">{lang === 'tn' ? 'Ingodisa' : 'Subscribe'}</Link>
             <NotificationBell />
             {/* User indicator — only visible when logged in */}
             {user && (
@@ -262,6 +264,7 @@ export default function Header() {
                 {lang === 'en' ? 'Fetolela go Setswana (ST)' : 'Switch to English (EN)'}
               </button>
               <Link to="/services/file-complaint" className="btn-primary w-full justify-center">{lang === 'tn' ? 'Tlhagisa Ngongorego' : 'File a Complaint'}</Link>
+              <Link to="/subscribe" className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-[#C8237B]/10 text-[#C8237B] rounded-xl text-sm font-bold hover:bg-[#C8237B] hover:text-white transition-all">{lang === 'tn' ? 'Ingodisa go Fumana Diphetogo' : 'Subscribe to Updates'}</Link>
               <Link to="/admin" className="btn-secondary w-full justify-center">
                 BOCRA Portal
               </Link>
@@ -272,8 +275,8 @@ export default function Header() {
                     <div><p className="text-sm font-medium text-bocra-slate truncate">{user.email}</p><p className="text-[10px] text-green-600">Signed in</p></div>
                   </div>
                   <div className="flex gap-2">
-                    <Link to="/services/asms-webcp" className="flex-1 text-center px-3 py-2 bg-white border border-gray-200 rounded-lg text-xs font-medium text-bocra-slate">My Portal</Link>
-                    <button onClick={() => signOut()} className="px-3 py-2 bg-white border border-gray-200 rounded-lg text-xs font-medium text-red-500">Sign Out</button>
+                    <Link to="/services/asms-webcp" className="flex-1 min-w-0 text-center px-3 py-2 bg-white border border-gray-200 rounded-lg text-xs font-medium text-bocra-slate">My Portal</Link>
+                    <button onClick={() => signOut()} className="flex-1 min-w-0 px-3 py-2 bg-white border border-gray-200 rounded-lg text-xs font-medium text-red-500 text-center">Sign Out</button>
                   </div>
                 </div>
               )}
