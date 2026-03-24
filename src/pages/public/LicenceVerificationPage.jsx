@@ -197,7 +197,7 @@ const DS={c:'#64748B',i:Globe,b:'bg-gray-100'};
 const TN={NFP:'Network Facilities Provider',SAP:'Service & Application Provider',DPO:'Designated Public Postal Operator',CPO:'Commercial Postal Operator',RBL:'Commercial FM Radio Broadcaster',CSP:'Content Service Provider',SBS:'Subscription Satellite Broadcaster',SMS:'Subscription Management Service'};
 export default function LicenceVerificationPage(){
   const { lang } = useLanguage();
-  const tn = tn;
+  const tn = lang === 'tn';
   const[q,setQ]=useState('');const[sf,setSf]=useState('');const[sel,setSel]=useState(null);const[sa,setSa]=useState(false);const hr=useScrollReveal();
   const res=useMemo(()=>{if(!q.trim()&&!sf)return[];const w=q.toLowerCase().trim().split(/\s+/).filter(x=>x.length>0);return L.filter(x=>{if(sf&&x.sec!==sf)return false;if(w.length===0)return true;const h=(x.l+' '+x.c+' '+x.sec+' '+x.t+' '+(x.s||'')+' '+x.a).toLowerCase();return w.every(word=>h.includes(word))});},[q,sf]);
   const vis=sa?res:res.slice(0,12);const secs=[...new Set(L.map(x=>x.sec))];const exp=d=>new Date(d)<new Date();

@@ -15,6 +15,9 @@ import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 import removeConsole from 'vite-plugin-remove-console';
 
+/** Must match `base` — dev server returns 404 for `/hackbocra` without trailing slash */
+const APP_BASE = '/hackbocra';
+
 export default defineConfig({
   /* Single copy of React + helmet: avoids broken Context (Helmet without
      HelmetProvider) and "Cannot read properties of undefined (reading 'add')". */
@@ -22,6 +25,22 @@ export default defineConfig({
     include: ['react', 'react-dom', 'react-helmet-async'],
   },
   plugins: [
+    {
+      name: 'redirect-base-without-trailing-slash',
+      configureServer(server) {
+        server.middlewares.use((req, res, next) => {
+          const raw = req.url ?? '';
+          const pathOnly = raw.split('?')[0] ?? '';
+          if (pathOnly === APP_BASE) {
+            const qs = raw.includes('?') ? raw.slice(raw.indexOf('?')) : '';
+            res.writeHead(302, { Location: `${APP_BASE}/${qs}` });
+            res.end();
+            return;
+          }
+          next();
+        });
+      },
+    },
     react(),
     removeConsole({ includes: ['log', 'warn'] }),
     VitePWA({
@@ -36,8 +55,8 @@ export default defineConfig({
         name: 'BOCRA - Botswana Communications Regulatory Authority',
         short_name: 'BOCRA',
         description: 'Regulating telecommunications, broadcasting, postal and internet services in Botswana',
-        start_url: '/hackbocra/',
-        scope: '/hackbocra/',
+        start_url: `${APP_BASE}/`,
+        scope: `${APP_BASE}/`,
         display: 'standalone',
         background_color: '#00458B',
         theme_color: '#00458B',
@@ -45,7 +64,7 @@ export default defineConfig({
         categories: ['government', 'utilities'],
         icons: [
           {
-            src: '/hackbocra/icons/icon-192.png',
+            src: `${APP_BASE}/icons/icon-192.png`,
             sizes: '192x192',
             type: 'image/png',
             purpose: 'any maskable',
@@ -121,7 +140,7 @@ export default defineConfig({
       },
     }),
   ],
-  base: '/hackbocra/',
+  base: `${APP_BASE}/`,
   build: {
     outDir: 'dist',
     sourcemap: false,

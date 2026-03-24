@@ -3,6 +3,7 @@
  * All routes defined here. SplashScreen plays once on first visit.
  */
 import { useState } from 'react';
+import { HelmetProvider } from 'react-helmet-async';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './lib/auth';
 import { LanguageProvider } from './lib/language';
@@ -69,9 +70,10 @@ export default function App() {
   const [ready, setReady] = useState(!!sessionStorage.getItem('bocra-splash'));
 
   return (
-    <AuthProvider>
-      <LanguageProvider>
-        <NotificationProvider>
+    <HelmetProvider>
+      <AuthProvider>
+        <LanguageProvider>
+          <NotificationProvider>
           {!ready && <SplashScreen onComplete={() => setReady(true)} />}
 
           {ready && (
@@ -161,8 +163,9 @@ export default function App() {
               </Routes>
             </BrowserRouter>
           )}
-        </NotificationProvider>
-      </LanguageProvider>
-    </AuthProvider>
+          </NotificationProvider>
+        </LanguageProvider>
+      </AuthProvider>
+    </HelmetProvider>
   );
 }

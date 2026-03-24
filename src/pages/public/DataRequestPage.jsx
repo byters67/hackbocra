@@ -32,11 +32,11 @@ import { useScrollReveal } from '../../hooks/useAnimations';
 import { useLanguage } from '../../lib/language';
 
 const getREQUEST_TYPES = (lang) => [
-  { value: 'access', label: tn ? 'Fitlhelela data ya me' : 'Access my data', desc: tn ? 'Bona khopi ya data yotlhe ya botho e BOCRA e nang le yona ka ga gago' : 'Get a copy of all personal data BOCRA holds about you', icon: Eye },
-  { value: 'correction', label: tn ? 'Baakanya data ya me' : 'Correct my data', desc: tn ? 'Baakanya tshedimosetso e e sa nepagalang kgotsa e e sa felelang' : 'Fix inaccurate or incomplete information', icon: Edit3 },
-  { value: 'deletion', label: tn ? 'Phimola data ya me' : 'Delete my data', desc: tn ? 'Kopa go phimolwa ga data ya gago ya botho' : 'Request erasure of your personal data', icon: Trash2 },
-  { value: 'restriction', label: tn ? 'Kganela go dirwa' : 'Restrict processing', desc: tn ? 'Kganela tsela e BOCRA e dirisang data ya gago ka yona' : 'Limit how BOCRA uses your data', icon: Lock },
-  { value: 'portability', label: tn ? 'Romela data ya me' : 'Export my data', desc: tn ? 'Amogela data ya gago ka mokgwa o o balwang ke motšhine' : 'Receive your data in a machine-readable format', icon: Download },
+  { value: 'access', label: lang === 'tn' ? 'Fitlhelela data ya me' : 'Access my data', desc: lang === 'tn' ? 'Bona khopi ya data yotlhe ya botho e BOCRA e nang le yona ka ga gago' : 'Get a copy of all personal data BOCRA holds about you', icon: Eye },
+  { value: 'correction', label: lang === 'tn' ? 'Baakanya data ya me' : 'Correct my data', desc: lang === 'tn' ? 'Baakanya tshedimosetso e e sa nepagalang kgotsa e e sa felelang' : 'Fix inaccurate or incomplete information', icon: Edit3 },
+  { value: 'deletion', label: lang === 'tn' ? 'Phimola data ya me' : 'Delete my data', desc: lang === 'tn' ? 'Kopa go phimolwa ga data ya gago ya botho' : 'Request erasure of your personal data', icon: Trash2 },
+  { value: 'restriction', label: lang === 'tn' ? 'Kganela go dirwa' : 'Restrict processing', desc: lang === 'tn' ? 'Kganela tsela e BOCRA e dirisang data ya gago ka yona' : 'Limit how BOCRA uses your data', icon: Lock },
+  { value: 'portability', label: lang === 'tn' ? 'Romela data ya me' : 'Export my data', desc: lang === 'tn' ? 'Amogela data ya gago ka mokgwa o o balwang ke motšhine' : 'Receive your data in a machine-readable format', icon: Download },
   { value: 'withdraw_consent', label: lang === 'tn' ? 'Gogela morago tumelano' : 'Withdraw consent', desc: lang === 'tn' ? 'Gogela morago tumelano e e neng e neetswe' : 'Revoke previously given consent', icon: XCircle },
 ];
 
@@ -59,7 +59,7 @@ const STATUS_CONFIG = {
 
 export default function DataRequestPage() {
   const { lang } = useLanguage();
-  const tn = tn;
+  const tn = lang === 'tn';
   const REQUEST_TYPES = getREQUEST_TYPES(lang);
   const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
