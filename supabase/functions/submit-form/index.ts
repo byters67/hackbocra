@@ -30,25 +30,14 @@ const PRODUCTION_ORIGINS = [
 ];
 const DEV_ORIGINS = [
   'http://localhost:5173',
-  'http://localhost:5174',
   'http://localhost:3000',
 ];
 const isDev = Deno.env.get('ENVIRONMENT') === 'development';
-// Always allow localhost in dev; also allow if origin itself is a localhost URL
 const ALLOWED_ORIGINS = isDev ? [...PRODUCTION_ORIGINS, ...DEV_ORIGINS] : PRODUCTION_ORIGINS;
-
-function isLocalhostOrigin(origin: string): boolean {
-  try {
-    const url = new URL(origin);
-    return url.hostname === 'localhost' || url.hostname === '127.0.0.1';
-  } catch { return false; }
-}
 
 function getCorsHeaders(req: Request) {
   const origin = req.headers.get('origin') || '';
-  const allowedOrigin = (ALLOWED_ORIGINS.includes(origin) || isLocalhostOrigin(origin))
-    ? origin
-    : ALLOWED_ORIGINS[0];
+  const allowedOrigin = ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
   return {
     'Access-Control-Allow-Origin': allowedOrigin,
     'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
