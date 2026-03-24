@@ -685,7 +685,7 @@ function StepReview({ lang, data, onGoToStep, onSubmit, loading, error, onBack }
 }
 
 // ─── SUCCESS SCREEN ───────────────────────────────────────────────────────────
-function SuccessScreen({ lang }) {
+function SuccessScreen({ lang, referenceNumber, hasPhone }) {
   return (
     <div className="text-center py-8">
       <div className="w-16 h-16 bg-bocra-green/10 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -694,16 +694,53 @@ function SuccessScreen({ lang }) {
       <h3 className="text-2xl font-bold text-bocra-slate mb-3">
         {lang === 'tn' ? 'Ngongorego e Rometse!' : 'Complaint Submitted!'}
       </h3>
+
+      {/* Reference number */}
+      {referenceNumber && (
+        <div className="bg-bocra-blue/5 border border-bocra-blue/20 rounded-xl px-6 py-4 mb-4 inline-block">
+          <p className="text-xs font-semibold text-bocra-blue/60 uppercase tracking-wider mb-1">
+            {lang === 'tn' ? 'Nomoro ya Tshupetso' : 'Reference Number'}
+          </p>
+          <p className="text-2xl font-mono font-bold text-bocra-blue">{referenceNumber}</p>
+          <p className="text-xs text-bocra-slate/50 mt-1">
+            {lang === 'tn' ? 'Boloka nomoro eno' : 'Save this number'}
+          </p>
+        </div>
+      )}
+
       <p className="text-bocra-slate/60 mb-2 max-w-sm mx-auto">
         {lang === 'tn'
           ? 'Re a leboga go romela ngongorego ya gago. BOCRA e tla e sekaseka mme e arabe mo malatsing a le 2 a tiriso.'
           : 'Thank you for submitting your complaint. BOCRA will review it and respond within 2 business days.'}
       </p>
-      <p className="text-sm text-bocra-slate/50 mb-8">
+
+      {/* WhatsApp notification note */}
+      {hasPhone && (
+        <p className="text-sm text-bocra-slate/50 mb-2">
+          {lang === 'tn'
+            ? 'O tla amogela molaetsa wa WhatsApp wa netefatso mo nomorong ya gago ya mogala.'
+            : 'A WhatsApp confirmation message has been sent to your phone number.'}
+        </p>
+      )}
+
+      <p className="text-sm text-bocra-slate/50 mb-6">
         {lang === 'tn'
           ? 'O tla amogela netefatso le diphetogo ka imeile e o e fileng.'
-          : 'You will receive a confirmation and updates at the email address you provided.'}
+          : 'You will also receive updates at the email address you provided.'}
       </p>
+
+      {/* Track complaint link */}
+      {referenceNumber && (
+        <div className="mb-6">
+          <Link
+            to={`/services/track-complaint?ref=${referenceNumber}`}
+            className="text-bocra-blue text-sm font-medium hover:underline"
+          >
+            {lang === 'tn' ? 'Latela maemo a ngongorego ya gago →' : 'Track your complaint status →'}
+          </Link>
+        </div>
+      )}
+
       <Link to="/" className="btn-primary inline-flex">
         {lang === 'tn' ? 'Boela Gae' : 'Return to Home'}
       </Link>
@@ -731,6 +768,7 @@ export default function ComplaintWizard() {
   const [loading, setLoading] = useState(false);
   const [submitError, setSubmitError] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const [referenceNumber, setReferenceNumber] = useState('');
 
   const update = (key, value) => setData((prev) => ({ ...prev, [key]: value }));
 
@@ -807,6 +845,7 @@ export default function ComplaintWizard() {
         provider: data.provider,
         complaintType: data.complaintType,
       });
+      if (result.reference_number) setReferenceNumber(result.reference_number);
       setSubmitted(true);
     } catch {
       setSubmitError(
@@ -819,7 +858,7 @@ export default function ComplaintWizard() {
     setLoading(false);
   };
 
-  if (submitted) return <SuccessScreen lang={lang} />;
+  if (submitted) return <SuccessScreen lang={lang} referenceNumber={referenceNumber} hasPhone={!!data.phone} />;
 
   return (
     <div>

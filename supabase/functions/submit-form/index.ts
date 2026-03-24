@@ -215,29 +215,54 @@ async function handleComplaint(fields: Record<string, unknown>, supabaseHeaders:
 
   const rows = await insertRes.json();
   const complaintId = rows?.[0]?.id;
+  const generatedRef  = rows?.[0]?.reference_number || referenceNumber;
 
-  // Fire-and-forget: trigger AI classification
-  if (complaintId && ANTHROPIC_API_KEY) {
+  // Fire-and-forget: AI classification + WhatsApp acknowledgement
+  if (complaintId) {
     (async () => {
-      try {
-        await fetch(`${SUPABASE_URL}/functions/v1/classify-complaint`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
-          },
-          body: JSON.stringify({
-            complaint_id: complaintId,
-            provider,
-            complaint_type: complaintType,
-            description,
-          }),
-        });
-      } catch { /* classification is non-critical */ }
+      // 1. AI triage classification
+      if (ANTHROPIC_API_KEY) {
+        try {
+          await fetch(`${SUPABASE_URL}/functions/v1/classify-complaint`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
+            },
+            body: JSON.stringify({
+              complaint_id: complaintId,
+              provider,
+              complaint_type: complaintType,
+              description,
+            }),
+          });
+        } catch { /* classification is non-critical */ }
+      }
+
+      // 2. WhatsApp acknowledgement (only if phone number provided)
+      if (phone && generatedRef) {
+        try {
+          await fetch(`${SUPABASE_URL}/functions/v1/send-whatsapp`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
+            },
+            body: JSON.stringify({
+              complaint_id: complaintId,
+              phone,
+              reference_number: generatedRef,
+              provider,
+              message_type: 'acknowledgement',
+              lang: 'en',
+            }),
+          });
+        } catch { /* WhatsApp notification is non-critical */ }
+      }
     })();
   }
 
-  return { id: complaintId || '' };
+  return { id: complaintId || '', reference_number: generatedRef || '' };
 }
 
 // ─── CONTACT HANDLER ──────────────────────────────────────────────
