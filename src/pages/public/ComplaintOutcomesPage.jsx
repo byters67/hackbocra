@@ -41,13 +41,13 @@ const REMEDY_LABELS = {
 // ─── STAT CARD ────────────────────────────────────────────────────────────────
 function StatCard({ label, value, sub, icon: Icon, color = 'text-bocra-blue', bg = 'bg-bocra-blue/5' }) {
   return (
-    <div className={`${bg} rounded-2xl p-5 border border-gray-100`}>
-      <div className="flex items-start justify-between mb-3">
-        <p className="text-xs font-semibold text-bocra-slate/50 uppercase tracking-wider">{label}</p>
-        {Icon && <Icon size={18} className={color} />}
+    <div className={`${bg} rounded-xl p-4 border border-gray-100`}>
+      <div className="flex items-start justify-between mb-2">
+        <p className="text-[10px] font-semibold text-bocra-slate/50 uppercase tracking-wider">{label}</p>
+        {Icon && <Icon size={15} className={color} />}
       </div>
-      <p className={`text-3xl font-bold ${color}`}>{value}</p>
-      {sub && <p className="text-xs text-bocra-slate/50 mt-1">{sub}</p>}
+      <p className={`text-2xl font-bold ${color}`}>{value}</p>
+      {sub && <p className="text-xs text-bocra-slate/50 mt-0.5">{sub}</p>}
     </div>
   );
 }
@@ -252,7 +252,7 @@ export default function ComplaintOutcomesPage() {
         icon={TrendingUp}
       />
 
-      <div className="container-bocra py-12">
+      <div className="container-bocra py-8">
         <div className="flex items-center justify-between mb-2">
           <Breadcrumb items={[
             { label: lang === 'tn' ? 'Ditirelo' : 'Services', href: '/services/file-complaint' },
@@ -285,7 +285,7 @@ export default function ComplaintOutcomesPage() {
         )}
 
         {/* ── STAT CARDS ── */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-10">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
           {loading ? (
             Array(4).fill(0).map((_, i) => <Skeleton key={i} h="h-28" />)
           ) : stats ? (
@@ -322,7 +322,7 @@ export default function ComplaintOutcomesPage() {
           ) : null}
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
           {/* ── PROVIDER BREAKDOWN ── */}
           <div className="bg-white rounded-2xl border border-gray-200 p-6 lg:col-span-2">
             <SectionHeader
