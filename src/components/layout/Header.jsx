@@ -69,6 +69,7 @@ function getNavItems(t, lang) {
       children: [
         { heading: t('nav.services.forCitizens') },
         { label: t('nav.services.fileComplaint'), path: '/services/file-complaint' },
+        { label: 'Complaint Outcomes', path: '/services/complaint-outcomes' },
         { label: 'Public Consultations', path: '/consultations' },
         { label: 'Cybersecurity Hub', path: '/cybersecurity' },
         { label: t('nav.services.consumerEd'), path: '/complaints/consumer-education' },
