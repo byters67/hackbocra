@@ -36,8 +36,8 @@ export default function SplashScreen({ onComplete }) {
       .to('.sp-dot-4', { scale: 1, duration: 0.35, ease: 'back.out(2)' }, 0.75)
       .to('.sp-line', { scaleX: 1, duration: 0.5, ease: 'power2.inOut' }, 1.0)
       .to('.sp-letter', { y: 0, opacity: 1, duration: 0.5, stagger: 0.05, ease: 'power3.out' }, 1.2)
-      .to('.sp-sub', { opacity: 1, y: 0, duration: 0.4 }, 2.0)
-      .to(ref.current, { opacity: 0, scale: 1.05, duration: 0.6, ease: 'power2.in' }, 2.8);
+      .to('.sp-sub', { opacity: 1, y: 0, duration: 0.4 }, 2.0);
+    if (ref.current) tl.to(ref.current, { opacity: 0, scale: 1.05, duration: 0.6, ease: 'power2.in' }, 2.8);
     return () => tl.kill();
   }, []);
 
