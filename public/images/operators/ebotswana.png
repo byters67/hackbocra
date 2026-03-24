@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en-za" class="">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Whoops</title>
+    <meta name="description" content="">
+    <meta name="googlebot" content="unavailable_after: 1-May-2021 00:00:00">
+    <meta name="keywords" content="">
+    <!--<meta name="apple-itunes-app" content="app-id=941645021">-->
+    <meta name="google-site-verification" content="v9APCKpblT9dvIXtkAjBmC-Hugv8DwsIk_vWfD7YmFs">
+    <meta name="facebook-domain-verification" content="mg5j3mc6xaizzu2nw3jnmvfjuyhfa8">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="theme-color" content="#ffffff">
+    <meta property="og:title" content="404">
+    <meta property="og:description" content="">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="404">
+    <meta name="twitter:description" content="">
+    <meta name="twitter:image" content="">
+    <link rel="canonical" href="https://www.dstv.com/" />
+    <style>
+        @font-face {
+            font-family: 'DStv-com-icons';
+            src: url('https://cdn.icomoon.io/313020/DE_Multichoice_Icons/DStv-com-icons.eot?kp9bb5');
+            src: url('https://cdn.icomoon.io/313020/DE_Multichoice_Icons/DStv-com-icons.eot?kp9bb5#iefix') format('embedded-opentype'), url('https://cdn.icomoon.io/313020/DE_Multichoice_Icons/DStv-com-icons.woff2?kp9bb5') format('woff2'), url('https://cdn.icomoon.io/313020/DE_Multichoice_Icons/DStv-com-icons.ttf?kp9bb5') format('truetype'), url('https://cdn.icomoon.io/313020/DE_Multichoice_Icons/DStv-com-icons.woff?kp9bb5') format('woff'), url('https://cdn.icomoon.io/313020/DE_Multichoice_Icons/DStv-com-icons.svg?kp9bb5#DStv-com-icons') format('svg');
+            font-weight: normal;
+            font-style: normal;
+            font-display: block;
+        }
+
+        [class^="icon-"], [class*=" icon-"] {
+            font-family: 'DStv-com-icons' !important;
+            speak: never;
+            font-style: normal;
+            font-weight: normal;
+            font-variant: normal;
+            text-transform: none;
+            line-height: 1;
+            /* Better Font Rendering =========== */
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .icon-faqs:before {
+            content: "\e92c";
+        }
+
+        .icon-search:before {
+            content: "\e94e";
+        }
+    </style>
+    <link href="content/css/bootstrap.css" media="all" type="text/css" rel="stylesheet">
+    <link href="content/css/main.css" media="all" type="text/css" rel="stylesheet">
+    <link href="content/css/style.css" media="all" type="text/css" rel="stylesheet">
+    <script>
+        function RedirectUrl(obj) {
+            var region = document.referrer.split('/')[3];
+            var url = window.location.origin + "/" + region;
+            if (obj == 'BackToHome') {
+                window.location.href = url;
+            }
+            else if (obj == 'GetDSTv') {
+                window.location.href = url + "/buy/";
+            }
+            else if (obj == 'contact-us') {
+                window.location.href = url + "/help/contact-us/";
+            }
+        }
+
+        function formSubmit() {
+            var region = document.referrer.split('/')[3];
+            var url = window.location.origin + "/" + region + "/" + "search";
+            document.getElementById("form-search").action = url;
+            return true;
+        }
+    </script>
+    <script>
+        function getQueryParams(url) {
+            const paramArr = url.slice(url.indexOf('?') + 1).split('&');
+            const params = {};
+            paramArr.map(param => {
+                const [key, val] = param.split('=');
+                params[key] = decodeURIComponent(val);
+            })
+            return params;
+        }
+        function getPathFromUrl(url) {
+            return url.split("?")[0];
+        }
+
+        var pathArray = window.location.pathname.split('/');
+        var pagename = pathArray.length > 1 ? pathArray[1] : '';
+        var params = getQueryParams(window.location.href);
+        var culture = params.aspxerrorpath.split('/')[1].split('-');
+        var platformlanguage = culture && culture.length > 0 ? culture[0] : '';
+        var countrycode = culture && culture.length > 1 ? culture[1] : '';
+        var pagetype = /Mobile/i.test(navigator.userAgent) ? 'mobile web' : 'desktop web';
+        var dmpIds = localStorage.getItem('_Invidi');
+        var segmentId = dmpIds || '';
+
+        window.mcgDataLayer = window.mcgDataLayer || {};
+        window.mcgDataLayer = {
+            page: { // User variable
+                page_name: pagename,
+                page_section: '',
+                page_type: 'generic',
+                page_url: document.URL,
+            },
+            user: { // User variable
+                user_id: '',
+                hashed_email: '',
+                connect_id: '',
+                segment_id: segmentId,
+                billing_id: '',
+                subscriber_type: '',
+                login_type: 'guest'
+            },
+            article: { // Event
+                article_name: '',
+                article_category: '',
+                article_published_date: '',
+                article_id: '',
+            },
+            acquisition: { //User variable
+                campaign_name: '',
+                campaign_source: '',
+                campaign_medium: '',
+                campaign_content: '',
+                campaign_term: '',
+                business_unit: '',
+                referral_url: ''
+            },
+            interaction: { //Event
+                component_name: '',
+                component_type: '',
+                category: '',
+                location: '',
+                target_page_url: ''
+            },
+            search: { //?? To investigate attribution
+                search_type: 'global search',
+                filter_term: '',
+                search_term: '',
+                num_search_results: '',
+                search_count: ''
+            },
+            content: {
+                content_type: 'general page',
+                content_title: '',
+                content_tag: '',
+                content_category: '',
+            },
+            ecommerce: { // Event
+                event: '',
+                products: [],
+            },
+            platform: { // User variables
+                platform_name: 'uni-web',
+                platform_type: pagetype,
+                platform_language: platformlanguage,
+                country_code: countrycode
+            },
+            error: { // User
+                error_code: '404',
+                error_type: '',
+                error_message: '',
+                error_count: ''
+            }
+        };
+        window.history.pushState('object', document.title, getPathFromUrl(window.location.href));
+    </script>
+</head>
+
+<body class=" en-za" data-new-gr-c-s-check-loaded="14.1031.0" data-gr-ext-installed="" cz-shortcut-listen="true">
+    <div class="d-none initialiseTag" data-is="tag-getdata"></div>
+    <div id="wrapper" class="lozad bg-auto " data-background-image="" data-loaded="true">
+        <main id="main">
+            <div class="umb-grid">
+                <div class="grid-section">
+                    <div class="top-section mb-0 bg-stretch pb-5" style="background-image:url(/media/cywokr3m/404_bg.jpg);">
+                        <div class="row clearfix">
+                            <div class="col-md-12 column">
+                                <div>
+                                    <div class="top-section pt-0 mb-0 bg-stretch">
+                                        <div class="container">
+                                            <div class="text-center server-error-title-holder mb-6">
+                                                <h1 class="h1-sever-error text-secondary">Whoops</h1>
+                                                <h2 class="h4">We can't seem to find that page...</h2>
+                                            </div>
+                                            <div class="btn-holder justify-content-center">
+                                                <a href="#" onclick="return RedirectUrl('BackToHome');" class="btn btn-outline-light ">Back Home</a>
+                                                <a href="https://now.dstv.com/" target="_blank" class="btn btn-outline-light ">Watch now</a>
+                                                <a href="#" onclick="return RedirectUrl('GetDSTv');" class="btn btn-light ">Get DStv</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="container small-container">
+                                        <div class="search-form-content form-transparent">
+                                            <form action="" method="get" class="form-group" id="form-search">
+                                                <label for="searchInput1">Lets see if we can help you find what you need…</label>
+                                                <div class="d-flex flex-row border-bottom-30">
+                                                    <input autocomplete="off" type="search" name="search" class="form-control remove-shadow" id="searchInput1" placeholder="Search here...">
+                                                    <button aria-label="Search" id="btnSearchBar" class="bg-transparent border-0 icon-search" onclick="return formSubmit();"></button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <div class="container small-container">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="row clearfix">
+                            <div class="col-md-12 column">
+                                <div>
+                                    <div class="py-5 page-error-contacts font-size-base social-media-gradientband">
+                                        <div class="container small-container">
+                                            <div class="row align-items-center position-relative justify-content-center">
+                                                <div class="col-12 col-md text-center text-md-left">
+                                                    <p class="mb-md-0 font-weight-bold"><span class="icon-faqs text-primary mr-2"></span> Not finding the answer you’re looking for?</p>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <ul class="separated-list">
+                                                        <li class=""><a href="#" onclick="return RedirectUrl('contact-us');" class="text-link text-white-70">Contact Us</a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

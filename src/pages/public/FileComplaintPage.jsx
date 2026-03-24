@@ -1,13 +1,14 @@
 /**
  * File a Complaint Page
- * 
- * Online complaint filing form based on BOCRA Website Audit - Section 3.7:
- * - Complaint types: Billing, Equipment failure, Interconnection, Delays, 
+ *
+ * Renders the guided ComplaintWizard by default (Phase 1 roadmap).
+ * Set VITE_ENABLE_LEGACY_COMPLAINT_FORM=true to fall back to the original
+ * flat form (e.g. for emergency rollback without a code deploy).
+ *
+ * Complaint types: Billing, Equipment failure, Interconnection, Delays,
  *   Mobile problems, Internet contracts, etc.
- * - Categories from original form: Research, Licensing, Policy & Regulation, 
- *   Standards, Numbering, ccTLD, etc.
- * - Process: 2-day standard resolution timeline
- * 
+ * Process: 2-day standard resolution timeline
+ *
  * Consumer Rights (from Consumer Education page):
  * - Right To Be Informed
  * - Right To Choice
@@ -20,17 +21,22 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   AlertCircle, CheckCircle, Send,
-  FileText, Clock, Shield, Phone, HelpCircle
+  FileText, Clock, Shield, Phone, HelpCircle,
 } from 'lucide-react';
 import { checkRateLimit, supabaseUrl_, supabaseAnonKey_ } from '../../lib/supabase';
 import { useRecaptcha } from '../../hooks/useRecaptcha';
 import { sanitizeInput, sanitizeError, validateEmail, validatePhone } from '../../lib/security';
 import { useScrollReveal, useStaggerReveal } from '../../hooks/useAnimations';
 import ConsentCheckbox from '../../components/ui/ConsentCheckbox';
-
 import PageHero from '../../components/ui/PageHero';
 import Breadcrumb from '../../components/ui/Breadcrumb';
 import { useLanguage } from '../../lib/language';
+import ComplaintWizard from '../../components/complaints/ComplaintWizard';
+
+// Feature flag — set VITE_ENABLE_LEGACY_COMPLAINT_FORM=true in .env to use the old form
+const ENABLE_LEGACY = import.meta.env.VITE_ENABLE_LEGACY_COMPLAINT_FORM === 'true';
+
+// ─── DATA ─────────────────────────────────────────────────────────────────────
 const getCOMPLAINT_TYPES = (lang) => lang === 'tn' ? [
   'Mathata a Dituelo / Go Lefisiwa',
   'Phitlhelelo ya Neteweke / Mathata a Letshwao',
@@ -61,7 +67,7 @@ const getCOMPLAINT_TYPES = (lang) => lang === 'tn' ? [
   'Other',
 ];
 
-const getSERVICE_PROVIDERS = (lang) => [
+const getSERVICE_PROVIDERS = () => [
   'Mascom Wireless',
   'Botswana Telecommunications Corporation (BTC)',
   'Orange Botswana',
@@ -75,118 +81,17 @@ const getSERVICE_PROVIDERS = (lang) => [
 ];
 
 const getSTEPS = (lang) => [
-  { icon: Phone, title: lang === 'tn' ? 'Ikgolaganye le Motlamedi' : 'Contact Provider', description: lang === 'tn' ? 'Sa ntlha, tlhagisa ngongorego ya gago ka tlhamalalo le motlamedi wa gago wa tirelo.' : 'First, raise your complaint directly with your service provider.' },
-  { icon: Clock, title: lang === 'tn' ? 'Emela Tharabololo' : 'Wait for Resolution', description: lang === 'tn' ? 'Letla motlamedi nako e e utlwalang go rarabolola bothata jwa gago.' : 'Allow the provider reasonable time to resolve your issue.' },
-  { icon: FileText, title: lang === 'tn' ? 'Fetisedisa kwa BOCRA' : 'Escalate to BOCRA', description: lang === 'tn' ? 'Fa e sa rarabololwa, tlhagisa ngongorego ya semmuso le BOCRA o dirisa foromo e.' : 'If unresolved, file a formal complaint with BOCRA using this form.' },
-  { icon: Shield, title: lang === 'tn' ? 'BOCRA e a Batlisisa' : 'BOCRA Investigates', description: lang === 'tn' ? 'Re batlisisa mme re ikaelela go rarabolola dingongorego mo malatsing a le 2 a tiriso.' : 'We investigate and aim to resolve complaints within 2 business days.' },
+  { icon: Phone,    title: lang === 'tn' ? 'Ikgolaganye le Motlamedi'  : 'Contact Provider',    description: lang === 'tn' ? 'Sa ntlha, tlhagisa ngongorego ya gago ka tlhamalalo le motlamedi wa gago wa tirelo.'      : 'First, raise your complaint directly with your service provider.' },
+  { icon: Clock,    title: lang === 'tn' ? 'Emela Tharabololo'         : 'Wait for Resolution',  description: lang === 'tn' ? 'Letla motlamedi nako e e utlwalang go rarabolola bothata jwa gago.'                        : 'Allow the provider reasonable time to resolve your issue.' },
+  { icon: FileText, title: lang === 'tn' ? 'Fetisedisa kwa BOCRA'      : 'Escalate to BOCRA',    description: lang === 'tn' ? 'Fa e sa rarabololwa, tlhagisa ngongorego ya semmuso le BOCRA o dirisa foromo e.'             : 'If unresolved, file a formal complaint with BOCRA using this form.' },
+  { icon: Shield,   title: lang === 'tn' ? 'BOCRA e a Batlisisa'       : 'BOCRA Investigates',   description: lang === 'tn' ? 'Re batlisisa mme re ikaelela go rarabolola dingongorego mo malatsing a le 2 a tiriso.'      : 'We investigate and aim to resolve complaints within 2 business days.' },
 ];
 
+// ─── MAIN PAGE ────────────────────────────────────────────────────────────────
 export default function FileComplaintPage() {
   const { lang } = useLanguage();
   const STEPS = getSTEPS(lang);
-  const COMPLAINT_TYPES = getCOMPLAINT_TYPES(lang);
-  const SERVICE_PROVIDERS = getSERVICE_PROVIDERS(lang);
-  const [step, setStep] = useState('info'); // 'info' | 'form' | 'success'
-  const [form, setForm] = useState({
-    name: '', company: '', phone: '', email: '',
-    provider: '', complaintType: '', description: '',
-    previousComplaint: false, referenceNumber: '',
-  });
-  const [consent, setConsent] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [errors, setErrors] = useState({});
-  const heroRef = useScrollReveal();
   const stepsRef = useStaggerReveal({ stagger: 0.12 });
-  const { executeRecaptcha } = useRecaptcha();
-  const u = (k, v) => { setForm(f => ({ ...f, [k]: v })); setErrors(e => ({ ...e, [k]: '' })); };
-
-  const validate = () => {
-    const e = {};
-    if (!form.name.trim()) e.name = lang === 'tn' ? 'Leina le a tlhokega' : 'Name is required';
-    if (!form.email.trim()) e.email = lang === 'tn' ? 'Imeile e a tlhokega' : 'Email is required';
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email = lang === 'tn' ? 'Mokgwa wa imeile o o fosagetseng' : 'Invalid email format';
-    if (form.phone && !/^\+?\d{7,15}$/.test(form.phone.replace(/\s/g, ''))) e.phone = lang === 'tn' ? 'Nomoro ya mogala e fosagetseng' : 'Invalid phone number';
-    if (!form.provider) e.provider = lang === 'tn' ? 'Tlhopha motlamedi' : 'Select a provider';
-    if (!form.complaintType) e.complaintType = lang === 'tn' ? 'Tlhopha mofuta wa ngongorego' : 'Select complaint type';
-    if (!form.description.trim()) e.description = lang === 'tn' ? 'Tlhaloso e a tlhokega' : 'Description is required';
-    else if (form.description.trim().length < 20) e.description = lang === 'tn' ? 'Tsweetswee fana ka dintlha tse di oketsegileng' : 'Please provide more detail (min 20 characters)';
-    setErrors(e);
-    return Object.keys(e).length === 0;
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!validate()) return;
-    setLoading(true);
-
-    // ─── SECURITY: reCAPTCHA v3 (token verified server-side via submit-form) ───
-    const recaptchaToken = await executeRecaptcha('submit_complaint');
-    if (!recaptchaToken) {
-      setErrors(prev => ({
-        ...prev,
-        form: lang === 'tn' ? 'Tsweetswee leka gape. Fa bothata bo tswelela, eba o na le inthanete.' : 'Security verification failed. Please wait a moment and try again.',
-      }));
-      setLoading(false);
-      return;
-    }
-
-    // ─── SECURITY: Rate limiting (F01 remediation) ───
-    if (!checkRateLimit('complaint-submit')) {
-      alert('Too many submissions. Please wait a moment and try again.');
-      setLoading(false);
-      return;
-    }
-
-    // ─── SECURITY: Input validation ───
-    if (!validateEmail(form.email)) {
-      alert('Please enter a valid email address.');
-      setLoading(false);
-      return;
-    }
-
-    try {
-      const res = await fetch(`${supabaseUrl_}/functions/v1/submit-form`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${supabaseAnonKey_}`,
-          apikey: supabaseAnonKey_,
-        },
-        body: JSON.stringify({
-          form_type: 'complaint',
-          recaptcha_token: recaptchaToken,
-          fields: {
-            name: sanitizeInput(form.name, 200),
-            company: sanitizeInput(form.company, 200),
-            phone: sanitizeInput(form.phone, 20),
-            email: sanitizeInput(form.email, 200),
-            provider: sanitizeInput(form.provider, 200),
-            complaint_type: sanitizeInput(form.complaintType, 200),
-            description: sanitizeInput(form.description, 5000),
-            previous_complaint: !!form.previousComplaint,
-            reference_number: sanitizeInput(form.referenceNumber, 100),
-          },
-        }),
-      });
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok || !data.success) {
-        setErrors(prev => ({
-          ...prev,
-          form: typeof data.error === 'string' ? data.error : (lang === 'tn' ? 'Go na le phoso. Tsweetswee leka gape.' : 'Something went wrong. Please try again or contact us by phone.'),
-        }));
-        setLoading(false);
-        return;
-      }
-
-      setStep('success');
-    } catch (err) {
-      // ─── SECURITY: Never expose raw errors (F06 remediation) ───
-      setErrors(prev => ({ ...prev, form: lang === 'tn' ? 'Sengwe se ile sa fosa. Tsweetswee leka gape kgotsa ikgolaganye le rona ka mogala.' : 'Something went wrong. Please try again or contact us by phone.' }));
-    }
-    setLoading(false);
-  };
-
-  const updateForm = (field, value) => { setForm(prev => ({ ...prev, [field]: value })); setErrors(e => ({ ...e, [field]: '' })); };
 
   return (
     <div>
@@ -195,20 +100,29 @@ export default function FileComplaintPage() {
         <meta name="description" content="Report service quality issues with telecoms, broadcasting, postal, or internet providers in Botswana." />
         <link rel="canonical" href="https://bocra.org.bw/services/file-complaint" />
       </Helmet>
+
       {/* Breadcrumb */}
       <div className="bg-bocra-off-white border-b border-gray-100">
         <div className="section-wrapper py-4">
           <Breadcrumb items={[{ label: 'Services', href: '/services' }, { label: 'File a Complaint' }]} />
         </div>
       </div>
+
       {/* Hero */}
-      <PageHero category="COMPLAINTS" categoryTn="DINGONGOREGO" title="File a Complaint" titleTn="Tlhagisa Ngongorego" description="Report a service issue with your telecommunications, broadcasting, or postal service provider. BOCRA will investigate on your behalf." descriptionTn="Bega bothata jwa tirelo le motlamedi wa gago wa megala, phasalatso, kgotsa poso. BOCRA e tla batlisisa mo boemong jwa gago." color="magenta" />
+      <PageHero
+        category="COMPLAINTS" categoryTn="DINGONGOREGO"
+        title="File a Complaint" titleTn="Tlhagisa Ngongorego"
+        description="Report a service issue with your telecommunications, broadcasting, or postal service provider. BOCRA will investigate on your behalf."
+        descriptionTn="Bega bothata jwa tirelo le motlamedi wa gago wa megala, phasalatso, kgotsa poso. BOCRA e tla batlisisa mo boemong jwa gago."
+        color="magenta"
+      />
 
-
-      {/* Complaint process steps */}
+      {/* Process steps */}
       <section className="py-10 bg-white">
         <div className="section-wrapper">
-          <h2 className="text-xl font-bold text-[#001A3A] mb-8 text-center">{lang === 'tn' ? 'Tsamaiso e Bereka Jang' : 'How the Process Works'}</h2>
+          <h2 className="text-xl font-bold text-[#001A3A] mb-8 text-center">
+            {lang === 'tn' ? 'Tsamaiso e Bereka Jang' : 'How the Process Works'}
+          </h2>
           <div ref={stepsRef} className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {STEPS.map((s, i) => {
               const Icon = s.icon;
@@ -227,95 +141,30 @@ export default function FileComplaintPage() {
         </div>
       </section>
 
-      {/* Complaint form */}
+      {/* Form / Wizard section */}
       <section className="py-10 bg-bocra-off-white">
         <div className="section-wrapper max-w-3xl">
-          {step === 'success' ? (
-            <div className="bg-white rounded-2xl p-12 text-center shadow-sm">
-              <CheckCircle size={56} className="text-bocra-green mx-auto mb-4" />
-              <h2 className="text-xl font-bold text-[#001A3A] mb-3">{lang === 'tn' ? 'Ngongorego e Rometse' : 'Complaint Submitted'}</h2>
-              <p className="text-bocra-slate/60 mb-6">
-                {lang === 'tn' ? 'Re a leboga go romela ngongorego ya gago. BOCRA e tla e sekaseka mme e arabe mo malatsing a le 2 a tiriso. O tla amogela diphetogo ka imeile.' : 'Thank you for submitting your complaint. BOCRA will review it and respond within 2 business days. You will receive updates via email.'}
-              </p>
-              <Link to="/" className="btn-primary">{lang === 'tn' ? 'Boela Gae' : 'Return to Home'}</Link>
-            </div>
-          ) : (
-            <div className="bg-white rounded-2xl p-8 md:p-10 shadow-sm">
-              <div className="flex items-center gap-3 mb-8">
-                <div className="w-10 h-10 bg-bocra-magenta/10 rounded-xl flex items-center justify-center">
-                  <FileText size={20} className="text-bocra-magenta" />
-                </div>
-                <div>
-                  <h2 className="text-xl font-semibold text-bocra-slate">{lang === 'tn' ? 'Foromo ya Ngongorego' : 'Complaint Form'}</h2>
-                  <p className="text-sm text-bocra-slate/50">{lang === 'tn' ? 'Mafelo otlhe a a tshwailweng ka * a a tlhokega' : 'All fields marked with * are required'}</p>
-                </div>
-              </div>
+          <div className="bg-white rounded-2xl p-8 md:p-10 shadow-sm">
+            {ENABLE_LEGACY ? <LegacyComplaintForm /> : <ComplaintWizard />}
+          </div>
 
-              <form onSubmit={handleSubmit} className="space-y-6">
-                {/* Personal details */}
-                <fieldset>
-                  <legend className="text-sm font-semibold text-bocra-slate/80 uppercase tracking-wider mb-4">{lang === 'tn' ? 'Tshedimosetso ya Gago' : 'Your Information'}</legend>
-                  <div className="grid sm:grid-cols-2 gap-4">
-                    <div><Input label={lang === 'tn' ? 'Leina ka Botlalo *' : 'Full Name *'} value={form.name} onChange={(v) => updateForm('name', v)} placeholder="Your full name" />{errors.name && <p className="text-[10px] text-red-500 mt-0.5">{errors.name}</p>}</div>
-                    <div><Input label={lang === 'tn' ? 'Kompone / Mokgatlho' : 'Company / Organisation'} value={form.company} onChange={(v) => updateForm('company', v)} placeholder="If applicable" /></div>
-                    <div><Input label={lang === 'tn' ? 'Nomoro ya Mogala' : 'Phone Number'} type="tel" value={form.phone} onChange={(v) => updateForm('phone', v)} placeholder="+267 ..." />{errors.phone && <p className="text-[10px] text-red-500 mt-0.5">{errors.phone}</p>}</div>
-                    <div><Input label={lang === 'tn' ? 'Aterese ya Imeile *' : 'Email Address *'} type="email" value={form.email} onChange={(v) => updateForm('email', v)} placeholder="your@email.com" />{errors.email && <p className="text-[10px] text-red-500 mt-0.5">{errors.email}</p>}</div>
-                  </div>
-                </fieldset>
-
-                {/* Complaint details */}
-                <fieldset>
-                  <legend className="text-sm font-semibold text-bocra-slate/80 uppercase tracking-wider mb-4">{lang === 'tn' ? 'Dintlha tsa Ngongorego' : 'Complaint Details'}</legend>
-                  <div className="space-y-4">
-                    <div><Select label={lang === 'tn' ? 'Motlamedi wa Tirelo *' : 'Service Provider *'} value={form.provider} onChange={(v) => updateForm('provider', v)} options={SERVICE_PROVIDERS} />{errors.provider && <p className="text-[10px] text-red-500 mt-0.5">{errors.provider}</p>}</div>
-                    <div><Select label={lang === 'tn' ? 'Mofuta wa Ngongorego *' : 'Type of Complaint *'} value={form.complaintType} onChange={(v) => updateForm('complaintType', v)} options={COMPLAINT_TYPES} />{errors.complaintType && <p className="text-[10px] text-red-500 mt-0.5">{errors.complaintType}</p>}</div>
-                    <div>
-                      <label className="block text-sm font-medium text-bocra-slate mb-1.5">{lang === 'tn' ? 'Tlhalosa Ngongorego ya Gago *' : 'Describe Your Complaint *'}</label>
-                      <textarea
-                        value={form.description}
-                        onChange={(e) => updateForm('description', e.target.value)}
-                        rows={6}
-                        placeholder={lang === 'tn' ? 'Tsweetswee fana ka dintlha tse dintsi ka ga ngongorego ya gago, go akaretsa ditlha, dinako, le dinomoro dipe tsa tshupetso go tswa go motlamedi wa tirelo...' : 'Please provide as much detail as possible about your complaint, including dates, times, and any reference numbers from the service provider...'}
-                        className={`w-full px-4 py-3 bg-bocra-off-white border rounded-xl text-bocra-slate placeholder:text-bocra-slate/30 focus:border-bocra-blue focus:ring-2 focus:ring-bocra-blue/10 outline-none transition-all resize-none ${errors.description ? 'border-red-300' : 'border-gray-200'}`}
-                      />
-                      {errors.description && <p className="text-[10px] text-red-500 mt-0.5">{errors.description}</p>}
-                    </div>
-                    <label className="flex items-start gap-3 cursor-pointer">
-                      <input
-                        type="checkbox"
-                        checked={form.previousComplaint}
-                        onChange={(e) => updateForm('previousComplaint', e.target.checked)}
-                        className="mt-1 w-4 h-4 rounded border-gray-300 text-bocra-blue focus:ring-bocra-blue"
-                      />
-                      <span className="text-sm text-bocra-slate/70">
-                        {lang === 'tn' ? 'Ke setse ke tlhagisitse ngongorego e le motlamedi wa me wa tirelo' : 'I have previously raised this complaint with my service provider'}
-                      </span>
-                    </label>
-                    {form.previousComplaint && (
-                      <Input
-                        label={lang === 'tn' ? 'Nomoro ya Tshupetso ya Motlamedi' : 'Provider Reference Number'}
-                        value={form.referenceNumber}
-                        onChange={(v) => updateForm('referenceNumber', v)}
-                        placeholder={lang === 'tn' ? 'Nomoro ya tshupetso go tswa go motlamedi wa gago' : 'Reference number from your provider'}
-                      />
-                    )}
-                  </div>
-                </fieldset>
-
-                <ConsentCheckbox
-                  checked={consent}
-                  onChange={setConsent}
-                  purpose="investigating and resolving your complaint, which may involve sharing details with the relevant service provider"
-                />
-
-                {errors.form && <p className="text-sm text-red-600 bg-red-50 p-3 rounded-lg">{errors.form}</p>}
-
-                <button type="submit" disabled={loading || !consent} className="btn-primary w-full justify-center text-lg py-4 disabled:opacity-60">
-                  {loading ? (lang === 'tn' ? 'E a romela...' : 'Submitting...') : (lang === 'tn' ? 'Romela Ngongorego' : 'Submit Complaint')}
-                  <Send size={18} />
-                </button>
-              </form>
-            </div>
+          {/* Quick-file link when wizard is active */}
+          {!ENABLE_LEGACY && (
+            <p className="text-center text-xs text-bocra-slate/40 mt-4">
+              {lang === 'tn'
+                ? 'A o itse foromo ya kwa pele? '
+                : 'Prefer the original form? '}
+              <a
+                href="?legacy=1"
+                onClick={(e) => {
+                  e.preventDefault();
+                  window.location.search = 'legacy=1';
+                }}
+                className="text-bocra-blue hover:underline"
+              >
+                {lang === 'tn' ? 'Dirisa foromo ya bogologolo' : 'Use legacy form'}
+              </a>
+            </p>
           )}
         </div>
       </section>
@@ -323,7 +172,181 @@ export default function FileComplaintPage() {
   );
 }
 
-function Input({ label, type = 'text', value, onChange, required, placeholder }) {
+// ─── LEGACY COMPLAINT FORM ────────────────────────────────────────────────────
+// Original flat form — only shown when VITE_ENABLE_LEGACY_COMPLAINT_FORM=true
+// or the user explicitly requests it via ?legacy=1.
+function LegacyComplaintForm() {
+  const { lang } = useLanguage();
+  const COMPLAINT_TYPES = getCOMPLAINT_TYPES(lang);
+  const SERVICE_PROVIDERS = getSERVICE_PROVIDERS();
+  const [step, setStep] = useState('form'); // 'form' | 'success'
+  const [form, setForm] = useState({
+    name: '', company: '', phone: '', email: '',
+    provider: '', complaintType: '', description: '',
+    previousComplaint: false, referenceNumber: '',
+  });
+  const [consent, setConsent] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState({});
+  const { executeRecaptcha } = useRecaptcha();
+
+  const updateForm = (field, value) => {
+    setForm((f) => ({ ...f, [field]: value }));
+    setErrors((e) => ({ ...e, [field]: '' }));
+  };
+
+  const validate = () => {
+    const e = {};
+    if (!form.name.trim())        e.name = lang === 'tn' ? 'Leina le a tlhokega' : 'Name is required';
+    if (!form.email.trim())       e.email = lang === 'tn' ? 'Imeile e a tlhokega' : 'Email is required';
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email = lang === 'tn' ? 'Mokgwa wa imeile o o fosagetseng' : 'Invalid email format';
+    if (form.phone && !/^\+?\d{7,15}$/.test(form.phone.replace(/\s/g, ''))) e.phone = lang === 'tn' ? 'Nomoro ya mogala e fosagetseng' : 'Invalid phone number';
+    if (!form.provider)           e.provider = lang === 'tn' ? 'Tlhopha motlamedi' : 'Select a provider';
+    if (!form.complaintType)      e.complaintType = lang === 'tn' ? 'Tlhopha mofuta wa ngongorego' : 'Select complaint type';
+    if (!form.description.trim()) e.description = lang === 'tn' ? 'Tlhaloso e a tlhokega' : 'Description is required';
+    else if (form.description.trim().length < 20) e.description = lang === 'tn' ? 'Tsweetswee fana ka dintlha tse di oketsegileng' : 'Please provide more detail (min 20 characters)';
+    setErrors(e);
+    return Object.keys(e).length === 0;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!validate()) return;
+    setLoading(true);
+
+    const recaptchaToken = await executeRecaptcha('submit_complaint');
+    if (!recaptchaToken) {
+      setErrors((prev) => ({ ...prev, form: lang === 'tn' ? 'Tsweetswee leka gape. Fa bothata bo tswelela, eba o na le inthanete.' : 'Security verification failed. Please wait a moment and try again.' }));
+      setLoading(false);
+      return;
+    }
+
+    if (!checkRateLimit('complaint-submit')) {
+      alert('Too many submissions. Please wait a moment and try again.');
+      setLoading(false);
+      return;
+    }
+
+    if (!validateEmail(form.email)) {
+      alert('Please enter a valid email address.');
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const res = await fetch(`${supabaseUrl_}/functions/v1/submit-form`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${supabaseAnonKey_}`,
+          apikey: supabaseAnonKey_,
+        },
+        body: JSON.stringify({
+          form_type: 'complaint',
+          recaptcha_token: recaptchaToken,
+          fields: {
+            name:               sanitizeInput(form.name,           200),
+            company:            sanitizeInput(form.company,        200),
+            phone:              sanitizeInput(form.phone,           20),
+            email:              sanitizeInput(form.email,          200),
+            provider:           sanitizeInput(form.provider,       200),
+            complaint_type:     sanitizeInput(form.complaintType,  200),
+            description:        sanitizeInput(form.description,   5000),
+            previous_complaint: !!form.previousComplaint,
+            reference_number:   sanitizeInput(form.referenceNumber, 100),
+          },
+        }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data.success) {
+        setErrors((prev) => ({ ...prev, form: typeof data.error === 'string' ? data.error : (lang === 'tn' ? 'Go na le phoso. Tsweetswee leka gape.' : 'Something went wrong. Please try again or contact us by phone.') }));
+        setLoading(false);
+        return;
+      }
+      setStep('success');
+    } catch {
+      setErrors((prev) => ({ ...prev, form: lang === 'tn' ? 'Sengwe se ile sa fosa. Tsweetswee leka gape kgotsa ikgolaganye le rona ka mogala.' : 'Something went wrong. Please try again or contact us by phone.' }));
+    }
+    setLoading(false);
+  };
+
+  if (step === 'success') {
+    return (
+      <div className="text-center py-4">
+        <CheckCircle size={56} className="text-bocra-green mx-auto mb-4" />
+        <h2 className="text-xl font-bold text-[#001A3A] mb-3">{lang === 'tn' ? 'Ngongorego e Rometse' : 'Complaint Submitted'}</h2>
+        <p className="text-bocra-slate/60 mb-6">
+          {lang === 'tn' ? 'Re a leboga go romela ngongorego ya gago. BOCRA e tla e sekaseka mme e arabe mo malatsing a le 2 a tiriso. O tla amogela diphetogo ka imeile.' : 'Thank you for submitting your complaint. BOCRA will review it and respond within 2 business days. You will receive updates via email.'}
+        </p>
+        <Link to="/" className="btn-primary">{lang === 'tn' ? 'Boela Gae' : 'Return to Home'}</Link>
+      </div>
+    );
+  }
+
+  return (
+    <>
+      <div className="flex items-center gap-3 mb-8">
+        <div className="w-10 h-10 bg-bocra-magenta/10 rounded-xl flex items-center justify-center">
+          <FileText size={20} className="text-bocra-magenta" />
+        </div>
+        <div>
+          <h2 className="text-xl font-semibold text-bocra-slate">{lang === 'tn' ? 'Foromo ya Ngongorego' : 'Complaint Form'}</h2>
+          <p className="text-sm text-bocra-slate/50">{lang === 'tn' ? 'Mafelo otlhe a a tshwailweng ka * a a tlhokega' : 'All fields marked with * are required'}</p>
+        </div>
+      </div>
+
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <fieldset>
+          <legend className="text-sm font-semibold text-bocra-slate/80 uppercase tracking-wider mb-4">{lang === 'tn' ? 'Tshedimosetso ya Gago' : 'Your Information'}</legend>
+          <div className="grid sm:grid-cols-2 gap-4">
+            <div><LInput label={lang === 'tn' ? 'Leina ka Botlalo *' : 'Full Name *'} value={form.name} onChange={(v) => updateForm('name', v)} placeholder="Your full name" />{errors.name && <p className="text-[10px] text-red-500 mt-0.5">{errors.name}</p>}</div>
+            <div><LInput label={lang === 'tn' ? 'Kompone / Mokgatlho' : 'Company / Organisation'} value={form.company} onChange={(v) => updateForm('company', v)} placeholder="If applicable" /></div>
+            <div><LInput label={lang === 'tn' ? 'Nomoro ya Mogala' : 'Phone Number'} type="tel" value={form.phone} onChange={(v) => updateForm('phone', v)} placeholder="+267 ..." />{errors.phone && <p className="text-[10px] text-red-500 mt-0.5">{errors.phone}</p>}</div>
+            <div><LInput label={lang === 'tn' ? 'Aterese ya Imeile *' : 'Email Address *'} type="email" value={form.email} onChange={(v) => updateForm('email', v)} placeholder="your@email.com" />{errors.email && <p className="text-[10px] text-red-500 mt-0.5">{errors.email}</p>}</div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend className="text-sm font-semibold text-bocra-slate/80 uppercase tracking-wider mb-4">{lang === 'tn' ? 'Dintlha tsa Ngongorego' : 'Complaint Details'}</legend>
+          <div className="space-y-4">
+            <div><LSelect label={lang === 'tn' ? 'Motlamedi wa Tirelo *' : 'Service Provider *'} value={form.provider} onChange={(v) => updateForm('provider', v)} options={SERVICE_PROVIDERS} />{errors.provider && <p className="text-[10px] text-red-500 mt-0.5">{errors.provider}</p>}</div>
+            <div><LSelect label={lang === 'tn' ? 'Mofuta wa Ngongorego *' : 'Type of Complaint *'} value={form.complaintType} onChange={(v) => updateForm('complaintType', v)} options={COMPLAINT_TYPES} />{errors.complaintType && <p className="text-[10px] text-red-500 mt-0.5">{errors.complaintType}</p>}</div>
+            <div>
+              <label className="block text-sm font-medium text-bocra-slate mb-1.5">{lang === 'tn' ? 'Tlhalosa Ngongorego ya Gago *' : 'Describe Your Complaint *'}</label>
+              <textarea
+                value={form.description}
+                onChange={(e) => updateForm('description', e.target.value)}
+                rows={6}
+                placeholder={lang === 'tn' ? 'Tsweetswee fana ka dintlha tse dintsi ka ga ngongorego ya gago...' : 'Please provide as much detail as possible about your complaint...'}
+                className={`w-full px-4 py-3 bg-bocra-off-white border rounded-xl text-bocra-slate placeholder:text-bocra-slate/30 focus:border-bocra-blue focus:ring-2 focus:ring-bocra-blue/10 outline-none transition-all resize-none ${errors.description ? 'border-red-300' : 'border-gray-200'}`}
+              />
+              {errors.description && <p className="text-[10px] text-red-500 mt-0.5">{errors.description}</p>}
+            </div>
+            <label className="flex items-start gap-3 cursor-pointer">
+              <input type="checkbox" checked={form.previousComplaint} onChange={(e) => updateForm('previousComplaint', e.target.checked)} className="mt-1 w-4 h-4 rounded border-gray-300 text-bocra-blue focus:ring-bocra-blue" />
+              <span className="text-sm text-bocra-slate/70">{lang === 'tn' ? 'Ke setse ke tlhagisitse ngongorego e le motlamedi wa me wa tirelo' : 'I have previously raised this complaint with my service provider'}</span>
+            </label>
+            {form.previousComplaint && (
+              <LInput label={lang === 'tn' ? 'Nomoro ya Tshupetso ya Motlamedi' : 'Provider Reference Number'} value={form.referenceNumber} onChange={(v) => updateForm('referenceNumber', v)} placeholder={lang === 'tn' ? 'Nomoro ya tshupetso go tswa go motlamedi wa gago' : 'Reference number from your provider'} />
+            )}
+          </div>
+        </fieldset>
+
+        <ConsentCheckbox checked={consent} onChange={setConsent} purpose="investigating and resolving your complaint, which may involve sharing details with the relevant service provider" />
+
+        {errors.form && <p className="text-sm text-red-600 bg-red-50 p-3 rounded-lg">{errors.form}</p>}
+
+        <button type="submit" disabled={loading || !consent} className="btn-primary w-full justify-center text-lg py-4 disabled:opacity-60">
+          {loading ? (lang === 'tn' ? 'E a romela...' : 'Submitting...') : (lang === 'tn' ? 'Romela Ngongorego' : 'Submit Complaint')}
+          <Send size={18} />
+        </button>
+      </form>
+    </>
+  );
+}
+
+// ─── LOCAL FORM HELPERS (used only by LegacyComplaintForm) ────────────────────
+function LInput({ label, type = 'text', value, onChange, placeholder }) {
   return (
     <div>
       <label className="block text-sm font-medium text-bocra-slate mb-1.5">{label}</label>
@@ -331,7 +354,6 @@ function Input({ label, type = 'text', value, onChange, required, placeholder })
         type={type}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        required={required}
         placeholder={placeholder}
         className="w-full px-4 py-3 bg-bocra-off-white border border-gray-200 rounded-xl text-bocra-slate placeholder:text-bocra-slate/30 focus:border-bocra-blue focus:ring-2 focus:ring-bocra-blue/10 outline-none transition-all"
       />
@@ -339,7 +361,7 @@ function Input({ label, type = 'text', value, onChange, required, placeholder })
   );
 }
 
-function Select({ label, value, onChange, options, required }) {
+function LSelect({ label, value, onChange, options }) {
   const { lang } = useLanguage();
   return (
     <div>
@@ -347,7 +369,6 @@ function Select({ label, value, onChange, options, required }) {
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        required={required}
         className="w-full px-4 py-3 bg-bocra-off-white border border-gray-200 rounded-xl text-bocra-slate focus:border-bocra-blue focus:ring-2 focus:ring-bocra-blue/10 outline-none transition-all appearance-none"
       >
         <option value="">{lang === 'tn' ? 'Tlhopha...' : 'Select an option...'}</option>
