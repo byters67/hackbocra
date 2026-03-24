@@ -60,10 +60,12 @@ export default function OrganogramPage() {
       const trigger = { trigger: treeRef.current, start: 'top 80%' };
 
       // Board node
-      gsap.fromTo(boardRef.current,
-        { opacity: 0, y: -30, scale: 0.8 },
-        { opacity: 1, y: 0, scale: 1, duration: 0.7, ease: 'back.out(1.7)', scrollTrigger: trigger }
-      );
+      if (boardRef.current) {
+        gsap.fromTo(boardRef.current,
+          { opacity: 0, y: -30, scale: 0.8 },
+          { opacity: 1, y: 0, scale: 1, duration: 0.7, ease: 'back.out(1.7)', scrollTrigger: trigger }
+        );
+      }
 
       // Connector lines draw in
       lineRefs.current.forEach((el, i) => {
@@ -75,10 +77,12 @@ export default function OrganogramPage() {
       });
 
       // CE node
-      gsap.fromTo(ceRef.current,
-        { opacity: 0, scale: 0.7 },
-        { opacity: 1, scale: 1, duration: 0.7, delay: 0.4, ease: 'back.out(1.7)', scrollTrigger: trigger }
-      );
+      if (ceRef.current) {
+        gsap.fromTo(ceRef.current,
+          { opacity: 0, scale: 0.7 },
+          { opacity: 1, scale: 1, duration: 0.7, delay: 0.4, ease: 'back.out(1.7)', scrollTrigger: trigger }
+        );
+      }
 
       // CE glow pulse
       gsap.to('.ce-glow', {

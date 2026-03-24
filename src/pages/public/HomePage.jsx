@@ -112,6 +112,7 @@ export default function HomePage() {
   }, []);
 
   useEffect(() => {
+    if (!heroRef.current) return;
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
       tl.fromTo('.h-badge', { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5 }, 0.1)
