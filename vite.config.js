@@ -126,7 +126,6 @@ export default defineConfig({
           if (id.includes('node_modules')) {
             if (id.includes('@supabase')) return 'vendor-supabase';
             if (id.includes('@tiptap')) return 'vendor-editor';
-            if (id.includes('recharts') || id.includes('d3-')) return 'vendor-charts';
             if (id.includes('gsap')) return 'vendor-animation';
           }
         },
