@@ -16,6 +16,11 @@ import { VitePWA } from 'vite-plugin-pwa';
 import removeConsole from 'vite-plugin-remove-console';
 
 export default defineConfig({
+  /* Single copy of React + helmet: avoids broken Context (Helmet without
+     HelmetProvider) and "Cannot read properties of undefined (reading 'add')". */
+  optimizeDeps: {
+    include: ['react', 'react-dom', 'react-helmet-async'],
+  },
   plugins: [
     react(),
     removeConsole({ includes: ['log', 'warn'] }),
@@ -136,5 +141,6 @@ export default defineConfig({
     alias: {
       '@': '/src',
     },
+    dedupe: ['react', 'react-dom', 'react-helmet-async'],
   },
 });
