@@ -1,31 +1,14 @@
 /**
- * App.jsx — Main Application Router & Provider Tree
- *
- * This is the root component of the BOCRA website. It configures:
- *   1. React Query (TanStack Query) for server-state caching
- *   2. Auth, Language, and Notification context providers
- *   3. Route definitions for public pages, admin portal, and auth flows
- *   4. Code-splitting via React.lazy() — admin pages are never fetched by public visitors
- *   5. SplashScreen animation (plays once per session, stored in sessionStorage)
- *
- * ARCHITECTURE:
- *   HelmetProvider → QueryClientProvider → AuthProvider → LanguageProvider → NotificationProvider
- *   ├── SplashScreen (first visit only)
- *   └── BrowserRouter
- *       ├── /auth/*       — Login, Register, Email Verified
- *       ├── /admin/*      — Admin Portal (AdminLayout with sidebar)
- *       └── /*            — Public pages (Layout with Header/Footer)
+ * App.jsx - Main Application Router
+ * All routes defined here. SplashScreen plays once on first visit.
  */
 import { useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { HelmetProvider } from 'react-helmet-async';
 import { AuthProvider } from './lib/auth';
 import { LanguageProvider } from './lib/language';
 import { NotificationProvider } from './lib/notifications';
 import Layout from './components/layout/Layout';
 import SplashScreen from './components/animations/SplashScreen';
-import ErrorBoundary from './components/ui/ErrorBoundary';
 
 import HomePage from './pages/public/HomePage';
 import AboutProfilePage from './pages/public/AboutProfilePage';
@@ -46,6 +29,7 @@ import ExecutiveManagementPage from './pages/public/ExecutiveManagementPage';
 import LicensingHubPage from './pages/public/LicensingHubPage';
 import CybersecurityHubPage from './pages/public/CybersecurityHubPage';
 import RegisterBWPage from './pages/public/RegisterBWPage';
+import RegistryPortalPage from './pages/public/RegistryPortalPage';
 import IctLicensingPage from './pages/public/IctLicensingPage';
 import OperatorPortalPage from './pages/public/OperatorPortalPage';
 import QoSMonitoringPage from './pages/public/QoSMonitoringPage';
@@ -62,6 +46,7 @@ import AdminContact from './pages/admin/ContactPage';
 import AdminDataRequests from './pages/admin/DataRequestsPage';
 import AdminTypeApproval from './pages/admin/AdminTypeApprovalPage';
 import AdminConsultations from './pages/admin/AdminConsultationsPage';
+import AdminRegistrars from './pages/admin/AdminRegistrarsPage';
 import ConsultationsPage from './pages/public/ConsultationsPage';
 import SpeechesPage from './pages/public/SpeechesPage';
 import BroadcastingPage from './pages/public/BroadcastingPage';
@@ -80,38 +65,10 @@ import DataRequestPage from './pages/public/DataRequestPage';
 import CareersPage from './pages/public/CareersPage';
 import PrivacyNoticePage from './pages/public/PrivacyNoticePage';
 
-// ─── React Query Configuration ──────────────────────────────────
-// Caches Supabase responses to avoid redundant network requests.
-// staleTime: 5 minutes — data is considered fresh and won't refetch.
-// gcTime: 30 minutes — unused cache entries are garbage collected.
-// retry: 3 with exponential backoff — transient errors self-heal (1s → 2s → 4s).
-// networkMode: offlineFirst — serves cached data when network is down.
-// refetchOnWindowFocus: false — prevents jarring refetches when switching tabs.
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 5 * 60 * 1000,      // 5 minutes
-      gcTime: 30 * 60 * 1000,         // 30 minutes
-      retry: 3,
-      retryDelay: (attemptIndex) =>
-        Math.min(1000 * 2 ** attemptIndex, 30000),
-      networkMode: 'offlineFirst',
-      refetchOnWindowFocus: false,
-    },
-    mutations: {
-      retry: 1,
-      retryDelay: 1000,
-    },
-  },
-});
-
 export default function App() {
-  // Skip splash screen if already shown this session (stored in sessionStorage)
   const [ready, setReady] = useState(!!sessionStorage.getItem('bocra-splash'));
 
   return (
-    <HelmetProvider>
-    <QueryClientProvider client={queryClient}>
     <AuthProvider>
       <LanguageProvider>
         <NotificationProvider>
@@ -138,6 +95,7 @@ export default function App() {
                   <Route path="consultations" element={<AdminConsultations />} />
                   <Route path="type-approval" element={<AdminTypeApproval />} />
                   <Route path="data-requests" element={<AdminDataRequests />} />
+                  <Route path="registrars" element={<AdminRegistrars />} />
                 </Route>
 
                 <Route element={<Layout />}>
@@ -161,6 +119,7 @@ export default function App() {
                   <Route path="/services/licence-verification" element={<LicenceVerificationPage />} />
                   <Route path="/services/type-approval" element={<TypeApprovalPage />} />
                   <Route path="/services/register-bw" element={<RegisterBWPage />} />
+                  <Route path="/services/register-bw/login" element={<RegistryPortalPage />} />
                   <Route path="/services/asms-webcp" element={<OperatorPortalPage />} />
                   <Route path="/services/qos-monitoring" element={<QoSMonitoringPage />} />
                   <Route path="/services/spectrum" element={<SpectrumManagementPage />} />
@@ -205,7 +164,5 @@ export default function App() {
         </NotificationProvider>
       </LanguageProvider>
     </AuthProvider>
-    </QueryClientProvider>
-    </HelmetProvider>
   );
 }
