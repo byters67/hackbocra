@@ -226,6 +226,14 @@ function ComplaintDetail({ id, profile, navigate }) {
     setStatusUpdating(false);
   }
 
+  async function handleOutcomeChange(field, value) {
+    try {
+      const { error } = await supabase.from('complaints').update({ [field]: value, updated_at: new Date().toISOString() }).eq('id', id);
+      if (error) alert(`Failed to update ${field}: ${error.message}`);
+      else setComplaint(prev => ({ ...prev, [field]: value }));
+    } catch { alert('Unable to update outcome.'); }
+  }
+
   async function handleSendReply() {
     if (!replyText.trim()) return;
     setSaving(true);
@@ -425,6 +433,46 @@ function ComplaintDetail({ id, profile, navigate }) {
           {complaint.ai_category && (
             <ClassificationCorrector complaint={complaint} onUpdate={setComplaint} />
           )}
+
+          {/* Outcome & Remedy */}
+          <div className="bg-white rounded-xl border border-gray-200 p-5">
+            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">Outcome &amp; Remedy</h3>
+            <div className="space-y-3">
+              <div>
+                <label className="text-[11px] text-gray-500 mb-1 block">Outcome</label>
+                <select
+                  value={complaint.outcome || ''}
+                  onChange={e => handleOutcomeChange('outcome', e.target.value || null)}
+                  className="w-full text-sm border border-gray-200 rounded-lg px-3 py-2 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#00458B]/20">
+                  <option value="">— not set —</option>
+                  <option value="upheld">Upheld</option>
+                  <option value="dismissed">Dismissed</option>
+                  <option value="withdrawn">Withdrawn</option>
+                  <option value="pending">Pending</option>
+                </select>
+              </div>
+              <div>
+                <label className="text-[11px] text-gray-500 mb-1 block">Remedy</label>
+                <select
+                  value={complaint.remedy || ''}
+                  onChange={e => handleOutcomeChange('remedy', e.target.value || null)}
+                  className="w-full text-sm border border-gray-200 rounded-lg px-3 py-2 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#00458B]/20">
+                  <option value="">— not set —</option>
+                  <option value="refund">Refund</option>
+                  <option value="service_restored">Service Restored</option>
+                  <option value="apology">Apology</option>
+                  <option value="compensation">Compensation</option>
+                  <option value="none">None</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+              {complaint.resolved_at && (
+                <p className="text-[11px] text-gray-400">
+                  Resolved: {new Date(complaint.resolved_at).toLocaleDateString('en-BW', { day: 'numeric', month: 'short', year: 'numeric' })}
+                </p>
+              )}
+            </div>
+          </div>
 
           {/* Quick email */}
           <div className="bg-white rounded-xl border border-gray-200 p-5">

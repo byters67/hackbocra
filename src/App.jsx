@@ -65,6 +65,7 @@ import OrganogramPage from './pages/public/OrganogramPage';
 import DataRequestPage from './pages/public/DataRequestPage';
 import CareersPage from './pages/public/CareersPage';
 import PrivacyNoticePage from './pages/public/PrivacyNoticePage';
+import ComplaintOutcomesPage from './pages/public/ComplaintOutcomesPage';
 
 export default function App() {
   const [ready, setReady] = useState(!!sessionStorage.getItem('bocra-splash'));
@@ -118,6 +119,7 @@ export default function App() {
                   <Route path="/licensing" element={<LicensingHubPage />} />
                   <Route path="/licensing/:slug" element={<LicensingHubPage />} />
                   <Route path="/services/file-complaint" element={<FileComplaintPage />} />
+                  <Route path="/services/complaint-outcomes" element={<ComplaintOutcomesPage />} />
                   <Route path="/services/licence-verification" element={<LicenceVerificationPage />} />
                   <Route path="/services/type-approval" element={<TypeApprovalPage />} />
                   <Route path="/services/register-bw" element={<RegisterBWPage />} />
