@@ -22,7 +22,7 @@ import { useState, useRef, useEffect } from "react";
 import { MessageCircle, X, Send, Loader, RotateCcw } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import { useLanguage } from '../../lib/language';
-import { supabaseUrl_, supabaseAnonKey_ } from '../../lib/supabase';
+import { supabase, supabaseUrl_, supabaseAnonKey_ } from '../../lib/supabase';
 
 // Edge Function endpoint for the RAG chatbot
 const CHAT_API = `${supabaseUrl_}/functions/v1/chat`;
@@ -69,6 +69,8 @@ export default function ChatWidget() {
     const userMessage = { role: "user", content: msgText };
     const updatedMessages = [...messages, userMessage];
     setMessages(updatedMessages); setInput(""); setLoading(true);
+    // Log chat query (fire-and-forget — do not await, do not block chat)
+    try { supabase.from('chat_queries').insert({ query_text: msgText.slice(0, 500), language: lang }).then(() => {}); } catch {}
     try {
       const history = updatedMessages.filter((_, i) => i > 0 && i < updatedMessages.length - 1).slice(-10).map(({ role, content }) => ({ role, content }));
       const controller = new AbortController();

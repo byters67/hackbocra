@@ -23,7 +23,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import {
   ArrowRight, Wifi, Radio, Mail, Globe, Shield, Search,
   AlertCircle, BarChart3, Signal, TrendingUp, Phone,
-  Building, FileText, ChevronRight
+  Building, FileText, ChevronRight, Bell
 } from 'lucide-react';
 import { useScrollReveal, useStaggerReveal, useCountUp } from '../../hooks/useAnimations';
 import { supabase } from '../../lib/supabase';
@@ -290,9 +290,23 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ═══ GUIDED JOURNEYS CTA ═══ */}
+      <section className="py-10 sm:py-10 bg-white">
+        <div className="section-wrapper max-w-3xl mx-auto">
+          <div className="bg-gradient-to-br from-[#00458B] to-[#001A3A] rounded-2xl p-8 sm:p-10 text-center relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-40 h-40 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2" />
+            <h3 className="text-xl sm:text-2xl font-extrabold text-white relative z-10">{lang === 'tn' ? 'Ga o Itse Gore o Simolole Kae?' : 'Not Sure Where to Start?'}</h3>
+            <p className="text-white/60 mt-2 text-sm max-w-md mx-auto relative z-10">{lang === 'tn' ? 'Maeto a rona a a kaelwang a go tsamaisa mo ditirong tse di tlwaelegileng kgato ka kgato.' : 'Our guided journeys walk you through common tasks step by step.'}</p>
+            <Link to="/services/guided-journeys" className="relative z-10 inline-flex items-center gap-2 px-6 py-3 mt-5 bg-white text-[#00458B] font-bold rounded-xl hover:shadow-lg hover:gap-3 transition-all">
+              {lang === 'tn' ? 'Fumana Thuso e e Kaelwang' : 'Get Guided Help'} <ArrowRight size={16} />
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* ═══ CTA ═══ */}
       <section className="py-10 sm:py-10 bg-gray-50">
-        <div className="section-wrapper grid md:grid-cols-2 gap-6">
+        <div className="section-wrapper grid md:grid-cols-3 gap-6">
           <div className="group relative rounded-3xl p-10 md:p-12 text-white overflow-hidden bg-bocra-magenta hover:shadow-2xl hover:shadow-bocra-magenta/20 hover:-translate-y-1 transition-all duration-300 cursor-pointer">
             <div className="absolute top-0 right-0 w-40 h-40 bg-white/5 rounded-full blur-2xl translate-x-1/3 -translate-y-1/3 group-hover:scale-150 transition-transform duration-500" />
             <AlertCircle size={32} className="mb-4 opacity-80 group-hover:scale-110 transition-transform" />
@@ -309,6 +323,15 @@ export default function HomePage() {
             <p className="text-white/70 mt-2 mb-6 max-w-md">{lang === 'tn' ? 'Ikopela dilaesense tsa megala, phasalatso, kgotsa ditirelo tsa poso.' : 'Apply for telecom, broadcasting, or postal service licences.'}</p>
             <Link to="/licensing" className="inline-flex items-center gap-2 px-6 py-3 bg-white text-bocra-blue font-bold rounded-xl hover:shadow-lg hover:gap-3 transition-all">
               Learn More <ArrowRight size={16} />
+            </Link>
+          </div>
+          <div className="group relative rounded-3xl p-10 md:p-12 text-white overflow-hidden bg-[#00A6CE] hover:shadow-2xl hover:shadow-[#00A6CE]/20 hover:-translate-y-1 transition-all duration-300 cursor-pointer">
+            <div className="absolute top-0 right-0 w-40 h-40 bg-white/5 rounded-full blur-2xl translate-x-1/3 -translate-y-1/3 group-hover:scale-150 transition-transform duration-500" />
+            <Bell size={32} className="mb-4 opacity-80 group-hover:scale-110 transition-transform" />
+            <h3 className="text-2xl md:text-3xl font-extrabold">{lang === 'tn' ? 'Nna le Kitso' : 'Stay Informed'}</h3>
+            <p className="text-white/70 mt-2 mb-6 max-w-md">{lang === 'tn' ? 'Fumana dikitsiso fa melao, dikwalo, kgotsa ditheriso di mesha di gatisiwa.' : 'Get notified when new regulations, documents, or consultations are published.'}</p>
+            <Link to="/subscribe" className="inline-flex items-center gap-2 px-6 py-3 bg-white text-[#00A6CE] font-bold rounded-xl hover:shadow-lg hover:gap-3 transition-all">
+              {lang === 'tn' ? 'Ingodisa' : 'Subscribe'} <ArrowRight size={16} />
             </Link>
           </div>
         </div>

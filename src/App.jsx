@@ -4,7 +4,7 @@
  */
 import { useState } from 'react';
 import { HelmetProvider } from 'react-helmet-async';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './lib/auth';
 import { LanguageProvider } from './lib/language';
 import { NotificationProvider } from './lib/notifications';
@@ -48,6 +48,10 @@ import AdminDataRequests from './pages/admin/DataRequestsPage';
 import AdminTypeApproval from './pages/admin/AdminTypeApprovalPage';
 import AdminConsultations from './pages/admin/AdminConsultationsPage';
 import AdminRegistrars from './pages/admin/AdminRegistrarsPage';
+import FAQManagerPage from './pages/admin/FAQManagerPage';
+import NewsManagerPage from './pages/admin/NewsManagerPage';
+import DocumentsManagerPage from './pages/admin/DocumentsManagerPage';
+import JobsManagerPage from './pages/admin/JobsManagerPage';
 import ConsultationsPage from './pages/public/ConsultationsPage';
 import SpeechesPage from './pages/public/SpeechesPage';
 import BroadcastingPage from './pages/public/BroadcastingPage';
@@ -66,6 +70,8 @@ import DataRequestPage from './pages/public/DataRequestPage';
 import CareersPage from './pages/public/CareersPage';
 import PrivacyNoticePage from './pages/public/PrivacyNoticePage';
 import ComplaintOutcomesPage from './pages/public/ComplaintOutcomesPage';
+import GuidedJourneysPage from './pages/public/GuidedJourneysPage';
+import SubscribePage from './pages/public/SubscribePage';
 
 export default function App() {
   const [ready, setReady] = useState(!!sessionStorage.getItem('bocra-splash'));
@@ -99,6 +105,11 @@ export default function App() {
                   <Route path="type-approval" element={<AdminTypeApproval />} />
                   <Route path="data-requests" element={<AdminDataRequests />} />
                   <Route path="registrars" element={<AdminRegistrars />} />
+                  <Route path="faq" element={<FAQManagerPage />} />
+                  <Route path="news" element={<NewsManagerPage />} />
+                  <Route path="documents-manage" element={<DocumentsManagerPage />} />
+                  <Route path="jobs" element={<JobsManagerPage />} />
+                  <Route path="*" element={<Navigate to="/admin" replace />} />
                 </Route>
 
                 <Route element={<Layout />}>
@@ -127,6 +138,8 @@ export default function App() {
                   <Route path="/services/asms-webcp" element={<OperatorPortalPage />} />
                   <Route path="/services/qos-monitoring" element={<QoSMonitoringPage />} />
                   <Route path="/services/spectrum" element={<SpectrumManagementPage />} />
+                  <Route path="/services/guided-journeys" element={<GuidedJourneysPage />} />
+                  <Route path="/services/guided-journeys/:journeyId" element={<GuidedJourneysPage />} />
                   <Route path="/documents/drafts" element={<DocumentsPage />} />
                   <Route path="/documents/ict-licensing" element={<IctLicensingPage />} />
                   <Route path="/documents/publications" element={<DocumentsPage />} />
@@ -159,6 +172,7 @@ export default function App() {
                   <Route path="/tariffs" element={<ContentPage />} />
                   <Route path="/faqs" element={<FAQsPage />} />
                   <Route path="/consultations" element={<ConsultationsPage />} />
+                  <Route path="/subscribe" element={<SubscribePage />} />
                   <Route path="/api-docs" element={<ContentPage />} />
                   <Route path="*" element={<ContentPage />} />
                 </Route>

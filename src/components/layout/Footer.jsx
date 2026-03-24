@@ -38,6 +38,7 @@ export default function Footer() {
     { label: tn ? 'Dipotso' : 'FAQs', path: '/faqs' },
     { label: tn ? 'Ditiro' : 'Careers', path: '/about/careers' },
     { label: tn ? 'Ikgolaganye' : 'Contact', path: '/contact' },
+    { label: tn ? 'Ingodisa go Fumana Diphetogo' : 'Subscribe to Updates', path: '/subscribe' },
   ];
 
   const EXTERNAL_LINKS = [
