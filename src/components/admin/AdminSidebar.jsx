@@ -21,17 +21,16 @@ import {
   LogOut,
   Menu,
   X,
-  Zap,
   Smartphone,
   MessageSquare,
   Newspaper,
   FolderOpen,
   Briefcase,
-  ScrollText,
+  Globe,
 } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../lib/auth';
-import BocraLogo from '../ui/BocraLogo';
+import BocraLogo from '../../components/ui/BocraLogo';
 
 const NAV_ITEMS = [
   { to: '/admin', label: 'Dashboard', icon: LayoutDashboard, end: true },
@@ -42,12 +41,13 @@ const NAV_ITEMS = [
   { to: '/admin/consultations', label: 'Consultations', icon: MessageSquare },
   { to: '/admin/type-approval', label: 'Type Approval Devices', icon: Smartphone },
   { to: '/admin/data-requests', label: 'Data Requests', icon: UserCheck, countKey: 'dataRequests' },
-  { to: '/admin/automation', label: 'Automation', icon: Zap },
-  { section: 'Content Management' },
+  { to: '/admin/registrars', label: '.BW Registrars', icon: Globe },
+];
+
+const CONTENT_NAV_ITEMS = [
   { to: '/admin/news', label: 'News & Articles', icon: Newspaper },
   { to: '/admin/documents-manage', label: 'Documents', icon: FolderOpen },
   { to: '/admin/jobs', label: 'Jobs / Careers', icon: Briefcase },
-  { to: '/admin/tenders-manage', label: 'Tenders', icon: ScrollText },
 ];
 
 export default function AdminSidebar({ profile }) {
@@ -107,12 +107,7 @@ export default function AdminSidebar({ profile }) {
 
       {/* Navigation */}
       <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
-        {NAV_ITEMS.map((item, idx) =>
-          item.section ? (
-            <p key={item.section} className="text-[10px] text-gray-500 uppercase tracking-widest px-3 pt-4 pb-1 font-medium">
-              {item.section}
-            </p>
-          ) : (
+        {NAV_ITEMS.map((item) => (
           <NavLink
             key={item.to}
             to={item.to}
@@ -134,8 +129,29 @@ export default function AdminSidebar({ profile }) {
               </span>
             )}
           </NavLink>
-          )
-        )}
+        ))}
+
+        {/* Content Management */}
+        <div className="pt-4 pb-1 px-3">
+          <p className="text-[10px] text-gray-500 uppercase tracking-widest font-medium">Content</p>
+        </div>
+        {CONTENT_NAV_ITEMS.map((item) => (
+          <NavLink
+            key={item.to}
+            to={item.to}
+            onClick={() => setMobileOpen(false)}
+            className={({ isActive }) =>
+              `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                isActive
+                  ? 'bg-[#00A6CE]/15 text-[#00A6CE]'
+                  : 'text-gray-300 hover:bg-white/5 hover:text-white'
+              }`
+            }
+          >
+            <item.icon size={18} />
+            <span className="flex-1">{item.label}</span>
+          </NavLink>
+        ))}
       </nav>
 
       {/* Admin info + logout */}
