@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+# V-01 Prevention: Scan for secrets before commit
+bash scripts/scan-secrets.sh

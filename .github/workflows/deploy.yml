@@ -1,0 +1,113 @@
+# =============================================================================
+# BOCRA Website - GitHub Actions CI/CD Pipeline
+# =============================================================================
+# 
+# This workflow automatically builds and deploys the React SPA to GitHub Pages
+# whenever code is pushed to the main branch.
+#
+# SETUP INSTRUCTIONS:
+# 1. Go to your GitHub repo → Settings → Pages
+# 2. Set Source to "GitHub Actions"
+# 3. Go to Settings → Secrets and variables → Actions
+# 4. Add these repository secrets:
+#    - VITE_SUPABASE_URL: https://cyalwtuladeexxfsbrcs.supabase.co
+#    - VITE_SUPABASE_ANON_KEY: (your anon key)
+#
+# HOW IT WORKS:
+# 1. Checkout code
+# 2. Install Node.js 20 + dependencies
+# 3. Build the Vite project with Supabase env vars
+# 4. Deploy the dist/ folder to GitHub Pages
+# =============================================================================
+
+name: Build and Deploy BOCRA Website
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: # Allow manual trigger from GitHub UI
+
+# Sets permissions needed for GitHub Pages deployment
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Only allow one deployment at a time
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Step 2: Setup Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      # Step 3: Install dependencies
+      - name: Install dependencies
+        run: npm ci
+
+      # Step 3b: Secret scanning (V-01 prevention)
+      - name: Scan for secrets
+        run: |
+          echo "Scanning for hardcoded secrets in source files..."
+          FOUND=0
+          if grep -rP 'sk-ant-[A-Za-z0-9_-]{20,}' --include='*.js' --include='*.jsx' --include='*.ts' --include='*.tsx' --include='*.json' src/ supabase/ scripts/ 2>/dev/null; then
+            echo "::error::Anthropic API key found in source files"
+            FOUND=1
+          fi
+          if grep -rP 'eyJ[A-Za-z0-9_-]{20,}\.eyJ[A-Za-z0-9_-]*service_role' --include='*.js' --include='*.jsx' --include='*.ts' --include='*.tsx' src/ supabase/ 2>/dev/null; then
+            echo "::error::Supabase service_role key found in source files"
+            FOUND=1
+          fi
+          if grep -rP 'AIza[A-Za-z0-9_-]{30,}' --include='*.js' --include='*.jsx' --include='*.ts' --include='*.tsx' src/ supabase/ 2>/dev/null; then
+            echo "::error::Google API key found in source files"
+            FOUND=1
+          fi
+          if [ "$FOUND" -eq 1 ]; then
+            exit 1
+          fi
+          echo "No secrets found."
+
+      # Step 3c: Run npm audit (OWASP A06 — Vulnerable Components)
+      # Note: --audit-level=critical because serialize-javascript <=7.0.2 (high)
+      # is a transitive dep of workbox-build with no fix available upstream yet
+      - name: Audit dependencies
+        run: npm audit --audit-level=critical
+
+      # Step 4: Build the project
+      # Supabase credentials are injected as environment variables
+      - name: Build
+        run: npm run build
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+
+      # Step 5: Configure GitHub Pages
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      # Step 6: Upload the built site
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './dist'
+
+      # Step 7: Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
