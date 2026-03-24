@@ -51,16 +51,17 @@ const ID_TYPES = [
 export default function OperatorPortalPage() {
   const { lang } = useLanguage();
   const tn = lang === 'tn';
-  const [view, setView] = useState('landing'); // landing, register, login, dashboard
   const { user, signIn, signUp, signOut } = useAuth();
+  const [view, setView] = useState(user ? 'loading' : 'landing'); // loading, landing, register, login, dashboard
   const [operator, setOperator] = useState(null);
   const navigate = useNavigate();
   const heroRef = useScrollReveal();
 
-  // Check if user is already logged in — fetch profile and go to dashboard
+  // If user is logged in, skip landing and go straight to dashboard
   useEffect(() => {
     let cancelled = false;
     if (user) {
+      setView('loading');
       (async () => {
         try {
           const { data, error } = await supabase.from('profiles').select('*').eq('id', user.id).single();
@@ -71,11 +72,21 @@ export default function OperatorPortalPage() {
           }
         } catch (err) {
           console.error('Failed to fetch operator profile:', err);
+          if (!cancelled) setView('landing');
         }
       })();
+    } else {
+      setView('landing');
     }
     return () => { cancelled = true; };
   }, [user]);
+
+  if (view === 'loading') return (
+    <div className="min-h-[60vh] flex flex-col items-center justify-center">
+      <div className="w-10 h-10 border-4 border-[#00458B]/20 border-t-[#00458B] rounded-full animate-spin" />
+      <p className="mt-4 text-sm text-bocra-slate/50">{tn ? 'E rwalela...' : 'Loading your portal...'}</p>
+    </div>
+  );
 
   if (view === 'register') return <RegisterForm setView={setView} signUp={signUp} />;
   if (view === 'login') return <LoginForm setView={setView} signIn={signIn} />;
