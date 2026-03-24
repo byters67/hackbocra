@@ -20,6 +20,8 @@ import {
   ChevronLeft, ChevronRight, CheckCircle,
   Phone, Send, Edit2,
 } from 'lucide-react';
+
+const BASE = import.meta.env.BASE_URL; // '/hackbocra/' — matches vite.config.js base
 import { useLanguage } from '../../lib/language';
 import { useRecaptcha } from '../../hooks/useRecaptcha';
 import { sanitizeInput, validateEmail } from '../../lib/security';
@@ -27,19 +29,20 @@ import { checkRateLimit, supabaseUrl_, supabaseAnonKey_ } from '../../lib/supaba
 import ConsentCheckbox from '../ui/ConsentCheckbox';
 
 // ─── PROVIDER REGISTRY ────────────────────────────────────────────────────────
-// colorClass must be a complete static Tailwind string (not assembled dynamically)
-// so that PurgeCSS / Tailwind JIT includes them in the build.
+// logoSrc: path relative to BASE_URL (public/images/operators/).
+//   null = no logo file yet → falls back to colorClass initial badge.
+// colorClass: fallback background when logo is absent or fails to load.
 const PROVIDERS = [
-  { id: 'mascom',    name: 'Mascom Wireless',                                    shortName: 'Mascom',      category: 'mobile',       supportPhone: '119',           colorClass: 'bg-red-500'    },
-  { id: 'btc',       name: 'Botswana Telecommunications Corporation (BTC)',       shortName: 'BTC',         category: 'telco',        supportPhone: '121',           colorClass: 'bg-blue-700'   },
-  { id: 'orange',    name: 'Orange Botswana',                                     shortName: 'Orange',      category: 'mobile',       supportPhone: '111',           colorClass: 'bg-orange-500' },
-  { id: 'bofinet',   name: 'Botswana Fibre Networks (BoFiNet)',                   shortName: 'BoFiNet',     category: 'internet',     supportPhone: '+267 317 0000', colorClass: 'bg-emerald-600'},
-  { id: 'bwpost',    name: 'Botswana Post',                                       shortName: 'BW Post',     category: 'postal',       supportPhone: '+267 368 1000', colorClass: 'bg-yellow-600' },
-  { id: 'yarona',    name: 'Yarona FM',                                           shortName: 'Yarona FM',   category: 'broadcasting', supportPhone: '+267 360 1400', colorClass: 'bg-purple-600' },
-  { id: 'duma',      name: 'Duma FM',                                             shortName: 'Duma FM',     category: 'broadcasting', supportPhone: '+267 391 2222', colorClass: 'bg-pink-600'   },
-  { id: 'gabz',      name: 'Gabz FM',                                             shortName: 'Gabz FM',     category: 'broadcasting', supportPhone: '+267 360 0000', colorClass: 'bg-teal-600'   },
-  { id: 'ebotswana', name: 'eBotswana TV',                                        shortName: 'eBotswana',   category: 'broadcasting', supportPhone: '+267 395 0000', colorClass: 'bg-indigo-600' },
-  { id: 'other',     name: 'Other',                                               shortName: 'Other',       category: 'general',      supportPhone: null,            colorClass: 'bg-gray-400'   },
+  { id: 'mascom',    name: 'Mascom Wireless',                              shortName: 'Mascom',    category: 'mobile',       supportPhone: '119',           logoSrc: `${BASE}images/operators/mascom.png`,       colorClass: 'bg-red-500'    },
+  { id: 'btc',       name: 'Botswana Telecommunications Corporation (BTC)',shortName: 'BTC',       category: 'telco',        supportPhone: '121',           logoSrc: `${BASE}images/operators/btc.png`,          colorClass: 'bg-blue-700'   },
+  { id: 'orange',    name: 'Orange Botswana',                              shortName: 'Orange',    category: 'mobile',       supportPhone: '111',           logoSrc: `${BASE}images/operators/orange.png`,       colorClass: 'bg-orange-500' },
+  { id: 'bofinet',   name: 'Botswana Fibre Networks (BoFiNet)',            shortName: 'BoFiNet',   category: 'internet',     supportPhone: '+267 317 0000', logoSrc: `${BASE}images/operators/bofinet.png`,      colorClass: 'bg-emerald-600'},
+  { id: 'bwpost',    name: 'Botswana Post',                                shortName: 'BW Post',   category: 'postal',       supportPhone: '+267 368 1000', logoSrc: `${BASE}images/operators/botswana-post.png`,colorClass: 'bg-red-600'    },
+  { id: 'yarona',    name: 'Yarona FM',                                    shortName: 'Yarona FM', category: 'broadcasting', supportPhone: '+267 360 1400', logoSrc: `${BASE}images/operators/yarona-fm.png`,    colorClass: 'bg-purple-600' },
+  { id: 'duma',      name: 'Duma FM',                                      shortName: 'Duma FM',   category: 'broadcasting', supportPhone: '+267 391 2222', logoSrc: `${BASE}images/operators/duma-fm.png`,      colorClass: 'bg-pink-600'   },
+  { id: 'gabz',      name: 'Gabz FM',                                      shortName: 'Gabz FM',   category: 'broadcasting', supportPhone: '+267 360 0000', logoSrc: `${BASE}images/operators/gabz-fm.png`,      colorClass: 'bg-teal-600'   },
+  { id: 'ebotswana', name: 'eBotswana TV',                                 shortName: 'eBotswana', category: 'broadcasting', supportPhone: '+267 395 0000', logoSrc: `${BASE}images/operators/ebotswana.png`,    colorClass: 'bg-indigo-600' },
+  { id: 'other',     name: 'Other',                                        shortName: 'Other',     category: 'general',      supportPhone: null,            logoSrc: null,                                       colorClass: 'bg-gray-400'   },
 ];
 
 // ─── COMPLAINT TYPES BY PROVIDER CATEGORY ─────────────────────────────────────
@@ -91,6 +94,30 @@ function trackWizardEvent(eventName, props = {}) {
     console.log('[wizard]', eventName, props);
   }
   window.dispatchEvent(new CustomEvent('bocra:wizard', { detail: { event: eventName, ...props } }));
+}
+
+// ─── PROVIDER LOGO ────────────────────────────────────────────────────────────
+// Shows the provider's actual logo; falls back to a coloured initial badge on
+// load error (404 for missing files) so cards always look consistent.
+function ProviderLogo({ src, alt, colorClass, initial }) {
+  const [err, setErr] = useState(false);
+  if (!src || err) {
+    return (
+      <div className={`w-10 h-10 rounded-xl ${colorClass} flex items-center justify-center text-white text-sm font-bold shrink-0`}>
+        {initial}
+      </div>
+    );
+  }
+  return (
+    <div className="h-10 flex items-center justify-center">
+      <img
+        src={src}
+        alt={alt}
+        className="h-10 w-auto object-contain max-w-[88px]"
+        onError={() => setErr(true)}
+      />
+    </div>
+  );
 }
 
 // ─── PROGRESS BAR ─────────────────────────────────────────────────────────────
@@ -170,19 +197,22 @@ function StepProvider({ lang, selected, onSelect, onNext }) {
               onSelect(p.name);
               trackWizardEvent('wizard_provider_selected', { provider: p.name });
             }}
-            className={`relative p-4 rounded-xl border-2 transition-all text-left ${
+            className={`relative p-3 rounded-xl border-2 transition-all text-left flex flex-col items-center justify-center gap-2 min-h-[88px] ${
               selected === p.name
                 ? 'border-bocra-blue bg-bocra-blue/5 shadow-sm'
                 : 'border-gray-200 bg-white hover:border-bocra-blue/40 hover:bg-bocra-off-white'
             }`}
           >
-            <div className={`w-8 h-8 rounded-lg ${p.colorClass} flex items-center justify-center text-white text-xs font-bold mb-2 shrink-0`}>
-              {p.shortName.charAt(0)}
-            </div>
-            <p className="text-xs font-semibold text-bocra-slate leading-tight">{p.shortName}</p>
+            <ProviderLogo
+              src={p.logoSrc}
+              alt={p.shortName}
+              colorClass={p.colorClass}
+              initial={p.shortName.charAt(0)}
+            />
+            <p className="text-[11px] font-semibold text-bocra-slate leading-tight text-center">{p.shortName}</p>
             {selected === p.name && (
               <div className="absolute top-2 right-2">
-                <CheckCircle size={16} className="text-bocra-blue" />
+                <CheckCircle size={15} className="text-bocra-blue" />
               </div>
             )}
           </button>
