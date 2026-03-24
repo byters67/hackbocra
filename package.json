@@ -12,6 +12,7 @@
     "lint": "eslint . --ext js,jsx"
   },
   "dependencies": {
+    "@floating-ui/dom": "^1.7.6",
     "@supabase/supabase-js": "^2.45.0",
     "@tailwindcss/typography": "^0.5.19",
     "@tanstack/react-query": "^5.94.5",
